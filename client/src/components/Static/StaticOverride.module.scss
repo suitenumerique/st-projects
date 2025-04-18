@@ -1,0 +1,54 @@
+@import '../../styles.variables.scss';
+
+:global(#app) {
+  .message {
+    align-content: space-between;
+    align-items: center;
+    color: #fff;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .messageIcon {
+    margin-top: -84px;
+    color: $main-blue;
+  }
+
+  .messageTitle {
+    font-size: 32px;
+    margin: 24px 0 8px;
+    color: $dark-grey;
+  }
+
+  .messageContent {
+    font-size: 18px;
+    line-height: 1.4;
+    margin: 4px 0 0;
+    text-align: center;
+    color: $dark-grey;
+  }
+
+  .wrapper {
+    height: 100%;
+    margin-top: 50px;
+    background: #fff;
+  }
+
+  .wrapperBoard {
+    margin-top: 198px;
+  }
+
+  .wrapperFlex {
+    display: flex;
+  }
+
+  .wrapperLoader {
+    position: relative;
+  }
+
+  .wrapperProject {
+    margin-top: 98px;
+  }
+}

@@ -5,7 +5,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import styles from './User.module.scss';
+import styles from './UserOverride.module.scss';
 
 const SIZES = {
   TINY: 'tiny',

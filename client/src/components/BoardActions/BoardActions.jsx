@@ -5,7 +5,7 @@ import Filters from './Filters';
 import Memberships from '../Memberships';
 import BoardMembershipPermissionsSelectStep from '../BoardMembershipPermissionsSelectStep';
 
-import styles from './BoardActions.module.scss';
+import styles from './BoardActionsOverride.module.scss';
 
 const BoardActions = React.memo(
   ({

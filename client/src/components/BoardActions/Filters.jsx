@@ -11,7 +11,9 @@ import Label from '../Label';
 import BoardMembershipsStep from '../BoardMembershipsStep';
 import LabelsStep from '../LabelsStep';
 
-import styles from './Filters.module.scss';
+import InputOverride from '../InputOverride';
+
+import styles from './FiltersOverride.module.scss';
 
 const Filters = React.memo(
   ({
@@ -144,7 +146,24 @@ const Filters = React.memo(
           ))}
         </span>
         <span className={styles.filter}>
-          <Input
+          {/* <Input
+            ref={searchFieldRef}
+            value={filterText}
+            placeholder={t('common.searchCards')}
+            icon={
+              isSearchActive ? (
+                <Icon link name="cancel" onClick={handleCancelSearchClick} />
+              ) : (
+                'search'
+              )
+            }
+            className={classNames(styles.search, !isSearchActive && styles.searchInactive)}
+            onFocus={handleSearchFocus}
+            onKeyDown={handleSearchKeyDown}
+            onChange={handleSearchChange}
+            onBlur={handleSearchBlur}
+          /> */}
+          <InputOverride
             ref={searchFieldRef}
             value={filterText}
             placeholder={t('common.searchCards')}

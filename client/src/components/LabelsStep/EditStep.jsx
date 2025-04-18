@@ -10,7 +10,9 @@ import LabelColors from '../../constants/LabelColors';
 import Editor from './Editor';
 import DeleteStep from '../DeleteStep';
 
-import styles from './EditStep.module.scss';
+import ButtonOverride from '../ButtonOverride';
+
+import styles from './EditStepOverride.module.scss';
 
 const StepTypes = {
   DELETE: 'DELETE',
@@ -66,13 +68,17 @@ const EditStep = React.memo(({ defaultData, onUpdate, onDelete, onBack }) => {
       <Popup.Content>
         <Form onSubmit={handleSubmit}>
           <Editor data={data} onFieldChange={handleFieldChange} />
-          <Button positive content={t('action.save')} />
+          <ButtonOverride type="submit" priority="primary">
+            {t('action.save')}
+          </ButtonOverride>
         </Form>
-        <Button
-          content={t('action.delete')}
+        <ButtonOverride
+          priority="secondary"
           className={styles.deleteButton}
           onClick={handleDeleteClick}
-        />
+        >
+          {t('action.delete')}
+        </ButtonOverride>
       </Popup.Content>
     </>
   );

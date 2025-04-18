@@ -6,6 +6,8 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { Button, Form, TextArea } from 'semantic-ui-react';
 import { useDidUpdate, useToggle } from '../../lib/hooks';
 
+import ButtonOverride from '../ButtonOverride';
+
 import { useClosableForm, useForm } from '../../hooks';
 
 import styles from './CardAdd.module.scss';
@@ -105,13 +107,15 @@ const CardAdd = React.memo(({ isOpened, onCreate, onClose }) => {
       </div>
       <div className={styles.controls}>
         {/* eslint-disable-next-line jsx-a11y/mouse-events-have-key-events */}
-        <Button
-          positive
-          content={t('action.addCard')}
+        <ButtonOverride
+          type="submit"
+          priority="primary"
           className={styles.submitButton}
           onMouseOver={handleControlMouseOver}
           onMouseOut={handleControlMouseOut}
-        />
+        >
+          {t('action.addCard')}
+        </ButtonOverride>
       </div>
     </Form>
   );

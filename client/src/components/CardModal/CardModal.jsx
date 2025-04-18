@@ -25,7 +25,9 @@ import StopwatchEditStep from '../StopwatchEditStep';
 import CardMoveStep from '../CardMoveStep';
 import DeleteStep from '../DeleteStep';
 
-import styles from './CardModal.module.scss';
+import ButtonOverride from '../ButtonOverride';
+
+import styles from './CardModalOverride.module.scss';
 
 const CardModal = React.memo(
   ({
@@ -458,10 +460,10 @@ const CardModal = React.memo(
                   onUserSelect={onUserAdd}
                   onUserDeselect={onUserRemove}
                 >
-                  <Button fluid className={styles.actionButton}>
+                  <ButtonOverride priority="secondary" className={styles.actionButton}>
                     <Icon name="user outline" className={styles.actionIcon} />
                     {t('common.members')}
-                  </Button>
+                  </ButtonOverride>
                 </BoardMembershipsPopup>
                 <LabelsPopup
                   items={allLabels}
@@ -473,42 +475,42 @@ const CardModal = React.memo(
                   onMove={onLabelMove}
                   onDelete={onLabelDelete}
                 >
-                  <Button fluid className={styles.actionButton}>
+                  <ButtonOverride priority="secondary" className={styles.actionButton}>
                     <Icon name="bookmark outline" className={styles.actionIcon} />
                     {t('common.labels')}
-                  </Button>
+                  </ButtonOverride>
                 </LabelsPopup>
                 <DueDateEditPopup defaultValue={dueDate} onUpdate={handleDueDateUpdate}>
-                  <Button fluid className={styles.actionButton}>
+                  <ButtonOverride priority="secondary" className={styles.actionButton}>
                     <Icon name="calendar check outline" className={styles.actionIcon} />
                     {t('common.dueDate', {
                       context: 'title',
                     })}
-                  </Button>
+                  </ButtonOverride>
                 </DueDateEditPopup>
                 <StopwatchEditPopup defaultValue={stopwatch} onUpdate={handleStopwatchUpdate}>
-                  <Button fluid className={styles.actionButton}>
+                  <ButtonOverride priority="secondary" className={styles.actionButton}>
                     <Icon name="clock outline" className={styles.actionIcon} />
                     {t('common.stopwatch')}
-                  </Button>
+                  </ButtonOverride>
                 </StopwatchEditPopup>
                 <AttachmentAddPopup onCreate={onAttachmentCreate}>
-                  <Button fluid className={styles.actionButton}>
+                  <ButtonOverride priority="secondary" className={styles.actionButton}>
                     <Icon name="attach" className={styles.actionIcon} />
                     {t('common.attachment')}
-                  </Button>
+                  </ButtonOverride>
                 </AttachmentAddPopup>
               </div>
               <div className={styles.actions}>
                 <span className={styles.actionsTitle}>{t('common.actions')}</span>
-                <Button
-                  fluid
+                <ButtonOverride
+                  priority="secondary"
                   className={styles.actionButton}
                   onClick={handleToggleSubscriptionClick}
                 >
                   <Icon name="paper plane outline" className={styles.actionIcon} />
                   {isSubscribed ? t('action.unsubscribe') : t('action.subscribe')}
-                </Button>
+                </ButtonOverride>
                 <CardMovePopup
                   projectsToLists={allProjectsToLists}
                   defaultPath={{
@@ -520,21 +522,29 @@ const CardModal = React.memo(
                   onTransfer={onTransfer}
                   onBoardFetch={onBoardFetch}
                 >
-                  <Button
-                    fluid
+                  <ButtonOverride
+                    priority="secondary"
                     className={styles.actionButton}
                     onClick={handleToggleSubscriptionClick}
                   >
                     <Icon name="share square outline" className={styles.actionIcon} />
                     {t('action.move')}
-                  </Button>
+                  </ButtonOverride>
                 </CardMovePopup>
-                <Button fluid className={styles.actionButton} onClick={handleDuplicateClick}>
+                <ButtonOverride
+                  priority="secondary"
+                  className={styles.actionButton}
+                  onClick={handleDuplicateClick}
+                >
                   <Icon name="copy outline" className={styles.actionIcon} />
                   {t('action.duplicate')}
-                </Button>
+                </ButtonOverride>
                 {window.isSecureContext && (
-                  <Button fluid className={styles.actionButton} onClick={handleCopyLinkClick}>
+                  <ButtonOverride
+                    priority="secondary"
+                    className={styles.actionButton}
+                    onClick={handleCopyLinkClick}
+                  >
                     <Icon
                       name={isLinkCopied ? 'linkify' : 'unlink'}
                       className={styles.actionIcon}
@@ -544,7 +554,7 @@ const CardModal = React.memo(
                       : t('action.copyLink', {
                           context: 'title',
                         })}
-                  </Button>
+                  </ButtonOverride>
                 )}
                 <DeletePopup
                   title="common.deleteCard"
@@ -552,10 +562,10 @@ const CardModal = React.memo(
                   buttonContent="action.deleteCard"
                   onConfirm={onDelete}
                 >
-                  <Button fluid className={styles.actionButton}>
+                  <ButtonOverride priority="secondary" className={styles.actionButton}>
                     <Icon name="trash alternate outline" className={styles.actionIcon} />
                     {t('action.delete')}
-                  </Button>
+                  </ButtonOverride>
                 </DeletePopup>
               </div>
             </Grid.Column>

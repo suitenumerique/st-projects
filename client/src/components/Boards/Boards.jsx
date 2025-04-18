@@ -12,7 +12,7 @@ import DroppableTypes from '../../constants/DroppableTypes';
 import AddStep from './AddStep';
 import EditStep from './EditStep';
 
-import styles from './Boards.module.scss';
+import styles from './BoardsOverride.module.scss';
 import globalStyles from '../../styles.module.scss';
 
 const Boards = React.memo(({ items, currentId, canEdit, onCreate, onUpdate, onMove, onDelete }) => {

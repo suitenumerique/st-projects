@@ -12,7 +12,10 @@ import AddStep from './AddStep';
 import EditStep from './EditStep';
 import Item from './Item';
 
-import styles from './LabelsStep.module.scss';
+import InputOverride from '../InputOverride';
+import ButtonOverride from '../ButtonOverride';
+
+import styles from './LabelsStepOverride.module.scss';
 import globalStyles from '../../styles.module.scss';
 
 const StepTypes = {
@@ -157,8 +160,7 @@ const LabelsStep = React.memo(
           })}
         </Popup.Header>
         <Popup.Content>
-          <Input
-            fluid
+          <InputOverride
             ref={searchField}
             value={search}
             placeholder={t('common.searchLabels')}
@@ -207,12 +209,13 @@ const LabelsStep = React.memo(
             </DragDropContext>
           )}
           {canEdit && (
-            <Button
-              fluid
-              content={t('action.createNewLabel')}
+            <ButtonOverride
+              priority="secondary"
               className={styles.addButton}
               onClick={handleAddClick}
-            />
+            >
+              {t('action.createNewLabel')}
+            </ButtonOverride>
           )}
         </Popup.Content>
       </>

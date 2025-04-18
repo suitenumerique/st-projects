@@ -7,6 +7,7 @@ import { Popup } from '../../lib/custom-ui';
 import { useForm } from '../../hooks';
 import LabelColors from '../../constants/LabelColors';
 import Editor from './Editor';
+import ButtonOverride from '../ButtonOverride';
 
 import styles from './AddStep.module.scss';
 
@@ -39,7 +40,14 @@ const AddStep = React.memo(({ defaultData, onCreate, onBack }) => {
       <Popup.Content>
         <Form onSubmit={handleSubmit}>
           <Editor data={data} onFieldChange={handleFieldChange} />
-          <Button positive content={t('action.createLabel')} className={styles.submitButton} />
+          <ButtonOverride
+            type="submit"
+            priority="primary"
+            content={t('action.createLabel')}
+            className={styles.submitButton}
+          >
+            {t('action.createLabel')}
+          </ButtonOverride>
         </Form>
       </Popup.Content>
     </>

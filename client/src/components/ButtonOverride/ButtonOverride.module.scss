@@ -1,0 +1,38 @@
+@import '../../styles.variables.scss';
+
+:global(#app) {
+  .buttonOverride {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    width: -moz-fit-content;
+    width: fit-content;
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    min-height: 2.5rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid $main-blue;
+    box-shadow: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .primary {
+    background-color: $main-blue;
+    color: #FFFFFF;
+    &:hover {
+      background-color: $secondary-blue;
+      border-color: $secondary-blue;
+    }
+  }
+
+  .secondary {
+    background-color: #FFFFFF;
+    color: $main-blue;
+    &:hover {
+      background-color: $background-grey;
+    }
+  }
+}

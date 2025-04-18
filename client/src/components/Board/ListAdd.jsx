@@ -4,9 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { Button, Form, Input } from 'semantic-ui-react';
 import { useDidUpdate, useToggle } from '../../lib/hooks';
 
+import InputOverride from '../InputOverride';
+import ButtonOverride from '../ButtonOverride';
 import { useClosableForm, useForm } from '../../hooks';
 
-import styles from './ListAdd.module.scss';
+import styles from './ListAddOverride.module.scss';
 
 const DEFAULT_DATA = {
   name: '',
@@ -57,7 +59,7 @@ const ListAdd = React.memo(({ onCreate, onClose }) => {
 
   return (
     <Form className={styles.wrapper} onSubmit={handleSubmit}>
-      <Input
+      {/* <Input
         ref={nameField}
         name="name"
         value={data.name}
@@ -66,16 +68,34 @@ const ListAdd = React.memo(({ onCreate, onClose }) => {
         onKeyDown={handleFieldKeyDown}
         onChange={handleFieldChange}
         onBlur={handleFieldBlur}
+      /> */}
+      <InputOverride
+        ref={nameField}
+        name="name"
+        value={data.name}
+        placeholder={t('common.enterListTitle')}
+        onChange={handleFieldChange}
+        onBlur={handleFieldBlur}
+        onKeyDown={handleFieldKeyDown}
+        className={styles.field}
       />
       <div className={styles.controls}>
         {/* eslint-disable-next-line jsx-a11y/mouse-events-have-key-events */}
-        <Button
+        {/* <Button
           positive
           content={t('action.addList')}
           className={styles.button}
           onMouseOver={handleControlMouseOver}
           onMouseOut={handleControlMouseOut}
-        />
+        /> */}
+        <ButtonOverride
+          type="submit"
+          priority="primary"
+          onMouseOver={handleControlMouseOver}
+          onMouseOut={handleControlMouseOut}
+        >
+          {t('action.addList')}
+        </ButtonOverride>
       </div>
     </Form>
   );

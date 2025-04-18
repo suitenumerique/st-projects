@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { Button } from 'semantic-ui-react';
 import { Popup } from '../../lib/custom-ui';
 
+import ButtonOverride from '../ButtonOverride';
+
 import styles from './DeleteStep.module.scss';
 
 const DeleteStep = React.memo(({ title, content, buttonContent, onConfirm, onBack }) => {
@@ -18,7 +20,10 @@ const DeleteStep = React.memo(({ title, content, buttonContent, onConfirm, onBac
       </Popup.Header>
       <Popup.Content>
         <div className={styles.content}>{t(content)}</div>
-        <Button fluid negative content={t(buttonContent)} onClick={onConfirm} />
+        {/* <Button fluid negative content={t(buttonContent)} onClick={onConfirm} /> */}
+        <ButtonOverride priority="primary" onClick={onConfirm}>
+          {t(buttonContent)}
+        </ButtonOverride>
       </Popup.Content>
     </>
   );

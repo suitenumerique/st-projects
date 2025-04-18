@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Popup as SemanticUIPopup } from 'semantic-ui-react';
 
-import styles from './PopupHeader.module.css';
+import styles from './PopupHeaderOverride.module.scss';
 
 const PopupHeader = React.memo(({ children, onBack }) => (
   <SemanticUIPopup.Header className={styles.wrapper}>

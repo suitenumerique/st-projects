@@ -6,6 +6,8 @@ import React from 'react';
 import { Button } from 'semantic-ui-react';
 import { useTranslation } from 'react-i18next';
 
+import ButtonOverride from '../ButtonOverride';
+
 import globalStyles from '../../styles.module.scss';
 import styles from './ColorPicker.module.scss';
 
@@ -30,7 +32,9 @@ const ColorPicker = React.memo(({ current, onChange, colors, allowDeletion }) =>
         ))}
       </div>
       {current && allowDeletion && (
-        <Button fluid value={undefined} onClick={onChange} content={t('action.removeColor')} />
+        <ButtonOverride priority="secondary" value={undefined} onClick={onChange}>
+          {t('action.removeColor')}
+        </ButtonOverride>
       )}
     </>
   );

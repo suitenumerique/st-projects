@@ -1,0 +1,206 @@
+@import '../../styles.variables.scss';
+
+:global(#app) {
+
+  .wrapper {
+    background: rgb(255, 255, 255);
+    border-bottom: 1px solid $border-grey;
+    height: 52px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 1rem;
+  }
+
+  .logo {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.2);
+    display: flex;
+    div {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      gap: 0.25rem;
+      height: fit-content;
+      margin-top: 0px;
+      position: relative;
+      div {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        gap: 0.375rem;
+        h2 {
+          display: flex;
+          font-family: Marianne;
+          flex-direction: column;
+          color: $main-blue;
+          margin: 0px;
+          z-index: 1;
+          font-size: 1.375rem;
+          color: $main-blue;
+        }
+        span {
+          font-weight: bold;
+          font-size: 11px;
+          color: rgb(89, 88, 211);
+          display: flex;
+          flex-direction: column;
+          background: rgb(236, 236, 255);
+          color: rgb(89, 88, 211);
+          height: 16px;
+          padding: 4px 6px;
+          border-radius: 12px;
+          width: 40px;
+          line-height: 9px;
+        }
+      }
+    }
+  }
+
+  // .logo {
+  //   color: #fff;
+  //   flex: 0 0 auto;
+  //   letter-spacing: 3.5px;
+  //   line-height: 50px;
+  //   padding: 0 16px;
+  //   text-transform: uppercase;
+  //   width: 130px;
+
+  //   &:before {
+  //     background: none;
+  //   }
+  // }
+
+  // .title {
+  //   font-size: 20px;
+  //   font-weight: bold;
+  // }
+
+  .editButton {
+    background: transparent;
+    box-shadow: none;
+    color: $main-blue;
+    font-size: 15px;
+    line-height: 34px;
+    margin-left: 8px;
+    opacity: 0;
+    padding: 0;
+    width: 34px;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+  }
+
+  .item {
+    cursor: pointer;
+    user-select: auto;
+    color: $main-blue;
+
+    &:before {
+      background: none;
+    }
+
+    &:active,
+    &:hover {
+      background: $background-grey;
+      color: $main-blue;
+
+      .target {
+        opacity: 1;
+      }
+    }
+  }
+
+  .itemHoverable:hover {
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.32);
+  }
+
+  .menu {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    color: $main-blue;
+    flex: 1 1 auto;
+    height: 50px;
+    margin: 0;
+    width: 100%;
+    align-items: center;
+  }
+
+  .notification {
+    background: #eb5a46;
+    border-radius: 8px;
+    color: #fff;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    height: 16px;
+    line-height: 16px;
+    position: absolute;
+    right: 8px;
+    text-align: center;
+    top: 8px;
+    width: 16px;
+  }
+
+  .userName {
+    display: none;
+    margin-right: 10px;
+
+    @media only screen and (min-width: 797px) {
+      display: block;
+    }
+  }
+
+  .gauffre {
+    min-height: 2.5rem !important;
+    max-width: 2.5rem !important;
+    max-height: 2.5rem !important;
+    all: unset;
+    overflow-wrap: break-word !important;
+    box-sizing: border-box !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    border: none !important;
+    margin: 0 !important;
+    font-family: inherit !important;
+    cursor: pointer !important;
+    -webkit-tap-highlight-color: transparent !important;
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    width: -moz-fit-content !important;
+    width: fit-content !important;
+    font-weight: 500 !important;
+    font-size: 1.125rem !important;
+    line-height: 1.75rem !important;
+    min-height: 3rem !important;
+    padding: .5rem !important;
+    background-color: transparent !important;
+    color: rgba(0, 0, 145, 1) !important;
+    box-shadow: inset 0 0 0 1px #FFF !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    &:hover {
+      background-color: #f6f6f6 !important;
+    }
+    &:before {
+      content: "" !important;
+      flex: 0 0 auto !important;
+      display: block !important;
+      background-color: rgba(0, 0, 145, 1) !important;
+      width: 24px !important;
+      height: 24px !important;
+      -webkit-mask-size: 100% 100% !important;
+      mask-size: 100% 100% !important;
+      margin-left: 0 !important;
+      margin-right: .5rem !important;
+      mask-image: url("../../assets/images/gauffre.svg");
+    }
+  }
+}

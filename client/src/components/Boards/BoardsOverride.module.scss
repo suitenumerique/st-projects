@@ -1,0 +1,112 @@
+@import '../../styles.variables.scss';
+
+:global(#app) {
+  .addButton {
+    background: transparent;
+    color: $main-blue;
+    margin-right: 0;
+    vertical-align: top;
+  }
+
+  .editButton {
+    background: transparent;
+    box-shadow: none;
+    color: $main-blue;
+    line-height: 32px;
+    margin-right: 0;
+    opacity: 0;
+    padding: 0;
+    position: absolute;
+    right: 2px;
+    top: 8px;
+    width: 32px;
+  }
+
+  .link {
+    color: rgba(255, 255, 255, 0.72);
+    cursor: pointer;
+    display: block;
+    line-height: 20px;
+    padding: 10px 34px 6px 14px;
+    text-overflow: ellipsis;
+    max-width: 400px;
+    overflow: hidden;
+  }
+
+  .tab {
+    border-radius: 4px;
+    min-width: 100px;
+    position: relative;
+    transition: all 0.1s ease;
+    background: #FFF;
+    height: 49px;
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+
+    .link {
+      color: $dark-grey;
+      margin-bottom: 5px;
+    }
+
+    &:hover {
+      background: $background-grey;
+
+      .target {
+        opacity: 1;
+      }
+    }
+  }
+
+  .tabActive {
+    background: $background-grey;
+
+    &:hover {
+      background: $background-grey-hover;
+    }
+
+    .link {
+      color: $main-blue;
+      font-weight: bold;
+    }
+  }
+
+  .tabWrapper {
+    display: flex;
+    flex: 0 0 auto;
+  }
+
+  .tabs {
+    display: flex;
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .tabsWrapper {
+    display: flex;
+    flex: 0 0 auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    &::-webkit-scrollbar {
+      height: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 3px;
+    }
+  }
+
+  .wrapper {
+    padding: 10px 20px;
+    border-bottom: 1px solid $border-grey;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    overflow: hidden;
+  }
+}

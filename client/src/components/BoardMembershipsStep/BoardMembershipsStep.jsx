@@ -6,6 +6,7 @@ import { Input, Popup } from '../../lib/custom-ui';
 
 import { useField } from '../../hooks';
 import Item from './Item';
+import InputOverride from '../InputOverride';
 
 import styles from './BoardMembershipsStep.module.scss';
 
@@ -56,8 +57,7 @@ const BoardMembershipsStep = React.memo(
           })}
         </Popup.Header>
         <Popup.Content>
-          <Input
-            fluid
+          <InputOverride
             ref={searchField}
             value={search}
             placeholder={t('common.searchMembers')}

@@ -1,0 +1,31 @@
+body {
+  font-family: "Marianne";
+  font-size: 16px;
+  color: rgba(22, 22, 22, 1);
+}
+
+@font-face {
+  font-family: "Marianne";
+  src: url("./assets/fonts/Marianne-Regular.woff2") format("woff2"), url("./assets/fonts/Marianne-Regular.woff") format("woff");
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: "Marianne";
+  src: url("./assets/fonts/Marianne-Medium.woff2") format("woff2"), url("./assets/fonts/Marianne-Medium.woff") format("woff");
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "Marianne";
+  src: url("./assets/fonts/Marianne-Bold.woff2") format("woff2"), url("./assets/fonts/Marianne-Bold.woff") format("woff");
+  font-weight: 700;
+}
+
+#app {
+  background-color: rgb(255, 255, 255);
+}
+
+button {
+  font-family: "Marianne";
+}

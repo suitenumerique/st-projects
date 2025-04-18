@@ -1,0 +1,21 @@
+:global(#app) {
+  .button {
+    min-height: 30px;
+    vertical-align: top;
+  }
+
+  .controls {
+    margin-top: 4px;
+  }
+
+  .field {
+  }
+
+  .wrapper {
+    background: #e2e4e6;
+    border-radius: 3px;
+    padding: 4px;
+    transition: opacity 40ms ease-in;
+    width: 272px;
+  }
+}

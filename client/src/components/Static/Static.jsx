@@ -7,7 +7,8 @@ import { Icon, Loader } from 'semantic-ui-react';
 import ProjectsContainer from '../../containers/ProjectsContainer';
 import BoardContainer from '../../containers/BoardContainer';
 
-import styles from './Static.module.scss';
+// import styles from './Static.module.scss';
+import styles from './StaticOverride.module.scss';
 
 function Static({ projectId, cardId, board }) {
   const [t] = useTranslation();

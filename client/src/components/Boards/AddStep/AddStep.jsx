@@ -5,6 +5,9 @@ import { Button, Form, Icon } from 'semantic-ui-react';
 import { useDidUpdate, useToggle } from '../../../lib/hooks';
 import { Input, Popup } from '../../../lib/custom-ui';
 
+import InputOverride from '../../InputOverride/InputOverride';
+import ButtonOverride from '../../ButtonOverride';
+
 import { useForm, useSteps } from '../../../hooks';
 import ImportStep from './ImportStep';
 
@@ -84,8 +87,15 @@ const AddStep = React.memo(({ onCreate, onClose }) => {
       </Popup.Header>
       <Popup.Content>
         <Form onSubmit={handleSubmit}>
-          <Input
+          {/* <Input
             fluid
+            ref={nameField}
+            name="name"
+            value={data.name}
+            className={styles.field}
+            onChange={handleFieldChange}
+          /> */}
+          <InputOverride
             ref={nameField}
             name="name"
             value={data.name}
@@ -93,14 +103,17 @@ const AddStep = React.memo(({ onCreate, onClose }) => {
             onChange={handleFieldChange}
           />
           <div className={styles.controls}>
-            <Button positive content={t('action.createBoard')} className={styles.createButton} />
-            <Button type="button" className={styles.importButton} onClick={handleImportClick}>
+            {/* <Button positive content={t('action.createBoard')} className={styles.createButton} /> */}
+            <ButtonOverride type="submit" priority="primary">
+              {t('action.createBoard')}
+            </ButtonOverride>
+            {/* <Button type="button" className={styles.importButton} onClick={handleImportClick}>
               <Icon
                 name={data.import ? data.import.type : 'arrow down'}
                 className={styles.importButtonIcon}
               />
               {data.import ? data.import.file.name : t('action.import')}
-            </Button>
+            </Button> */}
           </div>
         </Form>
       </Popup.Content>

@@ -9,7 +9,9 @@ import { Input, Popup } from '../../lib/custom-ui';
 import { useForm } from '../../hooks';
 import parseTime from '../../utils/parse-time';
 
-import styles from './DueDateEditStep.module.scss';
+import InputOverride from '../InputOverride';
+import ButtonOverride from '../ButtonOverride';
+import styles from './DueDateEditStepOverride.module.scss';
 
 const DueDateEditStep = React.memo(({ defaultValue, onUpdate, onBack, onClose }) => {
   const [t] = useTranslation();
@@ -116,11 +118,21 @@ const DueDateEditStep = React.memo(({ defaultValue, onUpdate, onBack, onClose })
           <div className={styles.fieldWrapper}>
             <div className={styles.fieldBox}>
               <div className={styles.text}>{t('common.date')}</div>
-              <Input ref={dateField} name="date" value={data.date} onChange={handleFieldChange} />
+              <InputOverride
+                ref={dateField}
+                name="date"
+                value={data.date}
+                onChange={handleFieldChange}
+              />
             </div>
             <div className={styles.fieldBox}>
               <div className={styles.text}>{t('common.time')}</div>
-              <Input ref={timeField} name="time" value={data.time} onChange={handleFieldChange} />
+              <InputOverride
+                ref={timeField}
+                name="time"
+                value={data.time}
+                onChange={handleFieldChange}
+              />
             </div>
           </div>
           <DatePicker
@@ -129,14 +141,17 @@ const DueDateEditStep = React.memo(({ defaultValue, onUpdate, onBack, onClose })
             selected={nullableDate}
             onChange={handleDatePickerChange}
           />
-          <Button positive content={t('action.save')} />
+          <ButtonOverride priority="primary" type="submit">
+            {t('action.save')}
+          </ButtonOverride>
         </Form>
-        <Button
-          negative
-          content={t('action.remove')}
+        <ButtonOverride
+          priority="secondary"
           className={styles.deleteButton}
           onClick={handleClearClick}
-        />
+        >
+          {t('action.remove')}
+        </ButtonOverride>
       </Popup.Content>
     </>
   );

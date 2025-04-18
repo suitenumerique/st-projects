@@ -5,10 +5,13 @@ import { useTranslation } from 'react-i18next';
 import { Button, Form } from 'semantic-ui-react';
 import { Input, Popup } from '../../lib/custom-ui';
 
+import ButtonOverride from '../ButtonOverride';
+import InputOverride from '../InputOverride';
+
 import { useForm, useSteps } from '../../hooks';
 import DeleteStep from '../DeleteStep';
 
-import styles from './EditStep.module.scss';
+import styles from './EditStepOverride.module.scss';
 
 const StepTypes = {
   DELETE: 'DELETE',
@@ -74,21 +77,39 @@ const EditStep = React.memo(({ defaultData, onUpdate, onDelete, onClose }) => {
       <Popup.Content>
         <Form onSubmit={handleSubmit}>
           <div className={styles.text}>{t('common.title')}</div>
-          <Input
+          {/* <Input
             fluid
             ref={nameField}
             name="name"
             value={data.name}
             className={styles.field}
             onChange={handleFieldChange}
+          /> */}
+          <InputOverride
+            ref={nameField}
+            name="name"
+            value={data.name}
+            className={styles.field}
+            onChange={handleFieldChange}
           />
-          <Button positive content={t('action.save')} />
+          {/* <Button positive content={t('action.save')} /> */}
+          <ButtonOverride type="submit" priority="primary">
+            {t('action.save')}
+          </ButtonOverride>
         </Form>
-        <Button
+        {/* <Button
           content={t('action.delete')}
           className={styles.deleteButton}
           onClick={handleDeleteClick}
-        />
+        /> */}
+        <ButtonOverride
+          type="button"
+          priority="secondary"
+          onClick={handleDeleteClick}
+          className={styles.deleteButton}
+        >
+          {t('action.delete')}
+        </ButtonOverride>
       </Popup.Content>
     </>
   );

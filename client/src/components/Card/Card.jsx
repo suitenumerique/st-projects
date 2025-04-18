@@ -16,7 +16,7 @@ import Label from '../Label';
 import DueDate from '../DueDate';
 import Stopwatch from '../Stopwatch';
 
-import styles from './Card.module.scss';
+import styles from './CardOverride.module.scss';
 
 const Card = React.memo(
   ({

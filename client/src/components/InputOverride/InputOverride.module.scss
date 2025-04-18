@@ -1,0 +1,17 @@
+@import '../../styles.variables.scss';
+
+:global(#app) {
+  .inputOverride {
+    border: 1px solid $border-grey;
+    border-radius: 0.25rem;
+    padding: 0.5rem 1rem;
+    outline: none;
+    width: 100%;
+    &:focus {
+      border-color: $main-blue;
+    }
+    ::placeholder {
+      color: $border-grey;
+    }
+  }
+}

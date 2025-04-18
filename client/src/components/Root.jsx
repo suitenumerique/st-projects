@@ -15,6 +15,7 @@ import 'easymde/dist/easymde.min.css';
 import '../lib/custom-ui/styles.css';
 import '../assets/css/font-awesome.css';
 import '../styles.module.scss';
+import '../styles.global_override.scss';
 
 function Root({ store, history }) {
   return (
