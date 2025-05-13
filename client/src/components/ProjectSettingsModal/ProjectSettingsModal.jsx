@@ -40,12 +40,12 @@ const ProjectSettingsModal = React.memo(
     }, [onUpdate]);
 
     const panes = [
-      {
-        menuItem: t('common.general', {
-          context: 'title',
-        }),
-        render: () => <GeneralPane name={name} onUpdate={onUpdate} onDelete={onDelete} />,
-      },
+      // {
+      //   menuItem: t('common.general', {
+      //     context: 'title',
+      //   }),
+      //   render: () => <GeneralPane name={name} onUpdate={onUpdate} onDelete={onDelete} />,
+      // },
       {
         menuItem: t('common.managers', {
           context: 'title',
@@ -59,21 +59,21 @@ const ProjectSettingsModal = React.memo(
           />
         ),
       },
-      {
-        menuItem: t('common.background', {
-          context: 'title',
-        }),
-        render: () => (
-          <BackgroundPane
-            item={background}
-            imageCoverUrl={backgroundImage && backgroundImage.coverUrl}
-            isImageUpdating={isBackgroundImageUpdating}
-            onUpdate={handleBackgroundUpdate}
-            onImageUpdate={onBackgroundImageUpdate}
-            onImageDelete={handleBackgroundImageDelete}
-          />
-        ),
-      },
+      // {
+      //   menuItem: t('common.background', {
+      //     context: 'title',
+      //   }),
+      //   render: () => (
+      //     <BackgroundPane
+      //       item={background}
+      //       imageCoverUrl={backgroundImage && backgroundImage.coverUrl}
+      //       isImageUpdating={isBackgroundImageUpdating}
+      //       onUpdate={handleBackgroundUpdate}
+      //       onImageUpdate={onBackgroundImageUpdate}
+      //       onImageDelete={handleBackgroundImageDelete}
+      //     />
+      //   ),
+      // },
     ];
 
     return (

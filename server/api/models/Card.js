@@ -36,6 +36,11 @@ module.exports = {
     stopwatch: {
       type: 'json',
     },
+    isCompleted: {
+      type: 'boolean',
+      columnName: 'is_completed',
+      defaultsTo: false,
+    },
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗

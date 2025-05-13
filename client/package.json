@@ -64,6 +64,7 @@
   "dependencies": {
     "@codegouvfr/react-dsfr": "^1.22.4",
     "@gouvfr-lasuite/ui-kit": "^0.1.3",
+    "@gouvfr/dsfr": "^1.13.1",
     "@juggle/resize-observer": "^3.4.0",
     "classnames": "^2.5.1",
     "date-fns": "^2.30.0",
@@ -104,7 +105,7 @@
     "remark-gfm": "^3.0.1",
     "reselect": "^4.1.8",
     "sails.io.js": "^1.2.1",
-    "sass": "^1.86.0",
+    "sass": "^1.87.0",
     "semantic-ui-react": "^2.1.5",
     "socket.io-client": "^2.5.0",
     "validator": "^13.12.0",

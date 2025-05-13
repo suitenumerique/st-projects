@@ -698,7 +698,7 @@ p:last-child {
         Links
 --------------------*/
 
-a {
+/* a {
   color: #4183c4;
   text-decoration: none;
 }
@@ -706,7 +706,7 @@ a {
 a:hover {
   color: #1e70bf;
   text-decoration: none;
-}
+} */
 
 /*******************************
         Scrollbars
@@ -24298,6 +24298,7 @@ Floated Menu / Item
   display: -ms-flexbox;
   display: flex;
   margin-left: auto !important;
+  align-items: center;
 }
 
 /* Swapped Borders */
@@ -36361,7 +36362,8 @@ a.ui.nag {
 /* Blue */
 
 .ui.blue.progress .bar {
-  background-color: #2185d0;
+  /* background-color: #2185d0; */
+  background-color: #000091;
 }
 
 .ui.blue.inverted.progress .bar {

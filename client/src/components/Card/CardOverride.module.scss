@@ -1,3 +1,5 @@
+@import '../../styles.variables.scss';
+
 :global(#app) {
   .actionsButton {
     background: none;
@@ -80,6 +82,10 @@
       background: #f5f6f7;
       border-bottom-color: rgba(9, 30, 66, 0.25);
 
+      .cardCheckbox {
+        opacity: 1;
+      }
+
       .target {
         opacity: 1;
       }
@@ -88,6 +94,7 @@
 
   .content {
     display: block;
+    background-image: none;
 
     &:after {
       content: "";
@@ -122,6 +129,11 @@
     word-wrap: break-word;
   }
 
+  .nameCompleted {
+    text-decoration: line-through;
+    color: $middle-grey;
+  }
+
   .notification {
     background: #eb5a46;
     color: #fff;
@@ -141,5 +153,16 @@
     cursor: auto;
     display: block;
     margin-bottom: 8px;
+  }
+
+  .cardCheckbox {
+    position: absolute;
+    right: 58px;
+    top: 6px;
+    opacity: 0;
+    input {
+      opacity: 1 !important;
+      height: 1.2rem;
+    }
   }
 }

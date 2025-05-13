@@ -13,13 +13,13 @@ import styles from './StaticOverride.module.scss';
 function Static({ projectId, cardId, board }) {
   const [t] = useTranslation();
 
-  if (projectId === undefined) {
-    return (
-      <div className={styles.wrapper}>
-        <ProjectsContainer />
-      </div>
-    );
-  }
+  // if (projectId === undefined) {
+  //   return (
+  //     <div className={styles.wrapper}>
+  //       <ProjectsContainer />
+  //     </div>
+  //   );
+  // }
 
   if (cardId === null) {
     return (

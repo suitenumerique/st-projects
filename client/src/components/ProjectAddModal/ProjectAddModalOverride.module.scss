@@ -1,0 +1,20 @@
+@import '../../styles.variables.scss';
+:global(#app) {
+  .field {
+    margin-bottom: 20px;
+  }
+
+  .modalContent {
+    background-color: #ffffff;
+    color: $dark-grey;
+
+    > div {
+      color: $dark-grey;
+    }
+  }
+
+  .buttonContainer {
+    display: flex;
+    justify-content: flex-end;
+  }
+}

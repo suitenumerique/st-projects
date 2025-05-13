@@ -3,7 +3,9 @@ import pickBy from 'lodash/pickBy';
 import React, { useCallback, useMemo, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button, Form, Input } from 'semantic-ui-react';
+import { Form, Input } from 'semantic-ui-react';
+
+import ButtonOverride from '../../ButtonOverride';
 
 import { useForm } from '../../../hooks';
 
@@ -47,7 +49,10 @@ const InformationEdit = React.memo(({ defaultData, onUpdate }) => {
         className={styles.field}
         onChange={handleFieldChange}
       />
-      <Button positive disabled={dequal(cleanData, defaultData)} content={t('action.save')} />
+      {/* <Button positive disabled={dequal(cleanData, defaultData)} content={t('action.save')} /> */}
+      <ButtonOverride type="submit" priority="primary" disabled={dequal(cleanData, defaultData)}>
+        {t('action.save')}
+      </ButtonOverride>
     </Form>
   );
 });

@@ -10,7 +10,10 @@ import { Input } from '../../lib/custom-ui';
 import { useForm } from '../../hooks';
 import { isUsername } from '../../utils/validator';
 
-import styles from './Login.module.scss';
+import styles from './LoginOverride.module.scss';
+
+import logo from '../../assets/images/logo.svg';
+import illustration from '../../assets/images/illustration.jpg';
 
 const createMessage = (error) => {
   if (!error) {
@@ -78,172 +81,214 @@ const Login = React.memo(
     onAuthenticateUsingOidc,
     onMessageDismiss,
   }) => {
-    const [t] = useTranslation();
-    const wasSubmitting = usePrevious(isSubmitting);
-
-    const [data, handleFieldChange, setData] = useForm(() => ({
-      emailOrUsername: '',
-      password: '',
-      ...defaultData,
-    }));
-
-    const message = useMemo(() => createMessage(error), [error]);
-    const [focusPasswordFieldState, focusPasswordField] = useToggle();
-
-    const emailOrUsernameField = useRef(null);
-    const passwordField = useRef(null);
-
-    const handleSubmit = useCallback(() => {
-      const cleanData = {
-        ...data,
-        emailOrUsername: data.emailOrUsername.trim(),
-      };
-
-      if (!isEmail(cleanData.emailOrUsername) && !isUsername(cleanData.emailOrUsername)) {
-        emailOrUsernameField.current.select();
-        return;
-      }
-
-      if (!cleanData.password) {
-        passwordField.current.focus();
-        return;
-      }
-
-      onAuthenticate(cleanData);
-    }, [onAuthenticate, data]);
-
-    useEffect(() => {
-      if (!isOidcEnforced) {
-        emailOrUsernameField.current.focus();
-      }
-    }, [isOidcEnforced]);
-
-    useEffect(() => {
-      if (wasSubmitting && !isSubmitting && error) {
-        switch (error.message) {
-          case 'Invalid credentials':
-          case 'Invalid email or username':
-            emailOrUsernameField.current.select();
-
-            break;
-          case 'Invalid password':
-            setData((prevData) => ({
-              ...prevData,
-              password: '',
-            }));
-            focusPasswordField();
-
-            break;
-          default:
-        }
-      }
-    }, [isSubmitting, wasSubmitting, error, setData, focusPasswordField]);
-
-    useDidUpdate(() => {
-      passwordField.current.focus();
-    }, [focusPasswordFieldState]);
-
     return (
       <div className={classNames(styles.wrapper, styles.fullHeight)}>
-        <Grid verticalAlign="middle" className={styles.fullHeightPaddingFix}>
-          <Grid.Column widescreen={4} largeScreen={5} computer={6} tablet={16} mobile={16}>
-            <Grid verticalAlign="middle" className={styles.fullHeightPaddingFix}>
-              <Grid.Column>
-                <div className={styles.loginWrapper}>
-                  <Header
-                    as="h1"
-                    textAlign="center"
-                    content={t('common.logInToPlanka')}
-                    className={styles.formTitle}
-                  />
-                  <div>
-                    {message && (
-                      <Message
-                        // eslint-disable-next-line react/jsx-props-no-spreading
-                        {...{
-                          [message.type]: true,
-                        }}
-                        visible
-                        content={t(message.content)}
-                        onDismiss={onMessageDismiss}
-                      />
-                    )}
-                    {!isOidcEnforced && (
-                      <Form size="large" onSubmit={handleSubmit}>
-                        <div className={styles.inputWrapper}>
-                          <div className={styles.inputLabel}>{t('common.emailOrUsername')}</div>
-                          <Input
-                            fluid
-                            ref={emailOrUsernameField}
-                            name="emailOrUsername"
-                            value={data.emailOrUsername}
-                            readOnly={isSubmitting}
-                            className={styles.input}
-                            onChange={handleFieldChange}
-                          />
+        <header role="banner" className="fr-header">
+          <div className="fr-header__body">
+            <div className="fr-container">
+              <div className="fr-header__body-row">
+                <div className="fr-header__brand fr-enlarge-link">
+                  <div className="fr-header__brand-top">
+                    <div className="fr-header__logo">
+                      <p className="fr-logo">GOUVERNEMENT</p>
+                    </div>
+                  </div>
+                  <div className="fr-header__service">
+                    <a href="/" className={styles.logo}>
+                      <div>
+                        <img src={logo} alt="Logo" />
+
+                        <div>
+                          <h2>Projets</h2>
+                          <span>BETA</span>
                         </div>
-                        <div className={styles.inputWrapper}>
-                          <div className={styles.inputLabel}>{t('common.password')}</div>
-                          <Input.Password
-                            fluid
-                            ref={passwordField}
-                            name="password"
-                            value={data.password}
-                            readOnly={isSubmitting}
-                            className={styles.input}
-                            onChange={handleFieldChange}
-                          />
-                        </div>
-                        <Form.Button
-                          primary
-                          size="large"
-                          icon="right arrow"
-                          labelPosition="right"
-                          content={t('action.logIn')}
-                          floated="right"
-                          loading={isSubmitting}
-                          disabled={isSubmitting || isSubmittingUsingOidc}
-                        />
-                      </Form>
-                    )}
-                    {withOidc && (
-                      <Button
-                        type="button"
-                        fluid={isOidcEnforced}
-                        primary={isOidcEnforced}
-                        size={isOidcEnforced ? 'large' : undefined}
-                        icon={isOidcEnforced ? 'right arrow' : undefined}
-                        labelPosition={isOidcEnforced ? 'right' : undefined}
-                        content={t('action.logInWithSSO')}
-                        loading={isSubmittingUsingOidc}
-                        disabled={isSubmitting || isSubmittingUsingOidc}
-                        onClick={onAuthenticateUsingOidc}
-                      />
-                    )}
+                      </div>
+                    </a>
                   </div>
                 </div>
-              </Grid.Column>
-            </Grid>
-          </Grid.Column>
-          <Grid.Column
-            widescreen={12}
-            largeScreen={11}
-            computer={10}
-            only="computer"
-            className={classNames(styles.cover, styles.fullHeight)}
-          >
-            <div className={styles.descriptionWrapperOverlay} />
-            <div className={styles.descriptionWrapper}>
-              <Header inverted as="h1" content="Planka" className={styles.descriptionTitle} />
-              <Header
-                inverted
-                as="h2"
-                content={t('common.projectManagement')}
-                className={styles.descriptionSubtitle}
-              />
+              </div>
             </div>
-          </Grid.Column>
-        </Grid>
+          </div>
+        </header>
+
+        <div className={styles.banner}>
+          <div className="fr-container-fluid fr-container">
+            <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--middle fr-grid-row--center">
+              <div className="fr-col-12 fr-col-offset-lg-1 fr-col-lg-4">
+                <div className={styles.bannerContent}>
+                  <img src={logo} alt="Logo" />
+                  <h1>
+                    La gestion de
+                    <br />
+                    projet partagée
+                  </h1>
+                  <p className={styles.bannerContentDescription}>
+                    Visualisez et organisez toutes vos tâches
+                    <br />
+                    dans un espace collaboratif.
+                  </p>
+                  <div className="fr-connect-group">
+                    <button
+                      onClick={onAuthenticateUsingOidc}
+                      type="button"
+                      className={classNames(styles.proConnect, 'fr-connect')}
+                    >
+                      <span className="fr-connect__login">S’identifier avec</span>
+                      <span className="fr-connect__brand">ProConnect</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div className="fr-col-12 fr-col-lg-4">
+                <div className={styles.bannerIllustration}>
+                  <img src={illustration} alt="Illustration" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer className="fr-footer" role="contentinfo" id="footer-7475">
+          <div className="fr-container">
+            <div className="fr-footer__body">
+              <div className="fr-footer__brand fr-enlarge-link">
+                <p className="fr-logo">
+                  République
+                  <br />
+                  Française
+                </p>
+                <a
+                  className="fr-footer__brand-link"
+                  href="/"
+                  title="Agence Nationale de la Cohésion des Territoires"
+                >
+                  <img
+                    className="fr-footer__logo"
+                    style={{ maxWidth: '13rem' }}
+                    src="logo-anct.svg"
+                    alt="Agence Nationale de la Cohésion des Territoires"
+                  />
+                </a>
+              </div>
+              <div className="fr-footer__content">
+                <p className="fr-footer__content-desc">
+                  L&apos;Incubateur des Territoires est une mission de l&apos;
+                  <a
+                    href="https://anct.gouv.fr/"
+                    target="_blank"
+                    title="Visiter le site de l'ANCT"
+                    rel="noreferrer"
+                  >
+                    Agence Nationale de la Cohésion des Territoires
+                  </a>
+                  . Le code source de ce site web est disponible en licence libre. Le design de ce
+                  site est conçu avec le{' '}
+                  <a
+                    href="https://www.systeme-de-design.gouv.fr/"
+                    target="_blank"
+                    title="Consulter la documentation du Système de Design de l'État"
+                    rel="noopener noreferrer"
+                  >
+                    système de design de l&apos;État
+                  </a>
+                </p>
+                <ul className="fr-footer__content-list">
+                  <li className="fr-footer__content-item">
+                    <a
+                      target="_blank"
+                      rel="noopener external noreferrer"
+                      title="legifrance.gouv.fr - nouvelle fenêtre"
+                      id="footer__content-link-7364"
+                      className="fr-footer__content-link"
+                      href="https://legifrance.gouv.fr"
+                    >
+                      legifrance.gouv.fr
+                    </a>
+                  </li>
+                  <li className="fr-footer__content-item">
+                    <a
+                      target="_blank"
+                      rel="noopener external noreferrer"
+                      title="info.gouv.fr - nouvelle fenêtre"
+                      id="footer__content-link-7362"
+                      className="fr-footer__content-link"
+                      href="https://info.gouv.fr"
+                    >
+                      gouvernement.fr
+                    </a>
+                  </li>
+                  <li className="fr-footer__content-item">
+                    <a
+                      target="_blank"
+                      rel="noopener external noreferrer"
+                      title="service-public.fr - nouvelle fenêtre"
+                      id="footer__content-link-7363"
+                      className="fr-footer__content-link"
+                      href="https://service-public.fr"
+                    >
+                      service-public.fr
+                    </a>
+                  </li>
+                  <li className="fr-footer__content-item">
+                    <a
+                      target="_blank"
+                      rel="noopener external noreferrer"
+                      title="data.gouv.fr - nouvelle fenêtre"
+                      id="footer__content-link-7365"
+                      className="fr-footer__content-link"
+                      href="https://data.gouv.fr"
+                    >
+                      data.gouv.fr
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div className="fr-footer__bottom">
+              <ul className="fr-footer__bottom-list">
+                <li className="fr-footer__bottom-item">
+                  <a className="fr-footer__bottom-link" href="/plan-du-site">
+                    Plan du site
+                  </a>
+                </li>
+                <li className="fr-footer__bottom-item">
+                  <a className="fr-footer__bottom-link" href="/accessibilite">
+                    Accessibilité : non/partiellement/totalement conforme
+                  </a>
+                </li>
+                <li className="fr-footer__bottom-item">
+                  <a className="fr-footer__bottom-link" href="/mentions-legales">
+                    Mentions légales
+                  </a>
+                </li>
+                <li className="fr-footer__bottom-item">
+                  <a className="fr-footer__bottom-link" href="/donnees-personnelles">
+                    Données personnelles
+                  </a>
+                </li>
+                <li className="fr-footer__bottom-item">
+                  <a className="fr-footer__bottom-link" href="/gestion-des-cookies">
+                    Gestion des cookies
+                  </a>
+                </li>
+              </ul>
+              <div className="fr-footer__bottom-copy">
+                <p>
+                  Sauf mention explicite de propriété intellectuelle détenue par des tiers, les
+                  contenus de ce site sont proposés sous{' '}
+                  <a
+                    href="https://github.com/etalab/licence-ouverte/blob/master/LO.md"
+                    target="_blank"
+                    rel="noopener external noreferrer"
+                    title="Licence etalab - nouvelle fenêtre"
+                  >
+                    licence etalab-2.0
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </footer>
       </div>
     );
   },

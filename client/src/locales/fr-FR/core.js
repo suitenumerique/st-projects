@@ -179,9 +179,9 @@ export default {
     },
 
     action: {
-      addAnotherCard: 'Ajouter une autre carte',
-      addAnotherList: 'Ajouter une autre liste',
-      addAnotherTask: 'Ajouter une autre tâche',
+      addAnotherCard: 'Ajouter une carte',
+      addAnotherList: 'Ajouter une liste',
+      addAnotherTask: 'Ajouter une tâche',
       addCard: 'Ajouter une carte',
       addCard_title: 'Ajouter une carte',
       addComment: 'Ajouter un commentaire',

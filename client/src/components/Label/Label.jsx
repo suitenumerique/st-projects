@@ -6,7 +6,7 @@ import classNames from 'classnames';
 
 import LabelColors from '../../constants/LabelColors';
 
-import styles from './Label.module.scss';
+import styles from './LabelOverride.module.scss';
 import globalStyles from '../../styles.module.scss';
 
 const SIZES = {
@@ -24,10 +24,11 @@ const Label = React.memo(({ name, color, size, isDisabled, onClick }) => {
         !name && styles.wrapperNameless,
         styles[`wrapper${upperFirst(size)}`],
         onClick && styles.wrapperHoverable,
+        globalStyles[`color${upperFirst(camelCase(color))}`],
         globalStyles[`background${upperFirst(camelCase(color))}`],
       )}
     >
-      {name || '\u00A0'}
+      <div className={styles.innerWrapper}>{name || '\u00A0'}</div>
     </span>
   );
 

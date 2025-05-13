@@ -76,6 +76,30 @@ export const selectBoardsForCurrentProject = createSelector(
   },
 );
 
+export const selectBoardsForSpecificProject = createSelector(
+  orm,
+  (state) => selectCurrentUserId(state),
+  (_, projectId) => projectId,
+  ({ Project }, currentUserId, id) => {
+    if (!id) {
+      return id;
+    }
+
+    const projectModel = Project.withId(id);
+
+    if (!projectModel) {
+      return projectModel;
+    }
+
+    return projectModel
+      .getOrderedBoardsModelArrayAvailableForUser(currentUserId)
+      .map((boardModel) => ({
+        ...boardModel.ref,
+        isPersisted: !isLocalId(boardModel.id),
+      }));
+  },
+);
+
 export const selectIsCurrentUserManagerForCurrentProject = createSelector(
   orm,
   (state) => selectPath(state).projectId,
@@ -99,5 +123,6 @@ export default {
   selectCurrentProject,
   selectManagersForCurrentProject,
   selectBoardsForCurrentProject,
+  selectBoardsForSpecificProject,
   selectIsCurrentUserManagerForCurrentProject,
 };

@@ -4,7 +4,7 @@ import { Image, Tab } from 'semantic-ui-react';
 
 import version from '../../version';
 
-import logo from '../../assets/images/logo.png';
+import logo from '../../assets/images/logo.svg';
 
 import styles from './AboutPane.module.scss';
 

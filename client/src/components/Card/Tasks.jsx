@@ -6,7 +6,7 @@ import { useToggle } from '../../lib/hooks';
 
 import Linkify from '../Linkify';
 
-import styles from './Tasks.module.scss';
+import styles from './TasksOverride.module.scss';
 
 const Tasks = React.memo(({ items }) => {
   const [isOpened, toggleOpened] = useToggle();

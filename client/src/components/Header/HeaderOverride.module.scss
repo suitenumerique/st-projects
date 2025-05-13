@@ -51,7 +51,7 @@
           height: 16px;
           padding: 4px 6px;
           border-radius: 12px;
-          width: 40px;
+          width: 43px;
           line-height: 9px;
         }
       }
@@ -97,6 +97,9 @@
     cursor: pointer;
     user-select: auto;
     color: $main-blue;
+    padding: 0 1rem;
+    height: 40px;
+    border-radius: 4px;
 
     &:before {
       background: none;
@@ -104,7 +107,7 @@
 
     &:active,
     &:hover {
-      background: $background-grey;
+      background: $background-grey-hover;
       color: $main-blue;
 
       .target {
@@ -129,6 +132,17 @@
     margin: 0;
     width: 100%;
     align-items: center;
+    justify-content: flex-end;
+  }
+
+  .logout {
+    color: $main-blue;
+    font-weight: 550;
+    font-family: Marianne;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .notification {

@@ -51,11 +51,12 @@ const getCard = (id, headers) =>
     },
   }));
 
-const updateCard = (id, data, headers) =>
-  socket.patch(`/cards/${id}`, transformCardData(data), headers).then((body) => ({
+const updateCard = (id, data, headers) => {
+  return socket.patch(`/cards/${id}`, transformCardData(data), headers).then((body) => ({
     ...body,
     item: transformCard(body.item),
   }));
+};
 
 const duplicateCard = (id, data, headers) =>
   socket.post(`/cards/${id}/duplicate`, data, headers).then((body) => ({

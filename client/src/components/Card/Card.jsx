@@ -27,6 +27,7 @@ const Card = React.memo(
     dueDate,
     isDueDateCompleted,
     stopwatch,
+    isCompleted,
     coverUrl,
     boardId,
     listId,
@@ -75,6 +76,17 @@ const Card = React.memo(
       [stopwatch, onUpdate],
     );
 
+    const handleCardCheckToggle = useCallback(
+      (event) => {
+        event.preventDefault();
+
+        onUpdate({
+          isCompleted: !isCompleted,
+        });
+      },
+      [isCompleted, onUpdate],
+    );
+
     const handleNameUpdate = useCallback(
       (newName) => {
         onUpdate({
@@ -106,7 +118,10 @@ const Card = React.memo(
               ))}
             </span>
           )}
-          <div className={styles.name}>{name}</div>
+          <div className={styles.name}>
+            {isCompleted && <Icon name="check" />}
+            <span className={isCompleted && styles.nameCompleted}>{name}</span>
+          </div>
           {tasks.length > 0 && <Tasks items={tasks} />}
           {(description ||
             dueDate ||
@@ -191,6 +206,17 @@ const Card = React.memo(
                       {contentNode}
                     </Link>
                     {canEdit && (
+                      <div className={classNames(styles.cardCheckbox, 'fr-checkbox-group')}>
+                        <input
+                          name="card-checkbox"
+                          id="card-checkbox"
+                          type="checkbox"
+                          checked={isCompleted}
+                          onChange={handleCardCheckToggle}
+                        />
+                      </div>
+                    )}
+                    {canEdit && (
                       <ActionsPopup
                         card={{
                           dueDate,
@@ -246,6 +272,7 @@ Card.propTypes = {
   dueDate: PropTypes.instanceOf(Date),
   isDueDateCompleted: PropTypes.bool,
   stopwatch: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  isCompleted: PropTypes.bool.isRequired,
   coverUrl: PropTypes.string,
   boardId: PropTypes.string.isRequired,
   listId: PropTypes.string.isRequired,

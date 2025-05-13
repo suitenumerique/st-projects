@@ -7,7 +7,9 @@ import { usePopup } from '../../../lib/popup';
 import InformationEdit from './InformationEdit';
 import DeleteStep from '../../DeleteStep';
 
-import styles from './GeneralPane.module.scss';
+import ButtonOverride from '../../ButtonOverride';
+
+import styles from './GeneralPaneOverride.module.scss';
 
 const GeneralPane = React.memo(({ name, onUpdate, onDelete }) => {
   const [t] = useTranslation();
@@ -36,11 +38,16 @@ const GeneralPane = React.memo(({ name, onUpdate, onDelete }) => {
           buttonContent="action.deleteProject"
           onConfirm={onDelete}
         >
-          <Button className={styles.actionButton}>
+          <ButtonOverride priority="secondary">
             {t('action.deleteProject', {
               context: 'title',
             })}
-          </Button>
+          </ButtonOverride>
+          {/* * <Button className={styles.actionButton}>
+            {t('action.deleteProject', {
+              context: 'title',
+            })}
+          </Button> */}
         </DeletePopup>
       </div>
     </Tab.Pane>

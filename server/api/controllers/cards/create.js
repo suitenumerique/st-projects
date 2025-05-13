@@ -66,6 +66,10 @@ module.exports = {
       type: 'json',
       custom: stopwatchValidator,
     },
+    isCompleted: {
+      type: 'boolean',
+      allowNull: false,
+    },
   },
 
   exits: {
@@ -107,6 +111,7 @@ module.exports = {
       'dueDate',
       'isDueDateCompleted',
       'stopwatch',
+      'isCompleted',
     ]);
 
     const card = await sails.helpers.cards.createOne

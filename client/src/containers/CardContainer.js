@@ -30,6 +30,7 @@ const makeMapStateToProps = () => {
       boardId,
       listId,
       isPersisted,
+      isCompleted,
     } = selectCardById(state, id);
 
     const users = selectUsersByCardId(state, id);
@@ -49,6 +50,7 @@ const makeMapStateToProps = () => {
       dueDate,
       isDueDateCompleted,
       stopwatch,
+      isCompleted,
       coverUrl,
       boardId,
       listId,

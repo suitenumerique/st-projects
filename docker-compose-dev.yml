@@ -39,7 +39,7 @@ services:
       # - OIDC_CLIENT_SECRET=
       # - OIDC_ID_TOKEN_SIGNED_RESPONSE_ALG=
       # - OIDC_USERINFO_SIGNED_RESPONSE_ALG=
-      # - OIDC_SCOPES=openid email profile
+      # - OIDC_SCOPES=openid email
       # - OIDC_RESPONSE_MODE=fragment
       # - OIDC_USE_DEFAULT_RESPONSE_MODE=true
       # - OIDC_ADMIN_ROLES=admin
@@ -80,7 +80,7 @@ services:
       # - TELEGRAM_CHAT_ID=
       # - TELEGRAM_THREAD_ID=
     working_dir: /app
-    command: ["sh", "-c", "npm run start"]
+    command: ['sh', '-c', 'npm run start']
     depends_on:
       postgres:
         condition: service_healthy
@@ -107,13 +107,12 @@ services:
       dockerfile: ../config/development/Dockerfile.server
     environment:
       - DATABASE_URL=postgresql://user:password@postgres:5432/planka_db
-
-      # - DEFAULT_ADMIN_EMAIL=demo@demo.demo # Do not remove if you want to prevent this user from being edited/deleted
-      # - DEFAULT_ADMIN_PASSWORD=demo
-      # - DEFAULT_ADMIN_NAME=Demo Demo
-      # - DEFAULT_ADMIN_USERNAME=demo
+      - DEFAULT_ADMIN_EMAIL=julien.demoutiez.ext@anct.gouv.fr
+      - DEFAULT_ADMIN_PASSWORD=password
+      - DEFAULT_ADMIN_NAME=Julien Demoutiez
+      - DEFAULT_ADMIN_USERNAME=judemout
     working_dir: /app
-    command: ["sh", "-c", "npm run db:init"]
+    command: ['sh', '-c', 'npm run db:init']
     volumes:
       - ./server:/app
       - /app/node_modules
@@ -130,10 +129,10 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
     ports:
-      - "5432:5432"
+      - '5433:5432'
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U user -d planka_db"]
+      test: ['CMD-SHELL', 'pg_isready -U user -d planka_db']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -141,7 +140,7 @@ services:
   proxy:
     image: nginx:alpine
     ports:
-      - "3000:80"
+      - '3000:80'
     volumes:
       - ./config/development/nginx.conf:/etc/nginx/nginx.conf
     depends_on:

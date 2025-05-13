@@ -34,10 +34,14 @@
     height: 100%;
     margin-top: 50px;
     background: #fff;
+    width: calc(100% - 300px);
+    margin-left: 300px;
+    z-index: 10;
+    overflow: overlay;
   }
 
   .wrapperBoard {
-    margin-top: 198px;
+    margin-top: 128px;
   }
 
   .wrapperFlex {
