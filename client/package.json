@@ -9,6 +9,9 @@
     "test": "react-app-rewired test",
     "test:acceptance": "cucumber-js --require tests/acceptance/cucumber.conf.js --require tests/acceptance/stepDefinitions/**/*.js --format @cucumber/pretty-formatter"
   },
+  "engines": {
+    "node": "22"
+  },
   "browserslist": {
     "production": [
       ">0.2%",
