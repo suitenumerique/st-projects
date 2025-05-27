@@ -33,7 +33,7 @@ const BoardActions = React.memo(
     return (
       <div className={styles.wrapper}>
         <div className={styles.actions}>
-          <div className={styles.action}>
+          {/* <div className={styles.action}>
             <Memberships
               items={memberships}
               allUsers={allUsers}
@@ -43,7 +43,7 @@ const BoardActions = React.memo(
               onUpdate={onMembershipUpdate}
               onDelete={onMembershipDelete}
             />
-          </div>
+          </div> */}
           <div className={styles.action}>
             <Filters
               users={filterUsers}

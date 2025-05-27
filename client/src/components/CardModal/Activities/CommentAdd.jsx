@@ -5,6 +5,8 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { Button, Form, TextArea } from 'semantic-ui-react';
 import { useDidUpdate, useToggle } from '../../../lib/hooks';
 
+import ButtonOverride from '../../ButtonOverride';
+
 import { useClosableForm, useForm } from '../../../hooks';
 
 import styles from './CommentAdd.module.scss';
@@ -83,12 +85,20 @@ const CommentAdd = React.memo(({ onCreate }) => {
       />
       {isOpened && (
         <div className={styles.controls}>
-          <Button
+          <ButtonOverride
+            type="submit"
+            priority="primary"
+            onMouseOver={handleControlMouseOver}
+            onMouseOut={handleControlMouseOut}
+          >
+            {t('action.addComment')}
+          </ButtonOverride>
+          {/* <Button
             positive
             content={t('action.addComment')}
             onMouseOver={handleControlMouseOver}
             onMouseOut={handleControlMouseOut}
-          />
+          /> */}
         </div>
       )}
     </Form>

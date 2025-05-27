@@ -10,11 +10,12 @@ const mapStateToProps = (state) => {
   const { cardId } = selectors.selectPath(state);
   const currentUserMembership = selectors.selectCurrentUserMembershipForCurrentBoard(state);
   const listIds = selectors.selectListIdsForCurrentBoard(state);
-
+  const currentBoard = selectors.selectCurrentBoard(state);
   const isCurrentUserEditor =
     !!currentUserMembership && currentUserMembership.role === BoardMembershipRoles.EDITOR;
 
   return {
+    currentBoard,
     listIds,
     isCardModalOpened: !!cardId,
     canEdit: isCurrentUserEditor,

@@ -93,6 +93,13 @@ export default class extends BaseModel {
 
     const { filterText } = this.board;
 
+    cardModels.sort((a, b) => {
+      if (a.isCompleted === b.isCompleted) {
+        return a.position - b.position;
+      }
+      return a.isCompleted ? 1 : -1;
+    });
+
     if (filterText !== '') {
       let re = null;
       const posSpace = filterText.indexOf(' ');

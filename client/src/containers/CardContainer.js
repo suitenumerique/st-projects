@@ -13,7 +13,7 @@ const makeMapStateToProps = () => {
   const selectTasksByCardId = selectors.makeSelectTasksByCardId();
   const selectNotificationsTotalByCardId = selectors.makeSelectNotificationsTotalByCardId();
 
-  return (state, { id, index }) => {
+  return (state, { id, index, isFromTemplate }) => {
     const { projectId } = selectors.selectPath(state);
     const allProjectsToLists = selectors.selectProjectsToListsForCurrentUser(state);
     const allBoardMemberships = selectors.selectMembershipsForCurrentBoard(state);
@@ -65,6 +65,7 @@ const makeMapStateToProps = () => {
       allBoardMemberships,
       allLabels,
       canEdit: isCurrentUserEditor,
+      isFromTemplate,
     };
   };
 };

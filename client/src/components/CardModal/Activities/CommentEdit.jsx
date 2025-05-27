@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 import TextareaAutosize from 'react-textarea-autosize';
 import { Button, Form, TextArea } from 'semantic-ui-react';
 
+import ButtonOverride from '../../ButtonOverride';
+
 import { useForm } from '../../../hooks';
 import { focusEnd } from '../../../utils/element-helpers';
 
@@ -99,7 +101,7 @@ const CommentEdit = React.forwardRef(({ defaultData, onUpdate, text, actions }, 
         onBlur={handleFieldBlur}
       />
       <div className={styles.controls}>
-        <Button positive content={t('action.save')} />
+        <ButtonOverride>{t('action.save')}</ButtonOverride>
       </div>
     </Form>
   );

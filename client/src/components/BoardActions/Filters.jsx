@@ -93,7 +93,7 @@ const Filters = React.memo(
     return (
       <>
         <span className={styles.filter}>
-          <BoardMembershipsPopup
+          {/* <BoardMembershipsPopup
             items={allBoardMemberships}
             currentUserIds={users.map((user) => user.id)}
             title="common.filterByMembers"
@@ -104,7 +104,7 @@ const Filters = React.memo(
               <span className={styles.filterTitle}>{`${t('common.members')}:`}</span>
               {users.length === 0 && <span className={styles.filterLabel}>{t('common.all')}</span>}
             </button>
-          </BoardMembershipsPopup>
+          </BoardMembershipsPopup> */}
           {users.map((user) => (
             <span key={user.id} className={styles.filterItem}>
               <User

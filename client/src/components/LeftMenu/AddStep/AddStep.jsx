@@ -11,7 +11,7 @@ import ButtonOverride from '../../ButtonOverride';
 import { useForm, useSteps } from '../../../hooks';
 import ImportStep from './ImportStep';
 
-import styles from './AddStep.module.scss';
+import styles from './AddStepOverride.module.scss';
 
 const StepTypes = {
   IMPORT: 'IMPORT',
@@ -115,6 +115,14 @@ const AddStep = React.memo(({ onCreate, onClose }) => {
               {data.import ? data.import.file.name : t('action.import')}
             </Button> */}
           </div>
+          {/* <div className={styles.templatesWrapper}>
+            <p>Ou choisissez un tableau pré-défini</p>
+            <div className={styles.templatesList}>
+              <div className={styles.templateItem}>
+                <p>Mairie +</p>
+              </div>
+            </div>
+          </div> */}
         </Form>
       </Popup.Content>
     </>

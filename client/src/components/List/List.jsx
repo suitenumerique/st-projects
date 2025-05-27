@@ -31,6 +31,7 @@ const List = React.memo(
     onDelete,
     onSort,
     onCardCreate,
+    isFromTemplate,
   }) => {
     const [t] = useTranslation();
     const [isAddCardOpened, setIsAddCardOpened] = useState(false);
@@ -39,10 +40,10 @@ const List = React.memo(
     const cardsWrapper = useRef(null);
 
     const handleHeaderClick = useCallback(() => {
-      if (isPersisted && canEdit) {
+      if (isPersisted && canEdit && !isFromTemplate) {
         nameEdit.current.open();
       }
-    }, [isPersisted, canEdit]);
+    }, [isPersisted, canEdit, isFromTemplate]);
 
     const handleNameUpdate = useCallback(
       (newName) => {
@@ -97,10 +98,15 @@ const List = React.memo(
           <div {...droppableProps} ref={innerRef}>
             <div className={styles.cards}>
               {cardIds.map((cardId, cardIndex) => (
-                <CardContainer key={cardId} id={cardId} index={cardIndex} />
+                <CardContainer
+                  key={cardId}
+                  id={cardId}
+                  index={cardIndex}
+                  isFromTemplate={isFromTemplate}
+                />
               ))}
               {placeholder}
-              {canEdit && (
+              {canEdit && !isFromTemplate && (
                 <CardAdd
                   isOpened={isAddCardOpened}
                   onCreate={onCardCreate}
@@ -114,7 +120,11 @@ const List = React.memo(
     );
 
     return (
-      <Draggable draggableId={`list:${id}`} index={index} isDragDisabled={!isPersisted || !canEdit}>
+      <Draggable
+        draggableId={`list:${id}`}
+        index={index}
+        isDragDisabled={!isPersisted || !canEdit || isFromTemplate}
+      >
         {({ innerRef, draggableProps, dragHandleProps }) => (
           <div
             {...draggableProps} // eslint-disable-line react/jsx-props-no-spreading
@@ -127,7 +137,10 @@ const List = React.memo(
                                            jsx-a11y/no-static-element-interactions */}
               <div
                 {...dragHandleProps} // eslint-disable-line react/jsx-props-no-spreading
-                className={classNames(styles.header, canEdit && styles.headerEditable)}
+                className={classNames(
+                  styles.header,
+                  canEdit && !isFromTemplate && styles.headerEditable,
+                )}
                 onClick={handleHeaderClick}
               >
                 <NameEdit ref={nameEdit} defaultValue={name} onUpdate={handleNameUpdate}>
@@ -144,7 +157,7 @@ const List = React.memo(
                     {name}
                   </div>
                 </NameEdit>
-                {isPersisted && canEdit && (
+                {isPersisted && canEdit && !isFromTemplate && (
                   <ActionsPopup
                     onNameEdit={handleNameEdit}
                     onCardAdd={handleCardAdd}
@@ -162,7 +175,7 @@ const List = React.memo(
               <div ref={cardsWrapper} className={styles.cardsInnerWrapper}>
                 <div className={styles.cardsOuterWrapper}>{cardsNode}</div>
               </div>
-              {!isAddCardOpened && canEdit && (
+              {!isAddCardOpened && canEdit && !isFromTemplate && (
                 <button
                   type="button"
                   disabled={!isPersisted}
@@ -195,6 +208,7 @@ List.propTypes = {
   onSort: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   onCardCreate: PropTypes.func.isRequired,
+  isFromTemplate: PropTypes.bool.isRequired,
 };
 
 List.defaultProps = {

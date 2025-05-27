@@ -76,18 +76,26 @@ const LeftMenu = React.memo(
       [onBoardDelete],
     );
 
+    useEffect(() => {
+      if (!currentProject && projectsAndBoards.length > 0) {
+        window.location.href = `/projects/${projectsAndBoards[0].id}`;
+      }
+    }, [currentProject, projectsAndBoards]);
+
     return (
       <>
         <div className={styles.wrapper}>
-          {/* <div className={styles.topBar}>
-            <ButtonOverride onClick={onProjectAdd} priority="primary">
-              Nouveau projet
-            </ButtonOverride>
-          </div> */}
-          <div className={styles.projets}>
+          {/* {projectsAndBoards.length === 0 ? (
+            <div className={styles.topBar}>
+              <ButtonOverride onClick={onProjectAdd} priority="primary">
+                Nouveau projet
+              </ButtonOverride>
+            </div>
+          ) : null} */}
+          <div className={styles.space}>
+            <p>Mes tableaux</p>
             {currentProject && (
               <div className={styles.currentProject}>
-                <h6 className={styles.currentProjectName}>{currentProject?.name}</h6>
                 <div className={styles.boards}>
                   {boards.map((board) => (
                     <div className={styles.boardWrapper} key={board.id}>
@@ -99,6 +107,18 @@ const LeftMenu = React.memo(
                         )}
                         key={board.id}
                       >
+                        {board.name === 'Mairie +' ? (
+                          <span
+                            style={{ backgroundColor: '#000091' }}
+                            className={classNames(styles.boardIcon, 'fr-icon-calendar-event-fill')}
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <span
+                            className={classNames(styles.boardIcon, 'fr-icon-bank-line')}
+                            aria-hidden="true"
+                          />
+                        )}
                         {board.name}
                       </a>
                       <div className={styles.moreIconWrapper}>
@@ -114,16 +134,16 @@ const LeftMenu = React.memo(
                       </div>
                     </div>
                   ))}
-                  <AddPopup onCreate={onBoardAdd}>
-                    <button type="button" className={styles.addBoard}>
-                      <span className="fr-icon-add-line" aria-hidden="true" />
-                      Ajouter un tableau
-                    </button>
-                  </AddPopup>
                 </div>
               </div>
             )}
-            <p className={styles.otherProjects}>
+            <AddPopup onCreate={onBoardAdd}>
+              <button type="button" className={styles.addBoard}>
+                <span className="fr-icon-add-line" aria-hidden="true" />
+                Ajouter un tableau
+              </button>
+            </AddPopup>
+            {/* <p className={styles.otherProjects}>
               {currentProject ? 'Mes autres communes' : 'Mes communes'}
             </p>
             {projectsAndBoards
@@ -147,7 +167,14 @@ const LeftMenu = React.memo(
                     </div>
                   </div>
                 </a>
-              ))}
+              ))} */}
+          </div>
+          <div className={styles.separator} />
+          <div className={styles.space}>
+            <p>Espace partagé</p>
+            <div>
+              <p className={styles.emptySpace}>Aucun tableau partagé</p>
+            </div>
           </div>
         </div>
         {isSettingsModalOpened && <ProjectSettingsModalContainer />}
@@ -157,7 +184,7 @@ const LeftMenu = React.memo(
 );
 
 LeftMenu.propTypes = {
-  boards: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  boards: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   currentBoardId: PropTypes.string,
   currentProject: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   projects: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
@@ -171,6 +198,7 @@ LeftMenu.propTypes = {
 };
 
 LeftMenu.defaultProps = {
+  boards: [],
   currentBoardId: undefined,
   currentProject: undefined,
 };

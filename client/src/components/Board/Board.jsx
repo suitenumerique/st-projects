@@ -16,7 +16,7 @@ import globalStyles from '../../styles.module.scss';
 const parseDndId = (dndId) => dndId.split(':')[1];
 
 const Board = React.memo(
-  ({ listIds, isCardModalOpened, canEdit, onListCreate, onListMove, onCardMove }) => {
+  ({ listIds, isCardModalOpened, canEdit, onListCreate, onListMove, onCardMove, currentBoard }) => {
     const [t] = useTranslation();
     const [isListAddOpened, setIsListAddOpened] = useState(false);
 
@@ -35,6 +35,8 @@ const Board = React.memo(
       document.body.classList.add(globalStyles.dragging);
       closePopup();
     }, []);
+
+    const isMairiePlus = currentBoard.name === 'Mairie +';
 
     const handleDragEnd = useCallback(
       ({ draggableId, type, source, destination }) => {
@@ -154,10 +156,15 @@ const Board = React.memo(
                     className={styles.lists}
                   >
                     {listIds.map((listId, index) => (
-                      <ListContainer key={listId} id={listId} index={index} />
+                      <ListContainer
+                        key={listId}
+                        id={listId}
+                        index={index}
+                        isFromTemplate={isMairiePlus}
+                      />
                     ))}
                     {placeholder}
-                    {canEdit && (
+                    {canEdit && !isMairiePlus && (
                       <div data-drag-scroller className={styles.list}>
                         {isListAddOpened ? (
                           <ListAdd onCreate={onListCreate} onClose={handleAddListClose} />
@@ -196,6 +203,7 @@ Board.propTypes = {
   onListCreate: PropTypes.func.isRequired,
   onListMove: PropTypes.func.isRequired,
   onCardMove: PropTypes.func.isRequired,
+  currentBoard: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 export default Board;

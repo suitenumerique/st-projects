@@ -454,7 +454,7 @@ const CardModal = React.memo(
             <Grid.Column width={4} className={styles.sidebarPadding}>
               <div className={styles.actions}>
                 <span className={styles.actionsTitle}>{t('action.addToCard')}</span>
-                <BoardMembershipsPopup
+                {/* <BoardMembershipsPopup
                   items={allBoardMemberships}
                   currentUserIds={userIds}
                   onUserSelect={onUserAdd}
@@ -464,7 +464,7 @@ const CardModal = React.memo(
                     <Icon name="user outline" className={styles.actionIcon} />
                     {t('common.members')}
                   </ButtonOverride>
-                </BoardMembershipsPopup>
+                </BoardMembershipsPopup> */}
                 <LabelsPopup
                   items={allLabels}
                   currentIds={labelIds}
@@ -488,12 +488,12 @@ const CardModal = React.memo(
                     })}
                   </ButtonOverride>
                 </DueDateEditPopup>
-                <StopwatchEditPopup defaultValue={stopwatch} onUpdate={handleStopwatchUpdate}>
+                {/* <StopwatchEditPopup defaultValue={stopwatch} onUpdate={handleStopwatchUpdate}>
                   <ButtonOverride priority="secondary" className={styles.actionButton}>
                     <Icon name="clock outline" className={styles.actionIcon} />
                     {t('common.stopwatch')}
                   </ButtonOverride>
-                </StopwatchEditPopup>
+                </StopwatchEditPopup> */}
                 <AttachmentAddPopup onCreate={onAttachmentCreate}>
                   <ButtonOverride priority="secondary" className={styles.actionButton}>
                     <Icon name="attach" className={styles.actionIcon} />

@@ -56,6 +56,7 @@ const Card = React.memo(
     onLabelUpdate,
     onLabelMove,
     onLabelDelete,
+    isFromTemplate,
   }) => {
     const nameEdit = useRef(null);
 
@@ -113,7 +114,11 @@ const Card = React.memo(
                   key={label.id}
                   className={classNames(styles.attachment, styles.attachmentLeft)}
                 >
-                  <Label name={label.name} color={label.color} size="tiny" />
+                  <Label
+                    name={label.name}
+                    color={isCompleted ? 'gun-metal' : label.color}
+                    size="tiny"
+                  />
                 </span>
               ))}
             </span>
@@ -123,7 +128,7 @@ const Card = React.memo(
             <span className={isCompleted && styles.nameCompleted}>{name}</span>
           </div>
           {tasks.length > 0 && <Tasks items={tasks} />}
-          {(description ||
+          {/* {(description ||
             dueDate ||
             stopwatch ||
             attachmentsTotal > 0 ||
@@ -172,7 +177,7 @@ const Card = React.memo(
                 </span>
               )}
             </span>
-          )}
+          )} */}
           {users.length > 0 && (
             <span className={classNames(styles.attachments, styles.attachmentsRight)}>
               {users.map((user) => (
@@ -190,7 +195,11 @@ const Card = React.memo(
     );
 
     return (
-      <Draggable draggableId={`card:${id}`} index={index} isDragDisabled={!isPersisted || !canEdit}>
+      <Draggable
+        draggableId={`card:${id}`}
+        index={index}
+        isDragDisabled={!isPersisted || !canEdit || isFromTemplate}
+      >
         {({ innerRef, draggableProps, dragHandleProps }) => (
           // eslint-disable-next-line react/jsx-props-no-spreading
           <div {...draggableProps} {...dragHandleProps} ref={innerRef} className={styles.wrapper}>
@@ -205,18 +214,18 @@ const Card = React.memo(
                     >
                       {contentNode}
                     </Link>
-                    {canEdit && (
+                    {isFromTemplate && (
                       <div className={classNames(styles.cardCheckbox, 'fr-checkbox-group')}>
                         <input
                           name="card-checkbox"
                           id="card-checkbox"
                           type="checkbox"
-                          checked={isCompleted}
+                          checked={!!isCompleted}
                           onChange={handleCardCheckToggle}
                         />
                       </div>
                     )}
-                    {canEdit && (
+                    {canEdit && !isFromTemplate && (
                       <ActionsPopup
                         card={{
                           dueDate,
@@ -303,6 +312,7 @@ Card.propTypes = {
   onLabelUpdate: PropTypes.func.isRequired,
   onLabelMove: PropTypes.func.isRequired,
   onLabelDelete: PropTypes.func.isRequired,
+  isFromTemplate: PropTypes.bool.isRequired,
 };
 
 Card.defaultProps = {

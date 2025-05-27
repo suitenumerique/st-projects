@@ -12,12 +12,26 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-end;
+    align-items: flex-start;
     width: 100%;
     padding: 0.75rem;
     border-bottom: 1px solid $border-grey;
   }
 
+  .space {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0.75rem;
+
+    > p {
+      font-size: 14px;
+      font-weight: 700;
+      color: $dark-grey;
+      margin-bottom: 10px;
+    }
+  }
   .projets {
     padding: 0.75rem;
   }
@@ -69,9 +83,9 @@
   }
 
   .currentProject {
-    padding: 0.75rem 0;
+    width: 100%;
     h6 {
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
     }
   }
 
@@ -113,12 +127,12 @@
     position: relative;
     font-size: 0.875rem;
     font-weight: 500;
-    padding: 0.3rem 1rem 0.3rem 1.5rem;
+    padding: 0.3rem 1rem 0.3rem 1rem;
     cursor: pointer;
     background-image: none;
     color: $dark-grey;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     width: 100%;
 
@@ -127,12 +141,29 @@
     }
   }
 
+  .boardIcon {
+    background-color: #FBC639;
+    height: 1.1rem;
+    width: 1.1rem;
+    border-radius: 0.25rem;
+    margin-right: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &::before {
+      --icon-size: .7rem;
+      color: #ffffff;
+    }
+  }
+
   .addBoard {
     font-size: 0.875rem;
     font-weight: 500;
-    padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+    padding: 0.5rem 0.5rem 0.5rem 1rem;
     color: $middle-grey;
     text-align: left;
+    width: 100%;
     span::before {
       --icon-size: 1rem;
       margin-right: 0.3rem;
@@ -150,5 +181,19 @@
     font-weight: 500;
     color: $middle-grey;
     margin-bottom: 0.5rem;
+  }
+
+  .separator {
+    width: 100%;
+    height: 1px;
+    background-color: $border-grey;
+    margin: 0.75rem 0;
+  }
+
+  .emptySpace {
+    font-size: 14px;
+    font-weight: 500;
+    color: $middle-grey;
+    text-align: center;
   }
 }

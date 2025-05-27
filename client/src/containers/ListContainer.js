@@ -10,7 +10,7 @@ const makeMapStateToProps = () => {
   const selectListById = selectors.makeSelectListById();
   const selectCardIdsByListId = selectors.makeSelectCardIdsByListId();
 
-  return (state, { id, index }) => {
+  return (state, { id, index, isFromTemplate }) => {
     const { name, color, isPersisted } = selectListById(state, id);
     const cardIds = selectCardIdsByListId(state, id);
     const currentUserMembership = selectors.selectCurrentUserMembershipForCurrentBoard(state);
@@ -26,6 +26,7 @@ const makeMapStateToProps = () => {
       isPersisted,
       cardIds,
       canEdit: isCurrentUserEditor,
+      isFromTemplate,
     };
   };
 };

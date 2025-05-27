@@ -11,7 +11,7 @@ import CommentEdit from './CommentEdit';
 import User from '../../User';
 import DeleteStep from '../../DeleteStep';
 
-import styles from './ItemComment.module.scss';
+import styles from './ItemCommentOverride.module.scss';
 
 const ItemComment = React.memo(
   ({ data, createdAt, isPersisted, user, canEdit, onUpdate, onDelete }) => {
