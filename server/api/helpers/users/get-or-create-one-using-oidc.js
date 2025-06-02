@@ -160,20 +160,23 @@ module.exports = {
         .intercept('usernameAlreadyInUse', 'usernameAlreadyInUse');
     }
 
-    // If user has a siret, create a project-manager object if it doesn't exist
     if (user.siret) {
-      const project = await Project.findOne({ siret: user.siret });
-      if (project) {
-        const existingProjectManager = await ProjectManager.findOne({
+      let project = await Project.findOne({ siret: user.siret });
+      if (!project) {
+        project = await Project.create({
+          siret: user.siret,
+          name: user.siret,
+        });
+      }
+      const existingProjectManager = await ProjectManager.findOne({
+        projectId: project.id,
+        userId: user.id,
+      });
+      if (!existingProjectManager) {
+        await ProjectManager.create({
           projectId: project.id,
           userId: user.id,
         });
-        if (!existingProjectManager) {
-          await ProjectManager.create({
-            projectId: project.id,
-            userId: user.id,
-          });
-        }
       }
     }
 
