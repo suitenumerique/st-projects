@@ -111,6 +111,10 @@ module.exports = {
       type: 'ref',
       columnName: 'password_changed_at',
     },
+    siret: {
+      type: 'string',
+      allowNull: true,
+    },
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗

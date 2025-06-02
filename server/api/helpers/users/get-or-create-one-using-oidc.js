@@ -96,6 +96,9 @@ module.exports = {
     if (!sails.config.custom.oidcIgnoreUsername) {
       values.username = claims[sails.config.custom.oidcUsernameAttribute];
     }
+    if (claims.siret) {
+      values.siret = claims.siret;
+    }
 
     let user;
     // This whole block technically needs to be executed in a transaction
@@ -132,7 +135,7 @@ module.exports = {
       });
     }
 
-    const updateFieldKeys = ['email', 'isSso', 'name'];
+    const updateFieldKeys = ['email', 'isSso', 'name', 'siret'];
     if (!sails.config.custom.oidcIgnoreUsername) {
       updateFieldKeys.push('username');
     }
@@ -155,6 +158,23 @@ module.exports = {
         })
         .intercept('emailAlreadyInUse', 'emailAlreadyInUse')
         .intercept('usernameAlreadyInUse', 'usernameAlreadyInUse');
+    }
+
+    // If user has a siret, create a project-manager object if it doesn't exist
+    if (user.siret) {
+      const project = await Project.findOne({ siret: user.siret });
+      if (project) {
+        const existingProjectManager = await ProjectManager.findOne({
+          projectId: project.id,
+          userId: user.id,
+        });
+        if (!existingProjectManager) {
+          await ProjectManager.create({
+            projectId: project.id,
+            userId: user.id,
+          });
+        }
+      }
     }
 
     return user;

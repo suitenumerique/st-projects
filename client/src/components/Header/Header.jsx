@@ -101,13 +101,13 @@ const Header = React.memo(
                   )}
                 </Menu.Item>
               </NotificationsPopup> */}
-              <button
+              {/* <button
                 type="button"
                 className={styles.gauffre}
                 title="Les services de La Suite numérique"
               >
                 <span>Les services de La Suite numérique</span>
-              </button>
+              </button> */}
             </div>
             {/* <UserPopup
               isLogouting={isLogouting}
