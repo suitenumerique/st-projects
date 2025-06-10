@@ -56,6 +56,10 @@ const createSocketEventsChannel = () =>
       emit(entryActions.handleBoardCreate(item, requestId));
     };
 
+    const handleBoardDuplicate = ({ item }) => {
+      emit(entryActions.handleBoardDuplicate(item));
+    };
+
     const handleBoardUpdate = ({ item }) => {
       emit(entryActions.handleBoardUpdate(item));
     };
@@ -195,6 +199,7 @@ const createSocketEventsChannel = () =>
     socket.on('boardCreate', handleBoardCreate);
     socket.on('boardUpdate', handleBoardUpdate);
     socket.on('boardDelete', handleBoardDelete);
+    socket.on('boardDuplicate', handleBoardDuplicate);
 
     socket.on('boardMembershipCreate', handleBoardMembershipCreate);
     socket.on('boardMembershipUpdate', handleBoardMembershipUpdate);
@@ -254,6 +259,7 @@ const createSocketEventsChannel = () =>
       socket.off('boardCreate', handleBoardCreate);
       socket.off('boardUpdate', handleBoardUpdate);
       socket.off('boardDelete', handleBoardDelete);
+      socket.off('boardDuplicate', handleBoardDuplicate);
 
       socket.off('boardMembershipCreate', handleBoardMembershipCreate);
       socket.off('boardMembershipUpdate', handleBoardMembershipUpdate);

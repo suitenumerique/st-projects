@@ -48,7 +48,8 @@
     padding-top: 10px;
     > p {
       font-size: 14px;
-      margin-bottom: 10px;
+      color: $middle-grey;
+      margin-bottom: 6px;
     }
   }
 
@@ -60,5 +61,48 @@
   .templateItem {
     display: flex;
     flex-direction: column;
+  }
+
+  .board {
+    position: relative;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    cursor: pointer;
+    background-image: none;
+    color: $dark-grey;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    border-radius: 0.25rem;
+
+    span {
+      line-height: 1;
+    }
+
+    &:hover {
+      background-color: $background-grey-hover;
+    }
+
+    &:focus {
+      background-color: #ffffff;
+    }
+  }
+
+  .boardIcon {
+    background-color: #5F60DE;
+    height: 1.1rem;
+    width: 1.1rem;
+    border-radius: 0.25rem;
+    margin-right: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &::before {
+      --icon-size: .7rem;
+      color: #ffffff;
+    }
   }
 }

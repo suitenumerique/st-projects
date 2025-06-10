@@ -1,0 +1,84 @@
+@import '../../../styles.variables.scss';
+
+:global(#app) {
+  .projectList {
+    padding: 0.4rem;
+    margin: 0 -12px 0px -12px;
+  }
+
+  .projectItem {
+    width: 100%;
+    padding: 4px;
+    color: $dark-grey;
+    text-align: left;
+    width: 100%;
+    font-weight: 500;
+    font-size: 14px;
+    border-radius: 0.25rem;
+    line-height: 1.5;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 250px;
+    }
+
+    .projectItemIcon {
+      background-color: $main-blue;
+      width: 30px;
+      height: 30px;
+      flex-shrink: 0;
+      margin-right: 0.7rem;
+      border-radius: 0.25rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      span {
+        color: #ffffff;
+        &::before {
+          --icon-size: 1.3rem;
+        }
+      }
+    }
+
+    &:hover {
+      background: $background-grey-hover
+    }
+  }
+
+  .projectsMessage {
+    border-top: 1px solid $border-grey;
+    padding: 12px 6px 0 6px;
+    width: 100%;
+    color: $middle-grey;
+    p {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+  }
+
+  .addProject {
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.5rem 0.5rem 0.5rem 1rem;
+    color: $middle-grey;
+    text-align: left;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    &:hover {
+      background: $background-grey-hover;
+    }
+
+    span::before {
+      --icon-size: 1rem;
+      margin-right: 0.3rem;
+    }
+  }
+
+}

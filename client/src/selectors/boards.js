@@ -196,6 +196,27 @@ export const selectIsBoardWithIdExists = createSelector(
   ({ Board }, id) => Board.idExists(id),
 );
 
+export const selectIsPrivateBoard = createSelector(
+  orm,
+  (_, id) => id,
+  (state) => selectCurrentUserId(state),
+  ({ Board }, id, currentUserId) => {
+    if (!id) {
+      return false;
+    }
+
+    const boardModel = Board.withId(id);
+
+    if (!boardModel) {
+      return false;
+    }
+
+    const memberships = boardModel.getOrderedMembershipsModelArray();
+
+    return memberships.length === 1 && memberships[0].user.id === currentUserId;
+  },
+);
+
 export default {
   makeSelectBoardById,
   selectBoardById,
@@ -208,4 +229,5 @@ export default {
   selectFilterLabelsForCurrentBoard,
   selectFilterTextForCurrentBoard,
   selectIsBoardWithIdExists,
+  selectIsPrivateBoard,
 };

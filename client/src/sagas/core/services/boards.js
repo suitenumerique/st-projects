@@ -66,6 +66,25 @@ export function* handleBoardCreate(board, requestId) {
   }
 }
 
+export function* duplicateBoard(boardId, targetProjectId) {
+  yield put(actions.duplicateBoard(boardId, targetProjectId));
+
+  let board;
+  try {
+    ({ item: board } = yield call(request, api.duplicateBoard, boardId, targetProjectId));
+  } catch (error) {
+    yield put(actions.duplicateBoard.failure(boardId, error));
+    return;
+  }
+
+  yield put(actions.duplicateBoard.success(board));
+  yield call(goToBoard, board.id);
+}
+
+export function* handleBoardDuplicate(board) {
+  yield put(actions.handleBoardDuplicate(board));
+}
+
 export function* fetchBoard(id) {
   yield put(actions.fetchBoard(id));
 
@@ -180,6 +199,8 @@ export default {
   createBoard,
   createBoardInCurrentProject,
   handleBoardCreate,
+  duplicateBoard,
+  handleBoardDuplicate,
   fetchBoard,
   updateBoard,
   handleBoardUpdate,

@@ -15,6 +15,14 @@ const handleBoardCreate = (board, requestId) => ({
   },
 });
 
+const duplicateBoard = (boardId, targetProjectId) => ({
+  type: EntryActionTypes.BOARD_DUPLICATE,
+  payload: {
+    boardId,
+    targetProjectId,
+  },
+});
+
 const fetchBoard = (id) => ({
   type: EntryActionTypes.BOARD_FETCH,
   payload: {
@@ -62,6 +70,7 @@ const handleBoardDelete = (board) => ({
 export default {
   createBoardInCurrentProject,
   handleBoardCreate,
+  duplicateBoard,
   fetchBoard,
   updateBoard,
   handleBoardUpdate,

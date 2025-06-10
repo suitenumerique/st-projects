@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import classNames from 'classnames';
 import pick from 'lodash/pick';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import Paths from '../../constants/Paths';
 
 import selectors from '../../selectors';
 import store from '../../store';
@@ -14,6 +16,7 @@ import ProjectSettingsModalContainer from '../../containers/ProjectSettingsModal
 
 import AddStep from './AddStep';
 import EditStep from './EditStep';
+import ProjectStep from './ProjectStep';
 
 import styles from './LeftMenu.module.scss';
 
@@ -25,14 +28,17 @@ const LeftMenu = React.memo(
     projects,
     canEditProject,
     isSettingsModalOpened,
+    currentUser,
     onProjectAdd,
     onProjectSettingsClick,
     onBoardAdd,
     onBoardUpdate,
     onBoardDelete,
+    onBoardDuplicate,
   }) => {
     const [projectsAndBoards, setProjectsAndBoards] = useState([]);
 
+    const ProjectPopup = usePopup(ProjectStep);
     const AddPopup = usePopup(AddStep);
     const EditPopup = usePopup(EditStep);
 
@@ -62,6 +68,10 @@ const LeftMenu = React.memo(
       }
     }, [canEditProject, onProjectSettingsClick]);
 
+    const handleBoardClick = useCallback((id) => {
+      actions.handleLocationChange.fetchBoard(id);
+    }, []);
+
     const handleUpdate = useCallback(
       (id, data) => {
         onBoardUpdate(id, data);
@@ -76,11 +86,19 @@ const LeftMenu = React.memo(
       [onBoardDelete],
     );
 
+    const handleProjectSelect = useCallback((project) => {
+      window.location.href = `/projects/${project.id}`;
+    }, []);
+
     useEffect(() => {
-      if (!currentProject && projectsAndBoards.length > 0) {
-        window.location.href = `/projects/${projectsAndBoards[0].id}`;
+      if (!currentProject) {
+        const mainProject = projects.find((project) => project.siret === currentUser.siret);
+        window.location.href = `/projects/${mainProject.id}`;
       }
-    }, [currentProject, projectsAndBoards]);
+      // if (boards.length > 0 && !currentBoardId) {
+      //   window.location.href = `/boards/${boards[0].id}`;
+      // }
+    }, [boards, currentBoardId, projects, currentUser, currentProject]);
 
     return (
       <>
@@ -93,34 +111,57 @@ const LeftMenu = React.memo(
             </div>
           ) : null} */}
           <div className={styles.space}>
-            <p>Mes tableaux</p>
+            <ProjectPopup
+              projects={projects}
+              hideCloseButton
+              onProjectSelect={handleProjectSelect}
+              onProjectAdd={onProjectAdd}
+            >
+              <button type="button" className={styles.selectProject}>
+                <div className={styles.projectItemIcon}>
+                  <span className="fr-icon-bank-line" aria-hidden="true" />
+                </div>
+                {currentProject?.name}
+              </button>
+            </ProjectPopup>
             {currentProject && (
               <div className={styles.currentProject}>
                 <div className={styles.boards}>
                   {boards.map((board) => (
                     <div className={styles.boardWrapper} key={board.id}>
-                      <a
-                        href={`/boards/${board.id}`}
+                      <Link
+                        to={Paths.BOARDS.replace(':id', board.id)}
+                        title={board.name}
                         className={classNames(
                           styles.board,
                           board.id === currentBoardId && styles.boardActive,
                         )}
-                        key={board.id}
                       >
-                        {board.name === 'Mairie +' ? (
-                          <span
-                            style={{ backgroundColor: '#000091' }}
-                            className={classNames(styles.boardIcon, 'fr-icon-calendar-event-fill')}
-                            aria-hidden="true"
-                          />
-                        ) : (
-                          <span
-                            className={classNames(styles.boardIcon, 'fr-icon-bank-line')}
-                            aria-hidden="true"
-                          />
-                        )}
-                        {board.name}
-                      </a>
+                        <div className={styles.boardIcon}>
+                          <svg
+                            width="12"
+                            height="12"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="#ffffff"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M9 3H4C3.44772 3 3 3.44772 3 4V11C3 11.5523 3.44772 12 4 12H9C9.55228 12 10 11.5523 10 11V4C10 3.44772 9.55228 3 9 3Z"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                            <path
+                              d="M20 3H15C14 3 14 3 14 6.6V19.0118C14 21 14 21 15 21H20C21 21 21 21 21 17.4V6.6C21 3 21 3 20 3Z"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </div>
+                        <span>{board.name}</span>
+                      </Link>
                       <div className={styles.moreIconWrapper}>
                         <EditPopup
                           defaultData={pick(board, 'name')}
@@ -137,7 +178,10 @@ const LeftMenu = React.memo(
                 </div>
               </div>
             )}
-            <AddPopup onCreate={onBoardAdd}>
+            <AddPopup
+              onCreate={onBoardAdd}
+              onCreateFromTemplate={(id) => onBoardDuplicate(id, currentProject.id)}
+            >
               <button type="button" className={styles.addBoard}>
                 <span className="fr-icon-add-line" aria-hidden="true" />
                 Ajouter un tableau
@@ -169,13 +213,6 @@ const LeftMenu = React.memo(
                 </a>
               ))} */}
           </div>
-          <div className={styles.separator} />
-          <div className={styles.space}>
-            <p>Espace partagé</p>
-            <div>
-              <p className={styles.emptySpace}>Aucun tableau partagé</p>
-            </div>
-          </div>
         </div>
         {isSettingsModalOpened && <ProjectSettingsModalContainer />}
       </>
@@ -195,6 +232,8 @@ LeftMenu.propTypes = {
   onBoardAdd: PropTypes.func.isRequired,
   onBoardUpdate: PropTypes.func.isRequired,
   onBoardDelete: PropTypes.func.isRequired,
+  onBoardDuplicate: PropTypes.func.isRequired,
+  currentUser: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 LeftMenu.defaultProps = {

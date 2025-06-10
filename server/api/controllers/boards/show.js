@@ -32,14 +32,14 @@ module.exports = {
     const isBoardMember = await sails.helpers.users.isBoardMember(currentUser.id, board.id);
 
     if (!isBoardMember) {
-      const isProjectManager = await sails.helpers.users.isProjectManager(
-        currentUser.id,
-        project.id,
-      );
+      // const isProjectManager = await sails.helpers.users.isProjectManager(
+      //   currentUser.id,
+      //   project.id,
+      // );
 
-      if (!isProjectManager) {
-        throw Errors.BOARD_NOT_FOUND; // Forbidden
-      }
+      // if (!isProjectManager) {
+      throw Errors.BOARD_NOT_FOUND; // Forbidden
+      // }
     }
 
     const boardMemberships = await sails.helpers.boards.getBoardMemberships(board.id);

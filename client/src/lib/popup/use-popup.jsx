@@ -100,7 +100,9 @@ export default (Step, props) => {
           {...props} // eslint-disable-line react/jsx-props-no-spreading
         >
           <div ref={handleContentRef}>
-            <Button icon="close" onClick={handleClose} className={styles.closeButton} />
+            {!stepProps.hideCloseButton && (
+              <Button icon="close" onClick={handleClose} className={styles.closeButton} />
+            )}
             {/* eslint-disable-next-line react/jsx-props-no-spreading */}
             <Step {...stepProps} onClose={handleClose} />
           </div>
@@ -111,10 +113,12 @@ export default (Step, props) => {
     Popup.propTypes = {
       children: PropTypes.node.isRequired,
       onClose: PropTypes.func,
+      hideCloseButton: PropTypes.bool,
     };
 
     Popup.defaultProps = {
       onClose: undefined,
+      hideCloseButton: false,
     };
 
     return Popup;

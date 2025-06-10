@@ -10,6 +10,7 @@ const EVENT_TYPES = {
   BOARD_CREATE: 'boardCreate',
   BOARD_DELETE: 'boardDelete',
   BOARD_UPDATE: 'boardUpdate',
+  BOARD_DUPLICATE: 'boardDuplicate',
 
   BOARD_MEMBERSHIP_CREATE: 'boardMembershipCreate',
   BOARD_MEMBERSHIP_DELETE: 'boardMembershipDelete',

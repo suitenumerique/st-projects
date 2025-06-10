@@ -32,6 +32,40 @@
       margin-bottom: 10px;
     }
   }
+
+  .selectProject {
+    width: 100%;
+    padding: 0.5rem 0.5rem 0.5rem 1rem;
+    color: $dark-grey;
+    text-align: left;
+    width: 100%;
+    font-weight: 500;
+    font-size: 14px;
+    border-radius: 0.25rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+
+    .projectItemIcon {
+      background-color: $main-blue;
+      width: 30px;
+      height: 30px;
+      flex-shrink: 0;
+      margin-right: 0.7rem;
+      border-radius: 0.25rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      span {
+        color: #ffffff;
+        &::before {
+          --icon-size: 1.3rem;
+        }
+      }
+    }
+  }
+
   .projets {
     padding: 0.75rem;
   }
@@ -127,7 +161,7 @@
     position: relative;
     font-size: 0.875rem;
     font-weight: 500;
-    padding: 0.3rem 1rem 0.3rem 1rem;
+    padding: 0.5rem 1rem 0.5rem 1rem;
     cursor: pointer;
     background-image: none;
     color: $dark-grey;
@@ -136,13 +170,17 @@
     align-items: center;
     width: 100%;
 
+    span {
+      line-height: 1.1;
+    }
+
     &:focus {
       background-color: #ffffff;
     }
   }
 
   .boardIcon {
-    background-color: #FBC639;
+    background-color: #5F60DE;
     height: 1.1rem;
     width: 1.1rem;
     border-radius: 0.25rem;
@@ -172,7 +210,7 @@
 
   .boardActive {
     font-weight: 600;
-    background-color: $background-grey-hover;
+    background-color: $background-grey-hover !important;
     border-radius: 0.25rem;
   }
 

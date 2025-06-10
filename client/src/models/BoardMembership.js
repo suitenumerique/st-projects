@@ -42,7 +42,6 @@ export default class extends BaseModel {
         payload.boardMemberships.forEach((boardMembership) => {
           BoardMembership.upsert(boardMembership);
         });
-
         break;
       case ActionTypes.CORE_INITIALIZE:
       case ActionTypes.PROJECT_CREATE_HANDLE:
@@ -53,6 +52,7 @@ export default class extends BaseModel {
         });
 
         break;
+
       case ActionTypes.BOARD_MEMBERSHIP_CREATE:
         BoardMembership.upsert(payload.boardMembership);
 

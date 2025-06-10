@@ -37,10 +37,15 @@ const updateBoard = (id, data, headers) => socket.patch(`/boards/${id}`, data, h
 
 const deleteBoard = (id, headers) => socket.delete(`/boards/${id}`, undefined, headers);
 
+const duplicateBoard = (boardId, targetProjectId, headers) => {
+  return socket.post(`/boards/${boardId}/duplicate`, { targetProjectId }, headers);
+};
+
 export default {
   createBoard,
   createBoardWithImport,
   getBoard,
   updateBoard,
   deleteBoard,
+  duplicateBoard,
 };

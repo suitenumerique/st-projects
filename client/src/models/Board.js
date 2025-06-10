@@ -127,20 +127,18 @@ export default class extends BaseModel {
       case ActionTypes.BOARD_CREATE_HANDLE:
       case ActionTypes.BOARD_UPDATE__SUCCESS:
       case ActionTypes.BOARD_UPDATE_HANDLE:
+      case ActionTypes.BOARD_DUPLICATE__SUCCESS:
         Board.upsert(payload.board);
-
         break;
       case ActionTypes.BOARD_CREATE__SUCCESS:
         Board.withId(payload.localId).delete();
         Board.upsert(payload.board);
-
         break;
       case ActionTypes.BOARD_FETCH__SUCCESS:
         Board.upsert({
           ...payload.board,
           isFetching: false,
         });
-
         break;
       case ActionTypes.BOARD_FETCH__FAILURE:
         Board.withId(payload.id).update({
@@ -166,6 +164,9 @@ export default class extends BaseModel {
 
         break;
       }
+      case ActionTypes.BOARD_DUPLICATE:
+        // Initial action only contains boardId and targetProjectId
+        break;
       case ActionTypes.LABEL_TO_BOARD_FILTER_ADD:
         Board.withId(payload.boardId).filterLabels.add(payload.id);
 

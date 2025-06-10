@@ -163,9 +163,12 @@ module.exports = {
     if (user.siret) {
       let project = await Project.findOne({ siret: user.siret });
       if (!project) {
+        const name = await sails.helpers.utils.getNameFromSiren.with({
+          siren: user.siret,
+        });
         project = await Project.create({
           siret: user.siret,
-          name: user.siret,
+          name,
         });
       }
       const existingProjectManager = await ProjectManager.findOne({

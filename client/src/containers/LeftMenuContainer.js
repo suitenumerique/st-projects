@@ -13,14 +13,24 @@ const mapStateToProps = (state) => {
   const projects = selectors.selectProjectsForCurrentUser(state);
   const isCurrentUserManager = selectors.selectIsCurrentUserManagerForCurrentProject(state);
   const currentModal = selectors.selectCurrentModal(state);
+  const currentUser = selectors.selectCurrentUser(state);
+
+  const boardsWithPrivacy = (boards || []).map((board) => {
+    const isPrivate = selectors.selectIsPrivateBoard(state, board.id);
+    return {
+      ...board,
+      isPrivate,
+    };
+  });
 
   return {
-    boards,
+    boards: boardsWithPrivacy,
     currentBoardId: boardId,
     currentProject,
     projects,
     canEditProject: isCurrentUserManager,
     isSettingsModalOpened: currentModal === ModalTypes.PROJECT_SETTINGS,
+    currentUser,
   };
 };
 
@@ -32,6 +42,7 @@ const mapDispatchToProps = (dispatch) =>
       onBoardAdd: entryActions.createBoardInCurrentProject,
       onBoardUpdate: entryActions.updateBoard,
       onBoardDelete: entryActions.deleteBoard,
+      onBoardDuplicate: entryActions.duplicateBoard,
     },
     dispatch,
   );

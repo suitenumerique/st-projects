@@ -11,6 +11,12 @@ export default function* boardsWatchers() {
     takeEvery(EntryActionTypes.BOARD_CREATE_HANDLE, ({ payload: { board, requestId } }) =>
       services.handleBoardCreate(board, requestId),
     ),
+    takeEvery(EntryActionTypes.BOARD_DUPLICATE, ({ payload: { boardId, targetProjectId } }) =>
+      services.duplicateBoard(boardId, targetProjectId),
+    ),
+    takeEvery(EntryActionTypes.BOARD_DUPLICATE_HANDLE, ({ payload: { board } }) =>
+      services.handleBoardDuplicate(board),
+    ),
     takeEvery(EntryActionTypes.BOARD_FETCH, ({ payload: { id } }) => services.fetchBoard(id)),
     takeEvery(EntryActionTypes.BOARD_UPDATE, ({ payload: { id, data } }) =>
       services.updateBoard(id, data),

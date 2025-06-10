@@ -31,6 +31,36 @@ const handleBoardCreate = (board) => ({
   },
 });
 
+const duplicateBoard = (boardId, targetProjectId) => ({
+  type: ActionTypes.BOARD_DUPLICATE,
+  payload: {
+    boardId,
+    targetProjectId,
+  },
+});
+
+duplicateBoard.success = (board) => ({
+  type: ActionTypes.BOARD_DUPLICATE__SUCCESS,
+  payload: {
+    board,
+  },
+});
+
+duplicateBoard.failure = (boardId, error) => ({
+  type: ActionTypes.BOARD_DUPLICATE__FAILURE,
+  payload: {
+    boardId,
+    error,
+  },
+});
+
+const handleBoardDuplicate = (board) => ({
+  type: ActionTypes.BOARD_DUPLICATE_HANDLE,
+  payload: {
+    board,
+  },
+});
+
 const fetchBoard = (id) => ({
   type: ActionTypes.BOARD_FETCH,
   payload: {
@@ -137,6 +167,8 @@ const handleBoardDelete = (board) => ({
 export default {
   createBoard,
   handleBoardCreate,
+  duplicateBoard,
+  handleBoardDuplicate,
   fetchBoard,
   updateBoard,
   handleBoardUpdate,
