@@ -10,7 +10,7 @@ module.exports = {
     const filePath = path.join(__dirname, '../../../dumps/sirenes.json');
     const rawData = fs.readFileSync(filePath, 'utf8');
     const data = JSON.parse(rawData);
-    const entry = data.find((e) => e.siren === inputs.siren);
+    const entry = data.find((e) => e.siren === inputs.siren.slice(0, 9));
     return entry ? entry.nom_complet : inputs.siren;
   },
 };
