@@ -15,6 +15,9 @@ module.exports = {
     const data = JSON.parse(rawData);
 
     const entry = data.find((e) => String(e.siren) === String(inputs.siren).slice(0, 9));
-    return entry ? toTitleCase(entry.nom_complet) : String(inputs.siren).slice(0, 9);
+    if (entry) {
+      return sails.helpers.utils.toTitleCase.with({ string: entry.nom_complet });
+    }
+    return String(inputs.siren).slice(0, 9);
   },
 };
