@@ -10,7 +10,7 @@ import CardModalContainer from '../../containers/CardModalContainer';
 import ListAdd from './ListAdd';
 import { ReactComponent as PlusMathIcon } from '../../assets/images/plus-math-icon.svg';
 
-import styles from './Board.module.scss';
+import styles from './BoardOverride.module.scss';
 import globalStyles from '../../styles.module.scss';
 
 const parseDndId = (dndId) => dndId.split(':')[1];

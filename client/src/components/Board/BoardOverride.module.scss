@@ -1,0 +1,56 @@
+@import '../../styles.variables.scss';
+
+:global(#app) {
+  .addListButton {
+    background: $background-grey;
+    border: none;
+    border-radius: 3px;
+    color: $middle-grey;
+    cursor: pointer;
+    display: block;
+    font-weight: normal;
+    height: 42px;
+    padding: 11px;
+    text-align: left;
+    transition: background 85ms ease-in, opacity 40ms ease-in,
+      border-color 85ms ease-in;
+    width: 100%;
+
+
+    &:active {
+      outline: none;
+    }
+
+    &:hover {
+      background: $background-grey-hover;
+    }
+  }
+
+  .addListButtonIcon {
+    height: 20px;
+    padding: 0.64px;
+    width: 20px;
+  }
+
+  .addListButtonText {
+    display: inline-block;
+    font-size: 14px;
+    line-height: 20px;
+    vertical-align: top;
+  }
+
+  .list {
+    margin-right: 20px;
+    width: 272px;
+  }
+
+  .lists {
+    display: inline-flex;
+    height: 100%;
+    min-width: 100%;
+  }
+
+  .wrapper {
+    margin: 0 20px;
+  }
+}
