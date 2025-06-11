@@ -488,12 +488,12 @@ const CardModal = React.memo(
                     })}
                   </ButtonOverride>
                 </DueDateEditPopup>
-                {/* <StopwatchEditPopup defaultValue={stopwatch} onUpdate={handleStopwatchUpdate}>
+                <StopwatchEditPopup defaultValue={stopwatch} onUpdate={handleStopwatchUpdate}>
                   <ButtonOverride priority="secondary" className={styles.actionButton}>
                     <Icon name="clock outline" className={styles.actionIcon} />
                     {t('common.stopwatch')}
                   </ButtonOverride>
-                </StopwatchEditPopup> */}
+                </StopwatchEditPopup>
                 <AttachmentAddPopup onCreate={onAttachmentCreate}>
                   <ButtonOverride priority="secondary" className={styles.actionButton}>
                     <Icon name="attach" className={styles.actionIcon} />
