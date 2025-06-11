@@ -15,6 +15,9 @@ const mapStateToProps = (state) => {
   const currentModal = selectors.selectCurrentModal(state);
   const currentUser = selectors.selectCurrentUser(state);
 
+  const config = selectors.selectConfig(state);
+  const { templateBoards } = config;
+
   const boardsWithPrivacy = (boards || []).map((board) => {
     const isPrivate = selectors.selectIsPrivateBoard(state, board.id);
     return {
@@ -31,6 +34,7 @@ const mapStateToProps = (state) => {
     canEditProject: isCurrentUserManager,
     isSettingsModalOpened: currentModal === ModalTypes.PROJECT_SETTINGS,
     currentUser,
+    templateBoards,
   };
 };
 

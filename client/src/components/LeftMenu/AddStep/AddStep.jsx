@@ -17,15 +17,8 @@ const StepTypes = {
   IMPORT: 'IMPORT',
 };
 
-const AddStep = React.memo(({ onCreate, onClose, onCreateFromTemplate }) => {
+const AddStep = React.memo(({ onCreate, onClose, onCreateFromTemplate, templateBoards }) => {
   const [t] = useTranslation();
-
-  const templateBoards = [
-    {
-      id: '1504417476237067269',
-      name: 'Mairie +',
-    },
-  ];
 
   const [data, handleFieldChange, setData] = useForm({
     name: '',
@@ -133,7 +126,7 @@ const AddStep = React.memo(({ onCreate, onClose, onCreateFromTemplate }) => {
           <div className={styles.templatesWrapper}>
             <p>Ou choisissez un tableau pré-défini :</p>
             <div className={styles.templatesList}>
-              {templateBoards.map((board) => (
+              {(templateBoards || []).map((board) => (
                 <div
                   className={styles.board}
                   onClick={() => handleTemplateClick(board)}
@@ -222,6 +215,9 @@ AddStep.propTypes = {
   onCreate: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
   onCreateFromTemplate: PropTypes.func.isRequired,
+  /* eslint-disable react/forbid-prop-types */
+  templateBoards: PropTypes.array.isRequired,
+  /* eslint-enable react/forbid-prop-types */
 };
 
 export default AddStep;

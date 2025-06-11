@@ -36,8 +36,6 @@ const Board = React.memo(
       closePopup();
     }, []);
 
-    const isMairiePlus = currentBoard.name === 'Mairie +';
-
     const handleDragEnd = useCallback(
       ({ draggableId, type, source, destination }) => {
         document.body.classList.remove(globalStyles.dragging);
@@ -160,11 +158,11 @@ const Board = React.memo(
                         key={listId}
                         id={listId}
                         index={index}
-                        isFromTemplate={isMairiePlus}
+                        isFromTemplate={false}
                       />
                     ))}
                     {placeholder}
-                    {canEdit && !isMairiePlus && (
+                    {canEdit && (
                       <div data-drag-scroller className={styles.list}>
                         {isListAddOpened ? (
                           <ListAdd onCreate={onListCreate} onClose={handleAddListClose} />

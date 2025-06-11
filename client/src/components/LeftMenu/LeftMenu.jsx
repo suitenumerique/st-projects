@@ -35,6 +35,7 @@ const LeftMenu = React.memo(
     onBoardUpdate,
     onBoardDelete,
     onBoardDuplicate,
+    templateBoards,
   }) => {
     const [projectsAndBoards, setProjectsAndBoards] = useState([]);
 
@@ -181,6 +182,7 @@ const LeftMenu = React.memo(
             <AddPopup
               onCreate={onBoardAdd}
               onCreateFromTemplate={(id) => onBoardDuplicate(id, currentProject.id)}
+              templateBoards={templateBoards}
             >
               <button type="button" className={styles.addBoard}>
                 <span className="fr-icon-add-line" aria-hidden="true" />
@@ -234,6 +236,8 @@ LeftMenu.propTypes = {
   onBoardDelete: PropTypes.func.isRequired,
   onBoardDuplicate: PropTypes.func.isRequired,
   currentUser: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  /* eslint-disable react/forbid-prop-types */
+  templateBoards: PropTypes.array.isRequired,
 };
 
 LeftMenu.defaultProps = {

@@ -14,6 +14,7 @@ const mapStateToProps = (state) => {
   const filterUsers = selectors.selectFilterUsersForCurrentBoard(state);
   const filterLabels = selectors.selectFilterLabelsForCurrentBoard(state);
   const filterText = selectors.selectFilterTextForCurrentBoard(state);
+  const currentUser = selectors.selectCurrentUser(state);
   const currentUserMembership = selectors.selectCurrentUserMembershipForCurrentBoard(state);
 
   const isCurrentUserEditor =
@@ -28,6 +29,7 @@ const mapStateToProps = (state) => {
     allUsers,
     canEdit: isCurrentUserEditor,
     canEditMemberships: isCurrentUserManager,
+    currentUser,
   };
 };
 

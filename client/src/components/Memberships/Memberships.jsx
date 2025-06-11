@@ -8,7 +8,7 @@ import ActionsStep from './ActionsStep';
 import MembershipsStep from './MembershipsStep';
 import User from '../User';
 
-import styles from './Memberships.module.scss';
+import styles from './MembershipsOverride.module.scss';
 
 const MAX_MEMBERS = 6;
 
@@ -33,6 +33,7 @@ const Memberships = React.memo(
     onCreate,
     onUpdate,
     onDelete,
+    currentUser,
   }) => {
     const AddPopup = usePopup(AddStep);
     const ActionsPopup = usePopup(ActionsStep);
@@ -102,8 +103,11 @@ const Memberships = React.memo(
             permissionsSelectStep={permissionsSelectStep}
             title={addTitle}
             onCreate={onCreate}
+            currentUser={currentUser}
           >
-            <Button icon="add user" className={styles.addUser} />
+            <Button className={styles.addUser}>
+              <span className="fr-icon-user-add-line" aria-hidden="true" />
+            </Button>
           </AddPopup>
         )}
       </>
@@ -133,6 +137,8 @@ Memberships.propTypes = {
   onCreate: PropTypes.func.isRequired,
   onUpdate: PropTypes.func,
   onDelete: PropTypes.func.isRequired,
+  /* eslint-disable react/forbid-prop-types */
+  currentUser: PropTypes.object.isRequired,
 };
 
 Memberships.defaultProps = {

@@ -93,28 +93,26 @@ const Filters = React.memo(
     return (
       <>
         <span className={styles.filter}>
-          {/* <BoardMembershipsPopup
+          <BoardMembershipsPopup
             items={allBoardMemberships}
             currentUserIds={users.map((user) => user.id)}
             title="common.filterByMembers"
             onUserSelect={onUserAdd}
             onUserDeselect={onUserRemove}
           >
-            <button type="button" className={styles.filterButton}>
-              <span className={styles.filterTitle}>{`${t('common.members')}:`}</span>
-              {users.length === 0 && <span className={styles.filterLabel}>{t('common.all')}</span>}
+            <button
+              type="button"
+              className={classNames(styles.filterButton, styles.filterButtonMembers)}
+            >
+              <span className="fr-icon-user-line" aria-hidden="true" />
+              {users.length === 0 && <span className={styles.filterTitle}>Membres</span>}
+              {users.map((user) => (
+                <span key={user.id} className={styles.filterItem}>
+                  <User name={user.name} avatarUrl={user.avatarUrl} size="tiny" />
+                </span>
+              ))}
             </button>
-          </BoardMembershipsPopup> */}
-          {users.map((user) => (
-            <span key={user.id} className={styles.filterItem}>
-              <User
-                name={user.name}
-                avatarUrl={user.avatarUrl}
-                size="tiny"
-                onClick={() => handleRemoveUserClick(user.id)}
-              />
-            </span>
-          ))}
+          </BoardMembershipsPopup>
         </span>
         <span className={styles.filter}>
           <LabelsPopup
@@ -129,21 +127,19 @@ const Filters = React.memo(
             onMove={onLabelMove}
             onDelete={onLabelDelete}
           >
-            <button type="button" className={styles.filterButton}>
-              <span className={styles.filterTitle}>{`${t('common.labels')}:`}</span>
-              {labels.length === 0 && <span className={styles.filterLabel}>{t('common.all')}</span>}
+            <button
+              type="button"
+              className={classNames(styles.filterButton, styles.filterButtonLabels)}
+            >
+              <Icon name="bookmark outline" className={styles.filterIcon} />
+              {labels.length === 0 && <span className={styles.filterTitle}>Etiquettes</span>}
+              {labels.map((label) => (
+                <span key={label.id} className={styles.filterItem}>
+                  <Label name={label.name} color={label.color} size="small" />
+                </span>
+              ))}
             </button>
           </LabelsPopup>
-          {labels.map((label) => (
-            <span key={label.id} className={styles.filterItem}>
-              <Label
-                name={label.name}
-                color={label.color}
-                size="small"
-                onClick={() => handleRemoveLabelClick(label.id)}
-              />
-            </span>
-          ))}
         </span>
         <span className={styles.filter}>
           {/* <Input

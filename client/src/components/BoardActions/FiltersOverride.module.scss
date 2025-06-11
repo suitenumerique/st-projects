@@ -2,7 +2,7 @@
 
 :global(#app) {
   .filter {
-    margin-right: 10px;
+    margin-left: 18px;
   }
 
   .filterButton {
@@ -11,7 +11,28 @@
     cursor: pointer;
     display: inline-block;
     outline: none;
-    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
+    border-radius: 3px;
+    border: 1px solid $border-grey;
+
+    > span {
+      margin-right: 6px;
+    }
+
+    &.filterButtonMembers {
+      span::before {
+        --icon-size: 1rem;
+      }
+    }
+
+  }
+
+  .filterIcon {
+    font-size: 0.9rem;
+    margin-top: -1px;
   }
 
   .filterItem {
@@ -41,24 +62,23 @@
     border-radius: 3px;
     color: $dark-grey;
     display: inline-block;
-    font-size: 12px;
-    line-height: 20px;
-    padding: 2px 12px;
+    font-size: 14px;
   }
 
   .search {
     // height: 30px;
-    margin: 0 12px;
     // transition: width 0.2s ease;
     width: 280px;
+    font-size: 14px;
+    padding: 10px;
+    &::placeholder {
+      color: $middle-grey;
+    }
 
     @media only screen and (max-width: 797px) {
       width: 220px;
     }
 
-    input {
-      font-size: 13px;
-    }
   }
 
   // .searchInactive {

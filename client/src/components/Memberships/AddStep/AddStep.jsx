@@ -13,22 +13,31 @@ const StepTypes = {
 };
 
 const AddStep = React.memo(
-  ({ users, currentUserIds, permissionsSelectStep, title, onCreate, onClose }) => {
+  ({ users, currentUserIds, permissionsSelectStep, title, onCreate, onClose, currentUser }) => {
     const [t] = useTranslation();
     const [step, openStep, handleBack] = useSteps();
     const [search, handleSearchChange] = useField('');
     const cleanSearch = useMemo(() => search.trim().toLowerCase(), [search]);
 
-    const filteredUsers = useMemo(
-      () =>
-        users.filter(
+    const filteredUsers = useMemo(() => {
+      if (cleanSearch === '') {
+        return users.filter((user) => user.siret === currentUser.siret);
+      }
+
+      return users
+        .filter(
           (user) =>
             user.email.includes(cleanSearch) ||
             user.name.toLowerCase().includes(cleanSearch) ||
             (user.username && user.username.includes(cleanSearch)),
-        ),
-      [users, cleanSearch],
-    );
+        )
+        .sort((a, b) => {
+          if (a.siret === b.siret) {
+            return 0;
+          }
+          return 1;
+        });
+    }, [users, cleanSearch, currentUser]);
 
     const searchField = useRef(null);
 
@@ -68,9 +77,9 @@ const AddStep = React.memo(
     if (step) {
       switch (step.type) {
         case StepTypes.SELECT_PERMISSIONS: {
-          const currentUser = users.find((user) => user.id === step.params.userId);
+          const selectedUser = users.find((user) => user.id === step.params.userId);
 
-          if (currentUser) {
+          if (selectedUser) {
             const PermissionsSelectStep = permissionsSelectStep;
 
             return (
@@ -135,6 +144,7 @@ AddStep.propTypes = {
   title: PropTypes.string,
   onCreate: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
+  currentUser: PropTypes.object.isRequired,
 };
 
 AddStep.defaultProps = {

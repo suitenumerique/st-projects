@@ -29,6 +29,7 @@ const BoardActions = React.memo(
     onLabelMove,
     onLabelDelete,
     onTextFilterUpdate,
+    currentUser,
   }) => {
     return (
       <div className={styles.wrapper}>
@@ -42,6 +43,7 @@ const BoardActions = React.memo(
               onCreate={onMembershipCreate}
               onUpdate={onMembershipUpdate}
               onDelete={onMembershipDelete}
+              currentUser={currentUser}
             />
           </div>
           <div className={styles.action}>
@@ -92,6 +94,8 @@ BoardActions.propTypes = {
   onLabelMove: PropTypes.func.isRequired,
   onLabelDelete: PropTypes.func.isRequired,
   onTextFilterUpdate: PropTypes.func.isRequired,
+  /* eslint-disable react/forbid-prop-types */
+  currentUser: PropTypes.object.isRequired,
 };
 
 export default BoardActions;
