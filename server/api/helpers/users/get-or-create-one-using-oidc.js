@@ -163,32 +163,19 @@ module.exports = {
     if (user.siret) {
       let project = await Project.findOne({ siret: user.siret });
       if (!project) {
-        // eslint-disable-next-line no-console
-        console.log('no project found');
         const name = await sails.helpers.utils.getNameFromSiren.with({
           siren: user.siret,
         });
-        // eslint-disable-next-line no-console
-        console.log('name', name);
         project = await Project.create({
           siret: user.siret,
           name,
-        });
-        // eslint-disable-next-line no-console
-        console.log('project', project);
+        }).fetch();
       }
-      // eslint-disable-next-line no-console
-      console.log('before project manager');
-      // eslint-disable-next-line no-console
-      console.log('project', project);
-      // eslint-disable-next-line no-console
-      console.log('user', user);
+
       const existingProjectManager = await ProjectManager.findOne({
         projectId: project.id,
         userId: user.id,
       });
-      // eslint-disable-next-line no-console
-      console.log('existingProjectManager', existingProjectManager);
       if (!existingProjectManager) {
         await ProjectManager.create({
           projectId: project.id,
