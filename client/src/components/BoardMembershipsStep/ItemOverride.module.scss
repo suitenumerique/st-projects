@@ -1,20 +1,17 @@
 :global(#app) {
   .menuItem {
-    background: transparent;
-    border: none;
-    border-radius: 0.28571429rem;
-    cursor: pointer;
     display: block;
     margin: 0;
-    outline: 0;
     overflow: hidden;
     padding: 4px;
-    text-align: left;
-    width: 100%;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
     max-width: 300px;
+  }
+
+  .menuItemActive {
+    background: transparent;
 
     &:hover {
       background: rgba(0, 0, 0, 0.05);
@@ -24,13 +21,10 @@
   .menuItemText {
     display: inline-block;
     line-height: 32px;
-    position: relative;
     width: calc(100% - 40px);
-    font-size: 14px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    padding-right: 30px;
   }
 
   .menuItemTextActive:before {
