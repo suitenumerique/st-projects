@@ -128,7 +128,7 @@ const Card = React.memo(
             <span className={isCompleted && styles.nameCompleted}>{name}</span>
           </div>
           {tasks.length > 0 && <Tasks items={tasks} />}
-          {/* {(description ||
+          {(description ||
             dueDate ||
             stopwatch ||
             attachmentsTotal > 0 ||
@@ -177,7 +177,7 @@ const Card = React.memo(
                 </span>
               )}
             </span>
-          )} */}
+          )}
           {users.length > 0 && (
             <span className={classNames(styles.attachments, styles.attachmentsRight)}>
               {users.map((user) => (

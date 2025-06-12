@@ -91,6 +91,9 @@ export const selectNextCardPosition = createSelector(
       return listModel;
     }
 
+    console.log('herre');
+    console.log(nextPosition(listModel.getFilteredOrderedCardsModelArray(), index, excludedId));
+
     return nextPosition(listModel.getFilteredOrderedCardsModelArray(), index, excludedId);
   },
 );

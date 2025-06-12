@@ -160,7 +160,7 @@ export default {
       tasks: 'Tâches',
       thereIsNoPreviewAvailableForThisAttachment:
         "Il n'y a pas d'aperçu disponible pour cette pièce jointe.",
-      time: 'Temps',
+      time: 'Heure',
       title: 'Titre',
       userActions_title: "Actions de l'utilisateur",
       userAddedThisCardToList: '<0> {{user}} </0> <1> a ajouté cette carte à {{list}} </1>',
