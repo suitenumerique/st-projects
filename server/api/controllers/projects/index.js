@@ -10,9 +10,9 @@ module.exports = {
 
     let membershipBoards = await sails.helpers.boards.getMany({
       id: membershipBoardIds,
-      projectId: {
-        '!=': managerProjectIds,
-      },
+      // projectId: {
+      //   '!=': managerProjectIds,
+      // },
     });
 
     let membershipProjectIds = sails.helpers.utils.mapRecords(membershipBoards, 'projectId', true);
