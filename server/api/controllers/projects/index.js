@@ -28,13 +28,14 @@ module.exports = {
     const userIds = sails.helpers.utils.mapRecords(projectManagers, 'userId', true);
     const users = await sails.helpers.users.getMany(userIds);
 
-    const managerBoards = await sails.helpers.projects.getBoards(managerProjectIds);
+    // const managerBoards = await sails.helpers.projects.getBoards(managerProjectIds);
 
     membershipBoards = membershipBoards.filter((membershipBoard) =>
       membershipProjectIds.includes(membershipBoard.projectId),
     );
 
-    const boards = [...managerBoards, ...membershipBoards];
+    // const boards = [...managerBoards, ...membershipBoards];
+    const boards = [...membershipBoards];
     const boardIds = sails.helpers.utils.mapRecords(boards);
 
     boardMemberships = boardMemberships.filter((boardMembership) =>
