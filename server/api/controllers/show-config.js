@@ -42,6 +42,7 @@ module.exports = {
         oidc,
         allowAllToCreateProjects: sails.config.custom.allowAllToCreateProjects,
         templateBoards: sails.config.custom.templateBoards,
+        templateProjectId: sails.config.custom.templateProjectId,
       },
     };
   },

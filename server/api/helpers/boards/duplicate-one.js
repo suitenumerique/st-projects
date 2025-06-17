@@ -107,17 +107,19 @@ module.exports = {
           ),
         );
 
-        // Copy attachments
-        const attachments = await Attachment.find({ cardId: card.id });
-        await Promise.all(
-          attachments.map((attachment) =>
-            Attachment.create({
-              name: attachment.name,
-              path: attachment.path,
-              cardId: newCard.id,
-            }),
-          ),
-        );
+        // Copy attachments (only in production)
+        if (sails.config.environment === 'production') {
+          const attachments = await Attachment.find({ cardId: card.id });
+          await Promise.all(
+            attachments.map((attachment) =>
+              Attachment.create({
+                name: attachment.name,
+                path: attachment.path,
+                cardId: newCard.id,
+              }),
+            ),
+          );
+        }
 
         // Create a card label for each label
         await Promise.all(

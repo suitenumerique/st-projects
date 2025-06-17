@@ -50,6 +50,18 @@
     }
   }
 
+  .projectItemActive {
+    background-color: $background-grey-hover;
+  }
+
+  .editButton {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+  }
+
   .projectsMessage {
     border-top: 1px solid $border-grey;
     padding: 12px 6px 0 6px;
@@ -59,6 +71,13 @@
       font-size: 14px;
       line-height: 1.5;
     }
+  }
+
+  .projectName {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .addProject {

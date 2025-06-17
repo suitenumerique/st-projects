@@ -6,24 +6,18 @@
     width: 300px;
     background-color: #ffffff;
     border-right: 1px solid $border-grey;
-  }
-
-  .topBar {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    width: 100%;
-    padding: 0.75rem;
-    border-bottom: 1px solid $border-grey;
+    justify-content: space-between;
   }
 
   .space {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-start;
     padding: 0.75rem;
+    flex: 1;
 
     > p {
       font-size: 14px;
@@ -31,6 +25,33 @@
       color: $dark-grey;
       margin-bottom: 10px;
     }
+  }
+
+  .boards {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    flex-direction: column;
+    margin-bottom: 0.7rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 180px);
+    min-height: 0;
+  }
+
+  .editProject {
+    background-color: transparent;
+    border: none;
+    cursor: pointer !important;
+    width: 100%;
+    padding: 0;
+    margin: 0 0 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    font-size: 14px;
+    font-weight: 500;
+    color: $dark-grey;
   }
 
   .selectProject {
@@ -42,10 +63,10 @@
     font-weight: 500;
     font-size: 14px;
     border-radius: 0.25rem;
-    margin-bottom: 0.5rem;
     line-height: 1.5;
     display: flex;
     align-items: center;
+    margin-bottom: 0.5rem;
 
     .projectItemIcon {
       background-color: $main-blue;
@@ -116,6 +137,10 @@
     }
   }
 
+  .arrowDown {
+    color: $dark-grey;
+  }
+
   .currentProject {
     width: 100%;
     h6 {
@@ -123,10 +148,9 @@
     }
   }
 
-  .boards {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 0.7rem;
+  .projectName {
+    flex: 1;
+    overflow: hidden;
   }
 
   .boardWrapper {
@@ -202,6 +226,7 @@
     color: $middle-grey;
     text-align: left;
     width: 100%;
+    margin-top: 0.5rem;
     span::before {
       --icon-size: 1rem;
       margin-right: 0.3rem;
@@ -233,5 +258,15 @@
     font-weight: 500;
     color: $middle-grey;
     text-align: center;
+  }
+
+  .bottomBar {
+    width: 100%;
+    padding: 0.75rem;
+    border-top: 1px solid $border-grey;
+
+    button {
+      cursor: pointer;
+    }
   }
 }

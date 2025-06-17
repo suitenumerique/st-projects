@@ -91,4 +91,6 @@ module.exports.custom = {
   telegramThreadId: process.env.TELEGRAM_THREAD_ID,
 
   templateBoards: JSON.parse(process.env.TEMPLATE_BOARDS || '[]'),
+
+  templateProjectId: process.env.TEMPLATE_PROJECT_ID,
 };

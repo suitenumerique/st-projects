@@ -40,25 +40,25 @@ const ProjectSettingsModal = React.memo(
     }, [onUpdate]);
 
     const panes = [
-      // {
-      //   menuItem: t('common.general', {
-      //     context: 'title',
-      //   }),
-      //   render: () => <GeneralPane name={name} onUpdate={onUpdate} onDelete={onDelete} />,
-      // },
       {
-        menuItem: t('common.managers', {
+        menuItem: t('common.general', {
           context: 'title',
         }),
-        render: () => (
-          <ManagersPane
-            items={managers}
-            allUsers={allUsers}
-            onCreate={onManagerCreate}
-            onDelete={onManagerDelete}
-          />
-        ),
+        render: () => <GeneralPane name={name} onUpdate={onUpdate} onDelete={onDelete} />,
       },
+      // {
+      //   menuItem: t('common.managers', {
+      //     context: 'title',
+      //   }),
+      //   render: () => (
+      //     <ManagersPane
+      //       items={managers}
+      //       allUsers={allUsers}
+      //       onCreate={onManagerCreate}
+      //       onDelete={onManagerDelete}
+      //     />
+      //   ),
+      // },
       // {
       //   menuItem: t('common.background', {
       //     context: 'title',
@@ -79,13 +79,14 @@ const ProjectSettingsModal = React.memo(
     return (
       <Modal open closeIcon size="small" centered={false} onClose={onClose}>
         <Modal.Content>
-          <Tab
+          <GeneralPane name={name} onUpdate={onUpdate} onDelete={onDelete} />
+          {/* <Tab
             menu={{
               secondary: true,
               pointing: true,
             }}
             panes={panes}
-          />
+          /> */}
         </Modal.Content>
       </Modal>
     );

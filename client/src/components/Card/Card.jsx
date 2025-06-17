@@ -128,11 +128,7 @@ const Card = React.memo(
             <span className={isCompleted && styles.nameCompleted}>{name}</span>
           </div>
           {tasks.length > 0 && <Tasks items={tasks} />}
-          {(description ||
-            dueDate ||
-            stopwatch ||
-            attachmentsTotal > 0 ||
-            notificationsTotal > 0) && (
+          {(dueDate || stopwatch || attachmentsTotal > 0 || notificationsTotal > 0) && (
             <span className={styles.attachments}>
               {notificationsTotal > 0 && (
                 <span
@@ -159,13 +155,6 @@ const Card = React.memo(
                     size="tiny"
                     onClick={canEdit ? handleToggleStopwatchClick : undefined}
                   />
-                </span>
-              )}
-              {description && (
-                <span className={classNames(styles.attachment, styles.attachmentLeft)}>
-                  <span className={styles.attachmentContent}>
-                    <Icon name="align left" />
-                  </span>
                 </span>
               )}
               {attachmentsTotal > 0 && (

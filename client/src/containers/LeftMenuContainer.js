@@ -16,7 +16,7 @@ const mapStateToProps = (state) => {
   const currentUser = selectors.selectCurrentUser(state);
 
   const config = selectors.selectConfig(state);
-  const { templateBoards } = config;
+  const { templateBoards, templateProjectId } = config;
 
   const boardsWithPrivacy = (boards || []).map((board) => {
     const isPrivate = selectors.selectIsPrivateBoard(state, board.id);
@@ -35,6 +35,7 @@ const mapStateToProps = (state) => {
     isSettingsModalOpened: currentModal === ModalTypes.PROJECT_SETTINGS,
     currentUser,
     templateBoards,
+    templateProjectId,
   };
 };
 
