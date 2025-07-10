@@ -16,11 +16,12 @@ export default function* coreSaga() {
   yield take(ActionTypes.LOGOUT);
 
   const oidcConfig = yield select(selectors.selectOidcConfig);
+  window.location.href = Paths.LOGIN;
 
-  if (oidcConfig && oidcConfig.endSessionUrl !== null) {
-    // Redirect the user to the IDP to log out.
-    window.location.href = oidcConfig.endSessionUrl;
-  } else {
-    window.location.href = Paths.LOGIN;
-  }
+  // if (oidcConfig && oidcConfig.endSessionUrl !== null) {
+  //   // Redirect the user to the IDP to log out.
+  //   window.location.href = oidcConfig.endSessionUrl;
+  // } else {
+  //   window.location.href = Paths.LOGIN;
+  // }
 }
