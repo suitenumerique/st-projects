@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Button, Form, Icon } from 'semantic-ui-react';
@@ -24,6 +24,8 @@ const AddStep = React.memo(({ onCreate, onClose, onCreateFromTemplate, templateB
     name: '',
     import: null,
   });
+
+  const [hoveredBoard, setHoveredBoard] = useState(null);
 
   const [step, openStep, handleBack] = useSteps();
   const [focusNameFieldState, focusNameField] = useToggle();
@@ -130,6 +132,8 @@ const AddStep = React.memo(({ onCreate, onClose, onCreateFromTemplate, templateB
                 <div
                   className={styles.board}
                   onClick={() => handleTemplateClick(board)}
+                  onMouseEnter={() => setHoveredBoard(board)}
+                  onMouseLeave={() => setHoveredBoard(null)}
                   role="button"
                   tabIndex={0}
                   onKeyDown={(e) => e.key === 'Enter' && handleTemplateClick(board)}
@@ -177,6 +181,9 @@ const AddStep = React.memo(({ onCreate, onClose, onCreateFromTemplate, templateB
                     </svg>
                   </div>
                   <span>{board.name}</span>
+                  {hoveredBoard === board && (
+                    <div className={styles.boardDescription}>{board.description}</div>
+                  )}
                 </div>
               ))}
             </div>

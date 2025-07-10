@@ -84,6 +84,7 @@
     "lodash": "^4.17.21",
     "nanoid": "^5.0.9",
     "photoswipe": "^5.4.4",
+    "posthog-js": "^1.257.0",
     "prop-types": "^15.8.1",
     "react": "18.2.0",
     "react-app-rewired": "^2.2.1",

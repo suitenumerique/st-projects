@@ -98,6 +98,8 @@ services:
       - CHOKIDAR_USEPOLLING=true
       - BASE_URL=http://localhost:3000
       - REACT_APP_SERVER_BASE_URL=http://localhost:3000
+      - REACT_APP_POSTHOG_KEY=phc_nktM4r41tMiXDGcVSmGogUChHTeR6tGBzDzhUcGNNya
+      - REACT_APP_POSTHOG_HOST=https://eu.i.posthog.com
     working_dir: /app/client
     command: npm start
 

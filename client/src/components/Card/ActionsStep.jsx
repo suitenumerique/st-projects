@@ -188,11 +188,11 @@ const ActionsStep = React.memo(
                 context: 'title',
               })}
             </Menu.Item>
-            {/* <Menu.Item className={styles.menuItem} onClick={handleUsersClick}>
+            <Menu.Item className={styles.menuItem} onClick={handleUsersClick}>
               {t('common.members', {
                 context: 'title',
               })}
-            </Menu.Item> */}
+            </Menu.Item>
             <Menu.Item className={styles.menuItem} onClick={handleLabelsClick}>
               {t('common.labels', {
                 context: 'title',
@@ -203,11 +203,11 @@ const ActionsStep = React.memo(
                 context: 'title',
               })}
             </Menu.Item>
-            {/* <Menu.Item className={styles.menuItem} onClick={handleEditStopwatchClick}>
+            <Menu.Item className={styles.menuItem} onClick={handleEditStopwatchClick}>
               {t('action.editStopwatch', {
                 context: 'title',
               })}
-            </Menu.Item> */}
+            </Menu.Item>
             <Menu.Item className={styles.menuItem} onClick={handleMoveClick}>
               {t('action.moveCard', {
                 context: 'title',
