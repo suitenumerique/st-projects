@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { Button, Icon, Menu } from 'semantic-ui-react';
-import posthog from 'posthog-js';
 import { usePopup } from '../../lib/popup';
 
 import Paths from '../../constants/Paths';
@@ -43,17 +42,9 @@ const Header = React.memo(
     const NotificationsPopup = usePopup(NotificationsStep, POPUP_PROPS);
     const UserPopup = usePopup(UserStep, POPUP_PROPS);
 
-    const handleShowSurvey = () => {
-      posthog.getActiveMatchingSurveys((surveys) => {
-        console.log(surveys);
-        const targetSurvey = surveys.find(
-          (survey) => survey.id === '0197f920-0d45-0000-2c7c-79c5eb575989',
-        );
-        if (targetSurvey) {
-          posthog.renderSurvey(targetSurvey.id);
-        }
-      });
-    };
+    posthog.identify(user.id, {
+      email: user.email,
+    });
 
     return (
       <div className={styles.wrapper}>
@@ -68,9 +59,9 @@ const Header = React.memo(
             </div>
           </a>
           <ButtonOverride
+            id="feedback-button"
             type="button"
             priority="tertiary"
-            onClick={handleShowSurvey}
             className={classNames(styles.feedbackButton, styles.feedbackButtonTertiary)}
             style={{
               backgroundColor: 'transparent',

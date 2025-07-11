@@ -4,12 +4,24 @@ import PropTypes from 'prop-types';
 import styles from './ButtonOverride.module.scss';
 
 const ButtonOverride = React.memo(
-  ({ priority, type, className, onClick, onMouseOver, onMouseOut, onFocus, onBlur, ...props }) => {
+  ({
+    id,
+    priority,
+    type,
+    className,
+    onClick,
+    onMouseOver,
+    onMouseOut,
+    onFocus,
+    onBlur,
+    ...props
+  }) => {
     const classNames = [styles.buttonOverride, styles[priority], className].join(' ');
 
     return (
       /* eslint-disable react/button-has-type */
       <button
+        id={id}
         type={type}
         className={classNames}
         onClick={onClick}
@@ -26,6 +38,7 @@ const ButtonOverride = React.memo(
 );
 
 ButtonOverride.propTypes = {
+  id: PropTypes.string,
   children: PropTypes.node.isRequired,
   priority: PropTypes.oneOf(['primary', 'secondary', 'tertiary']),
   type: PropTypes.string,
@@ -38,6 +51,7 @@ ButtonOverride.propTypes = {
 };
 
 ButtonOverride.defaultProps = {
+  id: null,
   priority: 'primary',
   type: 'button',
   className: '',
