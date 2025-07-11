@@ -107,6 +107,8 @@
   }
 
   .boardDescription {
+    font-size: 0.75rem;
+    font-weight: 400;
     position: absolute;
     left: calc(100% - 10px);
     bottom: -10px;
@@ -114,7 +116,7 @@
     border: 1px solid #e0e0e0;
     padding: 8px;
     border-radius: 4px;
-    width: 400px;
+    width: 300px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 }

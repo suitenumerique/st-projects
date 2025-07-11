@@ -13,7 +13,7 @@
     min-height: 2.5rem;
     padding: 0 1rem;
     height: 40px;
-    border: 1px solid $main-blue;
+    border: 1px solid transparent;
     box-shadow: none;
     border-radius: 0.25rem;
     cursor: pointer;
@@ -25,12 +25,19 @@
     color: #FFFFFF;
     &:hover {
       background-color: $secondary-blue;
-      border-color: $secondary-blue;
     }
   }
 
   .secondary {
     background-color: #FFFFFF;
+    color: $main-blue;
+    &:hover {
+      background-color: $background-grey;
+    }
+  }
+
+  .tertiary {
+    background-color: transparent;
     color: $main-blue;
     &:hover {
       background-color: $background-grey;

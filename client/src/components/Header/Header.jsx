@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { Button, Icon, Menu } from 'semantic-ui-react';
+import posthog from 'posthog-js';
 import { usePopup } from '../../lib/popup';
 
 import Paths from '../../constants/Paths';
 import NotificationsStep from './NotificationsStep';
+import ButtonOverride from '../ButtonOverride';
 import User from '../User';
 import UserStep from '../UserStep';
 
@@ -41,18 +43,51 @@ const Header = React.memo(
     const NotificationsPopup = usePopup(NotificationsStep, POPUP_PROPS);
     const UserPopup = usePopup(UserStep, POPUP_PROPS);
 
+    const handleShowSurvey = () => {
+      posthog.getActiveMatchingSurveys((surveys) => {
+        console.log(surveys);
+        const targetSurvey = surveys.find(
+          (survey) => survey.id === '0197f920-0d45-0000-2c7c-79c5eb575989',
+        );
+        if (targetSurvey) {
+          posthog.renderSurvey(targetSurvey.id);
+        }
+      });
+    };
+
     return (
       <div className={styles.wrapper}>
-        <a href={Paths.ROOT} className={styles.logo}>
-          <div>
-            <img src={logo} alt="Logo" />
-
+        <div className={styles.headerLeft}>
+          <a href={Paths.ROOT} className={styles.logo}>
             <div>
-              <h2>Projets</h2>
-              <span>BETA</span>
+              <img src={logo} alt="Logo" />
+              <div>
+                <h2>Projets</h2>
+                <span>BETA</span>
+              </div>
             </div>
-          </div>
-        </a>
+          </a>
+          <ButtonOverride
+            type="button"
+            priority="tertiary"
+            onClick={handleShowSurvey}
+            className={classNames(styles.feedbackButton, styles.feedbackButtonTertiary)}
+            style={{
+              backgroundColor: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <span
+              style={{ marginRight: '0.5rem' }}
+              aria-hidden="true"
+              className="fr-icon-information-fill"
+            />
+            Faire un retour
+          </ButtonOverride>
+        </div>
 
         {/* {!project && (
           // <Link to={Paths.ROOT} className={classNames(styles.logo, styles.title)}>
@@ -60,7 +95,7 @@ const Header = React.memo(
           // </Link>
 
         )} */}
-        <Menu inverted size="large" className={styles.menu}>
+        <div className={styles.headerRight}>
           {/* {project && (
             <Menu.Menu position="left">
               <Menu.Item
@@ -83,11 +118,14 @@ const Header = React.memo(
               </Menu.Item>
             </Menu.Menu>
           )} */}
-          <Menu.Menu position="right">
+          <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <Menu.Item className={classNames(styles.item)} onClick={onLogout}>
+              {/* <Menu.Item className={classNames(styles.item)} onClick={onLogout}>
                 <p className={styles.logout}>Se déconnecter</p>
-              </Menu.Item>
+              </Menu.Item> */}
+              <ButtonOverride type="button" priority="secondary" onClick={onLogout}>
+                Se déconnecter
+              </ButtonOverride>
               {/* {canEditUsers && (
                 <Menu.Item className={classNames(styles.item)} onClick={onUsersClick}>
                   <Icon fitted name="users" />
@@ -119,8 +157,8 @@ const Header = React.memo(
                 <User name={user.name} avatarUrl={user.avatarUrl} size="small" />
               </Menu.Item>
             </UserPopup> */}
-          </Menu.Menu>
-        </Menu>
+          </div>
+        </div>
       </div>
     );
   },

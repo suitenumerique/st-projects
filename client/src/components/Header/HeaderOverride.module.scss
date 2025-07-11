@@ -13,6 +13,14 @@
     padding: 0px 1rem;
   }
 
+  .headerLeft {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    flex: 1 1 auto;
+  }
+
   .logo {
     text-decoration: none;
     color: rgba(255, 255, 255, 0.2);
@@ -56,6 +64,15 @@
         }
       }
     }
+  }
+
+  .headerRight {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+    flex: 1 1 auto;
   }
 
   // .logo {
@@ -215,6 +232,18 @@
       margin-left: 0 !important;
       margin-right: .5rem !important;
       mask-image: url("../../assets/images/gauffre.svg");
+    }
+  }
+
+  .feedbackButton {
+    background-color: #E8EDFF;
+    color: #0063CB;
+    flex-shrink: 0;
+    padding: 0.5rem;
+    cursor: pointer;
+    &:hover {
+      background-color: #DDE5FF;
+      color: #0063CB;
     }
   }
 }

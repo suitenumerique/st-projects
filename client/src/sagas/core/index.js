@@ -15,7 +15,7 @@ export default function* coreSaga() {
 
   yield take(ActionTypes.LOGOUT);
 
-  const oidcConfig = yield select(selectors.selectOidcConfig);
+  // const oidcConfig = yield select(selectors.selectOidcConfig);
   window.location.href = Paths.LOGIN;
 
   // if (oidcConfig && oidcConfig.endSessionUrl !== null) {
