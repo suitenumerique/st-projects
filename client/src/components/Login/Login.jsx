@@ -81,12 +81,12 @@ const Login = React.memo(
     onAuthenticateUsingOidc,
     onMessageDismiss,
   }) => {
-    useEffect(() => {
-      onAuthenticate({
-        emailOrUsername: 'julien.demoutiez@ext.anct.gouv.fr',
-        password: 'Testplanka!',
-      });
-    }, [onAuthenticate]);
+    // useEffect(() => {
+    //   onAuthenticate({
+    //     emailOrUsername: 'julien.demoutiez@ext.anct.gouv.fr',
+    //     password: 'Testplanka!',
+    //   });
+    // }, [onAuthenticate]);
     return (
       <div className={classNames(styles.wrapper, styles.fullHeight)}>
         <header role="banner" className="fr-header">
