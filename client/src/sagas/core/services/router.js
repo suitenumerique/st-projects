@@ -28,15 +28,23 @@ export function* goToCard(cardId) {
 
 export function* handleLocationChange() {
   const accessToken = yield call(getAccessToken);
+  const pathsMatch = yield select(selectors.selectPathsMatch);
 
-  if (!accessToken) {
+  if (!pathsMatch) {
+    return;
+  }
+
+  const isBoardPath = pathsMatch.pattern.path === Paths.BOARDS;
+
+  if (!accessToken && !isBoardPath) {
     yield call(logout, false);
     return;
   }
 
-  const pathsMatch = yield select(selectors.selectPathsMatch);
-
-  if (!pathsMatch) {
+  if (!accessToken && isBoardPath) {
+    // Continue without authentication for public board access
+  } else if (!accessToken) {
+    yield call(logout, false);
     return;
   }
 
@@ -52,7 +60,7 @@ export function* handleLocationChange() {
   const isInitializing = yield select(selectors.selectIsInitializing);
 
   if (isInitializing) {
-    yield take(ActionTypes.CORE_INITIALIZE);
+    yield take([ActionTypes.CORE_INITIALIZE, 'SET_INITIALIZING_FALSE']);
   }
 
   let board;
@@ -72,9 +80,15 @@ export function* handleLocationChange() {
     case Paths.BOARDS:
     case Paths.CARDS: {
       const currentBoard = yield select(selectors.selectCurrentBoard);
+      const boardId = pathsMatch.params.id;
 
-      if (currentBoard && currentBoard.isFetching === null) {
-        yield put(actions.handleLocationChange.fetchBoard(currentBoard.id));
+      const shouldFetchBoard =
+        (currentBoard && currentBoard.isFetching === null) || (!currentBoard && boardId);
+
+      if (shouldFetchBoard) {
+        const targetBoardId = currentBoard ? currentBoard.id : boardId;
+
+        yield put(actions.handleLocationChange.fetchBoard(targetBoardId));
 
         try {
           ({
@@ -91,8 +105,12 @@ export function* handleLocationChange() {
               tasks,
               attachments,
             },
-          } = yield call(request, api.getBoard, currentBoard.id, true));
-        } catch (error) {} // eslint-disable-line no-empty
+          } = yield call(request, api.getBoard, targetBoardId, true));
+
+          console.log('BOARD LOADED: Board loaded successfully', board);
+        } catch (error) {
+          console.error('Error loading board', error);
+        }
       }
 
       if (pathsMatch.pattern.path === Paths.CARDS) {

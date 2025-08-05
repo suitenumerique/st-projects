@@ -29,17 +29,30 @@ module.exports = {
       .getProjectPath(inputs.id)
       .intercept('pathNotFound', () => Errors.BOARD_NOT_FOUND);
 
-    const isBoardMember = await sails.helpers.users.isBoardMember(currentUser.id, board.id);
+    // Check if user is authenticated
+    if (currentUser && !board.isPublic) {
+      const isProjectManager = await sails.helpers.users.isProjectManager(
+        currentUser.id,
+        project.id,
+      );
 
-    if (!isBoardMember) {
-      // const isProjectManager = await sails.helpers.users.isProjectManager(
-      //   currentUser.id,
-      //   project.id,
-      // );
+      const isBoardMember = await sails.helpers.users.isBoardMember(currentUser.id, board.id);
 
-      // if (!isProjectManager) {
+      if (!isProjectManager && !isBoardMember) {
+        // const isProjectManager = await sails.helpers.users.isProjectManager(
+        //   currentUser.id,
+        //   project.id,
+        // );
+
+        // if (!isProjectManager) {
+        throw Errors.BOARD_NOT_FOUND; // Forbidden
+        // }
+      }
+    }
+
+    // For unauthenticated users, only allow access to public boards
+    if (!currentUser && !board.isPublic) {
       throw Errors.BOARD_NOT_FOUND; // Forbidden
-      // }
     }
 
     const boardMemberships = await sails.helpers.boards.getBoardMemberships(board.id);
@@ -53,10 +66,14 @@ module.exports = {
     const cards = await sails.helpers.boards.getCards(board.id);
     const cardIds = sails.helpers.utils.mapRecords(cards);
 
-    const cardSubscriptions = await sails.helpers.cardSubscriptions.getMany({
-      cardId: cardIds,
-      userId: currentUser.id,
-    });
+    // Only get card subscriptions for authenticated users
+    let cardSubscriptions = [];
+    if (currentUser) {
+      cardSubscriptions = await sails.helpers.cardSubscriptions.getMany({
+        cardId: cardIds,
+        userId: currentUser.id,
+      });
+    }
 
     const cardMemberships = await sails.helpers.cards.getCardMemberships(cardIds);
     const cardLabels = await sails.helpers.cards.getCardLabels(cardIds);

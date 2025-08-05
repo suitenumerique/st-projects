@@ -19,6 +19,7 @@ const makeMapStateToProps = () => {
     const allBoardMemberships = selectors.selectMembershipsForCurrentBoard(state);
     const allLabels = selectors.selectLabelsForCurrentBoard(state);
     const currentUserMembership = selectors.selectCurrentUserMembershipForCurrentBoard(state);
+    const currentUser = selectors.selectCurrentUser(state);
 
     const {
       name,
@@ -66,6 +67,7 @@ const makeMapStateToProps = () => {
       allLabels,
       canEdit: isCurrentUserEditor,
       isFromTemplate,
+      currentUser,
     };
   };
 };

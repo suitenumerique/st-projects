@@ -4,12 +4,12 @@ import selectors from '../selectors';
 import Fixed from '../components/Fixed';
 
 const mapStateToProps = (state) => {
-  const { projectId } = selectors.selectPath(state);
   const currentBoard = selectors.selectCurrentBoard(state);
+  const currentUser = selectors.selectCurrentUser(state);
 
   return {
-    projectId,
     board: currentBoard,
+    currentUser,
   };
 };
 

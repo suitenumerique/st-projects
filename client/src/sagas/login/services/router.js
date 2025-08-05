@@ -24,10 +24,12 @@ export function* handleLocationChange() {
   switch (pathsMatch.pattern.path) {
     case Paths.ROOT:
     case Paths.PROJECTS:
+      yield call(goToLogin);
+      break;
     case Paths.BOARDS:
     case Paths.CARDS:
-      yield call(goToLogin);
-
+      // Don't redirect to login for board/card paths - these could be public boards
+      // The core saga will handle authentication for these paths
       break;
     case Paths.OIDC_CALLBACK: {
       const isInitializing = yield select(selectors.selectIsInitializing);

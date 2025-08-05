@@ -14,6 +14,7 @@ export default class extends BaseModel {
     id: attr(),
     position: attr(),
     name: attr(),
+    isPublic: attr(),
     isFetching: attr({
       getDefault: () => null,
     }),
@@ -47,7 +48,8 @@ export default class extends BaseModel {
         break;
       case ActionTypes.LOCATION_CHANGE_HANDLE__BOARD_FETCH:
       case ActionTypes.BOARD_FETCH:
-        Board.withId(payload.id).update({
+        Board.upsert({
+          id: payload.id,
           isFetching: true,
         });
 
@@ -251,6 +253,12 @@ export default class extends BaseModel {
   }
 
   isAvailableForUser(userId) {
+    // Public boards are available to all users (including unauthenticated users)
+    if (this.isPublic) {
+      return true;
+    }
+
+    // For private boards, check if user is a project manager or board member
     return (
       this.project && (this.project.hasManagerForUser(userId) || this.hasMembershipForUser(userId))
     );

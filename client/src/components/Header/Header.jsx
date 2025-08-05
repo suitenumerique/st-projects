@@ -42,9 +42,11 @@ const Header = React.memo(
     const NotificationsPopup = usePopup(NotificationsStep, POPUP_PROPS);
     const UserPopup = usePopup(UserStep, POPUP_PROPS);
 
-    posthog.identify(user.id, {
-      email: user.email,
-    });
+    if (user) {
+      posthog.identify(user.id, {
+        email: user.email,
+      });
+    }
 
     return (
       <div className={styles.wrapper}>
@@ -58,26 +60,28 @@ const Header = React.memo(
               </div>
             </div>
           </a>
-          <ButtonOverride
-            id="feedback-button"
-            type="button"
-            priority="tertiary"
-            className={classNames(styles.feedbackButton, styles.feedbackButtonTertiary)}
-            style={{
-              backgroundColor: 'transparent',
-              border: 'none',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            <span
-              style={{ marginRight: '0.5rem' }}
-              aria-hidden="true"
-              className="fr-icon-information-fill"
-            />
-            Faire un retour
-          </ButtonOverride>
+          {user && (
+            <ButtonOverride
+              id="feedback-button"
+              type="button"
+              priority="tertiary"
+              className={classNames(styles.feedbackButton, styles.feedbackButtonTertiary)}
+              style={{
+                backgroundColor: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <span
+                style={{ marginRight: '0.5rem' }}
+                aria-hidden="true"
+                className="fr-icon-information-fill"
+              />
+              Faire un retour
+            </ButtonOverride>
+          )}
         </div>
 
         {/* {!project && (
@@ -114,9 +118,11 @@ const Header = React.memo(
               {/* <Menu.Item className={classNames(styles.item)} onClick={onLogout}>
                 <p className={styles.logout}>Se déconnecter</p>
               </Menu.Item> */}
-              <ButtonOverride type="button" priority="secondary" onClick={onLogout}>
-                Se déconnecter
-              </ButtonOverride>
+              {user && (
+                <ButtonOverride type="button" priority="secondary" onClick={onLogout}>
+                  Se déconnecter
+                </ButtonOverride>
+              )}
               {/* {canEditUsers && (
                 <Menu.Item className={classNames(styles.item)} onClick={onUsersClick}>
                   <Icon fitted name="users" />
@@ -158,8 +164,8 @@ const Header = React.memo(
 Header.propTypes = {
   /* eslint-disable react/forbid-prop-types */
   project: PropTypes.object,
-  user: PropTypes.object.isRequired,
-  notifications: PropTypes.array.isRequired,
+  user: PropTypes.object,
+  notifications: PropTypes.array,
   /* eslint-enable react/forbid-prop-types */
   isLogouting: PropTypes.bool.isRequired,
   canEditProject: PropTypes.bool.isRequired,
@@ -173,6 +179,8 @@ Header.propTypes = {
 
 Header.defaultProps = {
   project: undefined,
+  user: undefined,
+  notifications: [],
 };
 
 export default Header;

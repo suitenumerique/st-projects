@@ -5,6 +5,9 @@ module.exports = {
     const managerProjectIds = await sails.helpers.users.getManagerProjectIds(currentUser.id);
     const managerProjects = await sails.helpers.projects.getMany(managerProjectIds);
 
+    // Get all boards for projects that the user manages (including public boards)
+    const managerBoards = await sails.helpers.projects.getBoards(managerProjectIds);
+
     let boardMemberships = await sails.helpers.users.getBoardMemberships(currentUser.id);
     const membershipBoardIds = sails.helpers.utils.mapRecords(boardMemberships, 'boardId');
 
@@ -28,14 +31,12 @@ module.exports = {
     const userIds = sails.helpers.utils.mapRecords(projectManagers, 'userId', true);
     const users = await sails.helpers.users.getMany(userIds);
 
-    // const managerBoards = await sails.helpers.projects.getBoards(managerProjectIds);
-
     membershipBoards = membershipBoards.filter((membershipBoard) =>
       membershipProjectIds.includes(membershipBoard.projectId),
     );
 
-    // const boards = [...managerBoards, ...membershipBoards];
-    const boards = [...membershipBoards];
+    // Include both manager boards (including public ones) and membership boards
+    const boards = [...managerBoards, ...membershipBoards];
     const boardIds = sails.helpers.utils.mapRecords(boards);
 
     boardMemberships = boardMemberships.filter((boardMembership) =>
