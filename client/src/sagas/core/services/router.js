@@ -27,6 +27,8 @@ export function* goToCard(cardId) {
 }
 
 export function* handleLocationChange() {
+  console.log('handleLocationChange in core saga');
+
   const accessToken = yield call(getAccessToken);
   const pathsMatch = yield select(selectors.selectPathsMatch);
 
@@ -50,9 +52,10 @@ export function* handleLocationChange() {
 
   switch (pathsMatch.pattern.path) {
     case Paths.LOGIN:
-    case Paths.OIDC_CALLBACK:
       yield call(goToRoot);
-
+      return;
+    case Paths.OIDC_CALLBACK:
+      // Let the login saga handle OIDC callbacks
       return;
     default:
   }

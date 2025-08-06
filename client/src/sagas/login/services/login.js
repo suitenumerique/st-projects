@@ -57,10 +57,6 @@ export function* authenticateUsingOidcCallback() {
 
   yield put(replace(Paths.LOGIN));
 
-  console.log('params', params);
-  console.log('state', state);
-  console.log('nonce', nonce);
-
   if (params.get('error') !== null) {
     yield put(
       actions.authenticateUsingOidc.failure(
