@@ -57,6 +57,10 @@ export function* authenticateUsingOidcCallback() {
 
   yield put(replace(Paths.LOGIN));
 
+  console.log('params', params);
+  console.log('state', state);
+  console.log('nonce', nonce);
+
   if (params.get('error') !== null) {
     yield put(
       actions.authenticateUsingOidc.failure(
@@ -104,6 +108,8 @@ export function* authenticateUsingOidcCallback() {
     yield put(actions.authenticateUsingOidc.failure(error));
     return;
   }
+
+  console.log('accessToken', accessToken);
 
   yield call(setAccessToken, accessToken);
   yield put(actions.authenticateUsingOidc.success(accessToken));
