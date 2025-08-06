@@ -9,10 +9,6 @@ export default function* loginSaga() {
 
   yield fork(services.initializeLogin);
 
-  // TEST HERE
-  // // Redirect to login page immediately
-  // yield call(services.goToLogin);
-
   yield take([ActionTypes.AUTHENTICATE__SUCCESS, ActionTypes.USING_OIDC_AUTHENTICATE__SUCCESS]);
 
   yield cancel(watcherTasks);

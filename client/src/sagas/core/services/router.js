@@ -27,8 +27,6 @@ export function* goToCard(cardId) {
 }
 
 export function* handleLocationChange() {
-  console.log('handleLocationChange in core saga');
-
   const accessToken = yield call(getAccessToken);
   const pathsMatch = yield select(selectors.selectPathsMatch);
 
