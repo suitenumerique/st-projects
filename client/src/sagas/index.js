@@ -17,8 +17,9 @@ export default function* rootSaga() {
 
     const pathsMatch = yield select(selectors.selectPathsMatch);
     const isBoardPath = pathsMatch && pathsMatch.pattern.path === Paths.BOARDS;
+    const hasBoardId = isBoardPath && pathsMatch.params && pathsMatch.params.id;
 
-    if (!isBoardPath) {
+    if (!isBoardPath || !hasBoardId) {
       yield call(loginSaga);
     }
   }
