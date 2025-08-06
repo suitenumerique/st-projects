@@ -52,8 +52,10 @@ export function* handleLocationChange() {
 
   switch (pathsMatch.pattern.path) {
     case Paths.LOGIN:
-    case Paths.OIDC_CALLBACK:
       yield call(goToRoot);
+      return;
+    case Paths.OIDC_CALLBACK:
+      // OIDC callback should be handled by login saga, not core saga
       return;
     default:
   }
