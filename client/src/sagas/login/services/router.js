@@ -34,9 +34,14 @@ export function* handleLocationChange() {
     case Paths.OIDC_CALLBACK: {
       const isInitializing = yield select(selectors.selectIsInitializing);
 
+      console.log('OIDC_CALLBACK');
+      console.log('isInitializing', isInitializing);
+
       if (isInitializing) {
         yield take(ActionTypes.LOGIN_INITIALIZE);
       }
+
+      console.log('here');
 
       yield call(authenticateUsingOidcCallback);
 
