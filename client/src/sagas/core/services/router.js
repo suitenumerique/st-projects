@@ -52,10 +52,8 @@ export function* handleLocationChange() {
 
   switch (pathsMatch.pattern.path) {
     case Paths.LOGIN:
-      yield call(goToRoot);
-      return;
     case Paths.OIDC_CALLBACK:
-      // Let the login saga handle OIDC callbacks
+      yield call(goToRoot);
       return;
     default:
   }
