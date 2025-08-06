@@ -105,8 +105,6 @@ export function* authenticateUsingOidcCallback() {
     return;
   }
 
-  console.log('accessToken', accessToken);
-
   yield call(setAccessToken, accessToken);
   yield put(actions.authenticateUsingOidc.success(accessToken));
 }

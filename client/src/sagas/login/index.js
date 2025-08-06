@@ -9,6 +9,7 @@ export default function* loginSaga() {
 
   yield fork(services.initializeLogin);
 
+  // TEST HERE
   // // Redirect to login page immediately
   // yield call(services.goToLogin);
 
