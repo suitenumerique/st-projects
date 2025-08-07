@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Filters from './Filters';
 import Memberships from '../Memberships';
 import BoardMembershipPermissionsSelectStep from '../BoardMembershipPermissionsSelectStep';
-import BoardVisibilityToggle from './BoardVisibilityToggle';
+import BoardVisibility from './BoardVisibility';
 
 import styles from './BoardActionsOverride.module.scss';
 
@@ -36,10 +36,10 @@ const BoardActions = React.memo(
     currentBoardId,
   }) => {
     const handleUpdate = useCallback(
-      (id, data) => {
-        onBoardUpdate(id, data);
+      (data) => {
+        onBoardUpdate(currentBoardId, data);
       },
-      [onBoardUpdate],
+      [onBoardUpdate, currentBoardId],
     );
 
     return (
@@ -58,13 +58,8 @@ const BoardActions = React.memo(
                 currentUser={currentUser}
               />
             )}
-            <div style={{ marginLeft: '10px' }}>
-              {canEdit && (
-                <BoardVisibilityToggle
-                  isPublic={isPublic}
-                  onToggle={(value) => handleUpdate(currentBoardId, { isPublic: value })}
-                />
-              )}
+            <div style={{ marginLeft: '15px' }}>
+              {canEdit && <BoardVisibility isPublic={isPublic} onToggle={handleUpdate} />}
             </div>
           </div>
           <div className={styles.action}>

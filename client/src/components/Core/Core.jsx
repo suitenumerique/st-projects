@@ -58,6 +58,7 @@ const Core = React.memo(
             <div
               style={{
                 width: currentUser ? 'calc(100% - 300px)' : '100%',
+                height: '100%',
                 marginLeft: currentUser ? '300px' : '0',
                 marginTop: '128px',
                 zIndex: 10,
