@@ -36,18 +36,17 @@ module.exports = {
       userId: currentUser.id,
     });
 
-    const isProjectManager = await sails.helpers.users.isProjectManager(currentUser.id, project.id);
+    // const isProjectManager = await sails.helpers.users.isProjectManager(currentUser.id, project.id);
 
     // If user is not a project manager, only show boards they have memberships for
-    if (!isProjectManager) {
-      if (boardMemberships.length === 0) {
-        throw Errors.PROJECT_NOT_FOUND; // Forbidden
-      }
-
-      boardIds = sails.helpers.utils.mapRecords(boardMemberships, 'boardId');
-      boards = boards.filter((board) => boardIds.includes(board.id));
+    // if (!isProjectManager) {
+    if (boardMemberships.length === 0) {
+      throw Errors.PROJECT_NOT_FOUND; // Forbidden
     }
-    // If user is a project manager, show all boards (including public ones)
+
+    boardIds = sails.helpers.utils.mapRecords(boardMemberships, 'boardId');
+    boards = boards.filter((board) => boardIds.includes(board.id));
+    // }
 
     const projectManagers = await sails.helpers.projects.getProjectManagers(project.id);
 
