@@ -174,7 +174,7 @@ export default {
       usernameAlreadyInUse: "Nom d'utilisateur déjà utilisé",
       users: 'Utilisateurs',
       version: 'Version',
-      viewer: 'Spectateur',
+      viewer: 'Lecteur',
       writeComment: 'Écrire un commentaire...',
     },
 
