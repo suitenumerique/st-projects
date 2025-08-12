@@ -38,7 +38,6 @@ module.exports = {
 
     // const isProjectManager = await sails.helpers.users.isProjectManager(currentUser.id, project.id);
 
-    // If user is not a project manager, only show boards they have memberships for
     // if (!isProjectManager) {
     if (boardMemberships.length === 0) {
       throw Errors.PROJECT_NOT_FOUND; // Forbidden

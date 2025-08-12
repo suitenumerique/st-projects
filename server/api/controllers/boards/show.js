@@ -31,14 +31,9 @@ module.exports = {
 
     // Check if user is authenticated
     if (currentUser && !board.isPublic) {
-      const isProjectManager = await sails.helpers.users.isProjectManager(
-        currentUser.id,
-        project.id,
-      );
-
       const isBoardMember = await sails.helpers.users.isBoardMember(currentUser.id, board.id);
 
-      if (!isProjectManager && !isBoardMember) {
+      if (!isBoardMember) {
         // const isProjectManager = await sails.helpers.users.isProjectManager(
         //   currentUser.id,
         //   project.id,
@@ -66,7 +61,6 @@ module.exports = {
     const cards = await sails.helpers.boards.getCards(board.id);
     const cardIds = sails.helpers.utils.mapRecords(cards);
 
-    // Only get card subscriptions for authenticated users
     let cardSubscriptions = [];
     if (currentUser) {
       cardSubscriptions = await sails.helpers.cardSubscriptions.getMany({
