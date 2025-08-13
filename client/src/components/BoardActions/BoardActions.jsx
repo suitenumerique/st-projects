@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import Filters from './Filters';
@@ -41,6 +41,19 @@ const BoardActions = React.memo(
       },
       [onBoardUpdate, currentBoardId],
     );
+
+    useEffect(() => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const labelsParam = urlParams.get('labels');
+      if (labelsParam) {
+        const labelIds = labelsParam.split(',').filter((id) => id.trim());
+        labelIds.forEach((labelId) => {
+          if (labelId.trim() && !filterLabels.some((label) => label.id === labelId.trim())) {
+            onLabelToFilterAdd(labelId.trim());
+          }
+        });
+      }
+    }, [filterLabels, onLabelToFilterAdd]);
 
     return (
       <div className={styles.wrapper}>
