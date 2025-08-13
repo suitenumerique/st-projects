@@ -32,6 +32,7 @@ const Filters = React.memo(
     onLabelMove,
     onLabelDelete,
     onTextFilterUpdate,
+    isCurrentUserMember,
   }) => {
     const [t] = useTranslation();
     const [isSearchFocused, setIsSearchFocused] = useState(false);
@@ -92,55 +93,59 @@ const Filters = React.memo(
 
     return (
       <>
-        <span className={styles.filter}>
-          <BoardMembershipsPopup
-            items={allBoardMemberships}
-            currentUserIds={users.map((user) => user.id)}
-            title="common.filterByMembers"
-            onUserSelect={onUserAdd}
-            onUserDeselect={onUserRemove}
-          >
-            <button
-              type="button"
-              className={classNames(styles.filterButton, styles.filterButtonMembers)}
+        {isCurrentUserMember && (
+          <span className={styles.filter}>
+            <BoardMembershipsPopup
+              items={allBoardMemberships}
+              currentUserIds={users.map((user) => user.id)}
+              title="common.filterByMembers"
+              onUserSelect={onUserAdd}
+              onUserDeselect={onUserRemove}
             >
-              <span className="fr-icon-user-line" aria-hidden="true" />
-              {users.length === 0 && <span className={styles.filterTitle}>Membres</span>}
-              {users.map((user) => (
-                <span key={user.id} className={styles.filterItem}>
-                  <User name={user.name} avatarUrl={user.avatarUrl} size="tiny" />
-                </span>
-              ))}
-            </button>
-          </BoardMembershipsPopup>
-        </span>
-        <span className={styles.filter}>
-          <LabelsPopup
-            items={allLabels}
-            currentIds={labels.map((label) => label.id)}
-            title="common.filterByLabels"
-            canEdit={canEdit}
-            onSelect={onLabelAdd}
-            onDeselect={onLabelRemove}
-            onCreate={onLabelCreate}
-            onUpdate={onLabelUpdate}
-            onMove={onLabelMove}
-            onDelete={onLabelDelete}
-          >
-            <button
-              type="button"
-              className={classNames(styles.filterButton, styles.filterButtonLabels)}
+              <button
+                type="button"
+                className={classNames(styles.filterButton, styles.filterButtonMembers)}
+              >
+                <span className="fr-icon-user-line" aria-hidden="true" />
+                {users.length === 0 && <span className={styles.filterTitle}>Membres</span>}
+                {users.map((user) => (
+                  <span key={user.id} className={styles.filterItem}>
+                    <User name={user.name} avatarUrl={user.avatarUrl} size="tiny" />
+                  </span>
+                ))}
+              </button>
+            </BoardMembershipsPopup>
+          </span>
+        )}
+        {isCurrentUserMember && (
+          <span className={styles.filter}>
+            <LabelsPopup
+              items={allLabels}
+              currentIds={labels.map((label) => label.id)}
+              title="common.filterByLabels"
+              canEdit={canEdit}
+              onSelect={onLabelAdd}
+              onDeselect={onLabelRemove}
+              onCreate={onLabelCreate}
+              onUpdate={onLabelUpdate}
+              onMove={onLabelMove}
+              onDelete={onLabelDelete}
             >
-              <Icon name="bookmark outline" className={styles.filterIcon} />
-              {labels.length === 0 && <span className={styles.filterTitle}>Etiquettes</span>}
-              {labels.map((label) => (
-                <span key={label.id} className={styles.filterItem}>
-                  <Label name={label.name} color={label.color} size="small" />
-                </span>
-              ))}
-            </button>
-          </LabelsPopup>
-        </span>
+              <button
+                type="button"
+                className={classNames(styles.filterButton, styles.filterButtonLabels)}
+              >
+                <Icon name="bookmark outline" className={styles.filterIcon} />
+                {labels.length === 0 && <span className={styles.filterTitle}>Etiquettes</span>}
+                {labels.map((label) => (
+                  <span key={label.id} className={styles.filterItem}>
+                    <Label name={label.name} color={label.color} size="small" />
+                  </span>
+                ))}
+              </button>
+            </LabelsPopup>
+          </span>
+        )}
         <span className={styles.filter}>
           {/* <Input
             ref={searchFieldRef}
@@ -200,6 +205,7 @@ Filters.propTypes = {
   onLabelMove: PropTypes.func.isRequired,
   onLabelDelete: PropTypes.func.isRequired,
   onTextFilterUpdate: PropTypes.func.isRequired,
+  isCurrentUserMember: PropTypes.bool.isRequired,
 };
 
 export default Filters;

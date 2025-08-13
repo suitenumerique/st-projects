@@ -97,12 +97,12 @@ const LeftMenu = React.memo(
     }, []);
 
     useEffect(() => {
-      if (!currentProject) {
-        const mainProject = projects.find((project) => project.siret === currentUser.siret);
-        if (mainProject) {
-          window.location.href = `/projects/${mainProject.id}`;
-        }
-      }
+      // if (!currentProject) {
+      //   const mainProject = projects.find((project) => project.siret === currentUser.siret);
+      //   if (mainProject) {
+      //     window.location.href = `/projects/${mainProject.id}`;
+      //   }
+      // }
       // if (boards.length > 0 && !currentBoardId) {
       //   window.location.href = `/boards/${boards[0].id}`;
       // }

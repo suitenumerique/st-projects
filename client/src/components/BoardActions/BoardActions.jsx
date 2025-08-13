@@ -34,6 +34,7 @@ const BoardActions = React.memo(
     onBoardUpdate,
     currentUser,
     currentBoardId,
+    isCurrentUserMember,
   }) => {
     const handleUpdate = useCallback(
       (data) => {
@@ -83,6 +84,7 @@ const BoardActions = React.memo(
               allBoardMemberships={memberships}
               allLabels={labels}
               canEdit={canEdit}
+              isCurrentUserMember={isCurrentUserMember}
               onUserAdd={onUserToFilterAdd}
               onUserRemove={onUserFromFilterRemove}
               onLabelAdd={onLabelToFilterAdd}
@@ -128,6 +130,7 @@ BoardActions.propTypes = {
   /* eslint-disable react/forbid-prop-types */
   currentUser: PropTypes.object.isRequired,
   currentBoardId: PropTypes.string.isRequired,
+  isCurrentUserMember: PropTypes.bool.isRequired,
 };
 
 export default BoardActions;

@@ -22,6 +22,8 @@ const mapStateToProps = (state) => {
   const isCurrentUserEditor =
     !!currentUserMembership && currentUserMembership.role === BoardMembershipRoles.EDITOR;
 
+  const isCurrentUserMember = !!currentUserMembership;
+
   return {
     memberships,
     labels,
@@ -34,6 +36,7 @@ const mapStateToProps = (state) => {
     isPublic: currentBoard ? currentBoard.isPublic : false,
     currentUser,
     currentBoardId,
+    isCurrentUserMember,
   };
 };
 
