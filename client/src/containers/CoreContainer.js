@@ -9,6 +9,8 @@ const mapStateToProps = (state) => {
   const currentModal = selectors.selectCurrentModal(state);
   const currentProject = selectors.selectCurrentProject(state);
   const currentBoard = selectors.selectCurrentBoard(state);
+  const currentUser = selectors.selectCurrentUser(state);
+  const currentUserMembership = selectors.selectCurrentUserMembershipForCurrentBoard(state);
 
   return {
     isInitializing,
@@ -16,6 +18,8 @@ const mapStateToProps = (state) => {
     currentModal,
     currentProject,
     currentBoard,
+    currentUser,
+    currentUserMembership,
   };
 };
 

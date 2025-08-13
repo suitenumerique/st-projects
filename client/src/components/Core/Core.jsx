@@ -14,7 +14,15 @@ import Background from '../Background';
 import styles from './Core.module.scss';
 
 const Core = React.memo(
-  ({ isInitializing, isSocketDisconnected, currentModal, currentProject, currentBoard }) => {
+  ({
+    isInitializing,
+    isSocketDisconnected,
+    currentModal,
+    currentProject,
+    currentBoard,
+    currentUser,
+    currentUserMembership,
+  }) => {
     const [t] = useTranslation();
 
     const defaultTitle = useRef(document.title);
@@ -48,7 +56,21 @@ const Core = React.memo(
               />
             )}
             <FixedContainer />
-            <StaticContainer />
+            <div
+              style={{
+                width:
+                  currentUser && (!currentBoard || currentUserMembership)
+                    ? 'calc(100% - 300px)'
+                    : '100%',
+                height: '100%',
+                marginLeft: currentUser && (!currentBoard || currentUserMembership) ? '300px' : '0',
+                marginTop: '128px',
+                zIndex: 10,
+                overflowY: 'hidden',
+              }}
+            >
+              <StaticContainer />
+            </div>
             {currentModal === ModalTypes.USERS && <UsersModalContainer />}
             {currentModal === ModalTypes.USER_SETTINGS && <UserSettingsModalContainer />}
             {currentModal === ModalTypes.PROJECT_ADD && <ProjectAddModalContainer />}
@@ -78,6 +100,8 @@ Core.propTypes = {
   /* eslint-disable react/forbid-prop-types */
   currentProject: PropTypes.object,
   currentBoard: PropTypes.object,
+  currentUser: PropTypes.object,
+  currentUserMembership: PropTypes.object,
   /* eslint-enable react/forbid-prop-types */
 };
 
@@ -85,6 +109,8 @@ Core.defaultProps = {
   currentModal: undefined,
   currentProject: undefined,
   currentBoard: undefined,
+  currentUser: undefined,
+  currentUserMembership: undefined,
 };
 
 export default Core;

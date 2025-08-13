@@ -18,7 +18,7 @@ const mapStateToProps = (state) => {
     project: currentProject,
     user: currentUser,
     canEditProject: isCurrentUserManager,
-    canEditUsers: currentUser.isAdmin,
+    canEditUsers: currentUser ? currentUser.isAdmin : false,
   };
 };
 

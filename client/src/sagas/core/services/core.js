@@ -6,7 +6,7 @@ import selectors from '../../../selectors';
 import actions from '../../../actions';
 import api from '../../../api';
 import i18n from '../../../i18n';
-import { removeAccessToken } from '../../../utils/access-token-storage';
+import { removeAccessToken, getAccessToken } from '../../../utils/access-token-storage';
 
 export function* initializeCore() {
   const currentConfig = yield select(selectors.selectConfig); // TODO: add boolean selector?
@@ -16,6 +16,13 @@ export function* initializeCore() {
     ({ item: config } = yield call(api.getConfig)); // TODO: handle error
 
     yield put(actions.initializeCore.fetchConfig(config));
+  }
+
+  const accessToken = yield call(getAccessToken);
+
+  if (!accessToken) {
+    yield put({ type: 'SET_INITIALIZING_FALSE' });
+    return;
   }
 
   const {

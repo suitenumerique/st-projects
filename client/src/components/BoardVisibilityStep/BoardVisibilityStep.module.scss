@@ -1,0 +1,40 @@
+@import '../../styles.variables.scss';
+
+:global(#app) {
+
+  .visibilityStepWrapper {
+    margin-top: 10px;
+  }
+
+  .visibilityStep {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 10px;
+    border-radius: 3px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $background-grey-hover;
+    }
+  }
+
+  .visibilityStepTitle {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+
+    span::before {
+      --icon-size: 1rem;
+      margin-right: 4px;
+    }
+  }
+
+  .visibilityStepDescription {
+    font-size: 12px;
+    color: $middle-grey;
+    line-height: 1.6;
+    text-align: left;
+  }
+}

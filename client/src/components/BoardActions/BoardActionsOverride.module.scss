@@ -12,12 +12,10 @@
     display: flex;
     // gap: 20px;
     justify-content: space-between;
-    margin: 20px 20px;
+    margin: 15px 20px;
   }
 
   .wrapper {
-    overflow-x: auto;
-    overflow-y: hidden;
     -ms-overflow-style: none;
     scrollbar-width: none;
     background-color: #fff;

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import Filters from './Filters';
 import Memberships from '../Memberships';
 import BoardMembershipPermissionsSelectStep from '../BoardMembershipPermissionsSelectStep';
+import BoardVisibility from './BoardVisibility';
 
 import styles from './BoardActionsOverride.module.scss';
 
@@ -17,6 +18,7 @@ const BoardActions = React.memo(
     allUsers,
     canEdit,
     canEditMemberships,
+    isPublic,
     onMembershipCreate,
     onMembershipUpdate,
     onMembershipDelete,
@@ -29,22 +31,50 @@ const BoardActions = React.memo(
     onLabelMove,
     onLabelDelete,
     onTextFilterUpdate,
+    onBoardUpdate,
     currentUser,
+    currentBoardId,
+    isCurrentUserMember,
   }) => {
+    const handleUpdate = useCallback(
+      (data) => {
+        onBoardUpdate(currentBoardId, data);
+      },
+      [onBoardUpdate, currentBoardId],
+    );
+
+    useEffect(() => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const labelsParam = urlParams.get('labels');
+      if (labelsParam) {
+        const labelIds = labelsParam.split(',').filter((id) => id.trim());
+        labelIds.forEach((labelId) => {
+          if (labelId.trim() && !filterLabels.some((label) => label.id === labelId.trim())) {
+            onLabelToFilterAdd(labelId.trim());
+          }
+        });
+      }
+    }, [filterLabels, onLabelToFilterAdd]);
+
     return (
       <div className={styles.wrapper}>
         <div className={styles.actions}>
           <div className={styles.action}>
-            <Memberships
-              items={memberships}
-              allUsers={allUsers}
-              permissionsSelectStep={BoardMembershipPermissionsSelectStep}
-              canEdit={canEditMemberships}
-              onCreate={onMembershipCreate}
-              onUpdate={onMembershipUpdate}
-              onDelete={onMembershipDelete}
-              currentUser={currentUser}
-            />
+            {currentUser && (
+              <Memberships
+                items={memberships}
+                allUsers={allUsers}
+                permissionsSelectStep={BoardMembershipPermissionsSelectStep}
+                canEdit={canEditMemberships}
+                onCreate={onMembershipCreate}
+                onUpdate={onMembershipUpdate}
+                onDelete={onMembershipDelete}
+                currentUser={currentUser}
+              />
+            )}
+            <div style={{ marginLeft: '15px' }}>
+              {canEdit && <BoardVisibility isPublic={isPublic} onToggle={handleUpdate} />}
+            </div>
           </div>
           <div className={styles.action}>
             <Filters
@@ -54,6 +84,7 @@ const BoardActions = React.memo(
               allBoardMemberships={memberships}
               allLabels={labels}
               canEdit={canEdit}
+              isCurrentUserMember={isCurrentUserMember}
               onUserAdd={onUserToFilterAdd}
               onUserRemove={onUserFromFilterRemove}
               onLabelAdd={onLabelToFilterAdd}
@@ -82,6 +113,7 @@ BoardActions.propTypes = {
   /* eslint-enable react/forbid-prop-types */
   canEdit: PropTypes.bool.isRequired,
   canEditMemberships: PropTypes.bool.isRequired,
+  isPublic: PropTypes.bool.isRequired,
   onMembershipCreate: PropTypes.func.isRequired,
   onMembershipUpdate: PropTypes.func.isRequired,
   onMembershipDelete: PropTypes.func.isRequired,
@@ -94,8 +126,11 @@ BoardActions.propTypes = {
   onLabelMove: PropTypes.func.isRequired,
   onLabelDelete: PropTypes.func.isRequired,
   onTextFilterUpdate: PropTypes.func.isRequired,
+  onBoardUpdate: PropTypes.func.isRequired,
   /* eslint-disable react/forbid-prop-types */
   currentUser: PropTypes.object.isRequired,
+  currentBoardId: PropTypes.string.isRequired,
+  isCurrentUserMember: PropTypes.bool.isRequired,
 };
 
 export default BoardActions;

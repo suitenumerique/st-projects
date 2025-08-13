@@ -1,0 +1,65 @@
+@import '../../styles.variables.scss';
+
+:global(#app) {
+  .visibilityWrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .visibilityButton {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
+    border-radius: 3px;
+    border: 1px solid $border-grey;
+    font-weight: 600;
+
+    span::before {
+      --icon-size: 1rem;
+    }
+
+  }
+
+  .visibilityTitle {
+    border-radius: 3px;
+    color: $dark-grey;
+    display: inline-block;
+    font-size: 14px;
+    margin-left: 4px;
+    margin-right: 4px;
+  }
+
+  .copyLinkButton {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
+    border-radius: 3px;
+
+    span::before {
+      --icon-size: 1rem;
+    }
+
+  }
+
+  .copyLinkButtonText {
+    border-radius: 3px;
+    color: $dark-grey;
+    display: inline-block;
+    font-size: 14px;
+    margin-left: 4px;
+    margin-right: 4px;
+  }
+}

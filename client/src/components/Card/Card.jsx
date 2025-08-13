@@ -57,6 +57,7 @@ const Card = React.memo(
     onLabelMove,
     onLabelDelete,
     isFromTemplate,
+    currentUser,
   }) => {
     const nameEdit = useRef(null);
 
@@ -187,14 +188,14 @@ const Card = React.memo(
       <Draggable
         draggableId={`card:${id}`}
         index={index}
-        isDragDisabled={!isPersisted || !canEdit || isFromTemplate}
+        isDragDisabled={!isPersisted || !canEdit || isFromTemplate || !currentUser}
       >
         {({ innerRef, draggableProps, dragHandleProps }) => (
           // eslint-disable-next-line react/jsx-props-no-spreading
           <div {...draggableProps} {...dragHandleProps} ref={innerRef} className={styles.wrapper}>
             <NameEdit ref={nameEdit} defaultValue={name} onUpdate={handleNameUpdate}>
               <div className={styles.card}>
-                {isPersisted ? (
+                {isPersisted && currentUser ? (
                   <>
                     <Link
                       to={Paths.CARDS.replace(':id', id)}
@@ -302,6 +303,7 @@ Card.propTypes = {
   onLabelMove: PropTypes.func.isRequired,
   onLabelDelete: PropTypes.func.isRequired,
   isFromTemplate: PropTypes.bool.isRequired,
+  currentUser: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
 Card.defaultProps = {
@@ -310,6 +312,7 @@ Card.defaultProps = {
   isDueDateCompleted: undefined,
   stopwatch: undefined,
   coverUrl: undefined,
+  currentUser: undefined,
 };
 
 export default Card;
