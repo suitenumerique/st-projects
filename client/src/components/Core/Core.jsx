@@ -58,9 +58,12 @@ const Core = React.memo(
             <FixedContainer />
             <div
               style={{
-                width: currentUser && currentUserMembership ? 'calc(100% - 300px)' : '100%',
+                width:
+                  currentUser && (!currentBoard || currentUserMembership)
+                    ? 'calc(100% - 300px)'
+                    : '100%',
                 height: '100%',
-                marginLeft: currentUser && currentUserMembership ? '300px' : '0',
+                marginLeft: currentUser && (!currentBoard || currentUserMembership) ? '300px' : '0',
                 marginTop: '128px',
                 zIndex: 10,
                 overflowY: 'hidden',

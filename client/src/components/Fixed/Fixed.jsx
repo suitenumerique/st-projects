@@ -12,7 +12,7 @@ function Fixed({ board, currentUser, currentUserMembership }) {
     <div className={styles.wrapper}>
       <HeaderContainer />
       <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
-        {currentUser && currentUserMembership && <LeftMenuContainer />}
+        {currentUser && (!board || currentUserMembership) && <LeftMenuContainer />}
         <div style={{ flex: 1 }}>{board && !board.isFetching && <BoardActionsContainer />}</div>
       </div>
     </div>
