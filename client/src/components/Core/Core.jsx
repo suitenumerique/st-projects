@@ -21,6 +21,7 @@ const Core = React.memo(
     currentProject,
     currentBoard,
     currentUser,
+    currentUserMembership,
   }) => {
     const [t] = useTranslation();
 
@@ -57,9 +58,9 @@ const Core = React.memo(
             <FixedContainer />
             <div
               style={{
-                width: currentUser ? 'calc(100% - 300px)' : '100%',
+                width: currentUser && currentUserMembership ? 'calc(100% - 300px)' : '100%',
                 height: '100%',
-                marginLeft: currentUser ? '300px' : '0',
+                marginLeft: currentUser && currentUserMembership ? '300px' : '0',
                 marginTop: '128px',
                 zIndex: 10,
                 overflowY: 'hidden',
@@ -97,6 +98,7 @@ Core.propTypes = {
   currentProject: PropTypes.object,
   currentBoard: PropTypes.object,
   currentUser: PropTypes.object,
+  currentUserMembership: PropTypes.object,
   /* eslint-enable react/forbid-prop-types */
 };
 
@@ -105,6 +107,7 @@ Core.defaultProps = {
   currentProject: undefined,
   currentBoard: undefined,
   currentUser: undefined,
+  currentUserMembership: undefined,
 };
 
 export default Core;
