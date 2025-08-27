@@ -194,13 +194,13 @@
     position: relative;
     font-size: 0.875rem;
     font-weight: 500;
-    padding: 0.5rem 1rem 0.5rem 1rem;
+    padding: 0.35rem 1rem 0.35rem 1rem;
     cursor: pointer;
     background-image: none;
     color: $dark-grey;
     display: flex;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
 
     span {
@@ -221,11 +221,25 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-shrink: 0;
+    margin-top: 4px;
 
     &::before {
       --icon-size: .7rem;
       color: #ffffff;
     }
+  }
+
+  .boardName {
+    font-size: 14px;
+    color: $dark-grey;
+    margin-bottom: 0;
+  }
+
+  .projectName {
+    font-size: 12px;
+    color: $middle-grey;
+    line-height: 1.4;
   }
 
   .addBoard {
@@ -243,9 +257,16 @@
   }
 
   .boardActive {
-    font-weight: 600;
     background-color: $background-grey-hover !important;
     border-radius: 0.25rem;
+
+    .boardName {
+      font-weight: 600;
+    }
+
+    .projectName {
+      font-weight: 500;
+    }
   }
 
   .otherProjects {

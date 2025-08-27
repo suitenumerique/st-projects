@@ -7,7 +7,7 @@ module.exports = {
       siret: currentUser.siret,
     });
 
-    const boardMemberships = await sails.helpers.users.getBoardMemberships(currentUser.id, {
+    const boardMemberships = await sails.helpers.users.getBoardMemberships([currentUser.id], {
       role: {
         '!=': 'public_reader',
       },
@@ -26,12 +26,13 @@ module.exports = {
     const projects = [userProject, ...membershipProjects];
 
     const boards = [...membershipBoards];
+    const allBoardMemberships = await sails.helpers.boards.getBoardMemberships(membershipBoardIds);
 
     return {
       items: projects,
       included: {
         boards,
-        boardMemberships,
+        boardMemberships: allBoardMemberships,
       },
     };
   },

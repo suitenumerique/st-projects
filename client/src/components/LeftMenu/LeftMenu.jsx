@@ -138,7 +138,7 @@ const LeftMenu = React.memo(
             >
               <ButtonOverride>
                 <span className="fr-icon-add-line" aria-hidden="true" />
-                Créer un tableau
+                Nouveau tableau
               </ButtonOverride>
             </AddPopup>
           </div>
@@ -180,7 +180,9 @@ const LeftMenu = React.memo(
                           />
                         </svg>
                       </div>
-                      <span>{board.name}</span>
+                      <div>
+                        <p className={styles.boardName}>{board.name}</p>
+                      </div>
                     </Link>
                     {board.isOwner && (
                       <div className={styles.moreIconWrapper}>
@@ -247,7 +249,12 @@ const LeftMenu = React.memo(
                           />
                         </svg>
                       </div>
-                      <span>{board.name}</span>
+                      <div>
+                        <p className={styles.boardName}>{board.name}</p>
+                        {board.project && board.project.siret !== currentUser.siret && (
+                          <p className={styles.projectName}>{board.project.name}</p>
+                        )}
+                      </div>
                     </Link>
                     {board.isOwner && (
                       <div className={styles.moreIconWrapper}>
