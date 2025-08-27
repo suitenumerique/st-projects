@@ -145,16 +145,6 @@ module.exports.routes = {
     skipAssets: false,
   },
 
-  'GET /project-background-images/*': {
-    fn: staticDirServer('/project-background-images', () =>
-      path.join(
-        path.resolve(sails.config.custom.uploadsBasePath),
-        sails.config.custom.projectBackgroundImagesPathSegment,
-      ),
-    ),
-    skipAssets: false,
-  },
-
   'GET /attachments/:id/download/:filename': {
     action: 'attachments/download',
     skipAssets: false,

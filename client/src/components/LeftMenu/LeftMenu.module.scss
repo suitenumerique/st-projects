@@ -8,7 +8,17 @@
     border-right: 1px solid $border-grey;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    overflow-y: auto;
+    max-height: calc(100vh - 52px);
+    min-height: 0;
+  }
+
+  .topBar {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0.75rem;
+    border-bottom: 1px solid $border-grey;
   }
 
   .space {
@@ -16,26 +26,25 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    padding: 0.75rem;
-    flex: 1;
+    padding: 10px 0.75rem 0.75rem 0.75rem;
+    border-bottom: 1px solid $border-grey;
 
-    > p {
+    .spaceTitle {
       font-size: 14px;
       font-weight: 700;
       color: $dark-grey;
-      margin-bottom: 10px;
+      height: 35px;
+      margin-bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
     }
   }
 
   .boards {
     display: flex;
-    flex: 1;
     width: 100%;
     flex-direction: column;
-    margin-bottom: 0.7rem;
-    overflow-y: auto;
-    max-height: calc(100vh - 180px);
-    min-height: 0;
   }
 
   .editProject {

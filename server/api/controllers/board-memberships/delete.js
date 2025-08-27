@@ -2,6 +2,9 @@ const Errors = {
   BOARD_MEMBERSHIP_NOT_FOUND: {
     boardMembershipNotFound: 'Board membership not found',
   },
+  CANNOT_DELETE_OWNER: {
+    cannotDeleteOwner: 'Cannot delete owner membership',
+  },
 };
 
 module.exports = {
@@ -17,6 +20,9 @@ module.exports = {
     boardMembershipNotFound: {
       responseType: 'notFound',
     },
+    cannotDeleteOwner: {
+      responseType: 'forbidden',
+    },
   },
 
   async fn(inputs) {
@@ -29,13 +35,16 @@ module.exports = {
     let { boardMembership } = path;
     const { board, project } = path;
 
-    if (boardMembership.userId !== currentUser.id) {
-      const isProjectManager = await sails.helpers.users.isProjectManager(
-        currentUser.id,
-        project.id,
-      );
+    // Prevent deletion of owner memberships
+    if (boardMembership.role === 'owner') {
+      throw Errors.CANNOT_DELETE_OWNER;
+    }
 
-      if (!isProjectManager) {
+    if (boardMembership.userId !== currentUser.id) {
+      const isBoardOwner = await sails.helpers.users.isBoardOwner(currentUser.id, board.id);
+      const isBoardEditor = await sails.helpers.users.isBoardEditor(currentUser.id, board.id);
+
+      if (!isBoardOwner && !isBoardEditor) {
         throw Errors.BOARD_MEMBERSHIP_NOT_FOUND; // Forbidden
       }
     }

@@ -8,7 +8,7 @@ import LeftMenu from '../components/LeftMenu';
 
 const mapStateToProps = (state) => {
   const { boardId } = selectors.selectPath(state);
-  const boards = selectors.selectBoardsForCurrentProject(state);
+  const boards = selectors.selectAllBoards(state);
   const currentProject = selectors.selectCurrentProject(state);
   const projects = selectors.selectProjectsForCurrentUser(state);
   const isCurrentUserManager = selectors.selectIsCurrentUserManagerForCurrentProject(state);
@@ -18,16 +18,8 @@ const mapStateToProps = (state) => {
   const config = selectors.selectConfig(state);
   const { templateBoards, templateProjectId } = config;
 
-  const boardsWithPrivacy = (boards || []).map((board) => {
-    const isPrivate = selectors.selectIsPrivateBoard(state, board.id);
-    return {
-      ...board,
-      isPrivate,
-    };
-  });
-
   return {
-    boards: boardsWithPrivacy,
+    boards,
     currentBoardId: boardId,
     currentProject,
     projects,

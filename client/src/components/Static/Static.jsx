@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import { useTranslation, Trans } from 'react-i18next';
 import { Icon, Loader } from 'semantic-ui-react';
 
-import ProjectsContainer from '../../containers/ProjectsContainer';
 import BoardContainer from '../../containers/BoardContainer';
 
 // import styles from './Static.module.scss';

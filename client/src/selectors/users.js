@@ -45,28 +45,30 @@ export const selectProjectsForCurrentUser = createSelector(
       return id;
     }
 
-    const userModel = User.withId(id);
+    return [];
 
-    if (!userModel) {
-      return userModel;
-    }
+    // const userModel = User.withId(id);
 
-    return userModel.getOrderedAvailableProjectsModelArray().map((projectModel) => {
-      const boardsModels = projectModel.getOrderedBoardsModelArrayAvailableForUser(userModel.id);
+    // if (!userModel) {
+    //   return userModel;
+    // }
 
-      let notificationsTotal = 0;
-      boardsModels.forEach((boardModel) => {
-        boardModel.cards.toModelArray().forEach((cardModel) => {
-          notificationsTotal += cardModel.getUnreadNotificationsQuerySet().count();
-        });
-      });
+    // return userModel.getOrderedAvailableProjectsModelArray().map((projectModel) => {
+    //   const boardsModels = projectModel.getOrderedBoardsModelArrayAvailableForUser(userModel.id);
 
-      return {
-        ...projectModel.ref,
-        notificationsTotal,
-        firstBoardId: boardsModels[0] && boardsModels[0].id,
-      };
-    });
+    //   let notificationsTotal = 0;
+    //   boardsModels.forEach((boardModel) => {
+    //     boardModel.cards.toModelArray().forEach((cardModel) => {
+    //       notificationsTotal += cardModel.getUnreadNotificationsQuerySet().count();
+    //     });
+    //   });
+
+    //   return {
+    //     ...projectModel.ref,
+    //     notificationsTotal,
+    //     firstBoardId: boardsModels[0] && boardsModels[0].id,
+    //   };
+    // });
   },
 );
 
@@ -78,19 +80,21 @@ export const selectProjectsToListsForCurrentUser = createSelector(
       return id;
     }
 
-    const userModel = User.withId(id);
+    return [];
 
-    if (!userModel) {
-      return userModel;
-    }
+    // const userModel = User.withId(id);
 
-    return userModel.getOrderedAvailableProjectsModelArray().map((projectModel) => ({
-      ...projectModel.ref,
-      boards: projectModel.getOrderedBoardsModelArrayForUser(id).map((boardModel) => ({
-        ...boardModel.ref,
-        lists: boardModel.getOrderedListsQuerySet().toRefArray(),
-      })),
-    }));
+    // if (!userModel) {
+    //   return userModel;
+    // }
+
+    // return userModel.getOrderedAvailableProjectsModelArray().map((projectModel) => ({
+    //   ...projectModel.ref,
+    //   boards: projectModel.getOrderedBoardsModelArrayForUser(id).map((boardModel) => ({
+    //     ...boardModel.ref,
+    //     lists: boardModel.getOrderedListsQuerySet().toRefArray(),
+    //   })),
+    // }));
   },
 );
 

@@ -15,4 +15,13 @@
   .settings {
     margin: 0 0 8px;
   }
+
+  .disabledItem {
+    opacity: 0.6;
+    cursor: not-allowed !important;
+
+    &:hover {
+      background: transparent !important;
+    }
+  }
 }

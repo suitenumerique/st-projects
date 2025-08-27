@@ -9,7 +9,6 @@ import StaticContainer from '../../containers/StaticContainer';
 import UsersModalContainer from '../../containers/UsersModalContainer';
 import UserSettingsModalContainer from '../../containers/UserSettingsModalContainer';
 import ProjectAddModalContainer from '../../containers/ProjectAddModalContainer';
-import Background from '../Background';
 
 import styles from './Core.module.scss';
 
@@ -48,13 +47,6 @@ const Core = React.memo(
           <Loader active size="massive" />
         ) : (
           <>
-            {currentProject && currentProject.background && (
-              <Background
-                type={currentProject.background.type}
-                name={currentProject.background.name}
-                imageUrl={currentProject.backgroundImage && currentProject.backgroundImage.url}
-              />
-            )}
             <FixedContainer />
             <div
               style={{

@@ -1,9 +1,5 @@
-export const ProjectBackgroundTypes = {
-  GRADIENT: 'gradient',
-  IMAGE: 'image',
-};
-
 export const BoardMembershipRoles = {
+  OWNER: 'owner',
   EDITOR: 'editor',
   VIEWER: 'viewer',
 };

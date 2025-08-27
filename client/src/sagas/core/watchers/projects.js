@@ -17,9 +17,6 @@ export default function* projectsWatchers() {
     takeEvery(EntryActionTypes.PROJECT_UPDATE_HANDLE, ({ payload: { project } }) =>
       services.handleProjectUpdate(project),
     ),
-    takeEvery(EntryActionTypes.CURRENT_PROJECT_BACKGROUND_IMAGE_UPDATE, ({ payload: { data } }) =>
-      services.updateCurrentProjectBackgroundImage(data),
-    ),
     takeEvery(EntryActionTypes.CURRENT_PROJECT_DELETE, () => services.deleteCurrentProject()),
     takeEvery(EntryActionTypes.PROJECT_DELETE_HANDLE, ({ payload: { project } }) =>
       services.handleProjectDelete(project),

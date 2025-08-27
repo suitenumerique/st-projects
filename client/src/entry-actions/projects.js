@@ -28,13 +28,6 @@ const handleProjectUpdate = (project) => ({
   },
 });
 
-const updateCurrentProjectBackgroundImage = (data) => ({
-  type: EntryActionTypes.CURRENT_PROJECT_BACKGROUND_IMAGE_UPDATE,
-  payload: {
-    data,
-  },
-});
-
 const deleteCurrentProject = () => ({
   type: EntryActionTypes.CURRENT_PROJECT_DELETE,
   payload: {},
@@ -52,7 +45,6 @@ export default {
   handleProjectCreate,
   updateCurrentProject,
   handleProjectUpdate,
-  updateCurrentProjectBackgroundImage,
   deleteCurrentProject,
   handleProjectDelete,
 };

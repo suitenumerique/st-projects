@@ -10,6 +10,7 @@ import User from '../User';
 import Label from '../Label';
 import BoardMembershipsStep from '../BoardMembershipsStep';
 import LabelsStep from '../LabelsStep';
+import FiltersStep from '../FiltersStep';
 
 import InputOverride from '../InputOverride';
 
@@ -86,6 +87,7 @@ const Filters = React.memo(
       cancelSearch();
     }, [cancelSearch]);
 
+    const FiltersPopup = usePopup(FiltersStep);
     const BoardMembershipsPopup = usePopup(BoardMembershipsStep);
     const LabelsPopup = usePopup(LabelsStep);
 
@@ -93,6 +95,30 @@ const Filters = React.memo(
 
     return (
       <>
+        {/* {isCurrentUserMember && (
+          <span className={styles.filter}>
+            <FiltersPopup
+              allMemberships={allBoardMemberships}
+              allLabels={allLabels}
+              currentUserIds={users.map((user) => user.id)}
+              currentLabelIds={labels.map((label) => label.id)}
+              onUserSelect={onUserAdd}
+              onUserDeselect={onUserRemove}
+              onLabelSelect={onLabelAdd}
+              onLabelDeselect={onLabelRemove}
+              hideCloseButton
+            >
+              <button
+                type="button"
+                className={classNames(styles.filterButton, styles.filterButtonMembers)}
+              >
+                <span className="fr-icon-filter-line" aria-hidden="true" />
+                <span className={styles.filterTitle}>Filtres</span>
+              </button>
+            </FiltersPopup>
+          </span>
+        )} */}
+
         {isCurrentUserMember && (
           <span className={styles.filter}>
             <BoardMembershipsPopup
@@ -106,7 +132,7 @@ const Filters = React.memo(
                 type="button"
                 className={classNames(styles.filterButton, styles.filterButtonMembers)}
               >
-                <span className="fr-icon-user-line" aria-hidden="true" />
+                <span className="fr-icon-filter-line" aria-hidden="true" />
                 {users.length === 0 && <span className={styles.filterTitle}>Membres</span>}
                 {users.map((user) => (
                   <span key={user.id} className={styles.filterItem}>
@@ -135,7 +161,8 @@ const Filters = React.memo(
                 type="button"
                 className={classNames(styles.filterButton, styles.filterButtonLabels)}
               >
-                <Icon name="bookmark outline" className={styles.filterIcon} />
+                {/* <Icon name="bookmark outline" className={styles.filterIcon} /> */}
+                <span className="fr-icon-filter-line" aria-hidden="true" />
                 {labels.length === 0 && <span className={styles.filterTitle}>Etiquettes</span>}
                 {labels.map((label) => (
                   <span key={label.id} className={styles.filterItem}>

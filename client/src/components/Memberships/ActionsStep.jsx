@@ -106,7 +106,7 @@ const ActionsStep = React.memo(
           <div className={styles.name}>{membership.user.name}</div>
           <div className={styles.email}>{membership.user.email}</div>
         </span>
-        {permissionsSelectStep && canEdit && (
+        {permissionsSelectStep && canEdit && membership.role !== 'owner' && (
           <Button
             fluid
             content={t('action.editPermissions')}
@@ -114,23 +114,24 @@ const ActionsStep = React.memo(
             onClick={handleEditPermissionsClick}
           />
         )}
-        {membership.user.isCurrent
-          ? canLeave && (
-              <Button
-                fluid
-                content={t(leaveButtonContent)}
-                className={styles.button}
-                onClick={handleDeleteClick}
-              />
-            )
-          : canEdit && (
-              <Button
-                fluid
-                content={t(deleteButtonContent)}
-                className={styles.button}
-                onClick={handleDeleteClick}
-              />
-            )}
+        {membership.role !== 'owner' &&
+          (membership.user.isCurrent
+            ? canLeave && (
+                <Button
+                  fluid
+                  content={t(leaveButtonContent)}
+                  className={styles.button}
+                  onClick={handleDeleteClick}
+                />
+              )
+            : canEdit && (
+                <Button
+                  fluid
+                  content={t(deleteButtonContent)}
+                  className={styles.button}
+                  onClick={handleDeleteClick}
+                />
+              ))}
       </>
     );
 

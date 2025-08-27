@@ -2,7 +2,6 @@ import { attr, many } from 'redux-orm';
 
 import BaseModel from './BaseModel';
 import ActionTypes from '../constants/ActionTypes';
-import { ProjectBackgroundTypes } from '../constants/Enums';
 
 export default class extends BaseModel {
   static modelName = 'Project';
@@ -10,11 +9,6 @@ export default class extends BaseModel {
   static fields = {
     id: attr(),
     name: attr(),
-    background: attr(),
-    backgroundImage: attr(),
-    isBackgroundImageUpdating: attr({
-      getDefault: () => false,
-    }),
     managerUsers: many({
       to: 'User',
       through: 'ProjectManager',
@@ -58,35 +52,8 @@ export default class extends BaseModel {
         const project = Project.withId(payload.id);
         project.update(payload.data);
 
-        if (
-          payload.data.backgroundImage === null &&
-          project.background &&
-          project.background.type === ProjectBackgroundTypes.IMAGE
-        ) {
-          project.background = null;
-        }
-
         break;
       }
-      case ActionTypes.PROJECT_BACKGROUND_IMAGE_UPDATE:
-        Project.withId(payload.id).update({
-          isBackgroundImageUpdating: true,
-        });
-
-        break;
-      case ActionTypes.PROJECT_BACKGROUND_IMAGE_UPDATE__SUCCESS:
-        Project.withId(payload.project.id).update({
-          ...payload.project,
-          isBackgroundImageUpdating: false,
-        });
-
-        break;
-      case ActionTypes.PROJECT_BACKGROUND_IMAGE_UPDATE__FAILURE:
-        Project.withId(payload.id).update({
-          isBackgroundImageUpdating: false,
-        });
-
-        break;
       case ActionTypes.PROJECT_DELETE:
         Project.withId(payload.id).deleteWithRelated();
 

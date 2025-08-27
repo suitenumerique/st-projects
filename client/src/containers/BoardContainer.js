@@ -14,11 +14,14 @@ const mapStateToProps = (state) => {
   const isCurrentUserEditor =
     !!currentUserMembership && currentUserMembership.role === BoardMembershipRoles.EDITOR;
 
+  const isCurrentUserOwner =
+    !!currentUserMembership && currentUserMembership.role === BoardMembershipRoles.OWNER;
+
   return {
     currentBoard,
     listIds,
     isCardModalOpened: !!cardId,
-    canEdit: isCurrentUserEditor,
+    canEdit: isCurrentUserEditor || isCurrentUserOwner,
   };
 };
 

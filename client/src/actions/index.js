@@ -4,8 +4,8 @@ import login from './login';
 import core from './core';
 import modals from './modals';
 import users from './users';
-import projects from './projects';
-import projectManagers from './project-managers';
+// import projects from './projects';
+// import projectManagers from './project-managers';
 import boards from './boards';
 import boardMemberships from './board-memberships';
 import labels from './labels';
@@ -24,8 +24,8 @@ export default {
   ...core,
   ...modals,
   ...users,
-  ...projects,
-  ...projectManagers,
+  // ...projects,
+  // ...projectManagers,
   ...boards,
   ...boardMemberships,
   ...labels,

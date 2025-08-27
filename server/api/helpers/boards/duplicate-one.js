@@ -44,7 +44,7 @@ module.exports = {
     await BoardMembership.create({
       boardId: newBoard.id,
       userId: actorUser.id,
-      role: BoardMembership.Roles.EDITOR,
+      role: BoardMembership.Roles.OWNER,
     });
 
     // Create new labels

@@ -52,9 +52,10 @@ module.exports = {
       .getProjectPath(inputs.boardId)
       .intercept('pathNotFound', () => Errors.BOARD_NOT_FOUND);
 
-    const isProjectManager = await sails.helpers.users.isProjectManager(currentUser.id, project.id);
+    const isBoardEditor = await sails.helpers.users.isBoardEditor(currentUser.id, board.id);
+    const isBoardOwner = await sails.helpers.users.isBoardOwner(currentUser.id, board.id);
 
-    if (!isProjectManager) {
+    if (!isBoardOwner && !isBoardEditor) {
       throw Errors.BOARD_NOT_FOUND; // Forbidden
     }
 

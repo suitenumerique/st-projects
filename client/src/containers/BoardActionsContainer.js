@@ -8,7 +8,6 @@ import BoardActions from '../components/BoardActions';
 
 const mapStateToProps = (state) => {
   const allUsers = selectors.selectUsers(state);
-  const isCurrentUserManager = selectors.selectIsCurrentUserManagerForCurrentProject(state);
   const memberships = selectors.selectMembershipsForCurrentBoard(state);
   const labels = selectors.selectLabelsForCurrentBoard(state);
   const filterUsers = selectors.selectFilterUsersForCurrentBoard(state);
@@ -22,6 +21,9 @@ const mapStateToProps = (state) => {
   const isCurrentUserEditor =
     !!currentUserMembership && currentUserMembership.role === BoardMembershipRoles.EDITOR;
 
+  const isCurrentUserOwner =
+    !!currentUserMembership && currentUserMembership.role === BoardMembershipRoles.OWNER;
+
   const isCurrentUserMember = !!currentUserMembership;
 
   return {
@@ -31,8 +33,8 @@ const mapStateToProps = (state) => {
     filterLabels,
     filterText,
     allUsers,
-    canEdit: isCurrentUserEditor,
-    canEditMemberships: isCurrentUserManager,
+    canEdit: isCurrentUserOwner,
+    canEditMemberships: isCurrentUserEditor || isCurrentUserOwner,
     isPublic: currentBoard ? currentBoard.isPublic : false,
     currentUser,
     currentBoardId,

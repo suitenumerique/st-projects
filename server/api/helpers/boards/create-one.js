@@ -98,7 +98,7 @@ module.exports = {
     const boardMembership = await BoardMembership.create({
       boardId: board.id,
       userId: inputs.actorUser.id,
-      role: BoardMembership.Roles.EDITOR,
+      role: BoardMembership.Roles.OWNER,
     }).fetch();
 
     projectManagerUserIds.forEach((userId) => {

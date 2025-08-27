@@ -1,5 +1,3 @@
-import upperFirst from 'lodash/upperFirst';
-import camelCase from 'lodash/camelCase';
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -8,11 +6,9 @@ import { Link } from 'react-router-dom';
 import { Container, Grid } from 'semantic-ui-react';
 
 import Paths from '../../constants/Paths';
-import { ProjectBackgroundTypes } from '../../constants/Enums';
 import { ReactComponent as PlusIcon } from '../../assets/images/plus-icon.svg';
 
 import styles from './Projects.module.scss';
-import globalStyles from '../../styles.module.scss';
 
 const Projects = React.memo(({ items, canAdd, onAdd }) => {
   const [t] = useTranslation();
@@ -29,21 +25,7 @@ const Projects = React.memo(({ items, canAdd, onAdd }) => {
                   : Paths.PROJECTS.replace(':id', item.id)
               }
             >
-              <div
-                className={classNames(
-                  styles.card,
-                  styles.open,
-                  item.background &&
-                    item.background.type === ProjectBackgroundTypes.GRADIENT &&
-                    globalStyles[`background${upperFirst(camelCase(item.background.name))}`],
-                )}
-                style={{
-                  background:
-                    item.background &&
-                    item.background.type === 'image' &&
-                    `url("${item.backgroundImage.coverUrl}") center / cover`,
-                }}
-              >
+              <div className={classNames(styles.card, styles.open)}>
                 {item.notificationsTotal > 0 && (
                   <span className={styles.notification}>{item.notificationsTotal}</span>
                 )}

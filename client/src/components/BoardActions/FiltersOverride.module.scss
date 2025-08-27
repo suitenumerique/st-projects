@@ -28,6 +28,12 @@
       }
     }
 
+    &.filterButtonLabels {
+      span::before {
+        --icon-size: 1rem;
+      }
+    }
+
   }
 
   .filterIcon {

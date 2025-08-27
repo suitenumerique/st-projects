@@ -217,6 +217,37 @@ export const selectIsPrivateBoard = createSelector(
   },
 );
 
+export const selectAllBoards = createSelector(
+  orm,
+  (state) => selectCurrentUserId(state),
+  ({ Board, Project }, currentUserId) => {
+    const allBoards = Board.all().toRefArray();
+
+    const allBoardsMapped = allBoards.map((board) => {
+      const boardModel = Board.withId(board.id);
+      const memberships = boardModel.getOrderedMembershipsModelArray();
+      const project = Project.withId(boardModel.projectId);
+
+      if (!project) {
+        return null;
+      }
+
+      return {
+        ...board,
+        project: project.ref,
+        isPrivate:
+          !board.isPublic && memberships.length === 1 && memberships[0].user.id === currentUserId,
+        isOwner:
+          memberships.find(
+            (membership) => membership.user.id === currentUserId && membership.role === 'owner',
+          ) !== undefined,
+      };
+    });
+
+    return allBoardsMapped.filter((board) => board !== null);
+  },
+);
+
 export default {
   makeSelectBoardById,
   selectBoardById,
@@ -230,4 +261,5 @@ export default {
   selectFilterTextForCurrentBoard,
   selectIsBoardWithIdExists,
   selectIsPrivateBoard,
+  selectAllBoards,
 };

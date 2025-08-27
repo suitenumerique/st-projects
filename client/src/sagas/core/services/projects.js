@@ -69,26 +69,6 @@ export function* handleProjectUpdate(project) {
   yield put(actions.handleProjectUpdate(project));
 }
 
-export function* updateProjectBackgroundImage(id, data) {
-  yield put(actions.updateProjectBackgroundImage(id));
-
-  let project;
-  try {
-    ({ item: project } = yield call(request, api.updateProjectBackgroundImage, id, data));
-  } catch (error) {
-    yield put(actions.updateProjectBackgroundImage.failure(id, error));
-    return;
-  }
-
-  yield put(actions.updateProjectBackgroundImage.success(project));
-}
-
-export function* updateCurrentProjectBackgroundImage(data) {
-  const { projectId } = yield select(selectors.selectPath);
-
-  yield call(updateProjectBackgroundImage, projectId, data);
-}
-
 export function* deleteProject(id) {
   const { projectId } = yield select(selectors.selectPath);
 
@@ -131,8 +111,6 @@ export default {
   updateProject,
   updateCurrentProject,
   handleProjectUpdate,
-  updateProjectBackgroundImage,
-  updateCurrentProjectBackgroundImage,
   deleteProject,
   deleteCurrentProject,
   handleProjectDelete,

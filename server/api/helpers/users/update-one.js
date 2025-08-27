@@ -134,14 +134,6 @@ module.exports = {
       }
 
       if (!isOnlyPasswordChange) {
-        /* const projectIds = await sails.helpers.users.getManagerProjectIds(user.id);
-
-        const userIds = _.union(
-          [user.id],
-          await sails.helpers.users.getAdminIds(),
-          await sails.helpers.projects.getManagerAndBoardMemberUserIds(projectIds),
-        ); */
-
         const users = await sails.helpers.users.getMany();
         const userIds = sails.helpers.utils.mapRecords(users);
 
