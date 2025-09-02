@@ -69,7 +69,7 @@ async function migrateProjectSiret() {
 
           // update the first created board_membership to owner
           // eslint-disable-next-line no-await-in-loop
-          await transaction('board_membership').orderBy('created_at', 'asc').first().update({
+          await transaction('board_membership').where('id', boardMemberships[0].id).update({
             role: 'owner',
             updated_at: new Date(),
           });
