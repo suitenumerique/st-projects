@@ -187,15 +187,15 @@ async function migrateProjectSiret() {
                 userName: projectManager.name,
               });
               // Create board membership with owner role
-              // // eslint-disable-next-line no-await-in-loop
-              // await transaction('board_membership').insert({ /// HHERE
-              //   board_id: board.id,
-              //   user_id: projectManagerUserId,
-              //   role: 'owner',
-              //   can_comment: true,
-              //   created_at: new Date(),
-              //   updated_at: new Date(),
-              // });
+              // eslint-disable-next-line no-await-in-loop
+              await transaction('board_membership').insert({
+                board_id: board.id,
+                user_id: projectManagerUserId,
+                role: 'owner',
+                can_comment: true,
+                created_at: new Date(),
+                updated_at: new Date(),
+              });
             } else {
               // Update existing board membership to owner role
               console.log('info', `Updating board membership role to owner`, {
@@ -205,12 +205,12 @@ async function migrateProjectSiret() {
                 userName: projectManager.name,
                 oldRole: boardMembership.role,
               });
-              // // eslint-disable-next-line no-await-in-loop
-              // await transaction('board_membership').where('id', boardMembership.id).update({ // HHERE
-              //   role: 'owner',
-              //   can_comment: true,
-              //   updated_at: new Date(),
-              // });
+              // eslint-disable-next-line no-await-in-loop
+              await transaction('board_membership').where('id', boardMembership.id).update({
+                role: 'owner',
+                can_comment: true,
+                updated_at: new Date(),
+              });
             }
             // Update board's project_id to target project
             console.log(
@@ -223,11 +223,11 @@ async function migrateProjectSiret() {
                 newProjectId: targetProject.id,
               },
             );
-            // // eslint-disable-next-line no-await-in-loop
-            // await transaction('board').where('id', board.id).update({ // HHERE
-            //   project_id: targetProject.id,
-            //   updated_at: new Date(),
-            // });
+            // eslint-disable-next-line no-await-in-loop
+            await transaction('board').where('id', board.id).update({
+              project_id: targetProject.id,
+              updated_at: new Date(),
+            });
           } catch (boardError) {
             console.log('error', `Error processing board ${board.name}`, {
               boardId: board.id,
@@ -237,17 +237,6 @@ async function migrateProjectSiret() {
             errorCount += 1;
           }
         }
-        // Update the original project to have the SIRET
-        console.log('info', `Updating project ${project.name} with SIRET ${projectManager.siret}`, {
-          projectId: project.id,
-          projectName: project.name,
-          siret: projectManager.siret,
-        });
-        // // eslint-disable-next-line no-await-in-loop
-        // await transaction('project').where('id', project.id).update({ // HHERE
-        //   siret: projectManager.siret,
-        //   updated_at: new Date(),
-        // });
 
         processedCount += 1;
         console.log('info', `Successfully processed project: ${project.name}`, {
