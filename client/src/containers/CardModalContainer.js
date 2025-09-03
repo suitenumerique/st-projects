@@ -43,6 +43,7 @@ const mapStateToProps = (state) => {
 
   if (currentUserMembership) {
     isCurrentUserEditor = currentUserMembership.role === BoardMembershipRoles.EDITOR;
+    isCurrentUserOwner = currentUserMembership.role === BoardMembershipRoles.OWNER;
     isCurrentUserEditorOrCanComment = isCurrentUserEditor || currentUserMembership.canComment;
   }
 
@@ -68,8 +69,8 @@ const mapStateToProps = (state) => {
     allProjectsToLists,
     allBoardMemberships,
     allLabels,
-    canEdit: isCurrentUserEditor,
-    canEditCommentActivities: isCurrentUserEditorOrCanComment,
+    canEdit: isCurrentUserEditor || isCurrentUserOwner,
+    canEditCommentActivities: isCurrentUserEditorOrCanComment || isCurrentUserOwner,
     canEditAllCommentActivities: isCurrentUserManager,
   };
 };

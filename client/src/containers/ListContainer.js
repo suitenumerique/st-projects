@@ -18,6 +18,9 @@ const makeMapStateToProps = () => {
     const isCurrentUserEditor =
       !!currentUserMembership && currentUserMembership.role === BoardMembershipRoles.EDITOR;
 
+    const isCurrentUserOwner =
+      !!currentUserMembership && currentUserMembership.role === BoardMembershipRoles.EDITOR;
+
     return {
       id,
       index,
@@ -25,7 +28,7 @@ const makeMapStateToProps = () => {
       color,
       isPersisted,
       cardIds,
-      canEdit: isCurrentUserEditor,
+      canEdit: isCurrentUserEditor || isCurrentUserOwner,
       isFromTemplate,
     };
   };
