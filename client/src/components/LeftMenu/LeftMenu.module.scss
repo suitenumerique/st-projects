@@ -256,6 +256,13 @@
     }
   }
 
+  .emptySpace {
+    font-size: 14px;
+    font-weight: 500;
+    color: $middle-grey;
+    text-align: center;
+  }
+
   .boardActive {
     background-color: $background-grey-hover !important;
     border-radius: 0.25rem;
