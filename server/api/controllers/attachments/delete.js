@@ -44,7 +44,9 @@ module.exports = {
       throw Errors.ATTACHMENT_NOT_FOUND; // Forbidden
     }
 
-    if (boardMembership.role !== BoardMembership.Roles.EDITOR) {
+    if (
+      ![BoardMembership.Roles.EDITOR, BoardMembership.Roles.OWNER].includes(boardMembership.role)
+    ) {
       throw Errors.NOT_ENOUGH_RIGHTS;
     }
 

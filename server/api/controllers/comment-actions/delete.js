@@ -54,7 +54,10 @@ module.exports = {
       throw Errors.COMMENT_ACTION_NOT_FOUND; // Forbidden
     }
 
-    if (boardMembership.role !== BoardMembership.Roles.EDITOR && !boardMembership.canComment) {
+    if (
+      ![BoardMembership.Roles.EDITOR, BoardMembership.Roles.OWNER].includes(boardMembership.role) &&
+      !boardMembership.canComment
+    ) {
       throw Errors.NOT_ENOUGH_RIGHTS;
     }
     // }
