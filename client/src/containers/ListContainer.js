@@ -19,7 +19,7 @@ const makeMapStateToProps = () => {
       !!currentUserMembership && currentUserMembership.role === BoardMembershipRoles.EDITOR;
 
     const isCurrentUserOwner =
-      !!currentUserMembership && currentUserMembership.role === BoardMembershipRoles.EDITOR;
+      !!currentUserMembership && currentUserMembership.role === BoardMembershipRoles.OWNER;
 
     return {
       id,

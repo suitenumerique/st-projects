@@ -39,6 +39,7 @@ const mapStateToProps = (state) => {
   const activities = selectors.selectActivitiesForCurrentCard(state);
 
   let isCurrentUserEditor = false;
+  let isCurrentUserOwner = false;
   let isCurrentUserEditorOrCanComment = false;
 
   if (currentUserMembership) {
