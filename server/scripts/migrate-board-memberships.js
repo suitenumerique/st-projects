@@ -32,7 +32,9 @@ async function migrateProjectSiret() {
     // eslint-disable-next-line no-restricted-syntax
     for (const board of boards) {
       // eslint-disable-next-line no-await-in-loop
-      const boardMemberships = await transaction('board_membership').where('board_id', board.id);
+      const boardMemberships = await transaction('board_membership')
+        .where('board_id', board.id)
+        .orderBy('created_at', 'asc');
 
       if (boardMemberships.length === 0) {
         console.log('info', `No board memberships found for board ${board.name}`, {
