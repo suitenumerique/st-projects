@@ -32,7 +32,8 @@ module.exports.custom = {
 
   userAvatarsPathSegment: 'public/user-avatars',
   projectBackgroundImagesPathSegment: 'public/project-background-images',
-  attachmentsPathSegment: 'private/attachments',
+  attachmentsPathSegment:
+    sails.config.environment === 'production' ? '/attachments' : 'private/attachments',
 
   defaultAdminEmail:
     process.env.DEFAULT_ADMIN_EMAIL && process.env.DEFAULT_ADMIN_EMAIL.toLowerCase(),

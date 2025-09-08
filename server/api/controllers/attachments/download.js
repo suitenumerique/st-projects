@@ -31,7 +31,7 @@ module.exports = {
     const isBoardMember = await sails.helpers.users.isBoardMember(currentUser.id, card.boardId);
 
     if (!isBoardMember) {
-      throw Errors.ATTACHMENT_NOT_FOUND; // Forbidden
+      throw Errors.ATTACHMENT_NOT_FOUND;
     }
 
     const fileManager = sails.hooks['file-manager'].getInstance();
