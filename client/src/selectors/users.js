@@ -126,6 +126,21 @@ export const selectNotificationsForCurrentUser = createSelector(
   },
 );
 
+export const selectUserDefaultProject = createSelector(
+  orm,
+  (state) => selectCurrentUserId(state),
+  ({ Project, User }, id) => {
+    const userModel = User.withId(id);
+
+    if (!userModel) {
+      return userModel;
+    }
+
+    const allProjects = Project.all().toRefArray();
+    return allProjects.find((project) => project.siret === userModel.siret);
+  },
+);
+
 export default {
   selectCurrentUserId,
   selectUsers,
@@ -134,4 +149,5 @@ export default {
   selectProjectsForCurrentUser,
   selectProjectsToListsForCurrentUser,
   selectNotificationsForCurrentUser,
+  selectUserDefaultProject,
 };

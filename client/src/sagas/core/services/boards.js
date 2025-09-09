@@ -53,9 +53,8 @@ export function* createBoard(projectId, { import: boardImport, ...data }) {
 }
 
 export function* createBoardInCurrentProject(data) {
-  const { projectId } = yield select(selectors.selectPath);
-
-  yield call(createBoard, projectId, data);
+  const currentProject = yield select(selectors.selectUserDefaultProject);
+  yield call(createBoard, currentProject.id, data);
 }
 
 export function* handleBoardCreate(board, requestId) {
