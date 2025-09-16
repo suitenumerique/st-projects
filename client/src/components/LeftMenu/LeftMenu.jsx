@@ -133,7 +133,7 @@ const LeftMenu = React.memo(
           <div className={styles.topBar}>
             <AddPopup
               onCreate={onBoardAdd}
-              onCreateFromTemplate={(id) => onBoardDuplicate(id, currentProject.id)}
+              onCreateFromTemplate={(id) => onBoardDuplicate(id)}
               templateBoards={templateBoards}
             >
               <ButtonOverride>

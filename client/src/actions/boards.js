@@ -31,11 +31,10 @@ const handleBoardCreate = (board) => ({
   },
 });
 
-const duplicateBoard = (boardId, targetProjectId) => ({
+const duplicateBoard = (boardId) => ({
   type: ActionTypes.BOARD_DUPLICATE,
   payload: {
     boardId,
-    targetProjectId,
   },
 });
 

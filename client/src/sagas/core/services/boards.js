@@ -65,12 +65,13 @@ export function* handleBoardCreate(board, requestId) {
   }
 }
 
-export function* duplicateBoard(boardId, targetProjectId) {
-  yield put(actions.duplicateBoard(boardId, targetProjectId));
+export function* duplicateBoard(boardId) {
+  const currentProject = yield select(selectors.selectUserDefaultProject);
+  yield put(actions.duplicateBoard(boardId, currentProject.id));
 
   let board;
   try {
-    ({ item: board } = yield call(request, api.duplicateBoard, boardId, targetProjectId));
+    ({ item: board } = yield call(request, api.duplicateBoard, boardId, currentProject.id));
   } catch (error) {
     yield put(actions.duplicateBoard.failure(boardId, error));
     return;

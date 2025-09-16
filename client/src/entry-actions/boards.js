@@ -15,11 +15,10 @@ const handleBoardCreate = (board, requestId) => ({
   },
 });
 
-const duplicateBoard = (boardId, targetProjectId) => ({
+const duplicateBoard = (boardId) => ({
   type: EntryActionTypes.BOARD_DUPLICATE,
   payload: {
     boardId,
-    targetProjectId,
   },
 });
 
