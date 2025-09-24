@@ -36,17 +36,12 @@ const LeftMenu = React.memo(
     onBoardDelete,
     onBoardDuplicate,
     templateBoards,
-    templateProjectId,
   }) => {
     const [projectsAndBoards, setProjectsAndBoards] = useState([]);
 
     const ProjectPopup = usePopup(ProjectStep);
     const AddPopup = usePopup(AddStep);
     const EditPopup = usePopup(EditStep);
-
-    const projectIsEditable = useMemo(() => {
-      return !currentProject?.siret && currentProject?.id !== templateProjectId;
-    }, [currentProject, templateProjectId]);
 
     useEffect(() => {
       const state = store.getState();
@@ -317,7 +312,6 @@ LeftMenu.propTypes = {
   currentUser: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   /* eslint-disable react/forbid-prop-types */
   templateBoards: PropTypes.array.isRequired,
-  templateProjectId: PropTypes.string.isRequired,
 };
 
 LeftMenu.defaultProps = {
