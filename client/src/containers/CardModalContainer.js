@@ -11,7 +11,6 @@ import CardModal from '../components/CardModal';
 
 const mapStateToProps = (state) => {
   const { projectId } = selectors.selectPath(state);
-  const allProjectsToLists = selectors.selectProjectsToListsForCurrentUser(state);
   const isCurrentUserManager = selectors.selectIsCurrentUserManagerForCurrentProject(state);
   const allBoardMemberships = selectors.selectMembershipsForCurrentBoard(state);
   const allLabels = selectors.selectLabelsForCurrentBoard(state);
@@ -32,11 +31,13 @@ const mapStateToProps = (state) => {
     listId,
   } = selectors.selectCurrentCard(state);
 
+  const allBoards = selectors.selectBoardsForCurrentProject(state);
   const users = selectors.selectUsersForCurrentCard(state);
   const labels = selectors.selectLabelsForCurrentCard(state);
   const tasks = selectors.selectTasksForCurrentCard(state);
   const attachments = selectors.selectAttachmentsForCurrentCard(state);
   const activities = selectors.selectActivitiesForCurrentCard(state);
+  const lists = selectors.selectListsForCurrentBoard(state);
 
   let isCurrentUserEditor = false;
   let isCurrentUserOwner = false;
@@ -62,12 +63,13 @@ const mapStateToProps = (state) => {
     listId,
     boardId,
     projectId,
+    boards: allBoards,
+    lists,
     users,
     labels,
     tasks,
     attachments,
     activities,
-    allProjectsToLists,
     allBoardMemberships,
     allLabels,
     canEdit: isCurrentUserEditor || isCurrentUserOwner,

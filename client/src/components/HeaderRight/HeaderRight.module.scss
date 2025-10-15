@@ -1,0 +1,16 @@
+:global(#app) {
+
+  .notificationButton {
+    position: relative;
+  }
+
+  .notification {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #eb5a46;
+    color: #fff;
+    border-radius: 50%;
+    padding: 4px;
+  }
+}

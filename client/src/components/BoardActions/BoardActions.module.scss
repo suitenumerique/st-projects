@@ -1,26 +1,23 @@
 :global(#app) {
-  .action {
-    align-items: center;
-    display: flex;
-    flex: 0 0 auto;
+
+  .wrapper {
+    background-color: #fff;
+    padding: 0.75rem 1.25rem;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .actions {
     align-items: center;
     display: flex;
-    gap: 20px;
     justify-content: space-between;
-    margin: 20px 20px;
+    margin-bottom: 0.75rem;
   }
 
-  .wrapper {
-    overflow-x: auto;
-    overflow-y: hidden;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
+  .action {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
   }
+
 }

@@ -1,53 +1,50 @@
-import React, { useCallback } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
+// import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Menu } from 'semantic-ui-react';
-import { FilePicker, Popup } from '../../lib/custom-ui';
+
+import PopoverHeader from '../../ui/Popover/PopoverHeader';
+import Menu from '../../ui/Menu';
+// import FilePicker from '../../ui/FilePicker';
 
 import styles from './AttachmentAddStep.module.scss';
 
-const AttachmentAddStep = React.memo(({ onCreate, onClose }) => {
+const AttachmentAddStep = React.memo(() => {
+  // { onCreate, onClose }
   const [t] = useTranslation();
 
-  const handleFileSelect = useCallback(
-    (file) => {
-      onCreate({
-        file,
-      });
-      onClose();
-    },
-    [onCreate, onClose],
-  );
+  // const handleFileSelect = useCallback(
+  //   (file) => {
+  //     onCreate({
+  //       file,
+  //     });
+  //     onClose();
+  //   },
+  //   [onCreate, onClose],
+  // );
 
   return (
     <>
-      <Popup.Header>
-        {t('common.addAttachment', {
+      <PopoverHeader
+        title={t('common.addAttachment', {
           context: 'title',
         })}
-      </Popup.Header>
-      <Popup.Content>
-        <Menu secondary vertical className={styles.menu}>
-          <FilePicker multiple onSelect={handleFileSelect}>
-            <Menu.Item className={styles.menuItem}>
-              {t('common.fromComputer', {
-                context: 'title',
-              })}
-            </Menu.Item>
-          </FilePicker>
-        </Menu>
-        {/* <hr className={styles.divider} /> */}
-        {/* <div className={styles.tip}>
-          {t('common.pressPasteShortcutToAddAttachmentFromClipboard')}
-        </div> */}
-      </Popup.Content>
+      />
+      <Menu secondary vertical className={styles.menu}>
+        {/* <FilePicker multiple onSelect={handleFileSelect}>
+          <Menu.Item className={styles.menuItem}>
+            {t('common.fromComputer', {
+              context: 'title',
+            })}
+          </Menu.Item>
+        </FilePicker> */}
+      </Menu>
     </>
   );
 });
 
-AttachmentAddStep.propTypes = {
-  onCreate: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
-};
+// AttachmentAddStep.propTypes = {
+//   onCreate: PropTypes.func.isRequired,
+//   onClose: PropTypes.func.isRequired,
+// };
 
 export default AttachmentAddStep;

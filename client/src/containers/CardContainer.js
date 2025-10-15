@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import selectors from '../selectors';
 import entryActions from '../entry-actions';
 import { BoardMembershipRoles } from '../constants/Enums';
-import Card from '../components/Card';
+import Card from '../components/Board/Card';
 
 const makeMapStateToProps = () => {
   const selectCardById = selectors.makeSelectCardById();
@@ -15,7 +15,6 @@ const makeMapStateToProps = () => {
 
   return (state, { id, index, isFromTemplate }) => {
     const { projectId } = selectors.selectPath(state);
-    const allProjectsToLists = selectors.selectProjectsToListsForCurrentUser(state);
     const allBoardMemberships = selectors.selectMembershipsForCurrentBoard(state);
     const allLabels = selectors.selectLabelsForCurrentBoard(state);
     const currentUserMembership = selectors.selectCurrentUserMembershipForCurrentBoard(state);
@@ -65,7 +64,6 @@ const makeMapStateToProps = () => {
       users,
       labels,
       tasks,
-      allProjectsToLists,
       allBoardMemberships,
       allLabels,
       canEdit: isCurrentUserEditor || isCurrentUserOwner,

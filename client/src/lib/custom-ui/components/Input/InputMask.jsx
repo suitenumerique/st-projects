@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input } from 'semantic-ui-react';
+import { Input } from '../../../migration-helpers';
 
 import MaskedInput from './MaskedInput';
 

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import selectors from '../selectors';
 import entryActions from '../entry-actions';
 import { BoardMembershipRoles } from '../constants/Enums';
-import List from '../components/List';
+import Column from '../components/Board/Column';
 
 const makeMapStateToProps = () => {
   const selectListById = selectors.makeSelectListById();
@@ -45,4 +45,4 @@ const mapDispatchToProps = (dispatch, { id }) =>
     dispatch,
   );
 
-export default connect(makeMapStateToProps, mapDispatchToProps)(List);
+export default connect(makeMapStateToProps, mapDispatchToProps)(Column);

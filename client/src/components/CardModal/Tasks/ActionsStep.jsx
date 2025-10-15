@@ -1,11 +1,12 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Menu } from 'semantic-ui-react';
-import { Popup } from '../../../lib/custom-ui';
 
 import { useSteps } from '../../../hooks';
-import DeleteStep from '../../DeleteStep';
+import DeleteStep from '../../../steps/DeleteStep/DeleteStep';
+import PopoverHeader from '../../../ui/Popover/PopoverHeader';
+import Menu from '../../../ui/Menu';
+import MenuItem from '../../../ui/Menu/MenuItem';
 
 import styles from './ActionsStep.module.scss';
 
@@ -40,25 +41,23 @@ const ActionsStep = React.memo(({ onNameEdit, onDelete, onClose }) => {
 
   return (
     <>
-      <Popup.Header>
-        {t('common.taskActions', {
+      <PopoverHeader
+        title={t('common.taskActions', {
           context: 'title',
         })}
-      </Popup.Header>
-      <Popup.Content>
-        <Menu secondary vertical className={styles.menu}>
-          <Menu.Item className={styles.menuItem} onClick={handleEditNameClick}>
-            {t('action.editDescription', {
-              context: 'title',
-            })}
-          </Menu.Item>
-          <Menu.Item className={styles.menuItem} onClick={handleDeleteClick}>
-            {t('action.deleteTask', {
-              context: 'title',
-            })}
-          </Menu.Item>
-        </Menu>
-      </Popup.Content>
+      />
+      <Menu className={styles.menu}>
+        <MenuItem className={styles.menuItem} onClick={handleEditNameClick}>
+          {t('action.editDescription', {
+            context: 'title',
+          })}
+        </MenuItem>
+        <MenuItem className={styles.menuItem} onClick={handleDeleteClick}>
+          {t('action.deleteTask', {
+            context: 'title',
+          })}
+        </MenuItem>
+      </Menu>
     </>
   );
 });

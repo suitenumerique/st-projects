@@ -1,28 +1,28 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button, Comment, Icon, Loader, Visibility } from 'semantic-ui-react';
+import { Button, Icon, Loader, Visibility } from '../../../lib/migration-helpers';
 
-import { ActivityTypes } from '../../../constants/Enums';
+// import { ActivityTypes } from '../../../constants/Enums';
 import CommentAdd from './CommentAdd';
-import Item from './Item';
+// import Item from './Item';
 
 import styles from './Activities.module.scss';
 
 const Activities = React.memo(
   ({
-    items,
+    // items,
     isFetching,
     isAllFetched,
     isDetailsVisible,
     isDetailsFetching,
     canEdit,
-    canEditAllComments,
+    // canEditAllComments,
     onFetch,
     onDetailsToggle,
     onCommentCreate,
-    onCommentUpdate,
-    onCommentDelete,
+    // onCommentUpdate,
+    // onCommentDelete,
   }) => {
     const [t] = useTranslation();
 
@@ -30,19 +30,19 @@ const Activities = React.memo(
       onDetailsToggle(!isDetailsVisible);
     }, [isDetailsVisible, onDetailsToggle]);
 
-    const handleCommentUpdate = useCallback(
-      (id, data) => {
-        onCommentUpdate(id, data);
-      },
-      [onCommentUpdate],
-    );
+    // const handleCommentUpdate = useCallback(
+    //   (id, data) => {
+    //     onCommentUpdate(id, data);
+    //   },
+    //   [onCommentUpdate],
+    // );
 
-    const handleCommentDelete = useCallback(
-      (id) => {
-        onCommentDelete(id);
-      },
-      [onCommentDelete],
-    );
+    // const handleCommentDelete = useCallback(
+    //   (id) => {
+    //     onCommentDelete(id);
+    //   },
+    //   [onCommentDelete],
+    // );
 
     return (
       <div className={styles.contentModule}>
@@ -58,7 +58,7 @@ const Activities = React.memo(
           </div>
           {canEdit && <CommentAdd onCreate={onCommentCreate} />}
           <div className={styles.wrapper}>
-            <Comment.Group>
+            {/* <Comment.Group>
               {items.map((item) =>
                 item.type === ActivityTypes.COMMENT_CARD ? (
                   <Item.Comment
@@ -81,7 +81,7 @@ const Activities = React.memo(
                   />
                 ),
               )}
-            </Comment.Group>
+            </Comment.Group> */}
           </div>
           {isFetching || isDetailsFetching ? (
             <Loader active inverted inline="centered" size="small" className={styles.loader} />
@@ -95,18 +95,18 @@ const Activities = React.memo(
 );
 
 Activities.propTypes = {
-  items: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  // items: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   isFetching: PropTypes.bool.isRequired,
   isAllFetched: PropTypes.bool.isRequired,
   isDetailsVisible: PropTypes.bool.isRequired,
   isDetailsFetching: PropTypes.bool.isRequired,
   canEdit: PropTypes.bool.isRequired,
-  canEditAllComments: PropTypes.bool.isRequired,
+  // canEditAllComments: PropTypes.bool.isRequired,
   onFetch: PropTypes.func.isRequired,
   onDetailsToggle: PropTypes.func.isRequired,
   onCommentCreate: PropTypes.func.isRequired,
-  onCommentUpdate: PropTypes.func.isRequired,
-  onCommentDelete: PropTypes.func.isRequired,
+  // onCommentUpdate: PropTypes.func.isRequired,
+  // onCommentDelete: PropTypes.func.isRequired,
 };
 
 export default Activities;

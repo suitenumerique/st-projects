@@ -13,7 +13,6 @@ const mapStateToProps = (state) => {
   const filterUsers = selectors.selectFilterUsersForCurrentBoard(state);
   const filterLabels = selectors.selectFilterLabelsForCurrentBoard(state);
   const filterText = selectors.selectFilterTextForCurrentBoard(state);
-  const currentUser = selectors.selectCurrentUser(state);
   const currentUserMembership = selectors.selectCurrentUserMembershipForCurrentBoard(state);
   const currentBoard = selectors.selectCurrentBoard(state);
   const currentBoardId = currentBoard ? currentBoard.id : null;
@@ -36,7 +35,6 @@ const mapStateToProps = (state) => {
     canEdit: isCurrentUserOwner,
     canEditMemberships: isCurrentUserEditor || isCurrentUserOwner,
     isPublic: currentBoard ? currentBoard.isPublic : false,
-    currentUser,
     currentBoardId,
     isCurrentUserMember,
   };

@@ -3,12 +3,12 @@ import camelCase from 'lodash/camelCase';
 import upperFirst from 'lodash/upperFirst';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button } from 'semantic-ui-react';
+import { Icon } from '@gouvfr-lasuite/ui-kit';
 import { useTranslation } from 'react-i18next';
 
-import ButtonOverride from '../ButtonOverride';
+import { Button } from '@openfun/cunningham-react';
 
-import globalStyles from '../../styles.module.scss';
+import globalStyles from '../../assets/styles/styles.module.scss';
 import styles from './ColorPicker.module.scss';
 
 const ColorPicker = React.memo(({ current, onChange, colors, allowDeletion }) => {
@@ -28,13 +28,14 @@ const ColorPicker = React.memo(({ current, onChange, colors, allowDeletion }) =>
               globalStyles[`background${upperFirst(camelCase(color))}`],
             )}
             onClick={onChange}
+            icon={color === current && <Icon name="check" />}
           />
         ))}
       </div>
       {current && allowDeletion && (
-        <ButtonOverride priority="secondary" value={undefined} onClick={onChange}>
+        <Button color="secondary" onClick={onChange}>
           {t('action.removeColor')}
-        </ButtonOverride>
+        </Button>
       )}
     </>
   );

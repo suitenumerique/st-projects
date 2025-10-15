@@ -120,6 +120,7 @@ export default {
       memberActions_title: 'Actions des membres',
       minutes: 'Minutes',
       moveCard_title: 'Déplacer la carte',
+      myAccount: 'Mon compte',
       name: 'Nom',
       newestFirst: 'Le plus récent en premier',
       newEmail: 'Nouvel e-mail',

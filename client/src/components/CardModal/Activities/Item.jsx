@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation, Trans } from 'react-i18next';
-import { Comment } from 'semantic-ui-react';
+import { Comment } from '../../../lib/migration-helpers';
 
 import getDateFormat from '../../../utils/get-date-format';
 import { ActivityTypes } from '../../../constants/Enums';

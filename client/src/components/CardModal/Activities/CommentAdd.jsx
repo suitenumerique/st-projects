@@ -2,10 +2,8 @@ import React, { useCallback, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import TextareaAutosize from 'react-textarea-autosize';
-import { Button, Form, TextArea } from 'semantic-ui-react';
+import { Button } from '@openfun/cunningham-react';
 import { useDidUpdate, useToggle } from '../../../lib/hooks';
-
-import ButtonOverride from '../../ButtonOverride';
 
 import { useClosableForm, useForm } from '../../../hooks';
 
@@ -68,8 +66,8 @@ const CommentAdd = React.memo(({ onCreate }) => {
   }, [selectTextFieldState]);
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <TextArea
+    <form onSubmit={handleSubmit}>
+      <TextareaAutosize
         ref={textField}
         as={TextareaAutosize}
         name="text"
@@ -85,23 +83,17 @@ const CommentAdd = React.memo(({ onCreate }) => {
       />
       {isOpened && (
         <div className={styles.controls}>
-          <ButtonOverride
+          <Button
             type="submit"
-            priority="primary"
+            color="primary"
             onMouseOver={handleControlMouseOver}
             onMouseOut={handleControlMouseOut}
           >
             {t('action.addComment')}
-          </ButtonOverride>
-          {/* <Button
-            positive
-            content={t('action.addComment')}
-            onMouseOver={handleControlMouseOver}
-            onMouseOut={handleControlMouseOut}
-          /> */}
+          </Button>
         </div>
       )}
-    </Form>
+    </form>
   );
 });
 

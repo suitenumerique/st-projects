@@ -115,6 +115,7 @@ export default {
       memberActions_title: 'Member Actions',
       minutes: 'Minutes',
       moveCard_title: 'Move Card',
+      myAccount: 'My account',
       name: 'Name',
       newestFirst: 'Newest first',
       newEmail: 'New e-mail',

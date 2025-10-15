@@ -2,14 +2,14 @@ import React, { useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { Comment } from 'semantic-ui-react';
-import { usePopup } from '../../../lib/popup';
+import { Comment } from '../../../lib/migration-helpers';
+import usePopup from '../../../lib/popup';
 import { Markdown } from '../../../lib/custom-ui';
 
 import getDateFormat from '../../../utils/get-date-format';
 import CommentEdit from './CommentEdit';
 import User from '../../User';
-import DeleteStep from '../../DeleteStep';
+import DeleteStep from '../../../steps/DeleteStep/DeleteStep';
 
 import styles from './ItemCommentOverride.module.scss';
 

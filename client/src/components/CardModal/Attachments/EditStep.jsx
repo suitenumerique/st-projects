@@ -2,11 +2,11 @@ import { dequal } from 'dequal';
 import React, { useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button, Form } from 'semantic-ui-react';
-import { Input, Popup } from '../../../lib/custom-ui';
+import { Button } from '@openfun/cunningham-react';
 
 import { useForm, useSteps } from '../../../hooks';
-import DeleteStep from '../../DeleteStep';
+import DeleteStep from '../../../steps/DeleteStep/DeleteStep';
+import PopoverHeader from '../../../ui/Popover/PopoverHeader';
 
 import styles from './EditStep.module.scss';
 
@@ -66,30 +66,28 @@ const EditStep = React.memo(({ defaultData, onUpdate, onDelete, onClose }) => {
 
   return (
     <>
-      <Popup.Header>
-        {t('common.editAttachment', {
+      <PopoverHeader
+        onBack={onBack}
+        title={t('common.editAttachment', {
           context: 'title',
         })}
-      </Popup.Header>
-      <Popup.Content>
-        <Form onSubmit={handleSubmit}>
-          <div className={styles.text}>{t('common.title')}</div>
-          <Input
-            fluid
-            ref={nameField}
-            name="name"
-            value={data.name}
-            className={styles.field}
-            onChange={handleFieldChange}
-          />
-          <Button positive content={t('action.save')} />
-        </Form>
-        <Button
-          content={t('action.delete')}
-          className={styles.deleteButton}
-          onClick={handleDeleteClick}
+      />
+      <form onSubmit={handleSubmit}>
+        <div className={styles.text}>{t('common.title')}</div>
+        <input
+          ref={nameField}
+          name="name"
+          value={data.name}
+          className={styles.field}
+          onChange={handleFieldChange}
         />
-      </Popup.Content>
+        <Button positive content={t('action.save')} />
+      </form>
+      <Button
+        content={t('action.delete')}
+        className={styles.deleteButton}
+        onClick={handleDeleteClick}
+      />
     </>
   );
 });

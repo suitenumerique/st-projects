@@ -1,22 +1,22 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation, Trans } from 'react-i18next';
-import { Loader } from 'semantic-ui-react';
+import { MainLayout } from '@gouvfr-lasuite/ui-kit';
+// import { Button } from '@openfun/cunningham-react';
 
-import ModalTypes from '../../constants/ModalTypes';
-import FixedContainer from '../../containers/FixedContainer';
+import { Loader } from '../../lib/migration-helpers';
+
 import StaticContainer from '../../containers/StaticContainer';
-import UsersModalContainer from '../../containers/UsersModalContainer';
-import UserSettingsModalContainer from '../../containers/UserSettingsModalContainer';
-import ProjectAddModalContainer from '../../containers/ProjectAddModalContainer';
+import LeftMenuContainer from '../../containers/LeftMenuContainer';
 
 import styles from './Core.module.scss';
+import logo from '../../assets/images/projets_logo.svg';
+import HeaderRightContainer from '../../containers/HeaderRightContainer';
 
 const Core = React.memo(
   ({
     isInitializing,
     isSocketDisconnected,
-    currentModal,
     currentProject,
     currentBoard,
     currentUser,
@@ -46,27 +46,39 @@ const Core = React.memo(
         {isInitializing ? (
           <Loader active size="massive" />
         ) : (
-          <>
-            <FixedContainer />
-            <div
-              style={{
-                width:
-                  currentUser && (!currentBoard || currentUserMembership)
-                    ? 'calc(100% - 300px)'
-                    : '100%',
-                height: '100%',
-                marginLeft: currentUser && (!currentBoard || currentUserMembership) ? '300px' : '0',
-                marginTop: '128px',
-                zIndex: 10,
-                overflowY: 'hidden',
-              }}
-            >
-              <StaticContainer />
-            </div>
-            {currentModal === ModalTypes.USERS && <UsersModalContainer />}
-            {currentModal === ModalTypes.USER_SETTINGS && <UserSettingsModalContainer />}
-            {currentModal === ModalTypes.PROJECT_ADD && <ProjectAddModalContainer />}
-          </>
+          <MainLayout
+            enableResize
+            leftPanelContent={<LeftMenuContainer />}
+            leftPanelIsOpen={currentUser && (!currentBoard || currentUserMembership)}
+            icon={
+              <>
+                <div className={styles.logoWrapper}>
+                  <img src={logo} alt="logo" />
+                  <span>BETA</span>
+                </div>
+                {/* {currentUser && (
+                  <Button
+                    id="feedback-button"
+                    color="tertiary"
+                    size="medium"
+                    className={styles.feedbackButton}
+                    icon={
+                      <Icon
+                        name="information"
+                        type="filled"
+                        style={{ width: '1em', height: '1em' }}
+                      />
+                    }
+                  >
+                    Faire un retour
+                  </Button>
+                )} */}
+              </>
+            }
+            rightHeaderContent={<HeaderRightContainer />}
+          >
+            <StaticContainer />
+          </MainLayout>
         )}
         {isSocketDisconnected && (
           <div className={styles.message}>
@@ -88,7 +100,6 @@ const Core = React.memo(
 Core.propTypes = {
   isInitializing: PropTypes.bool.isRequired,
   isSocketDisconnected: PropTypes.bool.isRequired,
-  currentModal: PropTypes.oneOf(Object.values(ModalTypes)),
   /* eslint-disable react/forbid-prop-types */
   currentProject: PropTypes.object,
   currentBoard: PropTypes.object,
@@ -98,7 +109,6 @@ Core.propTypes = {
 };
 
 Core.defaultProps = {
-  currentModal: undefined,
   currentProject: undefined,
   currentBoard: undefined,
   currentUser: undefined,

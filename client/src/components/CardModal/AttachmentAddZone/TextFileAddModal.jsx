@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button, Form, Header, Modal } from 'semantic-ui-react';
+import { Button, Form, Header, Modal } from '../../../lib/migration-helpers';
 import { Input } from '../../../lib/custom-ui';
 
 import { useForm } from '../../../hooks';

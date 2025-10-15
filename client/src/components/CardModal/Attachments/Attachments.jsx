@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Gallery, Item as GalleryItem } from 'react-photoswipe-gallery';
-import { Button } from 'semantic-ui-react';
+import { Button } from '../../../lib/migration-helpers';
 import { useToggle } from '../../../lib/hooks';
 
 import Item from './Item';

@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { Icon } from 'semantic-ui-react';
+import { Icon } from '@gouvfr-lasuite/ui-kit';
 import { useForceUpdate } from '../../lib/hooks';
 
 import getDateFormat from '../../utils/get-date-format';
@@ -36,16 +36,16 @@ const FULL_DATE_FORMAT_BY_SIZE = {
 
 const STATUS_ICON_PROPS_BY_STATUS = {
   [STATUSES.DUE_SOON]: {
-    name: 'hourglass half',
-    color: 'orange',
+    name: 'warning',
+    color: '#F27E27',
   },
   [STATUSES.OVERDUE]: {
-    name: 'hourglass end',
-    color: 'red',
+    name: 'hourglass_bottom',
+    color: '#D83F3D',
   },
   [STATUSES.COMPLETED]: {
-    name: 'checkmark',
-    color: 'green',
+    name: 'check_box',
+    color: '#20BB45',
   },
 };
 
@@ -118,8 +118,13 @@ const DueDate = React.memo(({ value, size, isCompleted, isDisabled, withStatusIc
         postProcess: 'formatDate',
       })}
       {withStatusIcon && statusRef.current && (
-        // eslint-disable-next-line react/jsx-props-no-spreading
-        <Icon {...STATUS_ICON_PROPS_BY_STATUS[statusRef.current]} className={styles.statusIcon} />
+        <Icon
+          size="small"
+          type="outlined"
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          {...STATUS_ICON_PROPS_BY_STATUS[statusRef.current]}
+          className={styles.statusIcon}
+        />
       )}
     </span>
   );

@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation, Trans } from 'react-i18next';
-import { Icon, Loader } from 'semantic-ui-react';
+import { Icon, Loader } from '../../lib/migration-helpers';
 
 import BoardContainer from '../../containers/BoardContainer';
+import BoardActionsContainer from '../../containers/BoardActionsContainer';
 
-// import styles from './Static.module.scss';
-import styles from './StaticOverride.module.scss';
+import styles from './Static.module.scss';
 
-function Static({ projectId, cardId, board }) {
+function Static({ projectId, cardId, currentBoard }) {
   const [t] = useTranslation();
 
   if (cardId === null) {
@@ -26,7 +26,7 @@ function Static({ projectId, cardId, board }) {
     );
   }
 
-  if (board === null) {
+  if (currentBoard === null) {
     return (
       <div className={classNames(styles.wrapper, styles.wrapperFlex)}>
         <div className={styles.message}>
@@ -54,7 +54,7 @@ function Static({ projectId, cardId, board }) {
     );
   }
 
-  if (board === undefined) {
+  if (currentBoard === undefined) {
     return (
       <div className={classNames(styles.wrapper, styles.wrapperFlex, styles.wrapperProject)}>
         <div className={styles.message}>
@@ -72,7 +72,7 @@ function Static({ projectId, cardId, board }) {
     );
   }
 
-  if (board.isFetching) {
+  if (currentBoard.isFetching) {
     return (
       <div className={classNames(styles.wrapper, styles.wrapperLoader, styles.wrapperProject)}>
         <Loader active size="big" />
@@ -82,6 +82,7 @@ function Static({ projectId, cardId, board }) {
 
   return (
     <div className={classNames(styles.wrapper, styles.wrapperFlex, styles.wrapperBoard)}>
+      {currentBoard && !currentBoard.isFetching && <BoardActionsContainer />}
       <BoardContainer />
     </div>
   );
@@ -90,13 +91,13 @@ function Static({ projectId, cardId, board }) {
 Static.propTypes = {
   projectId: PropTypes.string,
   cardId: PropTypes.string,
-  board: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  currentBoard: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
 Static.defaultProps = {
   projectId: undefined,
   cardId: undefined,
-  board: undefined,
+  currentBoard: undefined,
 };
 
 export default Static;

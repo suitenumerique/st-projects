@@ -1,207 +1,440 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
+import {
+  DndContext,
+  DragOverlay,
+  closestCorners,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  horizontalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { closePopup } from '../../lib/popup';
-
-import DroppableTypes from '../../constants/DroppableTypes';
-import ListContainer from '../../containers/ListContainer';
+import { Button } from '@openfun/cunningham-react';
+import { groupBy } from 'lodash';
+import { Icon } from '@gouvfr-lasuite/ui-kit';
 import CardModalContainer from '../../containers/CardModalContainer';
-import ListAdd from './ListAdd';
-import { ReactComponent as PlusMathIcon } from '../../assets/images/plus-math-icon.svg';
+import ListCreate from '../ListCreate/ListCreate';
+import Card from './Card';
 
-import styles from './BoardOverride.module.scss';
-import globalStyles from '../../styles.module.scss';
+import Column from './Column';
+import styles from './Board.module.scss';
 
-const parseDndId = (dndId) => dndId.split(':')[1];
+function Board({
+  currentUser,
+  lists,
+  cardsFullData,
+  isCardModalOpened,
+  allBoards,
+  allBoardMemberships,
+  allBoardLabels,
+  canEdit,
+  onListCreate,
+  onListUpdate,
+  onListMove,
+  onListSort,
+  onListDelete,
+  onCardCreate,
+  onCardMove,
+  onCardUpdate,
+  onCardTransfer,
+  onCardDuplicate,
+  onCardDelete,
+  onCardUserAdd,
+  onCardUserRemove,
+  onCardBoardFetch,
+  onCardLabelAdd,
+  onCardLabelRemove,
+  onCardLabelCreate,
+  onCardLabelUpdate,
+  onCardLabelMove,
+  onCardLabelDelete,
+}) {
+  const [t] = useTranslation();
+  const cardsByListId = useMemo(() => groupBy(cardsFullData, 'listId'), [cardsFullData]);
+  const [isListAddOpened, setIsListAddOpened] = useState(false);
 
-const Board = React.memo(
-  ({ listIds, isCardModalOpened, canEdit, onListCreate, onListMove, onCardMove, currentBoard }) => {
-    const [t] = useTranslation();
-    const [isListAddOpened, setIsListAddOpened] = useState(false);
+  const [columns, setColumns] = useState(lists);
+  const [cards, setCards] = useState(cardsByListId);
+  const [activeId, setActiveId] = useState(null);
 
-    const wrapper = useRef(null);
-    const prevPosition = useRef(null);
+  useEffect(() => {
+    setColumns(lists);
+  }, [lists]);
 
-    const handleAddListClick = useCallback(() => {
-      setIsListAddOpened(true);
-    }, []);
+  useEffect(() => {
+    setCards(cardsByListId);
+  }, [cardsByListId]);
 
-    const handleAddListClose = useCallback(() => {
-      setIsListAddOpened(false);
-    }, []);
-
-    const handleDragStart = useCallback(() => {
-      document.body.classList.add(globalStyles.dragging);
-      closePopup();
-    }, []);
-
-    const handleDragEnd = useCallback(
-      ({ draggableId, type, source, destination }) => {
-        document.body.classList.remove(globalStyles.dragging);
-
-        if (
-          !destination ||
-          (source.droppableId === destination.droppableId && source.index === destination.index)
-        ) {
-          return;
-        }
-
-        const id = parseDndId(draggableId);
-
-        switch (type) {
-          case DroppableTypes.LIST:
-            onListMove(id, destination.index);
-
-            break;
-          case DroppableTypes.CARD:
-            onCardMove(id, parseDndId(destination.droppableId), destination.index);
-
-            break;
-          default:
-        }
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
       },
-      [onListMove, onCardMove],
-    );
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
 
-    const handleMouseDown = useCallback(
-      (event) => {
-        // If button is defined and not equal to 0 (left click)
-        if (event.button) {
-          return;
+  const handleAddListClick = useCallback(() => {
+    setIsListAddOpened(true);
+  }, []);
+
+  const handleAddListClose = useCallback(() => {
+    setIsListAddOpened(false);
+  }, []);
+
+  const findContainer = (id) => {
+    if (id in cards) {
+      return id;
+    }
+    return Object.keys(cards).find((key) => cards[key].some((card) => card.id === id));
+  };
+
+  const handleDragStart = (event) => {
+    setActiveId(event.active.id);
+  };
+
+  const handleDragOver = (event) => {
+    const { active, over } = event;
+    if (!over) return;
+
+    const draggedId = active.id;
+    let overId = over.id;
+
+    // Check if both active and over are columns - use the CURRENT columns state
+    const isActiveColumn = columns.some((col) => col.id === draggedId);
+    let isOverColumn = columns.some((col) => col.id === overId);
+
+    // If overId is not a column, it might be a card - find its parent column
+    if (isActiveColumn && !isOverColumn) {
+      const overContainer = findContainer(overId);
+      if (overContainer) {
+        overId = overContainer;
+        isOverColumn = true;
+      }
+    }
+
+    // Handle column reordering in real-time
+    if (isActiveColumn && isOverColumn) {
+      setColumns((currentColumns) => {
+        const activeIndex = currentColumns.findIndex((col) => col.id === draggedId);
+        const overIndex = currentColumns.findIndex((col) => col.id === overId);
+
+        if (activeIndex !== -1 && overIndex !== -1 && activeIndex !== overIndex) {
+          return arrayMove(currentColumns, activeIndex, overIndex);
         }
+        return currentColumns;
+      });
+      return;
+    }
 
-        if (event.target !== wrapper.current && !event.target.dataset.dragScroller) {
-          return;
-        }
+    // Skip card logic if dragging a column
+    if (isActiveColumn) {
+      return;
+    }
 
-        prevPosition.current = event.clientX;
+    const activeContainer = findContainer(draggedId);
+    const overContainer = findContainer(overId);
 
-        window.getSelection().removeAllRanges();
-        document.body.classList.add(globalStyles.dragScrolling);
-      },
-      [wrapper],
-    );
+    if (!activeContainer || !overContainer || activeContainer === overContainer) {
+      return;
+    }
 
-    const handleWindowMouseMove = useCallback(
-      (event) => {
-        if (prevPosition.current === null) {
-          return;
-        }
+    setCards((prev) => {
+      const activeItems = prev[activeContainer];
+      const overItems = prev[overContainer];
 
-        event.preventDefault();
+      const activeIndex = activeItems.findIndex((item) => item.id === draggedId);
+      const overIndex = overItems.findIndex((item) => item.id === overId);
 
-        window.scrollBy({
-          left: prevPosition.current - event.clientX,
-        });
-
-        prevPosition.current = event.clientX;
-      },
-      [prevPosition],
-    );
-
-    const handleWindowMouseRelease = useCallback(() => {
-      if (prevPosition.current === null) {
-        return;
+      let newIndex;
+      if (overId in prev) {
+        newIndex = overItems.length + 1;
+      } else {
+        const isBelowLastItem = over && overIndex === overItems.length - 1;
+        const modifier = isBelowLastItem ? 1 : 0;
+        newIndex = overIndex >= 0 ? overIndex + modifier : overItems.length + 1;
       }
 
-      prevPosition.current = null;
-      document.body.classList.remove(globalStyles.dragScrolling);
-    }, [prevPosition]);
-
-    useEffect(() => {
-      document.body.style.overflowX = 'auto';
-
-      return () => {
-        document.body.style.overflowX = null;
+      return {
+        ...prev,
+        [activeContainer]: prev[activeContainer].filter((item) => item.id !== draggedId),
+        [overContainer]: [
+          ...prev[overContainer].slice(0, newIndex),
+          activeItems[activeIndex],
+          ...prev[overContainer].slice(newIndex),
+        ],
       };
-    }, []);
+    });
+  };
 
-    useEffect(() => {
-      if (isListAddOpened) {
-        window.scroll(document.body.scrollWidth, 0);
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+    if (!over) {
+      setActiveId(null);
+      return;
+    }
+
+    const draggedId = active.id;
+    const overId = over.id;
+
+    // Check if dragging a column - reordering already done in handleDragOver
+    const isActiveColumn = columns.some((col) => col.id === draggedId);
+    if (isActiveColumn) {
+      // Find the new index after the drag
+      const newIndex = columns.findIndex((col) => col.id === draggedId);
+
+      // Call Redux action to persist the column move
+      onListMove(draggedId, newIndex);
+
+      setActiveId(null);
+      return;
+    }
+
+    const activeContainer = findContainer(draggedId);
+    const overContainer = findContainer(overId);
+
+    if (!activeContainer || !overContainer) {
+      setActiveId(null);
+      return;
+    }
+
+    if (activeContainer === overContainer) {
+      // Moving within the same column
+      const items = cards[activeContainer];
+      const oldIndex = items.findIndex((item) => item.id === draggedId);
+      const newIndex = items.findIndex((item) => item.id === overId);
+
+      if (oldIndex !== newIndex) {
+        setCards((prev) => ({
+          ...prev,
+          [activeContainer]: arrayMove(items, oldIndex, newIndex),
+        }));
+
+        // Call Redux action to persist the move
+        onCardMove(draggedId, activeContainer, newIndex);
       }
-    }, [listIds, isListAddOpened]);
+    } else {
+      // Moving between different columns
+      const overItems = cards[overContainer];
+      const overIndex = overItems.findIndex((item) => item.id === overId);
+      const newIndex = overIndex >= 0 ? overIndex : overItems.length;
 
-    useEffect(() => {
-      window.addEventListener('mousemove', handleWindowMouseMove);
+      // Get the current board ID from the first column
+      const currentBoardId = columns[0]?.boardId;
 
-      window.addEventListener('mouseup', handleWindowMouseRelease);
-      window.addEventListener('blur', handleWindowMouseRelease);
-      window.addEventListener('contextmenu', handleWindowMouseRelease);
+      // Call Redux action to persist the transfer
+      if (currentBoardId) {
+        onCardTransfer(draggedId, currentBoardId, overContainer, newIndex);
+      }
+    }
 
-      return () => {
-        window.removeEventListener('mousemove', handleWindowMouseMove);
+    setActiveId(null);
+  };
 
-        window.removeEventListener('mouseup', handleWindowMouseRelease);
-        window.removeEventListener('blur', handleWindowMouseRelease);
-        window.removeEventListener('contextmenu', handleWindowMouseRelease);
-      };
-    }, [handleWindowMouseMove, handleWindowMouseRelease]);
+  const activeColumn = columns.find((col) => col.id === activeId);
+  const activeCard =
+    activeId && !activeColumn
+      ? Object.values(cards)
+          .flat()
+          .find((card) => card.id === activeId)
+      : null;
 
-    return (
-      <>
-        {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-        <div ref={wrapper} className={styles.wrapper} onMouseDown={handleMouseDown}>
-          <div>
-            <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-              <Droppable droppableId="board" type={DroppableTypes.LIST} direction="horizontal">
-                {({ innerRef, droppableProps, placeholder }) => (
-                  <div
-                    {...droppableProps} // eslint-disable-line react/jsx-props-no-spreading
-                    data-drag-scroller
-                    ref={innerRef}
-                    className={styles.lists}
+  useEffect(() => {
+    if (isListAddOpened) {
+      window.scroll(document.body.scrollWidth, 0);
+    }
+  }, [columns, isListAddOpened]);
+
+  return (
+    <div className={styles.wrapper}>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCorners}
+        onDragStart={handleDragStart}
+        onDragOver={handleDragOver}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext
+          items={columns.map((col) => col.id)}
+          strategy={horizontalListSortingStrategy}
+        >
+          <div className={styles.container}>
+            {columns.map((column) => (
+              <Column
+                key={column.id}
+                id={column.id}
+                name={column.name}
+                isPersisted={column.isPersisted}
+                color={column.color}
+                cards={cards[column.id] || []}
+                currentUser={currentUser}
+                allBoards={allBoards}
+                allBoardMemberships={allBoardMemberships}
+                allBoardLabels={allBoardLabels}
+                canEdit={canEdit}
+                onUpdate={(data) => onListUpdate(column.id, data)}
+                onSort={(data) => onListSort(column.id, data)}
+                onDelete={() => onListDelete(column.id)}
+                onCardCreate={(data, autoOpen) => onCardCreate(column.id, data, autoOpen)}
+                onCardUpdate={onCardUpdate}
+                onCardMove={onCardMove}
+                onCardTransfer={onCardTransfer}
+                onCardDuplicate={onCardDuplicate}
+                onCardDelete={onCardDelete}
+                onCardUserAdd={onCardUserAdd}
+                onCardUserRemove={onCardUserRemove}
+                onCardBoardFetch={onCardBoardFetch}
+                onCardLabelAdd={onCardLabelAdd}
+                onCardLabelRemove={onCardLabelRemove}
+                onCardLabelCreate={onCardLabelCreate}
+                onCardLabelUpdate={onCardLabelUpdate}
+                onCardLabelMove={onCardLabelMove}
+                onCardLabelDelete={onCardLabelDelete}
+              />
+            ))}
+            {canEdit && (
+              <div className={styles.list}>
+                {isListAddOpened ? (
+                  <ListCreate onCreate={onListCreate} onClose={handleAddListClose} />
+                ) : (
+                  <Button
+                    color="secondary-text"
+                    onClick={handleAddListClick}
+                    className={styles.addListButton}
                   >
-                    {listIds.map((listId, index) => (
-                      <ListContainer
-                        key={listId}
-                        id={listId}
-                        index={index}
-                        isFromTemplate={false}
-                      />
-                    ))}
-                    {placeholder}
-                    {canEdit && (
-                      <div data-drag-scroller className={styles.list}>
-                        {isListAddOpened ? (
-                          <ListAdd onCreate={onListCreate} onClose={handleAddListClose} />
-                        ) : (
-                          <button
-                            type="button"
-                            className={styles.addListButton}
-                            onClick={handleAddListClick}
-                          >
-                            <PlusMathIcon className={styles.addListButtonIcon} />
-                            <span className={styles.addListButtonText}>
-                              {listIds.length > 0
-                                ? t('action.addAnotherList')
-                                : t('action.addList')}
-                            </span>
-                          </button>
-                        )}
-                      </div>
-                    )}
-                  </div>
+                    <Icon name="add" />
+                    <span>
+                      {columns.length > 0 ? t('action.addAnotherList') : t('action.addList')}
+                    </span>
+                  </Button>
                 )}
-              </Droppable>
-            </DragDropContext>
+              </div>
+            )}
           </div>
-        </div>
-        {isCardModalOpened && <CardModalContainer />}
-      </>
-    );
-  },
-);
+        </SortableContext>
+
+        <DragOverlay>
+          {activeColumn ? (
+            <div className={classNames(styles.dragOverlay, styles.column)}>
+              <Column
+                id={activeColumn.id}
+                name={activeColumn.name}
+                isPersisted={activeColumn.isPersisted}
+                color={activeColumn.color}
+                cards={cards[activeColumn.id] || []}
+                currentUser={currentUser}
+                allBoards={allBoards}
+                allBoardMemberships={allBoardMemberships}
+                allBoardLabels={allBoardLabels}
+                canEdit={canEdit}
+                onUpdate={() => {}} // No-op for drag overlay
+                onDelete={() => {}} // No-op for drag overlay
+                onSort={() => {}} // No-op for drag overlay
+                onCardCreate={() => {}} // No-op for drag overlay
+                onCardUpdate={() => {}} // No-op for drag overlay
+                onCardMove={() => {}} // No-op for drag overlay
+                onCardTransfer={() => {}} // No-op for drag overlay
+                onCardDuplicate={() => {}} // No-op for drag overlay
+                onCardDelete={() => {}} // No-op for drag overlay
+                onCardUserAdd={() => {}} // No-op for drag overlay
+                onCardUserRemove={() => {}} // No-op for drag overlay
+                onCardBoardFetch={() => {}} // No-op for drag overlay
+                onCardLabelAdd={() => {}} // No-op for drag overlay
+                onCardLabelRemove={() => {}} // No-op for drag overlay
+                onCardLabelCreate={() => {}} // No-op for drag overlay
+                onCardLabelUpdate={() => {}} // No-op for drag overlay
+                onCardLabelMove={() => {}} // No-op for drag overlay
+                onCardLabelDelete={() => {}} // No-op for drag overlay
+              />
+            </div>
+          ) : (
+            activeCard && (
+              <Card
+                id={activeCard.id}
+                name={activeCard.name}
+                description={activeCard.description}
+                dueDate={activeCard.dueDate}
+                isDueDateCompleted={activeCard.isDueDateCompleted}
+                stopwatch={activeCard.stopwatch}
+                isCompleted={activeCard.isCompleted}
+                coverUrl={activeCard.coverUrl}
+                boardId={activeCard.boardId}
+                listId={activeCard.listId}
+                projectId={activeCard.projectId}
+                isPersisted={activeCard.isPersisted}
+                attachmentsTotal={activeCard.attachmentsTotal}
+                notificationsTotal={activeCard.notificationsTotal}
+                users={activeCard.users}
+                labels={activeCard.labels}
+                tasks={activeCard.tasks}
+                allBoards={allBoards}
+                allBoardMemberships={allBoardMemberships}
+                allLabels={allBoardLabels}
+                currentUser={currentUser}
+                canEdit={canEdit}
+                onUpdate={() => {}} // No-op for drag overlay
+                onMove={() => {}} // No-op for drag overlay
+                onTransfer={() => {}} // No-op for drag overlay
+                onDuplicate={() => {}} // No-op for drag overlay
+                onDelete={() => {}} // No-op for drag overlay
+                onUserAdd={() => {}} // No-op for drag overlay
+                onUserRemove={() => {}} // No-op for drag overlay
+                onBoardFetch={() => {}} // No-op for drag overlay
+                onLabelAdd={() => {}} // No-op for drag overlay
+                onLabelRemove={() => {}} // No-op for drag overlay
+                onLabelCreate={() => {}} // No-op for drag overlay
+                onLabelUpdate={() => {}} // No-op for drag overlay
+                onLabelMove={() => {}} // No-op for drag overlay
+                onLabelDelete={() => {}} // No-op for drag overlay
+              />
+            )
+          )}
+        </DragOverlay>
+      </DndContext>
+      {isCardModalOpened && <CardModalContainer />}
+    </div>
+  );
+}
 
 Board.propTypes = {
-  listIds: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  isCardModalOpened: PropTypes.bool.isRequired,
+  currentUser: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  lists: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  cardsFullData: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   canEdit: PropTypes.bool.isRequired,
+  isCardModalOpened: PropTypes.bool.isRequired,
+  allBoards: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  allBoardMemberships: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  allBoardLabels: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   onListCreate: PropTypes.func.isRequired,
+  onListUpdate: PropTypes.func.isRequired,
   onListMove: PropTypes.func.isRequired,
+  onListSort: PropTypes.func.isRequired,
+  onListDelete: PropTypes.func.isRequired,
+  onCardCreate: PropTypes.func.isRequired,
   onCardMove: PropTypes.func.isRequired,
-  currentBoard: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  onCardUpdate: PropTypes.func.isRequired,
+  onCardTransfer: PropTypes.func.isRequired,
+  onCardDuplicate: PropTypes.func.isRequired,
+  onCardDelete: PropTypes.func.isRequired,
+  onCardUserAdd: PropTypes.func.isRequired,
+  onCardUserRemove: PropTypes.func.isRequired,
+  onCardBoardFetch: PropTypes.func.isRequired,
+  onCardLabelAdd: PropTypes.func.isRequired,
+  onCardLabelRemove: PropTypes.func.isRequired,
+  onCardLabelCreate: PropTypes.func.isRequired,
+  onCardLabelUpdate: PropTypes.func.isRequired,
+  onCardLabelMove: PropTypes.func.isRequired,
+  onCardLabelDelete: PropTypes.func.isRequired,
 };
 
 export default Board;

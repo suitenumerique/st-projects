@@ -72,6 +72,13 @@ export const selectBoardsForCurrentProject = createSelector(
       .map((boardModel) => ({
         ...boardModel.ref,
         isPersisted: !isLocalId(boardModel.id),
+        lists: boardModel
+          .getOrderedListsQuerySet()
+          .toRefArray()
+          .map((list) => ({
+            ...list,
+            isPersisted: !isLocalId(list.id),
+          })),
       }));
   },
 );
@@ -96,6 +103,13 @@ export const selectBoardsForSpecificProject = createSelector(
       .map((boardModel) => ({
         ...boardModel.ref,
         isPersisted: !isLocalId(boardModel.id),
+        lists: boardModel
+          .getOrderedListsQuerySet()
+          .toRefArray()
+          .map((list) => ({
+            ...list,
+            isPersisted: !isLocalId(list.id),
+          })),
       }));
   },
 );

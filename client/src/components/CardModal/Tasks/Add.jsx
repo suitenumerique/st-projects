@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } 
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import TextareaAutosize from 'react-textarea-autosize';
-import { Button, Form, TextArea } from 'semantic-ui-react';
+import { Button, Form, TextArea } from '../../../lib/migration-helpers';
 import { useDidUpdate, useToggle } from '../../../lib/hooks';
 
 import { useClosableForm, useForm } from '../../../hooks';

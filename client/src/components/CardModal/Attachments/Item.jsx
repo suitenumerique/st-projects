@@ -2,8 +2,8 @@ import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { Button, Icon, Label, Loader } from 'semantic-ui-react';
-import { usePopup } from '../../../lib/popup';
+import { Button, Icon, Label, Loader } from '../../../lib/migration-helpers';
+import usePopup from '../../../lib/popup';
 
 import EditStep from './EditStep';
 

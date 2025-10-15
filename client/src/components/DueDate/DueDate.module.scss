@@ -1,4 +1,19 @@
 :global(#app) {
+  .wrapper {
+    background: #dce0e4;
+    border-radius: 3px;
+    color: #6a808b;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.3s ease;
+  }
+
+  .wrapperHoverable:hover {
+    background: #d2d8dc;
+    color: #17394d;
+  }
+
   .button {
     background: transparent;
     border: none;
@@ -9,21 +24,7 @@
   }
 
   .statusIcon {
-    line-height: 1;
-    margin: 0 0 0 8px;
-  }
-
-  .wrapper {
-    background: #dce0e4;
-    border-radius: 3px;
-    color: #6a808b;
-    display: inline-block;
-    transition: background 0.3s ease;
-  }
-
-  .wrapperHoverable:hover {
-    background: #d2d8dc;
-    color: #17394d;
+    margin-left: 4px;
   }
 
   /* Sizes */

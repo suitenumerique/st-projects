@@ -1,0 +1,37 @@
+:global(#app) {
+
+  .wrapper {
+    display: flex;
+    margin-bottom: 4px;
+    position: relative;
+  }
+
+  .name {
+    border-radius: 3px;
+    color: #fff;
+    cursor: pointer;
+    flex: 1 1 auto;
+    font-weight: bold;
+    overflow: hidden;
+    padding: 8px 32px 8px 10px;
+    position: relative;
+    text-overflow: ellipsis;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  .activeIcon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .editButton {
+    margin-left: 5px;
+  }
+
+}

@@ -1,0 +1,31 @@
+:global(#app) {
+
+  .search {
+    width: 100%;
+  }
+
+  .menuItem {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+
+  .menuItemText {
+    display: inline-block;
+    line-height: 32px;
+    width: calc(100% - 40px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+    position: relative;
+  }
+
+  .menuItemIcon {
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
+}

@@ -107,10 +107,8 @@ export function* handleLocationChange() {
               attachments,
             },
           } = yield call(request, api.getBoard, targetBoardId, true));
-
-          console.log('BOARD LOADED: Board loaded successfully', board);
         } catch (error) {
-          console.error('Error loading board', error);
+          // eslint-disable-line no-empty
         }
       }
 

@@ -6,8 +6,8 @@ import classNames from 'classnames';
 
 import LabelColors from '../../constants/LabelColors';
 
-import styles from './LabelOverride.module.scss';
-import globalStyles from '../../styles.module.scss';
+import styles from './Label.module.scss';
+import globalStyles from '../../assets/styles/styles.module.scss';
 
 const SIZES = {
   TINY: 'tiny',

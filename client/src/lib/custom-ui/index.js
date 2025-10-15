@@ -1,6 +1,9 @@
-import Input from './components/Input';
-import Popup from './components/Popup';
-import Markdown from './components/Markdown';
-import FilePicker from './components/FilePicker';
+import InputComponent from './components/Input';
+import MarkdownComponent from './components/Markdown';
+import FilePickerComponent from './components/FilePicker';
 
-export { Input, Popup, Markdown, FilePicker };
+export {
+  InputComponent as Input,
+  MarkdownComponent as Markdown,
+  FilePickerComponent as FilePicker,
+};

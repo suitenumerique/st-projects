@@ -40,7 +40,7 @@ export const selectCurrentUser = createSelector(
 export const selectProjectsForCurrentUser = createSelector(
   orm,
   (state) => selectCurrentUserId(state),
-  ({ User }, id) => {
+  (id) => {
     if (!id) {
       return id;
     }
@@ -75,7 +75,7 @@ export const selectProjectsForCurrentUser = createSelector(
 export const selectProjectsToListsForCurrentUser = createSelector(
   orm,
   (state) => selectCurrentUserId(state),
-  ({ User }, id) => {
+  (id) => {
     if (!id) {
       return id;
     }

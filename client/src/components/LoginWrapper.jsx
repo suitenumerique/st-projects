@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Loader } from 'semantic-ui-react';
+import { Loader } from '../lib/migration-helpers';
 
 import LoginContainer from '../containers/LoginContainer';
 

@@ -3,9 +3,7 @@ import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } 
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import TextareaAutosize from 'react-textarea-autosize';
-import { Button, Form, TextArea } from 'semantic-ui-react';
-
-import ButtonOverride from '../../ButtonOverride';
+import { Button } from '@openfun/cunningham-react';
 
 import { useForm } from '../../../hooks';
 import { focusEnd } from '../../../utils/element-helpers';
@@ -87,8 +85,8 @@ const CommentEdit = React.forwardRef(({ defaultData, onUpdate, text, actions }, 
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <TextArea
+    <form onSubmit={handleSubmit}>
+      <TextareaAutosize
         ref={textField}
         as={TextareaAutosize}
         name="text"
@@ -101,9 +99,9 @@ const CommentEdit = React.forwardRef(({ defaultData, onUpdate, text, actions }, 
         onBlur={handleFieldBlur}
       />
       <div className={styles.controls}>
-        <ButtonOverride>{t('action.save')}</ButtonOverride>
+        <Button color="primary">{t('action.save')}</Button>
       </div>
-    </Form>
+    </form>
   );
 });
 

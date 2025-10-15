@@ -1,4 +1,10 @@
 :global(#app) {
+  .wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
   .message {
     align-content: space-between;
     align-items: center;
@@ -11,11 +17,13 @@
 
   .messageIcon {
     margin-top: -84px;
+    color: var(--c--theme--colors--greyscale-1000);
   }
 
   .messageTitle {
     font-size: 32px;
     margin: 24px 0 8px;
+    color: var(--c--theme--colors--greyscale-1000);
   }
 
   .messageContent {
@@ -23,26 +31,10 @@
     line-height: 1.4;
     margin: 4px 0 0;
     text-align: center;
-  }
-
-  .wrapper {
-    height: 100%;
-    margin-top: 50px;
-  }
-
-  .wrapperBoard {
-    margin-top: 174px;
-  }
-
-  .wrapperFlex {
-    display: flex;
+    color: var(--c--theme--colors--greyscale-1000);
   }
 
   .wrapperLoader {
     position: relative;
-  }
-
-  .wrapperProject {
-    margin-top: 98px;
   }
 }

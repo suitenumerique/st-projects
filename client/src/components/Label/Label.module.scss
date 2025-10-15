@@ -10,15 +10,19 @@
   }
 
   .wrapper {
-    border-radius: 3px;
-    color: #fff;
+    border-radius: 4px;
     display: inline-block;
     font-weight: normal;
     overflow: hidden;
     text-overflow: ellipsis;
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
     vertical-align: top;
     white-space: nowrap;
+    font-weight: 600;
+  }
+
+  .innerWrapper {
+    background-color: #fff;
+    opacity: 0.8;
   }
 
   .wrapperNameless {
@@ -35,20 +39,29 @@
     font-size: 12px;
     line-height: 20px;
     max-width: 176px;
-    padding: 0 6px;
+
+    .innerWrapper {
+      padding: 2px 6px;
+    }
   }
 
   .wrapperSmall {
     font-size: 12px;
     line-height: 20px;
     max-width: 176px;
-    padding: 2px 8px;
+
+    .innerWrapper {
+      padding: 2px 8px;
+    }
   }
 
   .wrapperMedium {
     font-size: 14px;
     line-height: 32px;
     max-width: 230px;
-    padding: 0 12px;
+
+    .innerWrapper {
+      padding: 0 12px;
+    }
   }
 }

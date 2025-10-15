@@ -8,18 +8,30 @@ import Board from '../components/Board';
 
 const mapStateToProps = (state) => {
   const { cardId } = selectors.selectPath(state);
-  const currentUserMembership = selectors.selectCurrentUserMembershipForCurrentBoard(state);
-  const listIds = selectors.selectListIdsForCurrentBoard(state);
   const currentBoard = selectors.selectCurrentBoard(state);
+  const lists = selectors.selectListsForCurrentBoard(state);
+  const cardsWithDetails = selectors.selectCardsWithDetailsForCurrentBoard(state);
+  const allBoards = selectors.selectBoardsForCurrentProject(state);
+  const allBoardMemberships = selectors.selectMembershipsForCurrentBoard(state);
+  const allBoardLabels = selectors.selectLabelsForCurrentBoard(state);
+
+  const currentUserMembership = selectors.selectCurrentUserMembershipForCurrentBoard(state);
   const isCurrentUserEditor =
     !!currentUserMembership && currentUserMembership.role === BoardMembershipRoles.EDITOR;
 
   const isCurrentUserOwner =
     !!currentUserMembership && currentUserMembership.role === BoardMembershipRoles.OWNER;
 
+  const currentUser = selectors.selectCurrentUser(state);
+
   return {
     currentBoard,
-    listIds,
+    currentUser,
+    lists,
+    cardsFullData: cardsWithDetails,
+    allBoards,
+    allBoardMemberships,
+    allBoardLabels,
     isCardModalOpened: !!cardId,
     canEdit: isCurrentUserEditor || isCurrentUserOwner,
   };
@@ -29,8 +41,25 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       onListCreate: entryActions.createListInCurrentBoard,
+      onListUpdate: entryActions.updateList,
       onListMove: entryActions.moveList,
+      onListSort: entryActions.sortList,
+      onListDelete: entryActions.deleteList,
+      onCardCreate: entryActions.createCard,
       onCardMove: entryActions.moveCard,
+      onCardUpdate: entryActions.updateCard,
+      onCardTransfer: entryActions.transferCard,
+      onCardDuplicate: entryActions.duplicateCard,
+      onCardDelete: entryActions.deleteCard,
+      onCardUserAdd: entryActions.addUserToCard,
+      onCardUserRemove: entryActions.removeUserFromCard,
+      onCardBoardFetch: entryActions.fetchBoard,
+      onCardLabelAdd: entryActions.addLabelToCard,
+      onCardLabelRemove: entryActions.removeLabelFromCard,
+      onCardLabelCreate: entryActions.createLabelInCurrentBoard,
+      onCardLabelUpdate: entryActions.updateLabel,
+      onCardLabelMove: entryActions.moveLabel,
+      onCardLabelDelete: entryActions.deleteLabel,
     },
     dispatch,
   );

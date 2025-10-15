@@ -8,18 +8,13 @@ import Login from '../components/Login';
 const mapStateToProps = (state) => {
   const oidcConfig = selectors.selectOidcConfig(state);
 
-  const {
-    ui: {
-      authenticateForm: { data: defaultData, isSubmitting, isSubmittingUsingOidc, error },
-    },
-  } = state;
+  // const {
+  //   ui: {
+  //     authenticateForm: { data: defaultData, isSubmitting, isSubmittingUsingOidc, error },
+  //   },
+  // } = state;
 
   return {
-    defaultData,
-    isSubmitting,
-    isSubmittingUsingOidc,
-    error,
-    withOidc: !!oidcConfig,
     isOidcEnforced: !!oidcConfig && oidcConfig.isEnforced,
   };
 };
@@ -29,7 +24,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       onAuthenticate: entryActions.authenticate,
       onAuthenticateUsingOidc: entryActions.authenticateUsingOidc,
-      onMessageDismiss: entryActions.clearAuthenticateError,
+      // onMessageDismiss: entryActions.clearAuthenticateError,
     },
     dispatch,
   );

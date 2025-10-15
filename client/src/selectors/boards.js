@@ -136,6 +136,100 @@ export const selectListIdsForCurrentBoard = createSelector(
   },
 );
 
+export const selectListsForCurrentBoard = createSelector(
+  orm,
+  (state) => selectPath(state).boardId,
+  ({ Board }, id) => {
+    if (!id) {
+      return id;
+    }
+
+    const boardModel = Board.withId(id);
+
+    if (!boardModel) {
+      return boardModel;
+    }
+
+    return boardModel
+      .getOrderedListsQuerySet()
+      .toRefArray()
+      .map((list) => ({
+        ...list,
+        isPersisted: !isLocalId(list.id),
+      }));
+  },
+);
+
+export const selectCardsForCurrentBoard = createSelector(
+  orm,
+  (state) => selectPath(state).boardId,
+  ({ Board }, id) => {
+    if (!id) {
+      return id;
+    }
+
+    const boardModel = Board.withId(id);
+
+    if (!boardModel) {
+      return boardModel;
+    }
+
+    return boardModel
+      .getOrderedCardsQuerySet()
+      .toRefArray()
+      .map((card) => ({
+        ...card,
+        isPersisted: !isLocalId(card.id),
+      }));
+  },
+);
+
+// Enhanced selector that includes related data - use with caution as it may impact performance
+export const selectCardsWithDetailsForCurrentBoard = createSelector(
+  orm,
+  (state) => selectPath(state).boardId,
+  ({ Board }, id) => {
+    if (!id) {
+      return id;
+    }
+
+    const boardModel = Board.withId(id);
+
+    if (!boardModel) {
+      return boardModel;
+    }
+
+    return boardModel
+      .getOrderedCardsQuerySet()
+      .toModelArray()
+      .map((cardModel) => ({
+        ...cardModel.ref,
+        isPersisted: !isLocalId(cardModel.id),
+        coverUrl: cardModel.coverAttachment && cardModel.coverAttachment.coverUrl,
+        users: cardModel.users.toRefArray(),
+        labels: cardModel.labels.toRefArray(),
+        tasks: cardModel
+          .getOrderedTasksQuerySet()
+          .toRefArray()
+          .map((task) => ({
+            ...task,
+            isPersisted: !isLocalId(task.id),
+          })),
+        attachments: cardModel
+          .getOrderedAttachmentsQuerySet()
+          .toRefArray()
+          .map((attachment) => ({
+            ...attachment,
+            isCover: attachment.id === cardModel.coverAttachmentId,
+            isPersisted: !isLocalId(attachment.id),
+          })),
+        attachmentsTotal: cardModel.attachments.count(),
+        notificationsTotal: cardModel.getUnreadNotificationsQuerySet().count(),
+        lastActivityId: cardModel.getFilteredOrderedInCardActivitiesQuerySet().last()?.id,
+      }));
+  },
+);
+
 export const selectFilterUsersForCurrentBoard = createSelector(
   orm,
   (state) => selectPath(state).boardId,
@@ -256,6 +350,9 @@ export default {
   selectCurrentUserMembershipForCurrentBoard,
   selectLabelsForCurrentBoard,
   selectListIdsForCurrentBoard,
+  selectListsForCurrentBoard,
+  selectCardsForCurrentBoard,
+  selectCardsWithDetailsForCurrentBoard,
   selectFilterUsersForCurrentBoard,
   selectFilterLabelsForCurrentBoard,
   selectFilterTextForCurrentBoard,
