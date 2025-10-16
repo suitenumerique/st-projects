@@ -12,6 +12,7 @@ import {
 // import { Button } from '@openfun/cunningham-react';
 import HeaderRightContainer from '../../containers/HeaderRightContainer';
 import styles from './Login.module.scss';
+import { FeedbackWidget } from '../../ui/FeedbackWidget/index.tsx';
 
 import logo from '../../assets/images/projets_logo.svg';
 import logoGouv from '../../assets/images/logo-gouv.svg';
@@ -71,29 +72,39 @@ import illustration from '../../assets/images/illustration.jpg';
 //   }
 // };
 
-const Login = React.memo(({ isOidcEnforced, onAuthenticate, onAuthenticateUsingOidc }) => {
-  // const { t } = useTranslation();
+const Login = React.memo(
+  ({
+    isOidcEnforced,
+    onAuthenticate,
+    onAuthenticateUsingOidc,
+    reactAppDefaultEmail,
+    reactAppDefaultPassword,
+    reactAppFeedbackWidgetApiUrl,
+    reactAppFeedbackWidgetPath,
+    reactAppFeedbackWidgetChannel,
+  }) => {
+    // const { t } = useTranslation();
 
-  useEffect(() => {
-    if (!isOidcEnforced) {
-      onAuthenticate({
-        emailOrUsername: process.env.REACT_APP_DEFAULT_EMAIL,
-        password: process.env.REACT_APP_DEFAULT_PASSWORD,
-      });
-    }
-  }, [isOidcEnforced, onAuthenticate]);
-  return (
-    <div className="projets_login">
-      <MainLayout
-        hideLeftPanelOnDesktop
-        icon={
-          <>
-            <img src={logoGouv} alt="" className={styles.logoGouv} />
-            <div className={styles.logoWrapper}>
-              <img src={logo} alt="logo" />
-              <span>BETA</span>
-            </div>
-            {/* <Button
+    useEffect(() => {
+      if (!isOidcEnforced) {
+        onAuthenticate({
+          emailOrUsername: reactAppDefaultEmail,
+          password: reactAppDefaultPassword,
+        });
+      }
+    }, [isOidcEnforced, onAuthenticate, reactAppDefaultEmail, reactAppDefaultPassword]);
+    return (
+      <div className="projets_login">
+        <MainLayout
+          hideLeftPanelOnDesktop
+          icon={
+            <>
+              <img src={logoGouv} alt="" className={styles.logoGouv} />
+              <div className={styles.logoWrapper}>
+                <img src={logo} alt="logo" />
+                <span>BETA</span>
+              </div>
+              {/* <Button
               id="feedback-button"
               color="tertiary"
               size="medium"
@@ -104,26 +115,26 @@ const Login = React.memo(({ isOidcEnforced, onAuthenticate, onAuthenticateUsingO
             >
               Faire un retour
             </Button> */}
-          </>
-        }
-        rightHeaderContent={<HeaderRightContainer />}
-      >
-        <HomeGutter>
-          <Hero
-            logo={<div className="drive__logo-icon" />}
-            banner={illustration}
-            title="La gestion de projet partagée"
-            subtitle="Visualisez et organisez toutes vos tâches dans un espace collaboratif."
-            mainButton={
-              <div className="c__hero__buttons">
-                <div>
-                  <ProConnectButton onClick={onAuthenticateUsingOidc} />
+            </>
+          }
+          rightHeaderContent={<HeaderRightContainer />}
+        >
+          <HomeGutter>
+            <Hero
+              logo={<div className="drive__logo-icon" />}
+              banner={illustration}
+              title="La gestion de projet partagée"
+              subtitle="Visualisez et organisez toutes vos tâches dans un espace collaboratif."
+              mainButton={
+                <div className="c__hero__buttons">
+                  <div>
+                    <ProConnectButton onClick={onAuthenticateUsingOidc} />
+                  </div>
                 </div>
-              </div>
-            }
-          />
-        </HomeGutter>
-        {/* <footer className="fr-footer" role="contentinfo" id="footer-7475">
+              }
+            />
+          </HomeGutter>
+          {/* <footer className="fr-footer" role="contentinfo" id="footer-7475">
             <div className="fr-container">
               <div className="fr-footer__body">
                 <div className="fr-footer__brand fr-enlarge-link">
@@ -264,53 +275,64 @@ const Login = React.memo(({ isOidcEnforced, onAuthenticate, onAuthenticateUsingO
               </div>
             </div>
           </footer> */}
-        <Footer
-          legalLinks={[
-            {
-              label: 'Mentions légales',
-              href: '#',
-            },
-            {
-              label: 'Données personnelles et cookies',
-              href: '#',
-            },
-            {
-              label: 'Accessibilité: non conforme',
-              href: '#',
-            },
-          ]}
-          externalLinks={[
-            {
-              label: 'Github',
-              href: 'https://github.com/suitenumerique/drive/',
-            },
-            {
-              label: 'DINUM',
-              href: 'https://www.numerique.gouv.fr/dinum/',
-            },
-            {
-              label: 'ANCT',
-              href: 'https://anct.gouv.fr/',
-            },
-          ]}
-          license={{
-            label: 'Sauf mention contraire, tout le contenu de ce site est sous',
-            link: {
-              label: 'licence etalab-2.0',
-              href: 'https://github.com/etalab/licence-ouverte/blob/master/LO.md',
-            },
-          }}
-        />
-      </MainLayout>
-    </div>
-  );
-});
+          <Footer
+            legalLinks={[
+              {
+                label: 'Mentions légales',
+                href: '#',
+              },
+              {
+                label: 'Données personnelles et cookies',
+                href: '#',
+              },
+              {
+                label: 'Accessibilité: non conforme',
+                href: '#',
+              },
+            ]}
+            externalLinks={[
+              {
+                label: 'Github',
+                href: 'https://github.com/suitenumerique/drive/',
+              },
+              {
+                label: 'DINUM',
+                href: 'https://www.numerique.gouv.fr/dinum/',
+              },
+              {
+                label: 'ANCT',
+                href: 'https://anct.gouv.fr/',
+              },
+            ]}
+            license={{
+              label: 'Sauf mention contraire, tout le contenu de ce site est sous',
+              link: {
+                label: 'licence etalab-2.0',
+                href: 'https://github.com/etalab/licence-ouverte/blob/master/LO.md',
+              },
+            }}
+          />
+          <FeedbackWidget
+            apiUrl={reactAppFeedbackWidgetApiUrl}
+            widgetPath={reactAppFeedbackWidgetPath}
+            channel={reactAppFeedbackWidgetChannel}
+          />
+        </MainLayout>
+      </div>
+    );
+  },
+);
 
 Login.propTypes = {
   isOidcEnforced: PropTypes.bool.isRequired,
   onAuthenticate: PropTypes.func.isRequired,
   onAuthenticateUsingOidc: PropTypes.func.isRequired,
   // onMessageDismiss: PropTypes.func.isRequired,
+  reactAppDefaultEmail: PropTypes.string.isRequired,
+  reactAppDefaultPassword: PropTypes.string.isRequired,
+  reactAppFeedbackWidgetApiUrl: PropTypes.string.isRequired,
+  reactAppFeedbackWidgetPath: PropTypes.string.isRequired,
+  reactAppFeedbackWidgetChannel: PropTypes.string.isRequired,
 };
 
 export default Login;

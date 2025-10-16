@@ -17,7 +17,7 @@ const mapStateToProps = (state) => {
     reactAppFeedbackWidgetApiUrl,
     reactAppFeedbackWidgetPath,
     reactAppFeedbackWidgetChannel,
-  } = config;
+  } = config || {};
 
   return {
     isInitializing,

@@ -84,61 +84,63 @@ const LeftMenu = React.memo(
             </Button>
           </BoardCreateStepPopover>
         </div>
-        <div className={styles.space}>
-          <p className={styles.spaceTitle}>Mon espace</p>
-          {boards.filter((board) => board.isPrivate).length === 0 ? (
-            <p className={styles.emptySpace}>Aucun tableau</p>
-          ) : (
-            <div className={styles.boards}>
-              {boards
-                .filter((board) => board.isPrivate)
-                .map((board) => (
-                  <BoardListItem
-                    key={board.id}
-                    board={board}
-                    handleClick={() => goToBoard(board.id)}
-                    showDescription={false}
-                    editable
-                    projectName={
-                      board.project && board.project.siret !== currentUser.siret
-                        ? board.project.name
-                        : undefined
-                    }
-                    isActive={board.id === currentBoardId}
-                    onUpdate={(data) => handleUpdate(board.id, data)}
-                    onDelete={() => handleDelete(board.id)}
-                  />
-                ))}
-            </div>
-          )}
-        </div>
-        <div className={styles.space}>
-          <p className={styles.spaceTitle}>Espace partagé</p>
-          {boards.filter((board) => board.isPrivate === false).length === 0 ? (
-            <p className={styles.emptySpace}>Aucun tableau</p>
-          ) : (
-            <div className={styles.boards}>
-              {boards
-                .filter((board) => board.isPrivate === false)
-                .map((board) => (
-                  <BoardListItem
-                    key={board.id}
-                    board={board}
-                    handleClick={() => goToBoard(board.id)}
-                    showDescription={false}
-                    editable
-                    projectName={
-                      board.project && board.project.siret !== currentUser.siret
-                        ? board.project.name
-                        : undefined
-                    }
-                    isActive={board.id === currentBoardId}
-                    onUpdate={(data) => handleUpdate(board.id, data)}
-                    onDelete={() => handleDelete(board.id)}
-                  />
-                ))}
-            </div>
-          )}
+        <div className={styles.spaces}>
+          <div className={styles.space}>
+            <p className={styles.spaceTitle}>Mon espace</p>
+            {boards.filter((board) => board.isPrivate).length === 0 ? (
+              <p className={styles.emptySpace}>Aucun tableau</p>
+            ) : (
+              <div className={styles.boards}>
+                {boards
+                  .filter((board) => board.isPrivate)
+                  .map((board) => (
+                    <BoardListItem
+                      key={board.id}
+                      board={board}
+                      handleClick={() => goToBoard(board.id)}
+                      showDescription={false}
+                      editable
+                      projectName={
+                        board.project && board.project.siret !== currentUser.siret
+                          ? board.project.name
+                          : undefined
+                      }
+                      isActive={board.id === currentBoardId}
+                      onUpdate={(data) => handleUpdate(board.id, data)}
+                      onDelete={() => handleDelete(board.id)}
+                    />
+                  ))}
+              </div>
+            )}
+          </div>
+          <div className={styles.space}>
+            <p className={styles.spaceTitle}>Espace partagé</p>
+            {boards.filter((board) => board.isPrivate === false).length === 0 ? (
+              <p className={styles.emptySpace}>Aucun tableau</p>
+            ) : (
+              <div className={styles.boards}>
+                {boards
+                  .filter((board) => board.isPrivate === false)
+                  .map((board) => (
+                    <BoardListItem
+                      key={board.id}
+                      board={board}
+                      handleClick={() => goToBoard(board.id)}
+                      showDescription={false}
+                      editable
+                      projectName={
+                        board.project && board.project.siret !== currentUser.siret
+                          ? board.project.name
+                          : undefined
+                      }
+                      isActive={board.id === currentBoardId}
+                      onUpdate={(data) => handleUpdate(board.id, data)}
+                      onDelete={() => handleDelete(board.id)}
+                    />
+                  ))}
+              </div>
+            )}
+          </div>
         </div>
         <div className={styles.bottomBar}>
           <FeedbackButton
