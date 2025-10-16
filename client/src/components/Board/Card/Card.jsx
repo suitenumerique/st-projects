@@ -137,7 +137,7 @@ function Card({
             )}
             {attachmentsTotal > 0 && (
               <div className={styles.cardInfo}>
-                <Icon name="attach" type="outlined" size="small" />
+                <Icon name="attach_file" type="outlined" size="small" />
                 {attachmentsTotal}
               </div>
             )}
