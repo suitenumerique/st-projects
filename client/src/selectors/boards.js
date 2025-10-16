@@ -199,34 +199,42 @@ export const selectCardsWithDetailsForCurrentBoard = createSelector(
       return boardModel;
     }
 
-    return boardModel
-      .getOrderedCardsQuerySet()
-      .toModelArray()
-      .map((cardModel) => ({
-        ...cardModel.ref,
-        isPersisted: !isLocalId(cardModel.id),
-        coverUrl: cardModel.coverAttachment && cardModel.coverAttachment.coverUrl,
-        users: cardModel.users.toRefArray(),
-        labels: cardModel.labels.toRefArray(),
-        tasks: cardModel
-          .getOrderedTasksQuerySet()
-          .toRefArray()
-          .map((task) => ({
-            ...task,
-            isPersisted: !isLocalId(task.id),
-          })),
-        attachments: cardModel
-          .getOrderedAttachmentsQuerySet()
-          .toRefArray()
-          .map((attachment) => ({
-            ...attachment,
-            isCover: attachment.id === cardModel.coverAttachmentId,
-            isPersisted: !isLocalId(attachment.id),
-          })),
-        attachmentsTotal: cardModel.attachments.count(),
-        notificationsTotal: cardModel.getUnreadNotificationsQuerySet().count(),
-        lastActivityId: cardModel.getFilteredOrderedInCardActivitiesQuerySet().last()?.id,
-      }));
+    // Get filtered cards from each list instead of all cards from board
+    const filteredCards = [];
+    const lists = boardModel.lists.toModelArray();
+
+    lists.forEach((listModel) => {
+      const listFilteredCards = listModel.getFilteredOrderedCardsModelArray();
+      listFilteredCards.forEach((cardModel) => {
+        filteredCards.push({
+          ...cardModel.ref,
+          isPersisted: !isLocalId(cardModel.id),
+          coverUrl: cardModel.coverAttachment && cardModel.coverAttachment.coverUrl,
+          users: cardModel.users.toRefArray(),
+          labels: cardModel.labels.toRefArray(),
+          tasks: cardModel
+            .getOrderedTasksQuerySet()
+            .toRefArray()
+            .map((task) => ({
+              ...task,
+              isPersisted: !isLocalId(task.id),
+            })),
+          attachments: cardModel
+            .getOrderedAttachmentsQuerySet()
+            .toRefArray()
+            .map((attachment) => ({
+              ...attachment,
+              isCover: attachment.id === cardModel.coverAttachmentId,
+              isPersisted: !isLocalId(attachment.id),
+            })),
+          attachmentsTotal: cardModel.attachments.count(),
+          notificationsTotal: cardModel.getUnreadNotificationsQuerySet().count(),
+          lastActivityId: cardModel.getFilteredOrderedInCardActivitiesQuerySet().last()?.id,
+        });
+      });
+    });
+
+    return filteredCards;
   },
 );
 

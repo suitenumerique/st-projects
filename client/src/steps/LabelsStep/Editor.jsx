@@ -21,7 +21,7 @@ const Editor = React.memo(({ data, onFieldChange }) => {
     <>
       <div className={styles.text}>{t('common.title')}</div>
       <Input
-        fluid
+        label="Nom de l'étiquette"
         ref={nameField}
         name="name"
         value={data.name}

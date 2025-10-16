@@ -1,5 +1,9 @@
 :global(#app) {
 
+  a {
+    color: var(----c--theme--colors--greyscale-800)
+  }
+
   .wrapper {
     margin: 0;
     width: 100%;
@@ -181,6 +185,9 @@
     max-width: 100%;
     overflow: hidden;
     margin-bottom: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
   }
 
   .cardName {

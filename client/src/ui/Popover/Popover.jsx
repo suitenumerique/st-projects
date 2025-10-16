@@ -27,6 +27,7 @@ export default function Popover({
           align={align}
           className={styles.popoverWrapper}
           onClick={handlePopoverClick}
+          avoidCollisions
         >
           <div className={styles.popoverContent}>{content}</div>
         </RadixPopover.Content>

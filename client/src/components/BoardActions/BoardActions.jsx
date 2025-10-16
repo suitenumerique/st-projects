@@ -2,7 +2,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { ShareModal, ShareModalCopyLinkFooter, Icon } from '@gouvfr-lasuite/ui-kit';
 import { Button } from '@openfun/cunningham-react';
+import usePopup from '../../lib/popup/use-popup';
 
+import FiltersStep from '../../steps/FiltersStep';
 // import Filters from '../Filters';
 
 import styles from './BoardActions.module.scss';
@@ -10,32 +12,29 @@ import styles from './BoardActions.module.scss';
 const BoardActions = React.memo(
   ({
     memberships,
-    // labels,
-    // filterUsers,
+    labels,
+    filterUsers,
     filterLabels,
-    // filterText,
+    filterText,
     allUsers,
-    canEdit,
-    // canEditMemberships,
+    canEditMemberships,
     isPublic,
     onMembershipCreate,
     onMembershipUpdate,
     onMembershipDelete,
-    // onUserToFilterAdd,
-    // onUserFromFilterRemove,
+    onUserToFilterAdd,
+    onUserFromFilterRemove,
     onLabelToFilterAdd,
-    // onLabelFromFilterRemove,
-    // onLabelCreate,
-    // onLabelUpdate,
-    // onLabelMove,
-    // onLabelDelete,
-    // onTextFilterUpdate,
+    onLabelFromFilterRemove,
+    onTextFilterUpdate,
     onBoardUpdate,
     currentBoardId,
     // isCurrentUserMember,
   }) => {
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
     const [searchedUsers, setSearchedUsers] = useState([]);
+
+    const FiltersPopover = usePopup(FiltersStep);
 
     const handleUpdate = useCallback(
       (data) => {
@@ -104,14 +103,28 @@ const BoardActions = React.memo(
             /> */}
           </div>
           <div className={styles.action}>
-            <Button
-              icon={<Icon type="outlined" name="filter_alt" />}
-              color="secondary"
-              // onClick={handleShareClick}
-              title="Filtrer"
+            <FiltersPopover
+              align="end"
+              side="top"
+              allBoardMemberships={memberships}
+              allLabels={labels}
+              filterText={filterText}
+              filterUsers={filterUsers}
+              filterLabels={filterLabels}
+              onUserToFilterAdd={onUserToFilterAdd}
+              onUserFromFilterRemove={onUserFromFilterRemove}
+              onLabelToFilterAdd={onLabelToFilterAdd}
+              onLabelFromFilterRemove={onLabelFromFilterRemove}
+              onTextFilterUpdate={onTextFilterUpdate}
             >
-              Filtrer
-            </Button>
+              <Button
+                icon={<Icon type="outlined" name="filter_alt" />}
+                color="secondary"
+                title="Filtrer"
+              >
+                Filtrer
+              </Button>
+            </FiltersPopover>
             <Button
               icon={<Icon type="outlined" name="group" />}
               onClick={handleShareClick}
@@ -126,7 +139,7 @@ const BoardActions = React.memo(
           isOpen={isShareModalOpen}
           onClose={handleShareModalClose}
           modalTitle="Partager le tableau"
-          canUpdate={canEdit}
+          canUpdate={canEditMemberships}
           canView
           accesses={memberships}
           invitationRoles={[
@@ -170,7 +183,7 @@ const BoardActions = React.memo(
               }}
             />
           }
-          linkSettings={canEdit}
+          linkSettings={canEditMemberships}
           linkReach={isPublic ? 'public' : 'restricted'}
           linkReachChoices={[
             {
@@ -192,29 +205,23 @@ const BoardActions = React.memo(
 BoardActions.propTypes = {
   /* eslint-disable react/forbid-prop-types */
   memberships: PropTypes.array.isRequired,
-  // labels: PropTypes.array.isRequired,
-  // filterUsers: PropTypes.array.isRequired,
+  labels: PropTypes.array.isRequired,
+  filterUsers: PropTypes.array.isRequired,
   filterLabels: PropTypes.array.isRequired,
-  // filterText: PropTypes.string.isRequired,
+  filterText: PropTypes.string.isRequired,
   allUsers: PropTypes.array.isRequired,
   /* eslint-enable react/forbid-prop-types */
-  canEdit: PropTypes.bool.isRequired,
-  // canEditMemberships: PropTypes.bool.isRequired,
+  canEditMemberships: PropTypes.bool.isRequired,
   isPublic: PropTypes.bool.isRequired,
   onMembershipCreate: PropTypes.func.isRequired,
   onMembershipUpdate: PropTypes.func.isRequired,
   onMembershipDelete: PropTypes.func.isRequired,
-  // onUserToFilterAdd: PropTypes.func.isRequired,
-  // onUserFromFilterRemove: PropTypes.func.isRequired,
+  onUserToFilterAdd: PropTypes.func.isRequired,
+  onUserFromFilterRemove: PropTypes.func.isRequired,
   onLabelToFilterAdd: PropTypes.func.isRequired,
-  // onLabelFromFilterRemove: PropTypes.func.isRequired,
-  // onLabelCreate: PropTypes.func.isRequired,
-  // onLabelUpdate: PropTypes.func.isRequired,
-  // onLabelMove: PropTypes.func.isRequired,
-  // onLabelDelete: PropTypes.func.isRequired,
-  // onTextFilterUpdate: PropTypes.func.isRequired,
+  onLabelFromFilterRemove: PropTypes.func.isRequired,
+  onTextFilterUpdate: PropTypes.func.isRequired,
   onBoardUpdate: PropTypes.func.isRequired,
-  /* eslint-disable react/forbid-prop-types */
   currentBoardId: PropTypes.string.isRequired,
   // isCurrentUserMember: PropTypes.bool.isRequired,
 };

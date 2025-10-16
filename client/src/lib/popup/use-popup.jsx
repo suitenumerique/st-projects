@@ -5,7 +5,7 @@ import Popover from '../../ui/Popover';
 
 export default (Step, props) => {
   return useMemo(() => {
-    const Popup = React.memo(({ children, onClose, ...stepProps }) => {
+    const Popup = React.memo(({ children, onClose, ...popoverProps }) => {
       const [isOpened, setIsOpened] = useState(false);
 
       // const wrapper = useRef(null);
@@ -85,13 +85,13 @@ export default (Step, props) => {
       return (
         <Popover
           trigger={trigger}
-          content={<Step {...stepProps} onClose={handleClose} />} // eslint-disable-line react/jsx-props-no-spreading
-          hideCloseButton={stepProps.hideCloseButton}
+          content={<Step {...popoverProps} onClose={handleClose} />} // eslint-disable-line react/jsx-props-no-spreading
+          hideCloseButton={popoverProps.hideCloseButton}
           open={isOpened}
           onOpenChange={handleOpenChange}
           onMouseDown={handleMouseDown}
           onClick={handleClick}
-          {...props} // eslint-disable-line react/jsx-props-no-spreading
+          {...popoverProps} // eslint-disable-line react/jsx-props-no-spreading
         />
       );
     });
@@ -108,5 +108,5 @@ export default (Step, props) => {
     };
 
     return Popup;
-  }, [props]);
+  }, []);
 };

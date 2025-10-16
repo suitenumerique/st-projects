@@ -635,14 +635,14 @@ const CardModal = React.memo(
             <div className={styles.cardModalSectionRight}>
               <div className={styles.sectionTitle}>{t('common.tasks')}</div>
               <div className={styles.detailsItemContent}>
-                <Tasks
+                {/* <Tasks
                   items={tasks}
                   canEdit={canEdit}
                   onCreate={onTaskCreate}
                   onUpdate={onTaskUpdate}
                   onMove={onTaskMove}
                   onDelete={onTaskDelete}
-                />
+                /> */}
               </div>
             </div>
           </section>
