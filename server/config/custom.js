@@ -92,4 +92,11 @@ module.exports.custom = {
   telegramThreadId: process.env.TELEGRAM_THREAD_ID,
 
   templateBoards: JSON.parse(process.env.TEMPLATE_BOARDS || '[]'),
+
+  reactAppDefaultEmail: process.env.REACT_APP_DEFAULT_EMAIL,
+  reactAppDefaultPassword: process.env.REACT_APP_DEFAULT_PASSWORD,
+
+  reactAppFeedbackWidgetApiUrl: process.env.REACT_APP_FEEDBACK_WIDGET_API_URL,
+  reactAppFeedbackWidgetPath: process.env.REACT_APP_FEEDBACK_WIDGET_PATH,
+  reactAppFeedbackWidgetChannel: process.env.REACT_APP_FEEDBACK_WIDGET_CHANNEL,
 };

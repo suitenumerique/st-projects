@@ -12,6 +12,13 @@ const mapStateToProps = (state) => {
   const currentUser = selectors.selectCurrentUser(state);
   const currentUserMembership = selectors.selectCurrentUserMembershipForCurrentBoard(state);
 
+  const config = selectors.selectConfig(state);
+  const {
+    reactAppFeedbackWidgetApiUrl,
+    reactAppFeedbackWidgetPath,
+    reactAppFeedbackWidgetChannel,
+  } = config;
+
   return {
     isInitializing,
     isSocketDisconnected,
@@ -20,6 +27,9 @@ const mapStateToProps = (state) => {
     currentBoard,
     currentUser,
     currentUserMembership,
+    reactAppFeedbackWidgetApiUrl,
+    reactAppFeedbackWidgetPath,
+    reactAppFeedbackWidgetChannel,
   };
 };
 

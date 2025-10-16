@@ -42,6 +42,11 @@ module.exports = {
         oidc,
         allowAllToCreateProjects: sails.config.custom.allowAllToCreateProjects,
         templateBoards: sails.config.custom.templateBoards,
+        reactAppDefaultEmail: sails.config.custom.reactAppDefaultEmail,
+        reactAppDefaultPassword: sails.config.custom.reactAppDefaultPassword,
+        reactAppFeedbackWidgetApiUrl: sails.config.custom.reactAppFeedbackWidgetApiUrl,
+        reactAppFeedbackWidgetPath: sails.config.custom.reactAppFeedbackWidgetPath,
+        reactAppFeedbackWidgetChannel: sails.config.custom.reactAppFeedbackWidgetChannel,
       },
     };
   },

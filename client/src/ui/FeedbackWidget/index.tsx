@@ -5,19 +5,21 @@ import selectors from '../../selectors';
 
 interface FeedbackWidgetProps {
   widget?: string;
+  apiUrl: string;
+  widgetPath: string;
+  channel: string;
 }
 
 export function FeedbackWidget({
   widget = "feedback",
+  apiUrl,
+  widgetPath,
+  channel,
 }: FeedbackWidgetProps) {
   const { t } = useTranslation();
   const currentUser = useSelector((state) => selectors.selectCurrentUser(state));
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const isLoggedIn = useSelector((state: any) => selectors.selectCurrentUserId(state)) !== null;
-
-  const apiUrl = process.env.REACT_APP_FEEDBACK_WIDGET_API_URL;
-  const widgetPath = process.env.REACT_APP_FEEDBACK_WIDGET_PATH;
-  const channel = process.env.REACT_APP_FEEDBACK_WIDGET_CHANNEL;
 
   const title: string = t("feedback_widget.title");
   const placeholder: string = t("feedback_widget.placeholder");

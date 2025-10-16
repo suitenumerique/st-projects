@@ -7,15 +7,11 @@ import selectors from '../../selectors';
 /**
  * A button that opens the feedback widget
  */
-export const SurveyButton = (props: ButtonProps) => {
+export const SurveyButton = ({ props, apiUrl, widgetPath, channel }) => {
   const { t } = useTranslation()
   const currentUser = useSelector((state) => selectors.selectCurrentUser(state));
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const isLoggedIn = useSelector((state: any) => selectors.selectCurrentUserId(state)) !== null;
-
-  const apiUrl = process.env.REACT_APP_FEEDBACK_WIDGET_API_URL;
-  const widgetPath = process.env.REACT_APP_FEEDBACK_WIDGET_PATH;
-  const channel = process.env.REACT_APP_FEEDBACK_WIDGET_CHANNEL;
 
   if (!channel || !apiUrl || !widgetPath) return null;
 

@@ -23,6 +23,9 @@ const Core = React.memo(
     currentBoard,
     currentUser,
     currentUserMembership,
+    reactAppFeedbackWidgetApiUrl,
+    reactAppFeedbackWidgetPath,
+    reactAppFeedbackWidgetChannel,
   }) => {
     const [t] = useTranslation();
 
@@ -80,7 +83,11 @@ const Core = React.memo(
             rightHeaderContent={<HeaderRightContainer />}
           >
             <StaticContainer />
-            <FeedbackWidget />
+            <FeedbackWidget
+              apiUrl={reactAppFeedbackWidgetApiUrl}
+              widgetPath={reactAppFeedbackWidgetPath}
+              channel={reactAppFeedbackWidgetChannel}
+            />
           </MainLayout>
         )}
         {isSocketDisconnected && (
@@ -109,6 +116,9 @@ Core.propTypes = {
   currentUser: PropTypes.object,
   currentUserMembership: PropTypes.object,
   /* eslint-enable react/forbid-prop-types */
+  reactAppFeedbackWidgetApiUrl: PropTypes.string.isRequired,
+  reactAppFeedbackWidgetPath: PropTypes.string.isRequired,
+  reactAppFeedbackWidgetChannel: PropTypes.string.isRequired,
 };
 
 Core.defaultProps = {

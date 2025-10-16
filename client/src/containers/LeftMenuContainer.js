@@ -16,7 +16,13 @@ const mapStateToProps = (state) => {
   const currentUser = selectors.selectCurrentUser(state);
 
   const config = selectors.selectConfig(state);
-  const { templateBoards } = config;
+
+  const {
+    templateBoards,
+    reactAppFeedbackWidgetApiUrl,
+    reactAppFeedbackWidgetPath,
+    reactAppFeedbackWidgetChannel,
+  } = config;
 
   return {
     boards,
@@ -27,6 +33,9 @@ const mapStateToProps = (state) => {
     isSettingsModalOpened: currentModal === ModalTypes.PROJECT_SETTINGS,
     currentUser,
     templateBoards,
+    reactAppFeedbackWidgetApiUrl,
+    reactAppFeedbackWidgetPath,
+    reactAppFeedbackWidgetChannel,
   };
 };
 

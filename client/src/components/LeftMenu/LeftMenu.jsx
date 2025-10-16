@@ -26,6 +26,9 @@ const LeftMenu = React.memo(
     onBoardDelete,
     onBoardDuplicate,
     templateBoards,
+    reactAppFeedbackWidgetApiUrl,
+    reactAppFeedbackWidgetPath,
+    reactAppFeedbackWidgetChannel,
   }) => {
     const [, setProjectsAndBoards] = useState([]);
     const BoardCreateStepPopover = usePopup(BoardCreateStep);
@@ -138,7 +141,11 @@ const LeftMenu = React.memo(
           )}
         </div>
         <div className={styles.bottomBar}>
-          <FeedbackButton />
+          <FeedbackButton
+            apiUrl={reactAppFeedbackWidgetApiUrl}
+            widgetPath={reactAppFeedbackWidgetPath}
+            channel={reactAppFeedbackWidgetChannel}
+          />
         </div>
       </div>
     );
@@ -157,6 +164,9 @@ LeftMenu.propTypes = {
   currentUser: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   /* eslint-disable react/forbid-prop-types */
   templateBoards: PropTypes.array.isRequired,
+  reactAppFeedbackWidgetApiUrl: PropTypes.string.isRequired,
+  reactAppFeedbackWidgetPath: PropTypes.string.isRequired,
+  reactAppFeedbackWidgetChannel: PropTypes.string.isRequired,
 };
 
 LeftMenu.defaultProps = {
