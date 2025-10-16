@@ -113,7 +113,7 @@ export default {
       leaveProject_title: 'Quitter le projet',
       linkIsCopied: 'Le lien est copié',
       list: 'Lister',
-      listActions_title: 'Liste des actions',
+      listActions_title: 'Actions sur la liste',
       managers: 'Managers',
       managerActions_title: 'Actions des managers',
       members: 'Membres',
@@ -178,7 +178,6 @@ export default {
       viewer: 'Lecteur',
       writeComment: 'Écrire un commentaire...',
     },
-
     action: {
       addAnotherCard: 'Ajouter une carte',
       addAnotherList: 'Ajouter une liste',
@@ -253,6 +252,16 @@ export default {
       unsubscribe: 'Se désabonner',
       uploadNewAvatar: 'Télécharger un nouvel avatar',
       uploadNewImage: 'Télécharger une nouvelle image',
+    },
+    feedback_widget: {
+      shortTitle: 'Faire un retour',
+      title: 'Partager un retour ou une question',
+      placeholder: 'Saisir votre message...',
+      email_placeholder: 'Renseigner votre email...',
+      submit_text: 'Envoyer le message',
+      success_text: 'Merci pour votre message.',
+      success_text2:
+        "En cas de questions, nous vous répondrons dans les meilleurs délais sur l'email renseigné.",
     },
   },
 };

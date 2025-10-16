@@ -12,6 +12,7 @@ import store from '../../store';
 import BoardCreateStep from '../../steps/BoardCreateStep';
 
 import styles from './LeftMenu.module.scss';
+import { SurveyButton as FeedbackButton } from '../../ui/FeedbackButton/index.tsx';
 
 const LeftMenu = React.memo(
   ({
@@ -37,12 +38,6 @@ const LeftMenu = React.memo(
       }));
       setProjectsAndBoards(data);
     }, [projects, currentProject]);
-
-    // useEffect(() => {
-    //   setProjectsAndBoards((prev) =>
-    //     prev.map((p) => ({ ...p, isOpen: p.id === currentProject?.id ? true : p.isOpen })),
-    //   );
-    // }, [currentProject]);
 
     const handleUpdate = useCallback(
       (id, data) => {
@@ -141,6 +136,9 @@ const LeftMenu = React.memo(
                 ))}
             </div>
           )}
+        </div>
+        <div className={styles.bottomBar}>
+          <FeedbackButton />
         </div>
       </div>
     );

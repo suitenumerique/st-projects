@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
 import { useCallback } from 'react';
-import classNames from 'classnames';
 
 import styles from './MenuItem.module.scss';
 
-function MenuItem({ onClick, active, children }) {
+function MenuItem({ onClick, children }) {
   const onKeyDown = useCallback(
     (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
@@ -20,7 +19,7 @@ function MenuItem({ onClick, active, children }) {
       onClick={onClick}
       tabIndex={0}
       onKeyDown={onKeyDown}
-      className={classNames(styles.menuItem, active && styles.menuItemActive)}
+      className={styles.menuItem}
     >
       {children}
     </button>
@@ -29,13 +28,11 @@ function MenuItem({ onClick, active, children }) {
 
 MenuItem.propTypes = {
   onClick: PropTypes.func,
-  active: PropTypes.bool,
   children: PropTypes.node,
 };
 
 MenuItem.defaultProps = {
   onClick: () => {},
-  active: false,
   children: undefined,
 };
 

@@ -36,6 +36,7 @@ function Board({
   allBoardMemberships,
   allBoardLabels,
   canEdit,
+  onBoardFetch,
   onListCreate,
   onListUpdate,
   onListMove,
@@ -49,7 +50,6 @@ function Board({
   onCardDelete,
   onCardUserAdd,
   onCardUserRemove,
-  onCardBoardFetch,
   onCardLabelAdd,
   onCardLabelRemove,
   onCardLabelCreate,
@@ -282,6 +282,7 @@ function Board({
                 allBoardMemberships={allBoardMemberships}
                 allBoardLabels={allBoardLabels}
                 canEdit={canEdit}
+                onBoardFetch={onBoardFetch}
                 onUpdate={(data) => onListUpdate(column.id, data)}
                 onSort={(data) => onListSort(column.id, data)}
                 onDelete={() => onListDelete(column.id)}
@@ -293,7 +294,6 @@ function Board({
                 onCardDelete={onCardDelete}
                 onCardUserAdd={onCardUserAdd}
                 onCardUserRemove={onCardUserRemove}
-                onCardBoardFetch={onCardBoardFetch}
                 onCardLabelAdd={onCardLabelAdd}
                 onCardLabelRemove={onCardLabelRemove}
                 onCardLabelCreate={onCardLabelCreate}
@@ -337,6 +337,7 @@ function Board({
                 allBoardMemberships={allBoardMemberships}
                 allBoardLabels={allBoardLabels}
                 canEdit={canEdit}
+                onBoardFetch={() => {}} // No-op for drag overlay
                 onUpdate={() => {}} // No-op for drag overlay
                 onDelete={() => {}} // No-op for drag overlay
                 onSort={() => {}} // No-op for drag overlay
@@ -348,7 +349,6 @@ function Board({
                 onCardDelete={() => {}} // No-op for drag overlay
                 onCardUserAdd={() => {}} // No-op for drag overlay
                 onCardUserRemove={() => {}} // No-op for drag overlay
-                onCardBoardFetch={() => {}} // No-op for drag overlay
                 onCardLabelAdd={() => {}} // No-op for drag overlay
                 onCardLabelRemove={() => {}} // No-op for drag overlay
                 onCardLabelCreate={() => {}} // No-op for drag overlay
@@ -415,6 +415,7 @@ Board.propTypes = {
   allBoards: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   allBoardMemberships: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   allBoardLabels: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  onBoardFetch: PropTypes.func.isRequired,
   onListCreate: PropTypes.func.isRequired,
   onListUpdate: PropTypes.func.isRequired,
   onListMove: PropTypes.func.isRequired,
@@ -428,7 +429,6 @@ Board.propTypes = {
   onCardDelete: PropTypes.func.isRequired,
   onCardUserAdd: PropTypes.func.isRequired,
   onCardUserRemove: PropTypes.func.isRequired,
-  onCardBoardFetch: PropTypes.func.isRequired,
   onCardLabelAdd: PropTypes.func.isRequired,
   onCardLabelRemove: PropTypes.func.isRequired,
   onCardLabelCreate: PropTypes.func.isRequired,

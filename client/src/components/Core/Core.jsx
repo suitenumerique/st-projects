@@ -8,6 +8,8 @@ import { Loader } from '../../lib/migration-helpers';
 
 import StaticContainer from '../../containers/StaticContainer';
 import LeftMenuContainer from '../../containers/LeftMenuContainer';
+import { FeedbackWidget } from '../../ui/FeedbackWidget/index.tsx';
+// import FeedbackButton from '../../ui/FeedbackButton';
 
 import styles from './Core.module.scss';
 import logo from '../../assets/images/projets_logo.svg';
@@ -78,6 +80,7 @@ const Core = React.memo(
             rightHeaderContent={<HeaderRightContainer />}
           >
             <StaticContainer />
+            <FeedbackWidget />
           </MainLayout>
         )}
         {isSocketDisconnected && (

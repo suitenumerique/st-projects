@@ -40,6 +40,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
+      onBoardFetch: entryActions.fetchBoard,
       onListCreate: entryActions.createListInCurrentBoard,
       onListUpdate: entryActions.updateList,
       onListMove: entryActions.moveList,
@@ -53,7 +54,6 @@ const mapDispatchToProps = (dispatch) =>
       onCardDelete: entryActions.deleteCard,
       onCardUserAdd: entryActions.addUserToCard,
       onCardUserRemove: entryActions.removeUserFromCard,
-      onCardBoardFetch: entryActions.fetchBoard,
       onCardLabelAdd: entryActions.addLabelToCard,
       onCardLabelRemove: entryActions.removeLabelFromCard,
       onCardLabelCreate: entryActions.createLabelInCurrentBoard,

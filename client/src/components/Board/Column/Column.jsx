@@ -27,6 +27,7 @@ function Column({
   allBoards,
   allBoardMemberships,
   allBoardLabels,
+  onBoardFetch,
   onUpdate,
   onDelete,
   onSort,
@@ -38,7 +39,6 @@ function Column({
   onCardDelete,
   onCardUserAdd,
   onCardUserRemove,
-  onCardBoardFetch,
   onCardLabelAdd,
   onCardLabelRemove,
   onCardLabelCreate,
@@ -184,6 +184,7 @@ function Column({
               allLabels={allBoardLabels}
               currentUser={currentUser}
               canEdit={canEdit}
+              onBoardFetch={onBoardFetch}
               onUpdate={(data) => onCardUpdate(card.id, data)}
               onMove={(listId, index) => onCardMove(card.id, listId, index)}
               onTransfer={(boardId, listId) => onCardTransfer(card.id, boardId, listId)}
@@ -191,7 +192,6 @@ function Column({
               onDelete={() => onCardDelete(card.id)}
               onUserAdd={(userId) => onCardUserAdd(userId, card.id)}
               onUserRemove={(userId) => onCardUserRemove(userId, card.id)}
-              onCardBoardFetch={onCardBoardFetch}
               onLabelAdd={(labelId) => onCardLabelAdd(labelId, card.id)}
               onLabelRemove={(labelId) => onCardLabelRemove(labelId, card.id)}
               onLabelCreate={(data) => onCardLabelCreate(data)}
@@ -243,6 +243,7 @@ Column.propTypes = {
   allBoardMemberships: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   allBoardLabels: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   canEdit: PropTypes.bool.isRequired,
+  onBoardFetch: PropTypes.func.isRequired,
   onUpdate: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   onSort: PropTypes.func.isRequired,
@@ -254,7 +255,6 @@ Column.propTypes = {
   onCardDelete: PropTypes.func.isRequired,
   onCardUserAdd: PropTypes.func.isRequired,
   onCardUserRemove: PropTypes.func.isRequired,
-  onCardBoardFetch: PropTypes.func.isRequired,
   onCardLabelAdd: PropTypes.func.isRequired,
   onCardLabelRemove: PropTypes.func.isRequired,
   onCardLabelCreate: PropTypes.func.isRequired,

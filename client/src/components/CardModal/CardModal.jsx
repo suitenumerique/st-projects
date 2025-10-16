@@ -424,202 +424,195 @@ const CardModal = React.memo(
               </AttachmentAddPopover>
             </div>
           </section>
-          <section className={classNames(styles.cardModalSection, styles.cardDetailsSection)}>
-            <div className={styles.cardModalSectionLeft} />
-            <div className={styles.cardModalSectionRight}>
-              {(users.length > 0 || labels.length > 0 || dueDate || stopwatch) && (
-                <>
-                  {users.length > 0 && (
-                    <div className={styles.detailsItem}>
-                      <div className={styles.detailsItemTitle}>
-                        {t('common.members', {
-                          context: 'title',
-                        })}
-                      </div>
-                      <div className={styles.detailsItemContent}>
-                        {users.map((user) => (
-                          <span key={user.id}>
-                            {canEdit ? (
-                              <BoardMembershipsPopover
-                                items={allBoardMemberships}
-                                currentUserIds={userIds}
-                                onUserSelect={onUserAdd}
-                                onUserDeselect={onUserRemove}
-                              >
-                                <button type="button" className="bare-button">
-                                  <User name={user.name} size="small" avatarUrl={user.avatarUrl} />
-                                </button>
-                              </BoardMembershipsPopover>
-                            ) : (
-                              <User name={user.name} size="small" avatarUrl={user.avatarUrl} />
-                            )}
-                          </span>
-                        ))}
-                        {canEdit && (
-                          <BoardMembershipsPopover
-                            items={allBoardMemberships}
-                            currentUserIds={userIds}
-                            onUserSelect={onUserAdd}
-                            onUserDeselect={onUserRemove}
-                          >
-                            <Button
-                              type="button"
-                              color="secondary"
-                              size="small"
-                              className={styles.detailsItemAddButton}
-                            >
-                              <Icon name="add" size="small" />
-                            </Button>
-                          </BoardMembershipsPopover>
-                        )}
-                      </div>
+          {(users.length > 0 || labels.length > 0 || dueDate || stopwatch) && (
+            <section className={classNames(styles.cardModalSection, styles.cardDetailsSection)}>
+              <div className={styles.cardModalSectionLeft} />
+              <div className={styles.cardModalSectionRight}>
+                {users.length > 0 && (
+                  <div className={styles.detailsItem}>
+                    <div className={styles.detailsItemTitle}>
+                      {t('common.members', {
+                        context: 'title',
+                      })}
                     </div>
-                  )}
-                  {labels.length > 0 && (
-                    <div className={styles.detailsItem}>
-                      <div className={styles.detailsItemTitle}>
-                        {t('common.labels', {
-                          context: 'title',
-                        })}
-                      </div>
-                      <div className={styles.detailsItemContent}>
-                        {labels.map((label) => (
-                          <span key={label.id}>
-                            {canEdit ? (
-                              <LabelsPopup
-                                key={label.id}
-                                items={allLabels}
-                                currentIds={labelIds}
-                                onSelect={onLabelAdd}
-                                onDeselect={onLabelRemove}
-                                onCreate={onLabelCreate}
-                                onUpdate={onLabelUpdate}
-                                onMove={onLabelMove}
-                                onDelete={onLabelDelete}
-                              >
-                                <button type="button" className="bare-button">
-                                  <Label name={label.name} color={label.color} size="medium" />
-                                </button>
-                              </LabelsPopup>
-                            ) : (
-                              <Label name={label.name} color={label.color} size="medium" />
-                            )}
-                          </span>
-                        ))}
-                        {canEdit && (
-                          <LabelsPopup
-                            items={allLabels}
-                            currentIds={labelIds}
-                            onSelect={onLabelAdd}
-                            onDeselect={onLabelRemove}
-                            onCreate={onLabelCreate}
-                            onUpdate={onLabelUpdate}
-                            onMove={onLabelMove}
-                            onDelete={onLabelDelete}
-                          >
-                            <Button
-                              type="button"
-                              color="secondary"
-                              size="small"
-                              className={styles.detailsItemAddButton}
-                            >
-                              <Icon name="add" size="small" />
-                            </Button>
-                          </LabelsPopup>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                  {dueDate && (
-                    <div className={styles.detailsItem}>
-                      <div className={styles.detailsItemTitle}>
-                        {t('common.dueDate', {
-                          context: 'title',
-                        })}
-                      </div>
-                      <div className={styles.detailsItemContent}>
-                        {canEdit ? (
-                          <>
-                            <Checkbox
-                              checked={isDueDateCompleted}
-                              disabled={!canEdit}
-                              onChange={handleDueDateCompletionChange}
-                            />
-                            <DueDateEditPopover
-                              defaultValue={dueDate}
-                              onUpdate={handleDueDateUpdate}
+                    <div className={styles.detailsItemContent}>
+                      {users.map((user) => (
+                        <span key={user.id}>
+                          {canEdit ? (
+                            <BoardMembershipsPopover
+                              items={allBoardMemberships}
+                              currentUserIds={userIds}
+                              onUserSelect={onUserAdd}
+                              onUserDeselect={onUserRemove}
                             >
                               <button type="button" className="bare-button">
-                                <DueDate
-                                  size="medium"
-                                  withStatusIcon
-                                  value={dueDate}
-                                  isCompleted={isDueDateCompleted}
-                                  onClick={() => {}}
-                                />
+                                <User name={user.name} size="small" avatarUrl={user.avatarUrl} />
                               </button>
-                            </DueDateEditPopover>
-                          </>
-                        ) : (
-                          <DueDate
-                            size="medium"
-                            withStatusIcon
-                            value={dueDate}
-                            isCompleted={isDueDateCompleted}
-                          />
-                        )}
-                      </div>
-                    </div>
-                  )}
-                  {stopwatch && (
-                    <div className={styles.detailsItem}>
-                      <div className={styles.detailsItemTitle}>
-                        {t('common.stopwatch', {
-                          context: 'title',
-                        })}
-                      </div>
-                      <div className={styles.detailsItemContent}>
-                        {canEdit ? (
-                          <StopwatchEditPopover
-                            defaultValue={stopwatch}
-                            onUpdate={handleStopwatchUpdate}
-                          >
-                            <button type="button" className="bare-button">
-                              <Stopwatch
-                                startedAt={stopwatch.startedAt}
-                                total={stopwatch.total}
-                                size="medium"
-                              />
-                            </button>
-                          </StopwatchEditPopover>
-                        ) : (
-                          <Stopwatch
-                            startedAt={stopwatch.startedAt}
-                            total={stopwatch.total}
-                            size="medium"
-                          />
-                        )}
-                        {canEdit && (
+                            </BoardMembershipsPopover>
+                          ) : (
+                            <User name={user.name} size="small" avatarUrl={user.avatarUrl} />
+                          )}
+                        </span>
+                      ))}
+                      {canEdit && (
+                        <BoardMembershipsPopover
+                          items={allBoardMemberships}
+                          currentUserIds={userIds}
+                          onUserSelect={onUserAdd}
+                          onUserDeselect={onUserRemove}
+                        >
                           <Button
                             type="button"
                             color="secondary"
                             size="small"
                             className={styles.detailsItemAddButton}
-                            onClick={handleToggleStopwatchClick}
                           >
-                            <Icon
-                              name={stopwatch.startedAt ? 'pause' : 'play_arrow'}
-                              size="small"
-                            />
+                            <Icon name="add" size="small" />
                           </Button>
-                        )}
-                      </div>
+                        </BoardMembershipsPopover>
+                      )}
                     </div>
-                  )}
-                </>
-              )}
-            </div>
-          </section>
+                  </div>
+                )}
+                {labels.length > 0 && (
+                  <div className={styles.detailsItem}>
+                    <div className={styles.detailsItemTitle}>
+                      {t('common.labels', {
+                        context: 'title',
+                      })}
+                    </div>
+                    <div className={styles.detailsItemContent}>
+                      {labels.map((label) => (
+                        <span key={label.id}>
+                          {canEdit ? (
+                            <LabelsPopup
+                              key={label.id}
+                              items={allLabels}
+                              currentIds={labelIds}
+                              onSelect={onLabelAdd}
+                              onDeselect={onLabelRemove}
+                              onCreate={onLabelCreate}
+                              onUpdate={onLabelUpdate}
+                              onMove={onLabelMove}
+                              onDelete={onLabelDelete}
+                            >
+                              <button type="button" className="bare-button">
+                                <Label name={label.name} color={label.color} size="medium" />
+                              </button>
+                            </LabelsPopup>
+                          ) : (
+                            <Label name={label.name} color={label.color} size="medium" />
+                          )}
+                        </span>
+                      ))}
+                      {canEdit && (
+                        <LabelsPopup
+                          items={allLabels}
+                          currentIds={labelIds}
+                          onSelect={onLabelAdd}
+                          onDeselect={onLabelRemove}
+                          onCreate={onLabelCreate}
+                          onUpdate={onLabelUpdate}
+                          onMove={onLabelMove}
+                          onDelete={onLabelDelete}
+                        >
+                          <Button
+                            type="button"
+                            color="secondary"
+                            size="small"
+                            className={styles.detailsItemAddButton}
+                          >
+                            <Icon name="add" size="small" />
+                          </Button>
+                        </LabelsPopup>
+                      )}
+                    </div>
+                  </div>
+                )}
+                {dueDate && (
+                  <div className={styles.detailsItem}>
+                    <div className={styles.detailsItemTitle}>
+                      {t('common.dueDate', {
+                        context: 'title',
+                      })}
+                    </div>
+                    <div className={styles.detailsItemContent}>
+                      {canEdit ? (
+                        <>
+                          <Checkbox
+                            checked={isDueDateCompleted}
+                            disabled={!canEdit}
+                            onChange={handleDueDateCompletionChange}
+                          />
+                          <DueDateEditPopover defaultValue={dueDate} onUpdate={handleDueDateUpdate}>
+                            <button type="button" className="bare-button">
+                              <DueDate
+                                size="medium"
+                                withStatusIcon
+                                value={dueDate}
+                                isCompleted={isDueDateCompleted}
+                                onClick={() => {}}
+                              />
+                            </button>
+                          </DueDateEditPopover>
+                        </>
+                      ) : (
+                        <DueDate
+                          size="medium"
+                          withStatusIcon
+                          value={dueDate}
+                          isCompleted={isDueDateCompleted}
+                        />
+                      )}
+                    </div>
+                  </div>
+                )}
+                {stopwatch && (
+                  <div className={styles.detailsItem}>
+                    <div className={styles.detailsItemTitle}>
+                      {t('common.stopwatch', {
+                        context: 'title',
+                      })}
+                    </div>
+                    <div className={styles.detailsItemContent}>
+                      {canEdit ? (
+                        <StopwatchEditPopover
+                          defaultValue={stopwatch}
+                          onUpdate={handleStopwatchUpdate}
+                        >
+                          <button type="button" className="bare-button">
+                            <Stopwatch
+                              startedAt={stopwatch.startedAt}
+                              total={stopwatch.total}
+                              size="medium"
+                            />
+                          </button>
+                        </StopwatchEditPopover>
+                      ) : (
+                        <Stopwatch
+                          startedAt={stopwatch.startedAt}
+                          total={stopwatch.total}
+                          size="medium"
+                        />
+                      )}
+                      {canEdit && (
+                        <Button
+                          type="button"
+                          color="secondary"
+                          size="small"
+                          className={styles.detailsItemAddButton}
+                          onClick={handleToggleStopwatchClick}
+                        >
+                          <Icon name={stopwatch.startedAt ? 'pause' : 'play_arrow'} size="small" />
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </section>
+          )}
+
           <section className={classNames(styles.cardModalSection, styles.cardDescriptionSection)}>
             <div className={styles.cardModalSectionLeft}>
               <Icon name="format_align_left" size="small" />
