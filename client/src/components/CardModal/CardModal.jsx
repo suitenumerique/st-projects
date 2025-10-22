@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { Modal, Button, Checkbox } from '@openfun/cunningham-react';
 import { Icon, DropdownMenu } from '@gouvfr-lasuite/ui-kit';
 import usePopup from '../../lib/popup';
-import { FilePicker } from '../../lib/custom-ui';
 
 import { startStopwatch, stopStopwatch } from '../../utils/stopwatch';
 import CardModalNameEdit from '../CardModalNameEdit';
@@ -664,19 +663,13 @@ const CardModal = React.memo(
                 <Attachments
                   items={attachments}
                   canEdit={canEdit}
+                  onCreate={onAttachmentCreate}
                   onUpdate={onAttachmentUpdate}
                   onDelete={onAttachmentDelete}
                   onCoverUpdate={handleCoverUpdate}
                   onGalleryOpen={handleGalleryOpen}
                   onGalleryClose={handleGalleryClose}
                 />
-                <div className={styles.newAttachmentWrapper}>
-                  <FilePicker multiple onSelect={(file) => onAttachmentCreate({ file })}>
-                    <Button color="tertiary" size="small" icon={<Icon name="add" size="small" />}>
-                      Nouvelle pièce jointe
-                    </Button>
-                  </FilePicker>
-                </div>
               </div>
             </div>
           </section>

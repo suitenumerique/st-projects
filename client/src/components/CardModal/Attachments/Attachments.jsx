@@ -4,7 +4,9 @@ import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Gallery, Item as GalleryItem } from 'react-photoswipe-gallery';
 import { Button } from '@openfun/cunningham-react';
+import { Icon } from '@gouvfr-lasuite/ui-kit';
 import { useToggle } from '../../../lib/hooks';
+import { FilePicker } from '../../../lib/custom-ui';
 
 import Item from './Item';
 
@@ -13,7 +15,16 @@ import styles from './Attachments.module.scss';
 const INITIALLY_VISIBLE = 2;
 
 const Attachments = React.memo(
-  ({ items, canEdit, onUpdate, onDelete, onCoverUpdate, onGalleryOpen, onGalleryClose }) => {
+  ({
+    items,
+    canEdit,
+    onCreate,
+    onUpdate,
+    onDelete,
+    onCoverUpdate,
+    onGalleryOpen,
+    onGalleryClose,
+  }) => {
     const [t] = useTranslation();
     const [isAllVisible, toggleAllVisible] = useToggle();
 
@@ -116,31 +127,40 @@ const Attachments = React.memo(
 
     return (
       <>
-        <Gallery
-          withCaption
-          withDownloadButton
-          options={{
-            wheelToZoom: true,
-            showHideAnimationType: 'none',
-            closeTitle: '',
-            zoomTitle: '',
-            arrowPrevTitle: '',
-            arrowNextTitle: '',
-            errorMsg: '',
-          }}
-          onBeforeOpen={handleBeforeGalleryOpen}
-        >
-          {galleryItemsNode}
-        </Gallery>
-        {items.length > INITIALLY_VISIBLE && (
-          <Button color="secondary" size="small" onClick={handleToggleAllVisibleClick}>
-            {isAllVisible
-              ? t('action.showFewerAttachments')
-              : t('action.showAllAttachments', {
-                  hidden: items.length - INITIALLY_VISIBLE,
-                })}
-          </Button>
-        )}
+        <div className={galleryItemsNode.length > 0 && styles.attachmentsGallery}>
+          <Gallery
+            withCaption
+            withDownloadButton
+            options={{
+              wheelToZoom: true,
+              showHideAnimationType: 'none',
+              closeTitle: '',
+              zoomTitle: '',
+              arrowPrevTitle: '',
+              arrowNextTitle: '',
+              errorMsg: '',
+            }}
+            onBeforeOpen={handleBeforeGalleryOpen}
+          >
+            {galleryItemsNode}
+          </Gallery>
+          {items.length > INITIALLY_VISIBLE && (
+            <Button color="secondary" size="small" onClick={handleToggleAllVisibleClick}>
+              {isAllVisible
+                ? t('action.showFewerAttachments')
+                : t('action.showAllAttachments', {
+                    hidden: items.length - INITIALLY_VISIBLE,
+                  })}
+            </Button>
+          )}
+        </div>
+        <div>
+          <FilePicker multiple onSelect={(file) => onCreate({ file })}>
+            <Button color="tertiary" size="small" icon={<Icon name="add" size="small" />}>
+              Nouvelle pièce jointe
+            </Button>
+          </FilePicker>
+        </div>
       </>
     );
   },
@@ -149,6 +169,7 @@ const Attachments = React.memo(
 Attachments.propTypes = {
   items: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   canEdit: PropTypes.bool.isRequired,
+  onCreate: PropTypes.func.isRequired,
   onUpdate: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   onCoverUpdate: PropTypes.func.isRequired,
