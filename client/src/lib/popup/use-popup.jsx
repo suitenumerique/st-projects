@@ -3,7 +3,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import Popover from '../../ui/Popover';
 
-export default (Step, props) => {
+export default (Step) => {
   return useMemo(() => {
     const Popup = React.memo(({ children, onClose, ...popoverProps }) => {
       const [isOpened, setIsOpened] = useState(false);

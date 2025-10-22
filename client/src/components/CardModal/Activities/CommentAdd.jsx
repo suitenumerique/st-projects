@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import TextareaAutosize from 'react-textarea-autosize';
 import { Button } from '@openfun/cunningham-react';
+import { Icon } from '@gouvfr-lasuite/ui-kit';
 import { useDidUpdate, useToggle } from '../../../lib/hooks';
 
 import { useClosableForm, useForm } from '../../../hooks';
@@ -32,7 +33,7 @@ const CommentAdd = React.memo(({ onCreate }) => {
     };
 
     if (!cleanData.text) {
-      textField.current.ref.current.select();
+      textField.current?.select();
       return;
     }
 
@@ -62,18 +63,17 @@ const CommentAdd = React.memo(({ onCreate }) => {
   }, [submit]);
 
   useDidUpdate(() => {
-    textField.current.ref.current.focus();
+    textField.current?.focus();
   }, [selectTextFieldState]);
 
   return (
     <form onSubmit={handleSubmit}>
       <TextareaAutosize
         ref={textField}
-        as={TextareaAutosize}
         name="text"
         value={data.text}
         placeholder={t('common.writeComment')}
-        minRows={isOpened ? 3 : 1}
+        minRows={3}
         spellCheck={false}
         className={styles.field}
         onFocus={handleFieldFocus}
@@ -85,7 +85,9 @@ const CommentAdd = React.memo(({ onCreate }) => {
         <div className={styles.controls}>
           <Button
             type="submit"
-            color="primary"
+            color="tertiary"
+            size="small"
+            icon={<Icon name="add" type="outlined" size="small" />}
             onMouseOver={handleControlMouseOver}
             onMouseOut={handleControlMouseOut}
           >

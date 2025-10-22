@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 import { Button } from '@openfun/cunningham-react';
+import classNames from 'classnames';
 import usePopup from '../../lib/popup/use-popup';
 
 import User from '../User';
@@ -52,7 +53,7 @@ const Filters = React.memo(
             ref={searchFieldRef}
             name="search"
             value={filterText}
-            onChange={handleSearchChange}
+            onChange={(event) => handleSearchChange(event, { value: event.target.value })}
             className={styles.search}
             placeholder={t('common.searchCards')}
           />
@@ -65,11 +66,17 @@ const Filters = React.memo(
               title="common.filterByMembers"
               onUserSelect={onUserAdd}
               onUserDeselect={onUserRemove}
+              align="middle"
             >
               <Button
                 type="button"
                 color="secondary"
-                icon={<Icon type="outlined" name="filter_alt" size="small" />}
+                size="small"
+                icon={<Icon type="outlined" name="group" size="small" />}
+                className={classNames(
+                  styles.membersButton,
+                  users.length > 0 && styles.membersButtonFilled,
+                )}
               >
                 {users.length === 0 && <span className={styles.filterTitle}>Membres</span>}
                 {users.map((user) => (
@@ -94,11 +101,17 @@ const Filters = React.memo(
               onUpdate={onLabelUpdate}
               onMove={onLabelMove}
               onDelete={onLabelDelete}
+              align="end"
             >
               <Button
                 type="button"
                 color="secondary"
-                icon={<Icon type="outlined" name="filter_alt" size="small" />}
+                size="small"
+                icon={<Icon type="outlined" name="label" size="small" />}
+                className={classNames(
+                  styles.labelsButton,
+                  labels.length > 0 && styles.labelsButtonFilled,
+                )}
               >
                 {labels.length === 0 && <span className={styles.filterTitle}>Etiquettes</span>}
                 {labels.map((label) => (

@@ -1,19 +1,12 @@
 :global(#app) {
-  .deleteButton {
-    bottom: 12px;
-    box-shadow: 0 1px 0 #cbcccc;
-    position: absolute;
-    right: 9px;
-  }
-
   .field {
+    width: 100%;
     margin-bottom: 8px;
   }
 
-  .text {
-    color: #444444;
-    font-size: 12px;
-    font-weight: bold;
-    padding-bottom: 6px;
+  .buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
   }
 }

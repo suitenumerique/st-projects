@@ -16,12 +16,12 @@
     gap: 1rem;
     overflow-x: auto;
     padding: 0 1.25rem 1rem 1.25rem;
+    height: 100%;
   }
 
   .addListButton {
     width: 272px;
-    font-size: 14px;
-    font-weight: 500;
+    height: 40px;
   }
 
   .dragOverlay {
@@ -39,14 +39,14 @@
 
   .column {
     background: var(--c--theme--colors--greyscale-100);
-    border-radius: 0.75rem 12px;
+    border-radius: 4px;
     width: 272px;
     flex-shrink: 0;
     position: relative;
     box-shadow:  0px 1px 1px #1E1F2140, 0px 0px 1px #1E1F214F;
     transition: background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease;
     height: fit-content;
-    max-height: calc(100vh - 150px);
+    max-height: calc(100vh - 125px);
     display: flex;
     flex-direction: column;
   }
@@ -131,10 +131,27 @@
 
   }
 
+  .dropZoneActive {
+    background-color: rgba(0, 123, 255, 0.1);
+    border: 2px dashed #007bff;
+    border-radius: 4px;
+    min-height: 40px;
+  }
+
+  .emptyDropZone {
+    min-height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+    font-style: italic;
+    font-size: 14px;
+  }
+
   .card {
     background: white;
     padding: 8px 12px 8px 12px;
-    border-radius: 8px;
+    border-radius: 4px;
     box-shadow: 0px 1px 1px #1E1F2140, 0px 0px 1px #1E1F214F;
     cursor: grab;
     transition: box-shadow 0.2s;
@@ -175,7 +192,7 @@
   }
 
   .cardCover {
-    border-radius: 3px 3px 0 0;
+    border-radius: 4px 4px 0 0;
     margin-bottom: 2px;
     padding: 2px 2px 0;
     vertical-align: middle;

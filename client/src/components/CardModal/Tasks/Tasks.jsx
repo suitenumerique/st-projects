@@ -1,16 +1,15 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import { Button } from '@openfun/cunningham-react';
+import { Icon } from '@gouvfr-lasuite/ui-kit';
 // import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { Progress } from '../../../lib/migration-helpers';
-// import { closePopup } from '../../../lib/popup';
 
 // import DroppableTypes from '../../../constants/DroppableTypes';
 import Item from './Item';
 import Add from './Add';
 
 import styles from './Tasks.module.scss';
-// import globalStyles from '../../../assets/styles/styles.module.scss';
 
 const Tasks = React.memo(({ items, canEdit, onCreate, onUpdate, onDelete }) => {
   // onMove
@@ -35,21 +34,17 @@ const Tasks = React.memo(({ items, canEdit, onCreate, onUpdate, onDelete }) => {
   return (
     <>
       {items.length > 0 && (
-        <>
-          <span className={styles.progressWrapper}>
-            <Progress
-              autoSuccess
-              value={completedItems.length}
-              total={items.length}
-              color="blue"
-              size="tiny"
-              className={styles.progress}
+        <div className={styles.progressWrapper}>
+          <div className={styles.progressBackground}>
+            <div
+              className={styles.progressBar}
+              style={{ width: `${(completedItems.length / items.length) * 100}%` }}
             />
-          </span>
-          <span className={styles.count}>
+          </div>
+          <div className={styles.count}>
             {completedItems.length}/{items.length}
-          </span>
-        </>
+          </div>
+        </div>
       )}
       {/* <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
         <Droppable droppableId="tasks" type={DroppableTypes.TASK}>
@@ -83,30 +78,30 @@ const Tasks = React.memo(({ items, canEdit, onCreate, onUpdate, onDelete }) => {
           )}
         </Droppable>
       </DragDropContext> */}
-      <div>
-        {items.map((item, index) => (
-          <Item
-            key={item.id}
-            id={item.id}
-            index={index}
-            name={item.name}
-            isCompleted={item.isCompleted}
-            isPersisted={item.isPersisted}
-            canEdit={canEdit}
-            onUpdate={(data) => handleUpdate(item.id, data)}
-            onDelete={() => handleDelete(item.id)}
-          />
-        ))}
-        {canEdit && (
-          <Add onCreate={onCreate}>
-            <button type="button" className={styles.taskButton}>
-              <span className={styles.taskButtonText}>
-                {items.length > 0 ? t('action.addAnotherTask') : t('action.addTask')}
-              </span>
-            </button>
-          </Add>
-        )}
-      </div>
+      {items.length > 0 && (
+        <div className={styles.tasksWrapper}>
+          {items.map((item, index) => (
+            <Item
+              key={item.id}
+              id={item.id}
+              index={index}
+              name={item.name}
+              isCompleted={item.isCompleted}
+              isPersisted={item.isPersisted}
+              canEdit={canEdit}
+              onUpdate={(data) => handleUpdate(item.id, data)}
+              onDelete={() => handleDelete(item.id)}
+            />
+          ))}
+        </div>
+      )}
+      {canEdit && (
+        <Add onCreate={onCreate}>
+          <Button color="tertiary" size="small" icon={<Icon type="outlined" name="add" />}>
+            {items.length > 0 ? t('action.addAnotherTask') : t('action.addTask')}
+          </Button>
+        </Add>
+      )}
     </>
   );
 });

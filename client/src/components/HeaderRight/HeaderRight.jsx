@@ -3,11 +3,14 @@ import { Button } from '@openfun/cunningham-react';
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import LaGaufreButton from '../../ui/LaGaufreButton';
+
 // import NotificationsStep from '../../steps/NotificationsStep';
 // import usePopup from '../../lib/popup';
 // import styles from './HeaderRight.module.scss';
 
-const HeaderRight = React.memo(({ currentUser, onLogout, onLanguageUpdate }) => {
+const HeaderRight = React.memo(({ currentUser, onLogout }) => {
+  // onLanguageUpdate
   // notifications, onNotificationDelete,
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
@@ -58,7 +61,8 @@ const HeaderRight = React.memo(({ currentUser, onLogout, onLanguageUpdate }) => 
           </Button>
         </DropdownMenu>
       )}
-      <LanguagePicker currentUser={currentUser} onLanguageUpdate={onLanguageUpdate} />
+      {/* <LanguagePicker currentUser={currentUser} onLanguageUpdate={onLanguageUpdate} /> */}
+      <LaGaufreButton />
     </>
   );
 });
@@ -124,7 +128,7 @@ HeaderRight.propTypes = {
   onLogout: PropTypes.func.isRequired,
   // notifications: PropTypes.array.isRequired,
   // onNotificationDelete: PropTypes.func.isRequired,
-  onLanguageUpdate: PropTypes.func.isRequired,
+  // onLanguageUpdate: PropTypes.func.isRequired,
 };
 
 HeaderRight.defaultProps = {};

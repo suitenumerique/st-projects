@@ -5,16 +5,15 @@ import { useTranslation } from 'react-i18next';
 import { Modal, Button, Checkbox } from '@openfun/cunningham-react';
 import { Icon, DropdownMenu } from '@gouvfr-lasuite/ui-kit';
 import usePopup from '../../lib/popup';
-// import { Markdown } from '../../lib/custom-ui';
+import { FilePicker } from '../../lib/custom-ui';
 
 import { startStopwatch, stopStopwatch } from '../../utils/stopwatch';
 import CardModalNameEdit from '../CardModalNameEdit';
 import DescriptionComponent from './DescriptionComponent';
 import Tasks from './Tasks';
-// import Attachments from './Attachments';
+import Attachments from './Attachments';
 import AttachmentAddZone from './AttachmentAddZone';
-import AttachmentAddStep from './AttachmentAddStep';
-// import Activities from './Activities';
+import Activities from './Activities';
 import User from '../User';
 import Label from '../Label';
 import DueDate from '../DueDate';
@@ -36,8 +35,8 @@ const CardModal = React.memo(
     isDueDateCompleted,
     stopwatch,
     isSubscribed,
-    // isActivitiesFetching,
-    // isAllActivitiesFetched,
+    isActivitiesFetching,
+    isAllActivitiesFetched,
     // isActivitiesDetailsVisible,
     // isActivitiesDetailsFetching,
     listId,
@@ -47,14 +46,14 @@ const CardModal = React.memo(
     users,
     labels,
     tasks,
-    // attachments,
-    // activities,
+    attachments,
+    activities,
     allBoardMemberships,
     allLabels,
     canEdit,
     lists,
-    // canEditCommentActivities,
-    // canEditAllCommentActivities,
+    canEditCommentActivities,
+    canEditAllCommentActivities,
     onUpdate,
     onMove,
     onTransfer,
@@ -74,13 +73,13 @@ const CardModal = React.memo(
     onTaskMove,
     onTaskDelete,
     onAttachmentCreate,
-    // onAttachmentUpdate,
-    // onAttachmentDelete,
-    // onActivitiesFetch,
+    onAttachmentUpdate,
+    onAttachmentDelete,
+    onActivitiesFetch,
     // onActivitiesDetailsToggle,
-    // onCommentActivityCreate,
-    // onCommentActivityUpdate,
-    // onCommentActivityDelete,
+    onCommentActivityCreate,
+    onCommentActivityUpdate,
+    onCommentActivityDelete,
     onClose,
   }) => {
     const [t] = useTranslation();
@@ -94,12 +93,12 @@ const CardModal = React.memo(
     const isGalleryOpened = useRef(false);
     const deletePopupRef = useRef(null);
 
+    const LabelsPopover = usePopup(LabelsStep);
     const CardMovePopover = usePopup(CardMoveStep);
     const DeletePopover = usePopup(DeleteStep);
     const DueDateEditPopover = usePopup(DueDateEditStep);
     const BoardMembershipsPopover = usePopup(BoardMembershipsStep);
     const StopwatchEditPopover = usePopup(StopwatchEditStep);
-    const AttachmentAddPopover = usePopup(AttachmentAddStep);
 
     useMemo(() => {
       setCurrentListName(lists.find((list) => list.id === listId)?.name || null);
@@ -239,24 +238,22 @@ const CardModal = React.memo(
       [onUpdate],
     );
 
-    // const handleCoverUpdate = useCallback(
-    //   (newCoverAttachmentId) => {
-    //     onUpdate({
-    //       coverAttachmentId: newCoverAttachmentId,
-    //     });
-    //   },
-    //   [onUpdate],
-    // );
+    const handleCoverUpdate = useCallback(
+      (newCoverAttachmentId) => {
+        onUpdate({
+          coverAttachmentId: newCoverAttachmentId,
+        });
+      },
+      [onUpdate],
+    );
 
-    // const handleGalleryOpen = useCallback(() => {
-    //   isGalleryOpened.current = true;
-    // }, []);
+    const handleGalleryOpen = useCallback(() => {
+      isGalleryOpened.current = true;
+    }, []);
 
-    // const handleGalleryClose = useCallback(() => {
-    //   isGalleryOpened.current = false;
-    // }, []);
-
-    const LabelsPopup = usePopup(LabelsStep);
+    const handleGalleryClose = useCallback(() => {
+      isGalleryOpened.current = false;
+    }, []);
 
     const hiddenDeletePopover = (
       <DeletePopover
@@ -379,17 +376,26 @@ const CardModal = React.memo(
           <section className={classNames(styles.cardModalSection, styles.cardButtonsSection)}>
             <div className={styles.cardModalSectionLeft} />
             <div className={styles.cardModalSectionRight}>
-              <DueDateEditPopover defaultValue={dueDate} onUpdate={handleDueDateUpdate}>
+              <LabelsPopover
+                items={allLabels}
+                currentIds={labelIds}
+                onSelect={onLabelAdd}
+                onDeselect={onLabelRemove}
+                onCreate={onLabelCreate}
+                onUpdate={onLabelUpdate}
+                onMove={onLabelMove}
+                onDelete={onLabelDelete}
+              >
                 <Button
                   color="secondary"
                   size="small"
-                  icon={<Icon size="small" type="outlined" name="calendar_today" />}
+                  icon={<Icon size="small" type="outlined" name="label" />}
                 >
-                  {t('common.dueDate', {
+                  {t('common.labels', {
                     context: 'title',
                   })}
                 </Button>
-              </DueDateEditPopover>
+              </LabelsPopover>
               <BoardMembershipsPopover
                 items={allBoardMemberships}
                 currentUserIds={userIds}
@@ -404,6 +410,17 @@ const CardModal = React.memo(
                   {t('common.members')}
                 </Button>
               </BoardMembershipsPopover>
+              <DueDateEditPopover defaultValue={dueDate} onUpdate={handleDueDateUpdate}>
+                <Button
+                  color="secondary"
+                  size="small"
+                  icon={<Icon size="small" type="outlined" name="calendar_today" />}
+                >
+                  {t('common.dueDate', {
+                    context: 'title',
+                  })}
+                </Button>
+              </DueDateEditPopover>
               <StopwatchEditPopover defaultValue={stopwatch} onUpdate={handleStopwatchUpdate}>
                 <Button
                   color="secondary"
@@ -413,21 +430,67 @@ const CardModal = React.memo(
                   {t('common.stopwatch')}
                 </Button>
               </StopwatchEditPopover>
-              <AttachmentAddPopover onCreate={onAttachmentCreate}>
-                <Button
-                  color="secondary"
-                  size="small"
-                  icon={<Icon size="small" type="outlined" name="attach_file" />}
-                >
-                  {t('common.attachment')}
-                </Button>
-              </AttachmentAddPopover>
             </div>
           </section>
           {(users.length > 0 || labels.length > 0 || dueDate || stopwatch) && (
             <section className={classNames(styles.cardModalSection, styles.cardDetailsSection)}>
               <div className={styles.cardModalSectionLeft} />
               <div className={styles.cardModalSectionRight}>
+                {labels.length > 0 && (
+                  <div className={styles.detailsItem}>
+                    <div className={styles.detailsItemTitle}>
+                      {t('common.labels', {
+                        context: 'title',
+                      })}
+                    </div>
+                    <div className={styles.detailsItemContent}>
+                      {labels.map((label) => (
+                        <span key={label.id}>
+                          {canEdit ? (
+                            <LabelsPopover
+                              key={label.id}
+                              items={allLabels}
+                              currentIds={labelIds}
+                              onSelect={onLabelAdd}
+                              onDeselect={onLabelRemove}
+                              onCreate={onLabelCreate}
+                              onUpdate={onLabelUpdate}
+                              onMove={onLabelMove}
+                              onDelete={onLabelDelete}
+                            >
+                              <button type="button" className="bare-button">
+                                <Label name={label.name} color={label.color} size="medium" />
+                              </button>
+                            </LabelsPopover>
+                          ) : (
+                            <Label name={label.name} color={label.color} size="medium" />
+                          )}
+                        </span>
+                      ))}
+                      {canEdit && (
+                        <LabelsPopover
+                          items={allLabels}
+                          currentIds={labelIds}
+                          onSelect={onLabelAdd}
+                          onDeselect={onLabelRemove}
+                          onCreate={onLabelCreate}
+                          onUpdate={onLabelUpdate}
+                          onMove={onLabelMove}
+                          onDelete={onLabelDelete}
+                        >
+                          <Button
+                            type="button"
+                            color="secondary"
+                            size="small"
+                            className={styles.detailsItemAddButton}
+                          >
+                            <Icon name="add" size="small" />
+                          </Button>
+                        </LabelsPopover>
+                      )}
+                    </div>
+                  </div>
+                )}
                 {users.length > 0 && (
                   <div className={styles.detailsItem}>
                     <div className={styles.detailsItemTitle}>
@@ -474,61 +537,6 @@ const CardModal = React.memo(
                     </div>
                   </div>
                 )}
-                {labels.length > 0 && (
-                  <div className={styles.detailsItem}>
-                    <div className={styles.detailsItemTitle}>
-                      {t('common.labels', {
-                        context: 'title',
-                      })}
-                    </div>
-                    <div className={styles.detailsItemContent}>
-                      {labels.map((label) => (
-                        <span key={label.id}>
-                          {canEdit ? (
-                            <LabelsPopup
-                              key={label.id}
-                              items={allLabels}
-                              currentIds={labelIds}
-                              onSelect={onLabelAdd}
-                              onDeselect={onLabelRemove}
-                              onCreate={onLabelCreate}
-                              onUpdate={onLabelUpdate}
-                              onMove={onLabelMove}
-                              onDelete={onLabelDelete}
-                            >
-                              <button type="button" className="bare-button">
-                                <Label name={label.name} color={label.color} size="medium" />
-                              </button>
-                            </LabelsPopup>
-                          ) : (
-                            <Label name={label.name} color={label.color} size="medium" />
-                          )}
-                        </span>
-                      ))}
-                      {canEdit && (
-                        <LabelsPopup
-                          items={allLabels}
-                          currentIds={labelIds}
-                          onSelect={onLabelAdd}
-                          onDeselect={onLabelRemove}
-                          onCreate={onLabelCreate}
-                          onUpdate={onLabelUpdate}
-                          onMove={onLabelMove}
-                          onDelete={onLabelDelete}
-                        >
-                          <Button
-                            type="button"
-                            color="secondary"
-                            size="small"
-                            className={styles.detailsItemAddButton}
-                          >
-                            <Icon name="add" size="small" />
-                          </Button>
-                        </LabelsPopup>
-                      )}
-                    </div>
-                  </div>
-                )}
                 {dueDate && (
                   <div className={styles.detailsItem}>
                     <div className={styles.detailsItemTitle}>
@@ -536,7 +544,7 @@ const CardModal = React.memo(
                         context: 'title',
                       })}
                     </div>
-                    <div className={styles.detailsItemContent}>
+                    <div className={classNames(styles.detailsItemContent, styles.dueDateContent)}>
                       {canEdit ? (
                         <>
                           <Checkbox
@@ -635,14 +643,14 @@ const CardModal = React.memo(
             <div className={styles.cardModalSectionRight}>
               <div className={styles.sectionTitle}>{t('common.tasks')}</div>
               <div className={styles.detailsItemContent}>
-                {/* <Tasks
+                <Tasks
                   items={tasks}
                   canEdit={canEdit}
                   onCreate={onTaskCreate}
                   onUpdate={onTaskUpdate}
                   onMove={onTaskMove}
                   onDelete={onTaskDelete}
-                /> */}
+                />
               </div>
             </div>
           </section>
@@ -653,7 +661,7 @@ const CardModal = React.memo(
             <div className={styles.cardModalSectionRight}>
               <div className={styles.sectionTitle}>{t('common.attachments')}</div>
               <div className={styles.detailsItemContent}>
-                {/* <Attachments
+                <Attachments
                   items={attachments}
                   canEdit={canEdit}
                   onUpdate={onAttachmentUpdate}
@@ -661,7 +669,14 @@ const CardModal = React.memo(
                   onCoverUpdate={handleCoverUpdate}
                   onGalleryOpen={handleGalleryOpen}
                   onGalleryClose={handleGalleryClose}
-                /> */}
+                />
+                <div className={styles.newAttachmentWrapper}>
+                  <FilePicker multiple onSelect={(file) => onAttachmentCreate({ file })}>
+                    <Button color="tertiary" size="small" icon={<Icon name="add" size="small" />}>
+                      Nouvelle pièce jointe
+                    </Button>
+                  </FilePicker>
+                </div>
               </div>
             </div>
           </section>
@@ -670,22 +685,22 @@ const CardModal = React.memo(
               <Icon name="comment" type="outlined" size="small" />
             </div>
             <div className={styles.cardModalSectionRight}>
-              <div className={styles.sectionTitle}>Commentaires et activité</div>
+              <div className={styles.sectionTitle}>Commentaires</div>
               <div className={styles.detailsItemContent}>
-                {/* <Activities
+                <Activities
                   items={activities}
                   isFetching={isActivitiesFetching}
                   isAllFetched={isAllActivitiesFetched}
-                  isDetailsVisible={isActivitiesDetailsVisible}
-                  isDetailsFetching={isActivitiesDetailsFetching}
+                  isDetailsVisible={false}
+                  // isDetailsFetching={isActivitiesDetailsFetching}
                   canEdit={canEditCommentActivities}
                   canEditAllComments={canEditAllCommentActivities}
                   onFetch={onActivitiesFetch}
-                  onDetailsToggle={onActivitiesDetailsToggle}
+                  // onDetailsToggle={onActivitiesDetailsToggle}
                   onCommentCreate={onCommentActivityCreate}
                   onCommentUpdate={onCommentActivityUpdate}
                   onCommentDelete={onCommentActivityDelete}
-                /> */}
+                />
               </div>
             </div>
           </section>
@@ -712,8 +727,8 @@ CardModal.propTypes = {
   isDueDateCompleted: PropTypes.bool,
   stopwatch: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   isSubscribed: PropTypes.bool.isRequired,
-  // isActivitiesFetching: PropTypes.bool.isRequired,
-  // isAllActivitiesFetched: PropTypes.bool.isRequired,
+  isActivitiesFetching: PropTypes.bool.isRequired,
+  isAllActivitiesFetched: PropTypes.bool.isRequired,
   // isActivitiesDetailsVisible: PropTypes.bool.isRequired,
   // isActivitiesDetailsFetching: PropTypes.bool.isRequired,
   listId: PropTypes.string.isRequired,
@@ -725,14 +740,14 @@ CardModal.propTypes = {
   users: PropTypes.array.isRequired,
   labels: PropTypes.array.isRequired,
   tasks: PropTypes.array.isRequired,
-  // attachments: PropTypes.array.isRequired,
-  // activities: PropTypes.array.isRequired,
+  attachments: PropTypes.array.isRequired,
+  activities: PropTypes.array.isRequired,
   allBoardMemberships: PropTypes.array.isRequired,
   allLabels: PropTypes.array.isRequired,
   /* eslint-enable react/forbid-prop-types */
   canEdit: PropTypes.bool.isRequired,
-  // canEditCommentActivities: PropTypes.bool.isRequired,
-  // canEditAllCommentActivities: PropTypes.bool.isRequired,
+  canEditCommentActivities: PropTypes.bool.isRequired,
+  canEditAllCommentActivities: PropTypes.bool.isRequired,
   onUpdate: PropTypes.func.isRequired,
   onMove: PropTypes.func.isRequired,
   onTransfer: PropTypes.func.isRequired,
@@ -752,13 +767,13 @@ CardModal.propTypes = {
   onTaskMove: PropTypes.func.isRequired,
   onTaskDelete: PropTypes.func.isRequired,
   onAttachmentCreate: PropTypes.func.isRequired,
-  // onAttachmentUpdate: PropTypes.func.isRequired,
-  // onAttachmentDelete: PropTypes.func.isRequired,
-  // onActivitiesFetch: PropTypes.func.isRequired,
+  onAttachmentUpdate: PropTypes.func.isRequired,
+  onAttachmentDelete: PropTypes.func.isRequired,
+  onActivitiesFetch: PropTypes.func.isRequired,
   // onActivitiesDetailsToggle: PropTypes.func.isRequired,
-  // onCommentActivityCreate: PropTypes.func.isRequired,
-  // onCommentActivityUpdate: PropTypes.func.isRequired,
-  // onCommentActivityDelete: PropTypes.func.isRequired,
+  onCommentActivityCreate: PropTypes.func.isRequired,
+  onCommentActivityUpdate: PropTypes.func.isRequired,
+  onCommentActivityDelete: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 

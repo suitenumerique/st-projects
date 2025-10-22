@@ -2,13 +2,10 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
-import classNames from 'classnames';
-import { Input } from '@openfun/cunningham-react';
+import { Input, Checkbox } from '@openfun/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 import { useField } from '../../hooks';
-import MenuItem from '../../ui/Menu/MenuItem';
 import PopoverHeader from '../../ui/Popover/PopoverHeader';
-import Menu from '../../ui/Menu';
 import User from '../../components/User';
 
 import styles from './BoardMembershipsStep.module.scss';
@@ -70,8 +67,34 @@ const BoardMembershipsStep = React.memo(
             icon={<Icon name="search" type="outlined" aria-hidden="true" />}
             onChange={(event) => handleSearchChange(event, { value: event.target.value })}
           />
-          {filteredItems.length > 0 && (
-            <Menu>
+          <div className={styles.filterList}>
+            {filteredItems.map((membership) => (
+              <Checkbox
+                key={membership.user.id}
+                disabled={!membership.isPersisted}
+                checked={currentUserIds.includes(membership.user.id)}
+                onChange={() => {
+                  if (currentUserIds.includes(membership.user.id)) {
+                    handleUserDeselect(membership.user.id);
+                  } else {
+                    handleUserSelect(membership.user.id);
+                  }
+                }}
+                label={
+                  <div className={styles.filterLabel}>
+                    <User
+                      name={membership.user.name}
+                      avatarUrl={membership.user.avatarUrl}
+                      size="small"
+                    />
+                    <span>{membership.user.name}</span>
+                  </div>
+                }
+              />
+            ))}
+          </div>
+          {/* {filteredItems.length > 0 && (
+            <Menu className={styles.menu}>
               {filteredItems.map((item) => (
                 <MenuItem
                   active={currentUserIds.includes(item.user.id)}
@@ -112,7 +135,7 @@ const BoardMembershipsStep = React.memo(
                 </MenuItem>
               ))}
             </Menu>
-          )}
+          )} */}
         </>
       </>
     );

@@ -1,5 +1,5 @@
 import i18n from 'i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
+// import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 import formatDate from 'date-fns/format';
 import parseDate from 'date-fns/parse';
@@ -52,13 +52,14 @@ const parseDatePostProcessor = {
 };
 
 i18n
-  .use(LanguageDetector)
+  // .use(LanguageDetector)
   .use(formatDatePostProcessor)
   .use(parseDatePostProcessor)
   .use(initReactI18next)
   .init({
     resources: embeddedLocales,
-    fallbackLng: 'en-US',
+    fallbackLng: 'fr-fr',
+    lng: 'fr-fr',
     supportedLngs: languages,
     load: 'currentOnly',
     interpolation: {

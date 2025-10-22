@@ -2,7 +2,9 @@ import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { Button, Icon, Label, Loader } from '../../../lib/migration-helpers';
+import { Button } from '@openfun/cunningham-react';
+import { Icon } from '@gouvfr-lasuite/ui-kit';
+
 import usePopup from '../../../lib/popup';
 
 import EditStep from './EditStep';
@@ -54,9 +56,7 @@ const Item = React.forwardRef(
 
     if (!isPersisted) {
       return (
-        <div className={classNames(styles.wrapper, styles.wrapperSubmitting)}>
-          <Loader inverted />
-        </div>
+        <div className={classNames(styles.wrapper, styles.wrapperSubmitting)}>Chargement...</div>
       );
     }
 
@@ -73,22 +73,7 @@ const Item = React.forwardRef(
             background: coverUrl && `url("${coverUrl}") center / cover`,
           }}
         >
-          {coverUrl ? (
-            isCover && (
-              <Label
-                corner="left"
-                size="mini"
-                icon={{
-                  name: 'star',
-                  color: 'grey',
-                  inverted: true,
-                }}
-                className={styles.thumbnailLabel}
-              />
-            )
-          ) : (
-            <span className={styles.extension}>{extension || '-'}</span>
-          )}
+          <span className={styles.extension}>{extension || '-'}</span>
         </div>
         <div className={styles.details}>
           <span className={styles.name}>{name}</span>
@@ -101,12 +86,6 @@ const Item = React.forwardRef(
           {coverUrl && canEdit && (
             <span className={styles.options}>
               <button type="button" className={styles.option} onClick={handleToggleCoverClick}>
-                <Icon
-                  name="window maximize outline"
-                  flipped="vertically"
-                  size="small"
-                  className={styles.optionIcon}
-                />
                 <span className={styles.optionText}>
                   {isCover
                     ? t('action.removeCover', {
@@ -128,9 +107,12 @@ const Item = React.forwardRef(
             onUpdate={onUpdate}
             onDelete={onDelete}
           >
-            <Button className={classNames(styles.button, styles.target)}>
-              <Icon fitted name="pencil" size="small" />
-            </Button>
+            <Button
+              className={styles.attachmentActionsButton}
+              color="tertiary-text"
+              size="small"
+              icon={<Icon name="more_horiz" type="outlined" size="small" />}
+            />
           </EditPopup>
         )}
       </div>

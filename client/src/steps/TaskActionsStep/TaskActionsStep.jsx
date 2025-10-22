@@ -2,13 +2,11 @@ import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
-import { useSteps } from '../../../hooks';
-import DeleteStep from '../../../steps/DeleteStep/DeleteStep';
-import PopoverHeader from '../../../ui/Popover/PopoverHeader';
-import Menu from '../../../ui/Menu';
-import MenuItem from '../../../ui/Menu/MenuItem';
-
-import styles from './ActionsStep.module.scss';
+import { useSteps } from '../../hooks';
+import DeleteStep from '../DeleteStep';
+import PopoverHeader from '../../ui/Popover/PopoverHeader';
+import Menu from '../../ui/Menu';
+import MenuItem from '../../ui/Menu/MenuItem';
 
 const StepTypes = {
   DELETE: 'DELETE',
@@ -46,13 +44,9 @@ const ActionsStep = React.memo(({ onNameEdit, onDelete, onClose }) => {
           context: 'title',
         })}
       />
-      <Menu className={styles.menu}>
-        <MenuItem className={styles.menuItem} onClick={handleEditNameClick}>
-          {t('action.editDescription', {
-            context: 'title',
-          })}
-        </MenuItem>
-        <MenuItem className={styles.menuItem} onClick={handleDeleteClick}>
+      <Menu>
+        <MenuItem onClick={handleEditNameClick}>Modifier</MenuItem>
+        <MenuItem onClick={handleDeleteClick}>
           {t('action.deleteTask', {
             context: 'title',
           })}

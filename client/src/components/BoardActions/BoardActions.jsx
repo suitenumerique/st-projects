@@ -2,10 +2,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { ShareModal, ShareModalCopyLinkFooter, Icon } from '@gouvfr-lasuite/ui-kit';
 import { Button } from '@openfun/cunningham-react';
-import usePopup from '../../lib/popup/use-popup';
+import Badge from '../../ui/Badge';
 
-import FiltersStep from '../../steps/FiltersStep';
-// import Filters from '../Filters';
+import Filters from '../Filters';
 
 import styles from './BoardActions.module.scss';
 
@@ -26,15 +25,18 @@ const BoardActions = React.memo(
     onUserFromFilterRemove,
     onLabelToFilterAdd,
     onLabelFromFilterRemove,
+    onLabelCreate,
+    onLabelUpdate,
+    onLabelMove,
+    onLabelDelete,
     onTextFilterUpdate,
     onBoardUpdate,
     currentBoardId,
-    // isCurrentUserMember,
+    currentBoardName,
+    isCurrentUserMember,
   }) => {
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
     const [searchedUsers, setSearchedUsers] = useState([]);
-
-    const FiltersPopover = usePopup(FiltersStep);
 
     const handleUpdate = useCallback(
       (data) => {
@@ -81,15 +83,48 @@ const BoardActions = React.memo(
 
     return (
       <div className={styles.wrapper}>
+        <h4 className={styles.boardName}>{currentBoardName}</h4>
         <div className={styles.actions}>
           <div className={styles.action}>
-            {/* <Filters
+            {/* <LabelsPopover
+              items={labels}
+              currentIds={filterLabels.map((label) => label.id)}
+              title="common.filterByLabels"
+              canEdit={canEditMemberships}
+              onSelect={onLabelToFilterAdd}
+              onDeselect={onLabelFromFilterRemove}
+              onCreate={onLabelCreate}
+              onUpdate={onLabelUpdate}
+              onMove={onLabelMove}
+              onDelete={onLabelDelete}
+            >
+              <Button
+                type="button"
+                color="secondary"
+                size="small"
+                icon={<Icon type="outlined" name="label" size="small" />}
+                className={classNames(
+                  styles.labelsButton,
+                  filterLabels.length > 0 && styles.labelsButtonFilled,
+                )}
+              >
+                {filterLabels.length === 0 && (
+                  <span className={styles.filterTitle}>Etiquettes</span>
+                )}
+                {filterLabels.map((label) => (
+                  <span key={label.id} className={styles.filterItem}>
+                    <Label name={label.name} color={label.color} size="small" />
+                  </span>
+                ))}
+              </Button>
+            </LabelsPopover> */}
+            <Filters
               users={filterUsers}
               labels={filterLabels}
               filterText={filterText}
               allBoardMemberships={memberships}
               allLabels={labels}
-              canEdit={canEdit}
+              canEdit={canEditMemberships}
               isCurrentUserMember={isCurrentUserMember}
               onUserAdd={onUserToFilterAdd}
               onUserRemove={onUserFromFilterRemove}
@@ -100,10 +135,10 @@ const BoardActions = React.memo(
               onLabelMove={onLabelMove}
               onLabelDelete={onLabelDelete}
               onTextFilterUpdate={onTextFilterUpdate}
-            /> */}
+            />
           </div>
           <div className={styles.action}>
-            <FiltersPopover
+            {/* <FiltersPopover
               align="end"
               side="top"
               allBoardMemberships={memberships}
@@ -124,14 +159,17 @@ const BoardActions = React.memo(
               >
                 Filtrer
               </Button>
-            </FiltersPopover>
-            <Button
-              icon={<Icon type="outlined" name="group" />}
-              onClick={handleShareClick}
-              title="Share board"
-            >
-              Partager
-            </Button>
+            </FiltersPopover> */}
+            {memberships.length === 1 && canEditMemberships ? (
+              <Button onClick={handleShareClick} title="Share board" color="tertiary-text">
+                Partager
+              </Button>
+            ) : (
+              <Badge style={{ cursor: 'pointer' }} onClick={handleShareClick}>
+                <Icon type="outlined" name="group" />
+                <span style={{ fontSize: '16px' }}>{memberships.length}</span>
+              </Badge>
+            )}
           </div>
         </div>
 
@@ -220,10 +258,15 @@ BoardActions.propTypes = {
   onUserFromFilterRemove: PropTypes.func.isRequired,
   onLabelToFilterAdd: PropTypes.func.isRequired,
   onLabelFromFilterRemove: PropTypes.func.isRequired,
+  onLabelCreate: PropTypes.func.isRequired,
+  onLabelUpdate: PropTypes.func.isRequired,
+  onLabelMove: PropTypes.func.isRequired,
+  onLabelDelete: PropTypes.func.isRequired,
   onTextFilterUpdate: PropTypes.func.isRequired,
   onBoardUpdate: PropTypes.func.isRequired,
   currentBoardId: PropTypes.string.isRequired,
-  // isCurrentUserMember: PropTypes.bool.isRequired,
+  currentBoardName: PropTypes.string.isRequired,
+  isCurrentUserMember: PropTypes.bool.isRequired,
 };
 
 export default BoardActions;

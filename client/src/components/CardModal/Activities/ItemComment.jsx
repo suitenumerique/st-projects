@@ -2,20 +2,22 @@ import React, { useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { Comment } from '../../../lib/migration-helpers';
-import usePopup from '../../../lib/popup';
-import { Markdown } from '../../../lib/custom-ui';
 
+import { Button } from '@openfun/cunningham-react';
+import { Icon } from '@gouvfr-lasuite/ui-kit';
 import getDateFormat from '../../../utils/get-date-format';
 import CommentEdit from './CommentEdit';
 import User from '../../User';
-import DeleteStep from '../../../steps/DeleteStep/DeleteStep';
+import CommentActionsStep from '../../../steps/CommentActionsStep';
+import usePopup from '../../../lib/popup';
 
-import styles from './ItemCommentOverride.module.scss';
+import styles from './ItemComment.module.scss';
 
 const ItemComment = React.memo(
   ({ data, createdAt, isPersisted, user, canEdit, onUpdate, onDelete }) => {
     const [t] = useTranslation();
+
+    const CommentActionsPopover = usePopup(CommentActionsStep);
 
     const commentEdit = useRef(null);
 
@@ -23,61 +25,47 @@ const ItemComment = React.memo(
       commentEdit.current.open();
     }, []);
 
-    const DeletePopup = usePopup(DeleteStep);
-
     return (
-      <Comment>
+      <div className={styles.itemComment}>
         <span className={styles.user}>
-          <User name={user.name} avatarUrl={user.avatarUrl} />
+          <User size="small" name={user.name} avatarUrl={user.avatarUrl} />
         </span>
         <div className={classNames(styles.content)}>
           <CommentEdit
             ref={commentEdit}
             defaultData={data}
             onUpdate={onUpdate}
-            text={
-              <div className={styles.text}>
-                <Markdown linkTarget="_blank">{data.text}</Markdown>
-              </div>
-            }
+            text={<div className={styles.text}>{data.text}</div>}
             actions={
-              <div className={styles.title}>
-                <span>
-                  <span className={styles.author}>{user.name}</span>
-                  <span className={styles.date}>
-                    {t(`format:${getDateFormat(createdAt)}`, {
-                      postProcess: 'formatDate',
-                      value: createdAt,
-                    })}
+              <div className={styles.header}>
+                <div className={styles.title}>
+                  <span>
+                    <span className={styles.author}>{user.name}</span>
+                    <span className={styles.date}>
+                      {t(`format:${getDateFormat(createdAt)}`, {
+                        postProcess: 'formatDate',
+                        value: createdAt,
+                      })}
+                    </span>
                   </span>
-                </span>
-                {canEdit && (
-                  <Comment.Actions>
-                    <Comment.Action
-                      as="button"
-                      content={t('action.edit')}
-                      disabled={!isPersisted}
-                      onClick={handleEditClick}
-                    />
-                    <DeletePopup
-                      title="common.deleteComment"
-                      content="common.areYouSureYouWantToDeleteThisComment"
-                      buttonContent="action.deleteComment"
-                      onConfirm={onDelete}
-                    >
-                      <Comment.Action
-                        as="button"
-                        content={t('action.delete')}
-                        disabled={!isPersisted}
+                </div>
+                <div className={styles.actions}>
+                  {canEdit && isPersisted && (
+                    <CommentActionsPopover onEdit={handleEditClick} onDelete={onDelete}>
+                      <Button
+                        className={styles.commentActionsButton}
+                        color="tertiary-text"
+                        size="small"
+                        icon={<Icon name="more_horiz" type="outlined" size="small" />}
                       />
-                    </DeletePopup>
-                  </Comment.Actions>
-                )}
+                    </CommentActionsPopover>
+                  )}
+                </div>
               </div>
             }
           />
         </div>
-      </Comment>
+      </div>
     );
   },
 );

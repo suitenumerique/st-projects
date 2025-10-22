@@ -2,7 +2,7 @@ import { dequal } from 'dequal';
 import React, { useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@openfun/cunningham-react';
+import { Button, Input } from '@openfun/cunningham-react';
 
 import { useForm, useSteps } from '../../../hooks';
 import DeleteStep from '../../../steps/DeleteStep/DeleteStep';
@@ -67,27 +67,26 @@ const EditStep = React.memo(({ defaultData, onUpdate, onDelete, onClose }) => {
   return (
     <>
       <PopoverHeader
-        onBack={onBack}
         title={t('common.editAttachment', {
           context: 'title',
         })}
       />
       <form onSubmit={handleSubmit}>
-        <div className={styles.text}>{t('common.title')}</div>
-        <input
+        <Input
           ref={nameField}
+          label={t('common.title')}
           name="name"
           value={data.name}
           className={styles.field}
           onChange={handleFieldChange}
         />
-        <Button positive content={t('action.save')} />
+        <div className={styles.buttons}>
+          <Button type="submit">{t('action.save')}</Button>
+          <Button color="secondary" onClick={handleDeleteClick}>
+            {t('action.delete')}
+          </Button>
+        </div>
       </form>
-      <Button
-        content={t('action.delete')}
-        className={styles.deleteButton}
-        onClick={handleDeleteClick}
-      />
     </>
   );
 });

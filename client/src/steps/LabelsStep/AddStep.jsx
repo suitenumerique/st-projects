@@ -30,7 +30,7 @@ const AddStep = React.memo(({ defaultData, onCreate, onBack }) => {
   }, [data, onCreate, onBack]);
 
   return (
-    <>
+    <div style={{ width: '290px' }}>
       <PopoverHeader
         onBack={onBack}
         title={t('common.createLabel', {
@@ -48,7 +48,7 @@ const AddStep = React.memo(({ defaultData, onCreate, onBack }) => {
           {t('action.createLabel')}
         </Button>
       </form>
-    </>
+    </div>
   );
 });
 

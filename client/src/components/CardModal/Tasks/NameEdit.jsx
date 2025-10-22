@@ -2,7 +2,8 @@ import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } 
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import TextareaAutosize from 'react-textarea-autosize';
-import { Button, Form, TextArea } from '../../../lib/migration-helpers';
+import { Button } from '@openfun/cunningham-react';
+import { Icon } from '@gouvfr-lasuite/ui-kit';
 
 import { useField } from '../../../hooks';
 import { focusEnd } from '../../../utils/element-helpers';
@@ -66,7 +67,7 @@ const NameEdit = React.forwardRef(({ children, defaultValue, onUpdate }, ref) =>
 
   useEffect(() => {
     if (isOpened) {
-      focusEnd(field.current.ref.current);
+      focusEnd(field.current);
     }
   }, [isOpened]);
 
@@ -75,22 +76,26 @@ const NameEdit = React.forwardRef(({ children, defaultValue, onUpdate }, ref) =>
   }
 
   return (
-    <Form onSubmit={handleSubmit} className={styles.wrapper}>
-      <TextArea
+    <form onSubmit={handleSubmit} className={styles.wrapper}>
+      <TextareaAutosize
         ref={field}
-        as={TextareaAutosize}
         value={value}
-        minRows={2}
         spellCheck={false}
         className={styles.field}
         onKeyDown={handleFieldKeyDown}
-        onChange={handleFieldChange}
+        onChange={(e) => handleFieldChange(e, { name: 'name', value: e.target.value })}
         onBlur={handleFieldBlur}
       />
-      <div className={styles.controls}>
-        <Button positive content={t('action.save')} />
+      <div>
+        <Button
+          color="primary"
+          size="small"
+          icon={<Icon name="save" type="outlined" size="small" />}
+        >
+          {t('action.save')}
+        </Button>
       </div>
-    </Form>
+    </form>
   );
 });
 

@@ -1,49 +1,49 @@
 :global(#app) {
-  .progress {
-    margin: 0 0 16px;
-  }
 
   .progressWrapper {
-    display: inline-block;
-    padding: 3px 0;
-    vertical-align: top;
-    width: calc(100% - 50px);
+    padding: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .progressBackground {
+    position: relative;
+    height: 6px;
+    background-color: var(--c--theme--colors--greyscale-200);
+    width: 200px;
+    border-radius: 4px;
+    flex: 1;
+  }
+
+
+  .progressBar {
+    height: 6px;
+    background-color: var(--c--theme--colors--primary-800);
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+    width: 30%;
+    border-radius: 4px;
+    transition: width 0.3s ease-in-out;
   }
 
   .count {
-    color: #8c8c8c;
+    color: var(--c--theme--colors--greyscale-400);
     display: inline-block;
-    font-size: 14px;
-    line-height: 14px;
-    text-align: right;
+    font-size: 12px;
+    text-align: center;
     vertical-align: top;
     width: 50px;
   }
 
-  .taskButton {
-    background: transparent;
-    border: none;
-    border-radius: 3px;
-    color: #6b808c;
-    cursor: pointer;
-    display: block;
-    margin-top: 6px;
-    min-height: 54px;
-    outline: none;
-    padding: 8px 12px;
-    position: relative;
-    text-align: left;
-    text-decoration: none;
-    width: 100%;
-
-    &:hover {
-      background: rgba(9, 30, 66, 0.04);
-      color: #092d42;
-    }
+  .tasksWrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.75rem;
   }
 
-  .taskButtonText {
-    position: absolute;
-    top: 12px;
-  }
 }

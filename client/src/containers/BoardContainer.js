@@ -5,6 +5,7 @@ import selectors from '../selectors';
 import entryActions from '../entry-actions';
 import { BoardMembershipRoles } from '../constants/Enums';
 import Board from '../components/Board';
+// import BoardNew from '../components/BoardNew';
 
 const mapStateToProps = (state) => {
   const { cardId } = selectors.selectPath(state);

@@ -3,12 +3,12 @@ import React, { useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 // import { Draggable } from 'react-beautiful-dnd';
-import { Button, Checkbox, Icon } from '../../../lib/migration-helpers';
+import { Button, Checkbox } from '@openfun/cunningham-react';
+import { Icon } from '@gouvfr-lasuite/ui-kit';
 import usePopup from '../../../lib/popup';
 
 import NameEdit from './NameEdit';
-import ActionsStep from './ActionsStep';
-import Linkify from '../../Linkify';
+import TaskActionsStep from '../../../steps/TaskActionsStep';
 
 import styles from './Item.module.scss';
 
@@ -40,7 +40,7 @@ const Item = React.memo(({ name, isCompleted, isPersisted, canEdit, onUpdate, on
     nameEdit.current.open();
   }, []);
 
-  const ActionsPopup = usePopup(ActionsStep);
+  const TaskActionsPopover = usePopup(TaskActionsStep);
 
   return (
     // <Draggable draggableId={id} index={index} isDragDisabled={!isPersisted || !canEdit}>
@@ -84,32 +84,30 @@ const Item = React.memo(({ name, isCompleted, isPersisted, canEdit, onUpdate, on
     //   }}
     // </Draggable>
     <div className={styles.wrapper}>
-      <span className={styles.checkboxWrapper}>
-        <Checkbox
-          checked={isCompleted}
-          disabled={!isPersisted || !canEdit}
-          className={styles.checkbox}
-          onChange={handleToggleChange}
-        />
-      </span>
+      <Checkbox
+        checked={isCompleted}
+        disabled={!isPersisted || !canEdit}
+        className={styles.checkbox}
+        onChange={handleToggleChange}
+      />
       <NameEdit ref={nameEdit} defaultValue={name} onUpdate={handleNameUpdate}>
-        <div className={classNames(canEdit && styles.contentHoverable)}>
-          {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,
-                                         jsx-a11y/no-static-element-interactions */}
-          <span
-            className={classNames(styles.text, canEdit && styles.textEditable)}
-            onClick={handleClick}
-          >
-            <span className={classNames(styles.task, isCompleted && styles.taskCompleted)}>
-              <Linkify linkStopPropagation>{name}</Linkify>
-            </span>
+        {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+        <div
+          className={classNames(styles.taskWrapper, canEdit && styles.contentHoverable)}
+          onClick={handleClick}
+        >
+          <span className={classNames(styles.task, isCompleted && styles.taskCompleted)}>
+            {name}
           </span>
           {isPersisted && canEdit && (
-            <ActionsPopup onNameEdit={handleNameEdit} onDelete={onDelete}>
-              <Button className={classNames(styles.button, styles.target)}>
-                <Icon fitted name="pencil" size="small" />
-              </Button>
-            </ActionsPopup>
+            <TaskActionsPopover onNameEdit={handleNameEdit} onDelete={onDelete}>
+              <Button
+                className={styles.taskActionsButton}
+                color="tertiary-text"
+                size="small"
+                icon={<Icon name="more_horiz" type="outlined" size="small" />}
+              />
+            </TaskActionsPopover>
           )}
         </div>
       </NameEdit>

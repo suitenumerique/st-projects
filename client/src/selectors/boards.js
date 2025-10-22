@@ -298,26 +298,63 @@ export const selectIsBoardWithIdExists = createSelector(
   ({ Board }, id) => Board.idExists(id),
 );
 
-export const selectIsPrivateBoard = createSelector(
+export const selectPrivateBoards = createSelector(
   orm,
-  (_, id) => id,
   (state) => selectCurrentUserId(state),
-  ({ Board }, id, currentUserId) => {
-    if (!id) {
-      return false;
-    }
+  ({ Board, Project }, currentUserId) => {
+    const privateBoards = Board.all()
+      .toRefArray()
+      .filter((board) => {
+        const boardModel = Board.withId(board.id);
+        const memberships = boardModel.getOrderedMembershipsModelArray();
+        return (
+          !board.isPublic && memberships.length === 1 && memberships[0].user.id === currentUserId
+        );
+      })
+      .map((board) => {
+        const boardModel = Board.withId(board.id);
+        const project = Project.withId(boardModel.projectId);
 
-    const boardModel = Board.withId(id);
+        if (!project) {
+          return null;
+        }
 
-    if (!boardModel) {
-      return false;
-    }
+        return {
+          ...board,
+          project: project.ref,
+        };
+      })
+      .filter((board) => board !== null);
 
-    const memberships = boardModel.getOrderedMembershipsModelArray();
-
-    return memberships.length === 1 && memberships[0].user.id === currentUserId;
+    return privateBoards;
   },
 );
+
+export const selectSharedBoards = createSelector(orm, ({ Board, Project }) => {
+  const sharedBoards = Board.all()
+    .toRefArray()
+    .filter((board) => {
+      const boardModel = Board.withId(board.id);
+      const memberships = boardModel.getOrderedMembershipsModelArray();
+      return board.isPublic || memberships.length > 1;
+    })
+    .map((board) => {
+      const boardModel = Board.withId(board.id);
+      const project = Project.withId(boardModel.projectId);
+
+      if (!project) {
+        return null;
+      }
+
+      return {
+        ...board,
+        project: project.ref,
+      };
+    })
+    .filter((board) => board !== null);
+
+  return sharedBoards;
+});
 
 export const selectAllBoards = createSelector(
   orm,
@@ -365,6 +402,7 @@ export default {
   selectFilterLabelsForCurrentBoard,
   selectFilterTextForCurrentBoard,
   selectIsBoardWithIdExists,
-  selectIsPrivateBoard,
+  selectPrivateBoards,
+  selectSharedBoards,
   selectAllBoards,
 };

@@ -57,7 +57,7 @@ const EditStep = React.memo(({ defaultData, onUpdate, onDelete, onBack }) => {
   }
 
   return (
-    <>
+    <div style={{ width: '290px' }}>
       <PopoverHeader
         onBack={onBack}
         title={t('common.editLabel', {
@@ -71,7 +71,7 @@ const EditStep = React.memo(({ defaultData, onUpdate, onDelete, onBack }) => {
       <Button color="secondary" className={styles.deleteButton} onClick={handleDeleteClick}>
         {t('action.delete')}
       </Button>
-    </>
+    </div>
   );
 });
 

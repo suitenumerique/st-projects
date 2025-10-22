@@ -2,6 +2,7 @@ import React, { useState, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import { SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable';
+import { useDroppable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import classNames from 'classnames';
 import { Button } from '@openfun/cunningham-react';
@@ -48,6 +49,10 @@ function Column({
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id,
+  });
+
+  const { setNodeRef: setDropRef, isOver } = useDroppable({
+    id: `column-drop-${id}`,
   });
 
   // const [t] = useTranslation();
@@ -159,7 +164,13 @@ function Column({
         )}
       </div>
       <SortableContext items={cards.map((c) => c.id)} strategy={verticalListSortingStrategy}>
-        <div className={styles.cardsContainer}>
+        <div
+          ref={setDropRef}
+          className={classNames(
+            styles.cardsContainer,
+            isOver && cards.length === 0 && styles.dropZoneActive,
+          )}
+        >
           {cards.map((card) => (
             <Card
               key={card.id}
@@ -200,6 +211,7 @@ function Column({
               onLabelDelete={(labelId) => onCardLabelDelete(labelId)}
             />
           ))}
+          {cards.length === 0 && <div className={styles.emptyDropZone} />}
           {canEdit && (
             <CardCreate
               isOpened={isAddCardOpened}
@@ -218,7 +230,7 @@ function Column({
               }}
             >
               <Icon name="add" />
-              Ajouter une carte
+              Nouvelle carte
             </Button>
           </div>
         )}

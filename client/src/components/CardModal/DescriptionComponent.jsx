@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
@@ -50,6 +50,7 @@ function DescriptionComponent({ description, canEdit, onUpdate }) {
   const [t] = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(description || '');
+  const editorRef = useRef(null);
 
   const handleClick = useCallback(() => {
     if (canEdit && !isEditing) {
@@ -71,6 +72,24 @@ function DescriptionComponent({ description, canEdit, onUpdate }) {
     setIsEditing(false);
   }, [description]);
 
+  // Click outside to close and auto-save
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isEditing && editorRef.current && !editorRef.current.contains(event.target)) {
+        // Auto-save when clicking outside
+        handleSave();
+      }
+    };
+
+    if (isEditing) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }
+    return undefined;
+  }, [isEditing, handleSave]);
+
   const handleKeyDown = useCallback(
     (event) => {
       if (event.key === 'Escape') {
@@ -91,6 +110,7 @@ function DescriptionComponent({ description, canEdit, onUpdate }) {
   if (isEditing) {
     return (
       <div
+        ref={editorRef}
         className={styles.descriptionEditor}
         onKeyDown={handleKeyDown}
         role="textbox"
@@ -114,14 +134,14 @@ function DescriptionComponent({ description, canEdit, onUpdate }) {
           ]}
           contentEditableClassName={styles.editorContent}
         />
-        <div className={styles.editorControls}>
+        {/* <div className={styles.editorControls}>
           <button type="button" className={styles.saveButton} onClick={handleSave}>
             {t('action.save')}
           </button>
           <button type="button" className={styles.cancelButton} onClick={handleCancel}>
             {t('action.cancel')}
           </button>
-        </div>
+        </div> */}
       </div>
     );
   }

@@ -2,30 +2,20 @@
 
   .search {
     width: 100%;
+    margin-bottom: 0.75rem;
   }
 
-  .menuItem {
+  .filterList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .filterLabel {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    flex-direction: row;
-    gap: 0.5rem;
-  }
-
-  .menuItemText {
-    display: inline-block;
-    line-height: 32px;
-    width: calc(100% - 40px);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    text-align: left;
-    position: relative;
-  }
-
-  .menuItemIcon {
-    flex-shrink: 0;
-    margin-left: auto;
+    gap: 8px;
   }
 
 }

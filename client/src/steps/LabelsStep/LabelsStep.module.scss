@@ -4,6 +4,44 @@
     margin-bottom: 0.75rem;
   }
 
+  .filterList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 0.5rem;
+  }
+
+  .filterItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+
+    > label {
+      width: 100%;
+    }
+  }
+
+  .filterLabel {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    flex: 1;
+  }
+
+  .itemActions {
+    > button {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+  }
+
   .addButton {
     margin-top: 0.5rem;
     justify-content: center;

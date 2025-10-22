@@ -71,7 +71,7 @@ export default function BoardListItem({
             role="button"
             tabIndex={0}
           >
-            <Icon type="outlined" name="edit" size="medium" />
+            <Icon type="outlined" name="more_horiz" size="medium" />
           </div>
         </BoardEditStepPopover>
       )}

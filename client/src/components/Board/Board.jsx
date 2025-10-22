@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
   DndContext,
   DragOverlay,
-  closestCorners,
+  pointerWithin,
   KeyboardSensor,
   PointerSensor,
   useSensor,
@@ -58,11 +58,9 @@ function Board({
   onCardLabelDelete,
 }) {
   const [t] = useTranslation();
-  const cardsByListId = useMemo(() => groupBy(cardsFullData, 'listId'), [cardsFullData]);
-  const [isListAddOpened, setIsListAddOpened] = useState(false);
-
   const [columns, setColumns] = useState(lists);
-  const [cards, setCards] = useState(cardsByListId);
+  const groupedCards = useMemo(() => groupBy(cardsFullData, 'listId'), [cardsFullData]);
+  const [cards, setCards] = useState(groupedCards);
   const [activeId, setActiveId] = useState(null);
 
   useEffect(() => {
@@ -70,13 +68,15 @@ function Board({
   }, [lists]);
 
   useEffect(() => {
-    setCards(cardsByListId);
-  }, [cardsByListId]);
+    setCards(groupedCards);
+  }, [groupedCards]);
+
+  const [isListAddOpened, setIsListAddOpened] = useState(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 8,
+        distance: 5,
       },
     }),
     useSensor(KeyboardSensor, {
@@ -92,12 +92,15 @@ function Board({
     setIsListAddOpened(false);
   }, []);
 
-  const findContainer = (id) => {
-    if (id in cards) {
-      return id;
-    }
-    return Object.keys(cards).find((key) => cards[key].some((card) => card.id === id));
-  };
+  const findContainer = useCallback(
+    (id) => {
+      if (id in cards) {
+        return id;
+      }
+      return Object.keys(cards).find((key) => cards[key].some((card) => card.id === id));
+    },
+    [cards],
+  );
 
   const handleDragStart = (event) => {
     setActiveId(event.active.id);
@@ -113,6 +116,13 @@ function Board({
     // Check if both active and over are columns - use the CURRENT columns state
     const isActiveColumn = columns.some((col) => col.id === draggedId);
     let isOverColumn = columns.some((col) => col.id === overId);
+
+    // Check if overId is a column drop zone
+    const isOverColumnDropZone = overId.startsWith('column-drop-');
+    if (isOverColumnDropZone) {
+      overId = overId.replace('column-drop-', '');
+      isOverColumn = true;
+    }
 
     // If overId is not a column, it might be a card - find its parent column
     if (isActiveColumn && !isOverColumn) {
@@ -143,7 +153,12 @@ function Board({
     }
 
     const activeContainer = findContainer(draggedId);
-    const overContainer = findContainer(overId);
+    let overContainer = findContainer(overId);
+
+    // Handle dropping into empty column via drop zone
+    if (isOverColumnDropZone) {
+      overContainer = overId;
+    }
 
     if (!activeContainer || !overContainer || activeContainer === overContainer) {
       return;
@@ -151,7 +166,7 @@ function Board({
 
     setCards((prev) => {
       const activeItems = prev[activeContainer];
-      const overItems = prev[overContainer];
+      const overItems = prev[overContainer] || [];
 
       const activeIndex = activeItems.findIndex((item) => item.id === draggedId);
       const overIndex = overItems.findIndex((item) => item.id === overId);
@@ -169,9 +184,9 @@ function Board({
         ...prev,
         [activeContainer]: prev[activeContainer].filter((item) => item.id !== draggedId),
         [overContainer]: [
-          ...prev[overContainer].slice(0, newIndex),
+          ...(prev[overContainer] || []).slice(0, newIndex),
           activeItems[activeIndex],
-          ...prev[overContainer].slice(newIndex),
+          ...(prev[overContainer] || []).slice(newIndex),
         ],
       };
     });
@@ -185,7 +200,13 @@ function Board({
     }
 
     const draggedId = active.id;
-    const overId = over.id;
+    let overId = over.id;
+
+    // Check if overId is a column drop zone
+    const isOverColumnDropZone = overId.startsWith('column-drop-');
+    if (isOverColumnDropZone) {
+      overId = overId.replace('column-drop-', '');
+    }
 
     // Check if dragging a column - reordering already done in handleDragOver
     const isActiveColumn = columns.some((col) => col.id === draggedId);
@@ -201,7 +222,12 @@ function Board({
     }
 
     const activeContainer = findContainer(draggedId);
-    const overContainer = findContainer(overId);
+    let overContainer = findContainer(overId);
+
+    // Handle dropping into empty column via drop zone
+    if (isOverColumnDropZone) {
+      overContainer = overId;
+    }
 
     if (!activeContainer || !overContainer) {
       setActiveId(null);
@@ -225,7 +251,7 @@ function Board({
       }
     } else {
       // Moving between different columns
-      const overItems = cards[overContainer];
+      const overItems = cards[overContainer] || [];
       const overIndex = overItems.findIndex((item) => item.id === overId);
       const newIndex = overIndex >= 0 ? overIndex : overItems.length;
 
@@ -242,12 +268,12 @@ function Board({
   };
 
   const activeColumn = columns.find((col) => col.id === activeId);
-  const activeCard =
-    activeId && !activeColumn
-      ? Object.values(cards)
-          .flat()
-          .find((card) => card.id === activeId)
-      : null;
+  const activeCard = useMemo(() => {
+    if (!activeId || activeColumn) return null;
+    return Object.values(cards)
+      .flat()
+      .find((card) => card.id === activeId);
+  }, [activeId, activeColumn, cards]);
 
   useEffect(() => {
     if (isListAddOpened) {
@@ -259,7 +285,7 @@ function Board({
     <div className={styles.wrapper}>
       <DndContext
         sensors={sensors}
-        collisionDetection={closestCorners}
+        collisionDetection={pointerWithin}
         onDragStart={handleDragStart}
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
@@ -308,7 +334,8 @@ function Board({
                   <ListCreate onCreate={onListCreate} onClose={handleAddListClose} />
                 ) : (
                   <Button
-                    color="secondary-text"
+                    color="tertiary-text"
+                    size="small"
                     onClick={handleAddListClick}
                     className={styles.addListButton}
                   >

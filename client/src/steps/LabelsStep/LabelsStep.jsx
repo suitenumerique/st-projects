@@ -3,15 +3,16 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 // import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { Input, Button } from '@openfun/cunningham-react';
+import { Input, Button, Checkbox } from '@openfun/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+// import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { DragDropProvider } from '@dnd-kit/react';
+// import { DragDropProvider } from '@dnd-kit/react';
+import Label from '../../components/Label';
 
-import SortableItem from './SortableItem';
+// import SortableItem from './SortableItem';
 
 import PopoverHeader from '../../ui/Popover/PopoverHeader';
 
@@ -185,33 +186,40 @@ const LabelsStep = React.memo(
             onChange={(event) => handleSearchChange(event, { value: event.target.value })}
             className={styles.search}
           />
-          {filteredItems.length > 0 && (
-            <DragDropProvider>
-              <SortableContext
-                items={filteredItems}
-                strategy={verticalListSortingStrategy}
-                disabled={!canEdit}
-              >
-                {filteredItems.map((item, index) => (
-                  <SortableItem
-                    key={item.id}
-                    id={item.id}
-                    index={index}
-                    name={item.name}
-                    color={item.color}
-                    isPersisted={item.isPersisted}
-                    isActive={currentIds.includes(item.id)}
-                    canEdit={canEdit}
-                    onSelect={() => handleSelect(item.id)}
-                    onDeselect={() => handleDeselect(item.id)}
-                    onEdit={() => handleEdit(item.id)}
-                  />
-                ))}
-              </SortableContext>
-            </DragDropProvider>
-          )}
+          <div className={styles.filterList}>
+            {filteredItems.map((label) => (
+              <div key={label.id} className={styles.filterItem}>
+                <Checkbox
+                  checked={currentIds.includes(label.id)}
+                  onChange={() => {
+                    if (currentIds.includes(label.id)) {
+                      handleDeselect(label.id);
+                    } else {
+                      handleSelect(label.id);
+                    }
+                  }}
+                  label={
+                    <div className={styles.filterLabel}>
+                      <Label name={label.name} color={label.color} size="small" />
+                    </div>
+                  }
+                />
+                <div className={styles.itemActions}>
+                  <Button size="small" color="tertiary-text" onClick={() => handleEdit(label.id)}>
+                    <Icon size="small" name="edit" type="outlined" aria-hidden="true" />
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
           {canEdit && (
-            <Button color="secondary" onClick={handleAddClick} className={styles.addButton}>
+            <Button
+              size="small"
+              color="tertiary"
+              onClick={handleAddClick}
+              className={styles.addButton}
+              icon={<Icon size="small" name="add" type="outlined" aria-hidden="true" />}
+            >
               {t('action.createNewLabel')}
             </Button>
           )}

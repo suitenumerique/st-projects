@@ -16,6 +16,7 @@ const mapStateToProps = (state) => {
   const currentUserMembership = selectors.selectCurrentUserMembershipForCurrentBoard(state);
   const currentBoard = selectors.selectCurrentBoard(state);
   const currentBoardId = currentBoard ? currentBoard.id : null;
+  const currentBoardName = currentBoard ? currentBoard.name : null;
 
   const isCurrentUserEditor =
     !!currentUserMembership && currentUserMembership.role === BoardMembershipRoles.EDITOR;
@@ -36,6 +37,7 @@ const mapStateToProps = (state) => {
     isPublic: currentBoard ? currentBoard.isPublic : false,
     currentBoardId,
     isCurrentUserMember,
+    currentBoardName,
   };
 };
 
@@ -49,6 +51,10 @@ const mapDispatchToProps = (dispatch) =>
       onUserFromFilterRemove: entryActions.removeUserFromFilterInCurrentBoard,
       onLabelToFilterAdd: entryActions.addLabelToFilterInCurrentBoard,
       onLabelFromFilterRemove: entryActions.removeLabelFromFilterInCurrentBoard,
+      onLabelCreate: entryActions.createLabelInCurrentBoard,
+      onLabelUpdate: entryActions.updateLabel,
+      onLabelMove: entryActions.moveLabel,
+      onLabelDelete: entryActions.deleteLabel,
       onTextFilterUpdate: entryActions.filterText,
       onBoardUpdate: entryActions.updateBoard,
     },

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } 
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import TextareaAutosize from 'react-textarea-autosize';
-import { Button, Form, TextArea } from '../../../lib/migration-helpers';
+import { Button } from '@openfun/cunningham-react';
 import { useDidUpdate, useToggle } from '../../../lib/hooks';
 
 import { useClosableForm, useForm } from '../../../hooks';
@@ -94,12 +94,12 @@ const Add = React.forwardRef(({ children, onCreate }, ref) => {
 
   useEffect(() => {
     if (isOpened) {
-      nameField.current.ref.current.focus();
+      nameField.current.focus();
     }
   }, [isOpened]);
 
   useDidUpdate(() => {
-    nameField.current.ref.current.focus();
+    nameField.current.focus();
   }, [focusNameFieldState]);
 
   if (!isOpened) {
@@ -109,30 +109,30 @@ const Add = React.forwardRef(({ children, onCreate }, ref) => {
   }
 
   return (
-    <Form className={styles.wrapper} onSubmit={handleSubmit}>
-      <TextArea
+    <form onSubmit={handleSubmit} className={styles.wrapper}>
+      <TextareaAutosize
         ref={nameField}
-        as={TextareaAutosize}
         name="name"
         value={data.name}
         placeholder={t('common.enterTaskDescription')}
-        minRows={2}
         spellCheck={false}
         className={styles.field}
         onKeyDown={handleFieldKeyDown}
         onChange={handleFieldChange}
         onBlur={handleFieldBlur}
       />
-      <div className={styles.controls}>
+      <div>
         {/* eslint-disable-next-line jsx-a11y/mouse-events-have-key-events */}
         <Button
-          positive
-          content={t('action.addTask')}
+          color="tertiary"
+          size="small"
           onMouseOver={handleControlMouseOver}
           onMouseOut={handleControlMouseOut}
-        />
+        >
+          Enregistrer
+        </Button>
       </div>
-    </Form>
+    </form>
   );
 });
 
