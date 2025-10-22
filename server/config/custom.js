@@ -99,4 +99,7 @@ module.exports.custom = {
   reactAppFeedbackWidgetApiUrl: process.env.REACT_APP_FEEDBACK_WIDGET_API_URL,
   reactAppFeedbackWidgetPath: process.env.REACT_APP_FEEDBACK_WIDGET_PATH,
   reactAppFeedbackWidgetChannel: process.env.REACT_APP_FEEDBACK_WIDGET_CHANNEL,
+
+  reactAppLagaufreWidgetApiUrl: process.env.REACT_APP_LAGAUFRE_WIDGET_API_URL,
+  reactAppLagaufreWidgetPath: process.env.REACT_APP_LAGAUFRE_WIDGET_PATH,
 };

@@ -1,4 +1,3 @@
-import React from "react"
 import { useTranslation } from "react-i18next"
 import { useState, useEffect, useRef } from "react"
 import { Button, ButtonElement } from "@openfun/cunningham-react";
@@ -6,12 +5,12 @@ import { Button, ButtonElement } from "@openfun/cunningham-react";
 /**
  * A button that opens the lagaufre widget
  */
-export const LaGaufreButton = () => {
+export const LagaufreButton = ({ reactAppLagaufreWidgetApiUrl, reactAppLagaufreWidgetPath }: { reactAppLagaufreWidgetApiUrl: string, reactAppLagaufreWidgetPath: string }) => {
   const { t } = useTranslation()
   const [isWidgetInitialized, setIsWidgetInitialized] = useState(false)
   const buttonRef = useRef<ButtonElement>(null);
-  const apiUrl = "https://integration.lasuite.numerique.gouv.fr/" //process.env.NEXT_PUBLIC_LAGAUFRE_WIDGET_API_URL;
-  const widgetPath = "api/v1/" //process.env.NEXT_PUBLIC_LAGAUFRE_WIDGET_PATH;
+  const apiUrl = reactAppLagaufreWidgetApiUrl;
+  const widgetPath = reactAppLagaufreWidgetPath;
 
   const label: string = t("Other services...");
   const closeLabel: string = t("Close the menu");
@@ -24,7 +23,7 @@ export const LaGaufreButton = () => {
     (window as any)._stmsg_widget = (window as any)._stmsg_widget || [];
 
     // Construct script URLs from the base path
-    const feedbackScript = `${apiUrl}${widgetPath}gaufre.js`;
+    const feedbackScript = `${widgetPath}lagaufre.js`;
 
     document.addEventListener("stmsg-widget-lagaufre-closed", () => {
         // Focus the button
@@ -67,6 +66,7 @@ export const LaGaufreButton = () => {
 
   const toggleWidget = () => {
     if (!isWidgetInitialized) return;
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any)._stmsg_widget.push([
       "lagaufre",

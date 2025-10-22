@@ -9,11 +9,16 @@ const mapStateToProps = (state) => {
   const isLogouting = selectors.selectIsLogouting(state);
   const currentUser = selectors.selectCurrentUser(state);
   const notifications = selectors.selectNotificationsForCurrentUser(state);
+  const config = selectors.selectConfig(state);
+
+  const { reactAppLagaufreWidgetApiUrl, reactAppLagaufreWidgetPath } = config;
 
   return {
     notifications,
     isLogouting,
     currentUser,
+    reactAppLagaufreWidgetApiUrl,
+    reactAppLagaufreWidgetPath,
   };
 };
 

@@ -47,6 +47,8 @@ module.exports = {
         reactAppFeedbackWidgetApiUrl: sails.config.custom.reactAppFeedbackWidgetApiUrl,
         reactAppFeedbackWidgetPath: sails.config.custom.reactAppFeedbackWidgetPath,
         reactAppFeedbackWidgetChannel: sails.config.custom.reactAppFeedbackWidgetChannel,
+        reactAppLagaufreWidgetApiUrl: sails.config.custom.reactAppLagaufreWidgetApiUrl,
+        reactAppLagaufreWidgetPath: sails.config.custom.reactAppLagaufreWidgetPath,
       },
     };
   },

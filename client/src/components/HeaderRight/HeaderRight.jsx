@@ -9,26 +9,27 @@ import LaGaufreButton from '../../ui/LaGaufreButton';
 // import usePopup from '../../lib/popup';
 // import styles from './HeaderRight.module.scss';
 
-const HeaderRight = React.memo(({ currentUser, onLogout }) => {
-  // onLanguageUpdate
-  // notifications, onNotificationDelete,
-  const [isOpen, setIsOpen] = useState(false);
-  const { t } = useTranslation();
+const HeaderRight = React.memo(
+  ({ currentUser, onLogout, reactAppLagaufreWidgetApiUrl, reactAppLagaufreWidgetPath }) => {
+    // onLanguageUpdate
+    // notifications, onNotificationDelete,
+    const [isOpen, setIsOpen] = useState(false);
+    const { t } = useTranslation();
 
-  // const NotificationsPopover = usePopup(NotificationsStep, {
-  //   side: 'bottom',
-  //   align: 'end',
-  // });
+    // const NotificationsPopover = usePopup(NotificationsStep, {
+    //   side: 'bottom',
+    //   align: 'end',
+    // });
 
-  if (currentUser) {
-    posthog.identify(currentUser.id, {
-      email: currentUser.email,
-    });
-  }
+    if (currentUser) {
+      posthog.identify(currentUser.id, {
+        email: currentUser.email,
+      });
+    }
 
-  return (
-    <>
-      {/* <NotificationsPopover items={notifications} onDelete={onNotificationDelete}>
+    return (
+      <>
+        {/* <NotificationsPopover items={notifications} onDelete={onNotificationDelete}>
           <Button color="primary-text" className={styles.notificationButton}>
             <Icon type="outlined" name="notifications" />
             {/* {notifications.length >= 0 && (
@@ -37,35 +38,41 @@ const HeaderRight = React.memo(({ currentUser, onLogout }) => {
           </Button>
         </NotificationsPopover> */}
 
-      {currentUser && (
-        <DropdownMenu
-          options={[
-            {
-              label: t('action.logOut_title'),
-              icon: <span className="material-icons">logout</span>,
-              callback: onLogout,
-            },
-          ]}
-          isOpen={isOpen}
-          onOpenChange={setIsOpen}
-        >
-          <Button
-            color="primary-text"
-            onClick={() => setIsOpen(!isOpen)}
-            icon={
-              <span className="material-icons">{isOpen ? 'arrow_drop_up' : 'arrow_drop_down'}</span>
-            }
-            iconPosition="right"
+        {currentUser && (
+          <DropdownMenu
+            options={[
+              {
+                label: t('action.logOut_title'),
+                icon: <span className="material-icons">logout</span>,
+                callback: onLogout,
+              },
+            ]}
+            isOpen={isOpen}
+            onOpenChange={setIsOpen}
           >
-            {t('common.myAccount')}
-          </Button>
-        </DropdownMenu>
-      )}
-      {/* <LanguagePicker currentUser={currentUser} onLanguageUpdate={onLanguageUpdate} /> */}
-      <LaGaufreButton />
-    </>
-  );
-});
+            <Button
+              color="primary-text"
+              onClick={() => setIsOpen(!isOpen)}
+              icon={
+                <span className="material-icons">
+                  {isOpen ? 'arrow_drop_up' : 'arrow_drop_down'}
+                </span>
+              }
+              iconPosition="right"
+            >
+              {t('common.myAccount')}
+            </Button>
+          </DropdownMenu>
+        )}
+        {/* <LanguagePicker currentUser={currentUser} onLanguageUpdate={onLanguageUpdate} /> */}
+        <LaGaufreButton
+          reactAppLagaufreWidgetApiUrl={reactAppLagaufreWidgetApiUrl}
+          reactAppLagaufreWidgetPath={reactAppLagaufreWidgetPath}
+        />
+      </>
+    );
+  },
+);
 
 const LanguagePicker = React.memo(({ currentUser, onLanguageUpdate }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -129,6 +136,8 @@ HeaderRight.propTypes = {
   // notifications: PropTypes.array.isRequired,
   // onNotificationDelete: PropTypes.func.isRequired,
   // onLanguageUpdate: PropTypes.func.isRequired,
+  reactAppLagaufreWidgetApiUrl: PropTypes.string.isRequired,
+  reactAppLagaufreWidgetPath: PropTypes.string.isRequired,
 };
 
 HeaderRight.defaultProps = {};

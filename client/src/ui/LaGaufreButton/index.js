@@ -1,3 +1,3 @@
-import { LaGaufreButton } from './LaGaufreButton.tsx';
+import { LagaufreButton } from './LaGaufreButton.tsx';
 
-export default LaGaufreButton;
+export default LagaufreButton;
