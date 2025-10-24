@@ -6,7 +6,7 @@ import { Gallery, Item as GalleryItem } from 'react-photoswipe-gallery';
 import { Button } from '@openfun/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 import { useToggle } from '../../../lib/hooks';
-import { FilePicker } from '../../../lib/custom-ui';
+import FilePicker from '../../../ui/FilePicker/FilePicker';
 
 import Item from './Item';
 
@@ -154,13 +154,15 @@ const Attachments = React.memo(
             </Button>
           )}
         </div>
-        <div>
-          <FilePicker multiple onSelect={(file) => onCreate({ file })}>
-            <Button color="tertiary" size="small" icon={<Icon name="add" size="small" />}>
-              Nouvelle pièce jointe
-            </Button>
-          </FilePicker>
-        </div>
+        {canEdit && (
+          <div>
+            <FilePicker multiple onSelect={(file) => onCreate({ file })}>
+              <Button color="tertiary" size="small" icon={<Icon name="add" size="small" />}>
+                Nouvelle pièce jointe
+              </Button>
+            </FilePicker>
+          </div>
+        )}
       </>
     );
   },

@@ -3,24 +3,23 @@ import PropTypes from 'prop-types';
 import { ShareModal, ShareModalCopyLinkFooter, Icon } from '@gouvfr-lasuite/ui-kit';
 import { Button } from '@openfun/cunningham-react';
 import Badge from '../../ui/Badge';
-
-import Filters from '../Filters';
-
+import Filters from './Filters';
 import styles from './BoardActions.module.scss';
 
 const BoardActions = React.memo(
   ({
-    memberships,
-    labels,
-    filterUsers,
-    filterLabels,
+    currentBoardId,
+    currentBoardName,
     filterText,
     allUsers,
-    canEditMemberships,
-    isPublic,
-    onMembershipCreate,
-    onMembershipUpdate,
-    onMembershipDelete,
+    filterUsers,
+    boardLabels,
+    filterLabels,
+    boardMemberships,
+    isCurrentUserMember,
+    canEdit,
+    isBoardPublic,
+    onTextFilterUpdate,
     onUserToFilterAdd,
     onUserFromFilterRemove,
     onLabelToFilterAdd,
@@ -29,11 +28,10 @@ const BoardActions = React.memo(
     onLabelUpdate,
     onLabelMove,
     onLabelDelete,
-    onTextFilterUpdate,
+    onMembershipCreate,
+    onMembershipUpdate,
+    onMembershipDelete,
     onBoardUpdate,
-    currentBoardId,
-    currentBoardName,
-    isCurrentUserMember,
   }) => {
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
     const [searchedUsers, setSearchedUsers] = useState([]);
@@ -60,12 +58,12 @@ const BoardActions = React.memo(
             (user.email.includes(search) ||
               user.name.includes(search) ||
               user.username.includes(search)) &&
-            !memberships.some((membership) => membership.user.id === user.id)
+            !boardMemberships.some((membership) => membership.user.id === user.id)
           );
         });
         setSearchedUsers(filteredUsers);
       },
-      [allUsers, memberships],
+      [allUsers, boardMemberships],
     );
 
     useEffect(() => {
@@ -86,46 +84,14 @@ const BoardActions = React.memo(
         <h4 className={styles.boardName}>{currentBoardName}</h4>
         <div className={styles.actions}>
           <div className={styles.action}>
-            {/* <LabelsPopover
-              items={labels}
-              currentIds={filterLabels.map((label) => label.id)}
-              title="common.filterByLabels"
-              canEdit={canEditMemberships}
-              onSelect={onLabelToFilterAdd}
-              onDeselect={onLabelFromFilterRemove}
-              onCreate={onLabelCreate}
-              onUpdate={onLabelUpdate}
-              onMove={onLabelMove}
-              onDelete={onLabelDelete}
-            >
-              <Button
-                type="button"
-                color="secondary"
-                size="small"
-                icon={<Icon type="outlined" name="label" size="small" />}
-                className={classNames(
-                  styles.labelsButton,
-                  filterLabels.length > 0 && styles.labelsButtonFilled,
-                )}
-              >
-                {filterLabels.length === 0 && (
-                  <span className={styles.filterTitle}>Etiquettes</span>
-                )}
-                {filterLabels.map((label) => (
-                  <span key={label.id} className={styles.filterItem}>
-                    <Label name={label.name} color={label.color} size="small" />
-                  </span>
-                ))}
-              </Button>
-            </LabelsPopover> */}
             <Filters
-              users={filterUsers}
-              labels={filterLabels}
               filterText={filterText}
-              allBoardMemberships={memberships}
-              allLabels={labels}
-              canEdit={canEditMemberships}
-              isCurrentUserMember={isCurrentUserMember}
+              boardLabels={boardLabels}
+              filterLabels={filterLabels}
+              filterUsers={filterUsers}
+              boardMemberships={boardMemberships}
+              canEdit={canEdit}
+              onTextFilterUpdate={onTextFilterUpdate}
               onUserAdd={onUserToFilterAdd}
               onUserRemove={onUserFromFilterRemove}
               onLabelAdd={onLabelToFilterAdd}
@@ -134,52 +100,31 @@ const BoardActions = React.memo(
               onLabelUpdate={onLabelUpdate}
               onLabelMove={onLabelMove}
               onLabelDelete={onLabelDelete}
-              onTextFilterUpdate={onTextFilterUpdate}
             />
           </div>
-          <div className={styles.action}>
-            {/* <FiltersPopover
-              align="end"
-              side="top"
-              allBoardMemberships={memberships}
-              allLabels={labels}
-              filterText={filterText}
-              filterUsers={filterUsers}
-              filterLabels={filterLabels}
-              onUserToFilterAdd={onUserToFilterAdd}
-              onUserFromFilterRemove={onUserFromFilterRemove}
-              onLabelToFilterAdd={onLabelToFilterAdd}
-              onLabelFromFilterRemove={onLabelFromFilterRemove}
-              onTextFilterUpdate={onTextFilterUpdate}
-            >
-              <Button
-                icon={<Icon type="outlined" name="filter_alt" />}
-                color="secondary"
-                title="Filtrer"
-              >
-                Filtrer
-              </Button>
-            </FiltersPopover> */}
-            {memberships.length === 1 && canEditMemberships ? (
-              <Button onClick={handleShareClick} title="Share board" color="tertiary-text">
-                Partager
-              </Button>
-            ) : (
-              <Badge style={{ cursor: 'pointer' }} onClick={handleShareClick}>
-                <Icon type="outlined" name="group" />
-                <span style={{ fontSize: '16px' }}>{memberships.length}</span>
-              </Badge>
-            )}
-          </div>
+          {isCurrentUserMember && (
+            <div className={styles.action}>
+              {boardMemberships.length === 1 && canEdit ? (
+                <Button onClick={handleShareClick} title="Share board" color="tertiary-text">
+                  Partager
+                </Button>
+              ) : (
+                <Badge style={{ cursor: 'pointer' }} onClick={handleShareClick}>
+                  <Icon type="outlined" name="group" />
+                  <span style={{ fontSize: '16px' }}>{boardMemberships.length}</span>
+                </Badge>
+              )}
+            </div>
+          )}
         </div>
 
         <ShareModal
           isOpen={isShareModalOpen}
           onClose={handleShareModalClose}
           modalTitle="Partager le tableau"
-          canUpdate={canEditMemberships}
+          canUpdate={canEdit}
           canView
-          accesses={memberships}
+          accesses={boardMemberships}
           invitationRoles={[
             {
               label: 'Editeur',
@@ -221,8 +166,8 @@ const BoardActions = React.memo(
               }}
             />
           }
-          linkSettings={canEditMemberships}
-          linkReach={isPublic ? 'public' : 'restricted'}
+          linkSettings={canEdit}
+          linkReach={isBoardPublic ? 'public' : 'restricted'}
           linkReachChoices={[
             {
               value: 'public',
@@ -232,7 +177,7 @@ const BoardActions = React.memo(
             },
           ]}
           onUpdateLinkReach={(value) => {
-            handleUpdate({ isPublic: value === 'public' });
+            handleUpdate({ isBoardPublic: value === 'public' });
           }}
         />
       </div>
@@ -241,19 +186,20 @@ const BoardActions = React.memo(
 );
 
 BoardActions.propTypes = {
-  /* eslint-disable react/forbid-prop-types */
-  memberships: PropTypes.array.isRequired,
-  labels: PropTypes.array.isRequired,
-  filterUsers: PropTypes.array.isRequired,
-  filterLabels: PropTypes.array.isRequired,
+  currentBoardId: PropTypes.string.isRequired,
+  currentBoardName: PropTypes.string.isRequired,
   filterText: PropTypes.string.isRequired,
+  /* eslint-disable react/forbid-prop-types */
   allUsers: PropTypes.array.isRequired,
+  filterUsers: PropTypes.array.isRequired,
+  boardLabels: PropTypes.array.isRequired,
+  filterLabels: PropTypes.array.isRequired,
+  boardMemberships: PropTypes.array.isRequired,
   /* eslint-enable react/forbid-prop-types */
-  canEditMemberships: PropTypes.bool.isRequired,
-  isPublic: PropTypes.bool.isRequired,
-  onMembershipCreate: PropTypes.func.isRequired,
-  onMembershipUpdate: PropTypes.func.isRequired,
-  onMembershipDelete: PropTypes.func.isRequired,
+  canEdit: PropTypes.bool.isRequired,
+  isCurrentUserMember: PropTypes.bool.isRequired,
+  isBoardPublic: PropTypes.bool.isRequired,
+  onTextFilterUpdate: PropTypes.func.isRequired,
   onUserToFilterAdd: PropTypes.func.isRequired,
   onUserFromFilterRemove: PropTypes.func.isRequired,
   onLabelToFilterAdd: PropTypes.func.isRequired,
@@ -262,11 +208,10 @@ BoardActions.propTypes = {
   onLabelUpdate: PropTypes.func.isRequired,
   onLabelMove: PropTypes.func.isRequired,
   onLabelDelete: PropTypes.func.isRequired,
-  onTextFilterUpdate: PropTypes.func.isRequired,
+  onMembershipCreate: PropTypes.func.isRequired,
+  onMembershipUpdate: PropTypes.func.isRequired,
+  onMembershipDelete: PropTypes.func.isRequired,
   onBoardUpdate: PropTypes.func.isRequired,
-  currentBoardId: PropTypes.string.isRequired,
-  currentBoardName: PropTypes.string.isRequired,
-  isCurrentUserMember: PropTypes.bool.isRequired,
 };
 
 export default BoardActions;

@@ -24,7 +24,7 @@ import {
   Separator,
 } from '@mdxeditor/editor';
 
-import { Markdown } from '../../lib/custom-ui';
+import Markdown from '../../ui/Markdown';
 
 import styles from './DescriptionComponent.module.scss';
 

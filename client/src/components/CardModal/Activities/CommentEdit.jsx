@@ -65,9 +65,13 @@ const CommentEdit = React.forwardRef(({ defaultData, onUpdate, text, actions }, 
     submit();
   }, [submit]);
 
-  const handleSubmit = useCallback(() => {
-    submit();
-  }, [submit]);
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
+      submit();
+    },
+    [submit],
+  );
 
   useEffect(() => {
     if (isOpened) {

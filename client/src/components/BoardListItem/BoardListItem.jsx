@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import pick from 'lodash/pick';
-// import { useTranslation } from 'react-i18next';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 import classNames from 'classnames';
+// import { useTranslation } from 'react-i18next';
 import styles from './BoardListItem.module.scss';
 
 import BoardEditStep from '../../steps/BoardEditStep';
@@ -11,13 +11,16 @@ import usePopup from '../../lib/popup/use-popup';
 
 export default function BoardListItem({
   board,
-  handleClick,
-  isActive,
+  project,
   showDescription,
   editable,
-  projectName,
-  onUpdate,
-  onDelete,
+  isActive,
+  currentUser,
+  canEdit,
+  handleClick,
+  onBoardUpdate,
+  onBoardDelete,
+  // onBoardDuplicate,
 }) {
   // const [t] = useTranslation();
 
@@ -26,10 +29,10 @@ export default function BoardListItem({
   return (
     <div
       className={classNames(styles.itemWrapper, isActive && styles.itemWrapperActive)}
-      onClick={() => handleClick(board)}
+      onClick={handleClick}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => e.key === 'Enter' && handleClick(board)}
+      onKeyDown={(e) => e.key === 'Enter' && handleClick()}
       key={board.id}
     >
       <div className={styles.itemIcon}>
@@ -55,13 +58,15 @@ export default function BoardListItem({
       </div>
       <div>
         <p className={styles.itemName}>{board.name}</p>
-        {projectName && <p className={styles.itemProjectName}>{projectName}</p>}
+        {project && project.siret !== currentUser.siret && (
+          <p className={styles.itemProjectName}>{project.name}</p>
+        )}
       </div>
-      {editable && (
+      {editable && canEdit && (
         <BoardEditStepPopover
           defaultData={pick(board, 'name')}
-          onUpdate={onUpdate}
-          onDelete={onDelete}
+          onUpdate={(data) => onBoardUpdate(board.id, data)}
+          onDelete={() => onBoardDelete(board.id)}
         >
           <div
             type="button"
@@ -82,20 +87,20 @@ export default function BoardListItem({
 
 BoardListItem.propTypes = {
   board: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  handleClick: PropTypes.func.isRequired,
-  isActive: PropTypes.bool,
+  project: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   showDescription: PropTypes.bool,
-  editable: PropTypes.bool,
-  projectName: PropTypes.string,
-  onUpdate: PropTypes.func,
-  onDelete: PropTypes.func,
+  editable: PropTypes.bool.isRequired,
+  isActive: PropTypes.bool,
+  currentUser: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  canEdit: PropTypes.bool.isRequired,
+  handleClick: PropTypes.func.isRequired,
+  onBoardUpdate: PropTypes.func,
+  onBoardDelete: PropTypes.func,
 };
 
 BoardListItem.defaultProps = {
   showDescription: false,
-  editable: true,
   isActive: false,
-  projectName: undefined,
-  onUpdate: () => {},
-  onDelete: () => {},
+  onBoardUpdate: () => {},
+  onBoardDelete: () => {},
 };

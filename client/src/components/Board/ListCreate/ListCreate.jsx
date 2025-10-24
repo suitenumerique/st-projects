@@ -2,9 +2,9 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Input, Button } from '@openfun/cunningham-react';
-import { useDidUpdate, useToggle } from '../../lib/hooks';
+import { useDidUpdate, useToggle } from '../../../lib/hooks';
 
-import { useForm } from '../../hooks';
+import { useForm } from '../../../hooks';
 
 import styles from './ListCreate.module.scss';
 

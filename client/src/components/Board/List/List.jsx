@@ -11,13 +11,13 @@ import { Icon } from '@gouvfr-lasuite/ui-kit';
 import { upperFirst, camelCase } from 'lodash';
 import styles from '../Board.module.scss';
 import Card from '../Card';
-import CardCreate from '../../CardCreate/CardCreate';
-import ColumnNameEdit from '../../ColumnNameEdit';
+import CardCreate from './CardCreate';
+import ListNameEdit from './ListNameEdit';
 import usePopup from '../../../lib/popup/use-popup';
-import ColumnActionsStep from '../../../steps/ColumnActionsStep/ColumnActionsStep';
+import ListActionsStep from '../../../steps/ListActionsStep/ListActionsStep';
 import globalStyles from '../../../assets/styles/styles.module.scss';
 
-function Column({
+function List({
   id,
   name,
   isPersisted,
@@ -49,10 +49,11 @@ function Column({
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id,
+    disabled: !canEdit,
   });
 
   const { setNodeRef: setDropRef, isOver } = useDroppable({
-    id: `column-drop-${id}`,
+    id: `list-drop-${id}`,
   });
 
   // const [t] = useTranslation();
@@ -65,7 +66,7 @@ function Column({
 
   const nameEdit = useRef(null);
 
-  const ActionsPopup = usePopup(ColumnActionsStep);
+  const ListActionsPopover = usePopup(ListActionsStep);
 
   const handleHeaderClick = useCallback(() => {
     if (isPersisted && canEdit) {
@@ -111,12 +112,16 @@ function Column({
     <div
       ref={setNodeRef}
       style={style}
-      className={classNames(styles.column, isDragging ? styles.dragging : '')}
+      className={classNames(
+        styles.list,
+        canEdit ? styles.draggable : '',
+        isDragging ? styles.dragging : '',
+      )}
     >
       <div
         {...attributes} // eslint-disable-line react/jsx-props-no-spreading
         {...listeners} // eslint-disable-line react/jsx-props-no-spreading
-        className={classNames(styles.columnHeader, canEdit && styles.columnHeaderEditable)}
+        className={classNames(styles.listHeader, canEdit && styles.listHeaderEditable)}
       >
         <div
           onClick={() => {
@@ -129,27 +134,27 @@ function Column({
             }
           }}
           role="button"
-          className={styles.columnHeaderNameEdit}
+          className={styles.listHeaderNameEdit}
           tabIndex={canEdit ? 0 : -1}
         >
-          <ColumnNameEdit ref={nameEdit} defaultValue={name} onUpdate={handleNameUpdate}>
-            <div className={styles.columnHeaderContent}>
+          <ListNameEdit ref={nameEdit} defaultValue={name} onUpdate={handleNameUpdate}>
+            <div className={styles.listHeaderContent}>
               {color && (
                 <Icon
                   name="circle"
                   className={classNames(
-                    styles.columnColor,
+                    styles.listColor,
                     globalStyles[`color${upperFirst(camelCase(color))}`],
                   )}
                 />
               )}
-              <p className={styles.columnName}>{name}</p>
+              <p className={styles.listName}>{name}</p>
             </div>
-          </ColumnNameEdit>
+          </ListNameEdit>
         </div>
 
         {isPersisted && canEdit && (
-          <ActionsPopup
+          <ListActionsPopover
             onNameEdit={handleNameEdit}
             onCardAdd={handleCardAdd}
             onDelete={onDelete}
@@ -157,10 +162,10 @@ function Column({
             color={color}
             onColorEdit={handleColorEdit}
           >
-            <Button className={styles.columnHeaderButton}>
+            <Button className={styles.listHeaderButton}>
               <Icon outlined name="more_horiz" />
             </Button>
-          </ActionsPopup>
+          </ListActionsPopover>
         )}
       </div>
       <SortableContext items={cards.map((c) => c.id)} strategy={verticalListSortingStrategy}>
@@ -239,7 +244,7 @@ function Column({
   );
 }
 
-Column.propTypes = {
+List.propTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   isPersisted: PropTypes.bool.isRequired,
@@ -275,4 +280,4 @@ Column.propTypes = {
   onCardLabelDelete: PropTypes.func.isRequired,
 };
 
-export default Column;
+export default List;

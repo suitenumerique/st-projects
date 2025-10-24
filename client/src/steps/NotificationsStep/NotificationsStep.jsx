@@ -8,7 +8,7 @@ import PopoverHeader from '../../ui/Popover/PopoverHeader';
 
 import Paths from '../../constants/Paths';
 import { ActivityTypes } from '../../constants/Enums';
-import User from '../../components/User';
+import User from '../../ui/User';
 
 import styles from './NotificationsStep.module.scss';
 

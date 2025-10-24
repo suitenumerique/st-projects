@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation, Trans } from 'react-i18next';
-import { Icon, Loader } from '../../lib/migration-helpers';
 
 import BoardContainer from '../../containers/BoardContainer';
 import BoardActionsContainer from '../../containers/BoardActionsContainer';
@@ -58,7 +57,6 @@ function Static({ projectId, cardId, currentBoard }) {
     return (
       <div className={classNames(styles.wrapper, styles.wrapperFlex, styles.wrapperProject)}>
         <div className={styles.message}>
-          <Icon inverted name="hand point up outline" size="huge" className={styles.messageIcon} />
           <h1 className={styles.messageTitle}>
             {t('common.openBoard', {
               context: 'title',
@@ -75,7 +73,7 @@ function Static({ projectId, cardId, currentBoard }) {
   if (currentBoard.isFetching) {
     return (
       <div className={classNames(styles.wrapper, styles.wrapperLoader, styles.wrapperProject)}>
-        <Loader active size="big" />
+        <p />
       </div>
     );
   }

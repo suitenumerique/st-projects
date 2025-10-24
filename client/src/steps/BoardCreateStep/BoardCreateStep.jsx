@@ -44,8 +44,8 @@ const AddBoardStep = React.memo(({ onCreate, onClose, onCreateFromTemplate, temp
   // }, [handleBack, focusNameField]);
 
   const handleTemplateClick = useCallback(
-    (board) => {
-      onCreateFromTemplate(board.id);
+    (boardId) => {
+      onCreateFromTemplate(boardId);
       onClose();
     },
     [onCreateFromTemplate, onClose],
@@ -120,7 +120,7 @@ const AddBoardStep = React.memo(({ onCreate, onClose, onCreateFromTemplate, temp
               <BoardListItem
                 key={board.id}
                 board={board}
-                handleClick={handleTemplateClick}
+                handleClick={() => handleTemplateClick(board.id)}
                 showDescription
                 editable={false}
               />

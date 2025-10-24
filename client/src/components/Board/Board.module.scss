@@ -28,7 +28,7 @@
     opacity: 0.9;
   }
 
-  .dragOverlay.column {
+  .dragOverlay.list {
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
   }
 
@@ -37,7 +37,7 @@
     width: 256px;
   }
 
-  .column {
+  .list {
     background: var(--c--theme--colors--greyscale-100);
     border-radius: 4px;
     width: 272px;
@@ -49,13 +49,18 @@
     max-height: calc(100vh - 125px);
     display: flex;
     flex-direction: column;
+    cursor: default;
   }
 
-  .column.dragging {
+  .list.draggable {
+    cursor: grab;
+  }
+
+  .list.dragging {
     opacity: 0.5;
   }
 
-  .columnHeader {
+  .listHeader {
     position: relative;
     display: flex;
     align-items: flex-start;
@@ -64,29 +69,29 @@
     gap: 8px;
   }
 
-  .columnHeader[data-disabled="true"] {
+  .listHeader[data-disabled="true"] {
     cursor: default;
     opacity: 0.6;
   }
 
-  .columnHeaderEditable {
+  .listHeaderEditable {
     cursor: pointer;
   }
 
-  .columnHeaderNameEdit {
+  .listHeaderNameEdit {
     width: 100%;
   }
 
-  .columnHeaderContent {
+  .listHeaderContent {
     display: flex;
     align-items: center;
   }
 
-  .columnColor {
+  .listColor {
     line-height: 1;
   }
 
-  .columnName {
+  .listName {
     font-weight: bold;
     line-height: 20px;
     max-height: 256px;
@@ -99,7 +104,7 @@
     padding: 6px 8px 6px 12px;
   }
 
-  .columnHeaderButton {
+  .listHeaderButton {
     margin: 0;
     height: 32px;
     width: 32px;
@@ -153,17 +158,17 @@
     padding: 8px 12px 8px 12px;
     border-radius: 4px;
     box-shadow: 0px 1px 1px #1E1F2140, 0px 0px 1px #1E1F214F;
-    cursor: grab;
     transition: box-shadow 0.2s;
     position: relative;
   }
 
   .card:hover {
     outline: 2px solid #000091;
+    cursor: pointer;
   }
 
-  .card:active {
-    cursor: grabbing;
+  .card.draggable {
+    cursor: grab;
   }
 
   .card[data-disabled="true"] {

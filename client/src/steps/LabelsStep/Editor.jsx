@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Input } from '@openfun/cunningham-react';
 
 import LabelColors from '../../constants/LabelColors';
-import ColorPicker from '../../components/ColorPicker';
+import ColorPicker from '../../ui/ColorPicker';
 
 import styles from './Editor.module.scss';
 

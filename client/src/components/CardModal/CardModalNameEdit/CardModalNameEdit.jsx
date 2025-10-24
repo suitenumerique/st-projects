@@ -1,9 +1,9 @@
 import React, { useCallback, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import TextareaAutosize from 'react-textarea-autosize';
-import { useDidUpdate, usePrevious } from '../../lib/hooks';
+import { useDidUpdate, usePrevious } from '../../../lib/hooks';
 
-import { useField } from '../../hooks';
+import { useField } from '../../../hooks';
 
 import styles from './CardModalNameEdit.module.scss';
 

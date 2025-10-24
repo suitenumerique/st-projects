@@ -17,12 +17,6 @@ const mapStateToProps = (state) => {
     reactAppFeedbackWidgetChannel,
   } = config || {};
 
-  // const {
-  //   ui: {
-  //     authenticateForm: { data: defaultData, isSubmitting, isSubmittingUsingOidc, error },
-  //   },
-  // } = state;
-
   return {
     isOidcEnforced: !!oidcConfig && oidcConfig.isEnforced,
     reactAppDefaultEmail,

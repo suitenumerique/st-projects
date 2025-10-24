@@ -5,11 +5,11 @@ import selectors from '../selectors';
 import entryActions from '../entry-actions';
 import { BoardMembershipRoles } from '../constants/Enums';
 import Board from '../components/Board';
-// import BoardNew from '../components/BoardNew';
 
 const mapStateToProps = (state) => {
   const { cardId } = selectors.selectPath(state);
-  const currentBoard = selectors.selectCurrentBoard(state);
+  const currentUser = selectors.selectCurrentUser(state);
+
   const lists = selectors.selectListsForCurrentBoard(state);
   const cardsWithDetails = selectors.selectCardsWithDetailsForCurrentBoard(state);
   const allBoards = selectors.selectBoardsForCurrentProject(state);
@@ -23,13 +23,10 @@ const mapStateToProps = (state) => {
   const isCurrentUserOwner =
     !!currentUserMembership && currentUserMembership.role === BoardMembershipRoles.OWNER;
 
-  const currentUser = selectors.selectCurrentUser(state);
-
   return {
-    currentBoard,
     currentUser,
     lists,
-    cardsFullData: cardsWithDetails,
+    cards: cardsWithDetails,
     allBoards,
     allBoardMemberships,
     allBoardLabels,

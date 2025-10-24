@@ -91,6 +91,32 @@ export const selectCurrentUserMembershipForCurrentBoard = createSelector(
   },
 );
 
+export const makeSelectCurrentUserMembershipForBoardById = () =>
+  createSelector(
+    orm,
+    (_, boardId) => boardId,
+    (state) => selectCurrentUserId(state),
+    ({ Board }, boardId, currentUserId) => {
+      if (!boardId) {
+        return boardId;
+      }
+
+      const boardModel = Board.withId(boardId);
+
+      if (!boardModel) {
+        return boardModel;
+      }
+
+      const boardMembershipModel = boardModel.getMembershipModelForUser(currentUserId);
+
+      if (!boardMembershipModel) {
+        return boardMembershipModel;
+      }
+
+      return boardMembershipModel.ref;
+    },
+  );
+
 export const selectLabelsForCurrentBoard = createSelector(
   orm,
   (state) => selectPath(state).boardId,
@@ -319,10 +345,7 @@ export const selectPrivateBoards = createSelector(
           return null;
         }
 
-        return {
-          ...board,
-          project: project.ref,
-        };
+        return board;
       })
       .filter((board) => board !== null);
 
@@ -346,10 +369,7 @@ export const selectSharedBoards = createSelector(orm, ({ Board, Project }) => {
         return null;
       }
 
-      return {
-        ...board,
-        project: project.ref,
-      };
+      return board;
     })
     .filter((board) => board !== null);
 
@@ -393,6 +413,7 @@ export default {
   selectCurrentBoard,
   selectMembershipsForCurrentBoard,
   selectCurrentUserMembershipForCurrentBoard,
+  makeSelectCurrentUserMembershipForBoardById,
   selectLabelsForCurrentBoard,
   selectListIdsForCurrentBoard,
   selectListsForCurrentBoard,

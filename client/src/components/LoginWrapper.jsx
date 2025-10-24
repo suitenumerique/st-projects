@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Loader } from '../lib/migration-helpers';
 
 import LoginContainer from '../containers/LoginContainer';
 
 const LoginWrapper = React.memo(({ isInitializing }) => {
   if (isInitializing) {
-    return <Loader active size="massive" />;
+    return <p>Chargement...</p>;
   }
 
   return <LoginContainer />;

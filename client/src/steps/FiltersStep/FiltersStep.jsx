@@ -2,8 +2,8 @@ import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Input, Checkbox } from '@openfun/cunningham-react';
 
-import User from '../../components/User';
-import Label from '../../components/Label';
+import User from '../../ui/User';
+import Label from '../../ui/Label';
 import PopoverHeader from '../../ui/Popover/PopoverHeader';
 import styles from './FiltersStep.module.scss';
 

@@ -21,13 +21,13 @@ const FilePicker = React.memo(({ children, accept, multiple, onSelect }) => {
     [onSelect],
   );
 
-  const tigger = React.cloneElement(children, {
+  const trigger = React.cloneElement(children, {
     onClick: handleTriggerClick,
   });
 
   return (
     <>
-      {tigger}
+      {trigger}
       <input
         ref={field}
         type="file"

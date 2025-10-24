@@ -10,7 +10,7 @@ import { Icon } from '@gouvfr-lasuite/ui-kit';
 // import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 // eslint-disable-next-line import/no-extraneous-dependencies
 // import { DragDropProvider } from '@dnd-kit/react';
-import Label from '../../components/Label';
+import Label from '../../ui/Label';
 
 // import SortableItem from './SortableItem';
 
@@ -204,11 +204,13 @@ const LabelsStep = React.memo(
                     </div>
                   }
                 />
-                <div className={styles.itemActions}>
-                  <Button size="small" color="tertiary-text" onClick={() => handleEdit(label.id)}>
-                    <Icon size="small" name="edit" type="outlined" aria-hidden="true" />
-                  </Button>
-                </div>
+                {canEdit && (
+                  <div className={styles.itemActions}>
+                    <Button size="small" color="tertiary-text" onClick={() => handleEdit(label.id)}>
+                      <Icon size="small" name="edit" type="outlined" aria-hidden="true" />
+                    </Button>
+                  </div>
+                )}
               </div>
             ))}
           </div>

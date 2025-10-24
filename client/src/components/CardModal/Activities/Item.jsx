@@ -2,12 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation, Trans } from 'react-i18next';
-import { Comment } from '../../../lib/migration-helpers';
 
 import getDateFormat from '../../../utils/get-date-format';
 import { ActivityTypes } from '../../../constants/Enums';
 import ItemComment from './ItemComment';
-import User from '../../User';
+import User from '../../../ui/User';
 
 import styles from './Item.module.scss';
 
@@ -61,7 +60,7 @@ const Item = React.memo(({ type, data, createdAt, user }) => {
   }
 
   return (
-    <Comment>
+    <div>
       <span className={styles.user}>
         <User name={user.name} avatarUrl={user.avatarUrl} />
       </span>
@@ -74,7 +73,7 @@ const Item = React.memo(({ type, data, createdAt, user }) => {
           })}
         </span>
       </div>
-    </Comment>
+    </div>
   );
 });
 

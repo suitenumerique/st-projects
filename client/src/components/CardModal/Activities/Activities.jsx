@@ -64,7 +64,8 @@ const Activities = React.memo(
                   createdAt={item.createdAt}
                   isPersisted={item.isPersisted}
                   user={item.user}
-                  canEdit={(item.user.isCurrent && canEdit) || canEditAllComments}
+                  canEdit={item.user.isCurrent && canEdit}
+                  canDelete={(item.user.isCurrent && canEdit) || canEditAllComments}
                   onUpdate={(data) => handleCommentUpdate(item.id, data)}
                   onDelete={() => handleCommentDelete(item.id)}
                 />

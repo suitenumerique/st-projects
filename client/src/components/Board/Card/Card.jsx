@@ -7,12 +7,11 @@ import { Link } from 'react-router-dom';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 import { Button } from '@openfun/cunningham-react';
 import styles from '../Board.module.scss';
-import Label from '../../Label';
-// import CardTasks from '../../CardTasks';
-import DueDate from '../../DueDate';
-import Stopwatch from '../../Stopwatch';
-import User from '../../User';
-import CardNameEdit from '../../CardNameEdit';
+import Label from '../../../ui/Label';
+import DueDate from '../../../ui/DueDate';
+import Stopwatch from '../../../ui/Stopwatch';
+import User from '../../../ui/User';
+import CardNameEdit from './CardNameEdit';
 
 import Paths from '../../../constants/Paths';
 import { stopStopwatch, startStopwatch } from '../../../utils/stopwatch';
@@ -59,6 +58,7 @@ function Card({
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id,
+    disabled: !canEdit,
   });
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -171,7 +171,11 @@ function Card({
     <div
       ref={setNodeRef}
       style={style}
-      className={classNames(styles.card, isDragging ? styles.dragging : '')}
+      className={classNames(
+        styles.card,
+        canEdit ? styles.draggable : '',
+        isDragging ? styles.dragging : '',
+      )}
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...attributes}
       // eslint-disable-next-line react/jsx-props-no-spreading
@@ -188,42 +192,44 @@ function Card({
               >
                 {contentNode}
               </Link>
-              <CardActionsPopover
-                card={{
-                  dueDate,
-                  stopwatch,
-                  boardId,
-                  listId,
-                  projectId,
-                }}
-                boards={allBoards}
-                boardMemberships={allBoardMemberships}
-                currentUserIds={users.map((user) => user.id)}
-                labels={allLabels}
-                currentLabelIds={labels.map((label) => label.id)}
-                onNameEdit={handleNameEdit}
-                onUpdate={onUpdate}
-                onMove={onMove}
-                onTransfer={onTransfer}
-                onDuplicate={onDuplicate}
-                onDelete={onDelete}
-                onUserAdd={onUserAdd}
-                onUserRemove={onUserRemove}
-                onBoardFetch={onBoardFetch}
-                onLabelAdd={onLabelAdd}
-                onLabelRemove={onLabelRemove}
-                onLabelCreate={onLabelCreate}
-                onLabelUpdate={onLabelUpdate}
-                onLabelMove={onLabelMove}
-                onLabelDelete={onLabelDelete}
-              >
-                <Button
-                  className={classNames(styles.cardActionsButton)}
-                  color="tertiary-text"
-                  icon={<Icon name="edit" type="outlined" />}
-                  size="small"
-                />
-              </CardActionsPopover>
+              {canEdit && (
+                <CardActionsPopover
+                  card={{
+                    dueDate,
+                    stopwatch,
+                    boardId,
+                    listId,
+                    projectId,
+                  }}
+                  boards={allBoards}
+                  boardMemberships={allBoardMemberships}
+                  currentUserIds={users.map((user) => user.id)}
+                  labels={allLabels}
+                  currentLabelIds={labels.map((label) => label.id)}
+                  onNameEdit={handleNameEdit}
+                  onUpdate={onUpdate}
+                  onMove={onMove}
+                  onTransfer={onTransfer}
+                  onDuplicate={onDuplicate}
+                  onDelete={onDelete}
+                  onUserAdd={onUserAdd}
+                  onUserRemove={onUserRemove}
+                  onBoardFetch={onBoardFetch}
+                  onLabelAdd={onLabelAdd}
+                  onLabelRemove={onLabelRemove}
+                  onLabelCreate={onLabelCreate}
+                  onLabelUpdate={onLabelUpdate}
+                  onLabelMove={onLabelMove}
+                  onLabelDelete={onLabelDelete}
+                >
+                  <Button
+                    className={classNames(styles.cardActionsButton)}
+                    color="tertiary-text"
+                    icon={<Icon name="edit" type="outlined" />}
+                    size="small"
+                  />
+                </CardActionsPopover>
+              )}
             </>
           ) : (
             <span className={styles.content}>{contentNode}</span>

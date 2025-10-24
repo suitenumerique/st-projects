@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import TextareaAutosize from 'react-textarea-autosize';
 import { Button } from '@openfun/cunningham-react';
 
-import { useClosableForm, useField } from '../../hooks';
-import { focusEnd } from '../../utils/element-helpers';
+import { useClosableForm, useField } from '../../../../hooks';
+import { focusEnd } from '../../../../utils/element-helpers';
 
 import styles from './CardNameEdit.module.scss';
 

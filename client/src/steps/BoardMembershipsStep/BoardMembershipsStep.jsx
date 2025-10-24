@@ -6,7 +6,7 @@ import { Input, Checkbox } from '@openfun/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 import { useField } from '../../hooks';
 import PopoverHeader from '../../ui/Popover/PopoverHeader';
-import User from '../../components/User';
+import User from '../../ui/User';
 
 import styles from './BoardMembershipsStep.module.scss';
 

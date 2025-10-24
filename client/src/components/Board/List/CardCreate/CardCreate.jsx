@@ -4,9 +4,9 @@ import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import TextareaAutosize from 'react-textarea-autosize';
 import { Button } from '@openfun/cunningham-react';
-import { useDidUpdate, useToggle } from '../../lib/hooks';
+import { useDidUpdate, useToggle } from '../../../../lib/hooks';
 
-import { useClosableForm, useForm } from '../../hooks';
+import { useClosableForm, useForm } from '../../../../hooks';
 
 import styles from './CardCreate.module.scss';
 

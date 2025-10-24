@@ -2,11 +2,12 @@ import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } 
 import PropTypes from 'prop-types';
 import TextareaAutosize from 'react-textarea-autosize';
 
-import { useField } from '../../hooks';
+import { useField } from '../../../../hooks';
+import { focusEnd } from '../../../../utils/element-helpers';
 
 import styles from './ListNameEdit.module.scss';
 
-const NameEdit = React.forwardRef(({ children, defaultValue, onUpdate }, ref) => {
+const ListNameEdit = React.forwardRef(({ children, defaultValue, onUpdate }, ref) => {
   const [isOpened, setIsOpened] = useState(false);
   const [value, handleFieldChange, setValue] = useField(defaultValue);
 
@@ -24,11 +25,9 @@ const NameEdit = React.forwardRef(({ children, defaultValue, onUpdate }, ref) =>
 
   const submit = useCallback(() => {
     const cleanValue = value.trim();
-
     if (cleanValue && cleanValue !== defaultValue) {
       onUpdate(cleanValue);
     }
-
     close();
   }, [defaultValue, onUpdate, value, close]);
 
@@ -47,6 +46,9 @@ const NameEdit = React.forwardRef(({ children, defaultValue, onUpdate }, ref) =>
 
   const handleFieldKeyDown = useCallback(
     (event) => {
+      // Stop propagation for all keys to prevent parent handlers from interfering
+      event.stopPropagation();
+
       switch (event.key) {
         case 'Enter':
           event.preventDefault();
@@ -55,46 +57,38 @@ const NameEdit = React.forwardRef(({ children, defaultValue, onUpdate }, ref) =>
 
           break;
         case 'Escape':
-          submit();
+          event.preventDefault();
+          close();
 
           break;
         default:
+          break;
       }
     },
-    [submit],
+    [submit, close],
   );
 
   const handleFieldBlur = useCallback(() => {
     submit();
   }, [submit]);
 
-  // Close the textarea when clicking outside of it
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (isOpened && field.current && !field.current.contains(event.target)) {
-        submit();
-      }
-    };
-
     if (isOpened) {
-      document.addEventListener('mousedown', handleClickOutside);
+      focusEnd(field.current);
     }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isOpened, submit]);
+  }, [isOpened]);
 
   if (!isOpened) {
-    return <div className={styles.headerName}>{children}</div>;
+    return children;
   }
 
   return (
     <TextareaAutosize
       ref={field}
+      as={TextareaAutosize}
       value={value}
+      className={styles.field}
       spellCheck={false}
-      className={styles.inputField}
       onClick={handleFieldClick}
       onKeyDown={handleFieldKeyDown}
       onChange={(event) => handleFieldChange(event, { name: 'name', value: event.target.value })}
@@ -103,10 +97,10 @@ const NameEdit = React.forwardRef(({ children, defaultValue, onUpdate }, ref) =>
   );
 });
 
-NameEdit.propTypes = {
+ListNameEdit.propTypes = {
   children: PropTypes.element.isRequired,
   defaultValue: PropTypes.string.isRequired,
   onUpdate: PropTypes.func.isRequired,
 };
 
-export default React.memo(NameEdit);
+export default React.memo(ListNameEdit);

@@ -58,9 +58,13 @@ const CommentAdd = React.memo(({ onCreate }) => {
 
   const [handleFieldBlur, handleControlMouseOver, handleControlMouseOut] = useClosableForm(close);
 
-  const handleSubmit = useCallback(() => {
-    submit();
-  }, [submit]);
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
+      submit();
+    },
+    [submit],
+  );
 
   useDidUpdate(() => {
     textField.current?.focus();

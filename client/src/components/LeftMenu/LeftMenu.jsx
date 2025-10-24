@@ -1,74 +1,44 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@openfun/cunningham-react'; // eslint-disable-next-line import/no-extraneous-dependencies
-import Paths from '../../constants/Paths';
-import BoardListItem from '../BoardListItem/BoardListItem';
-import { push } from '../../lib/redux-router';
+import { Button } from '@openfun/cunningham-react';
+import { Icon } from '@gouvfr-lasuite/ui-kit';
 import usePopup from '../../lib/popup/use-popup';
-
-import store from '../../store';
-
-import BoardCreateStep from '../../steps/BoardCreateStep';
-
-import styles from './LeftMenu.module.scss';
 import { SurveyButton as FeedbackButton } from '../../ui/FeedbackButton/index.tsx';
+import BoardListItemContainer from '../../containers/BoardListItemContainer';
+import BoardCreateStep from '../../steps/BoardCreateStep';
+import styles from './LeftMenu.module.scss';
+import { push } from '../../lib/redux-router';
+import Paths from '../../constants/Paths';
+import store from '../../store';
 
 const LeftMenu = React.memo(
   ({
+    currentBoardId,
     privateBoards,
     sharedBoards,
-    currentBoardId,
-    currentProject,
-    projects,
-    currentUser,
-    onBoardAdd,
-    onBoardUpdate,
-    onBoardDelete,
-    onBoardDuplicate,
     templateBoards,
     reactAppFeedbackWidgetApiUrl,
     reactAppFeedbackWidgetPath,
     reactAppFeedbackWidgetChannel,
+    onBoardAdd,
+    onBoardDuplicate,
   }) => {
     const BoardCreateStepPopover = usePopup(BoardCreateStep);
-
-    const handleUpdate = useCallback(
-      (id, data) => {
-        onBoardUpdate(id, data);
-      },
-      [onBoardUpdate],
-    );
-
-    const handleDelete = useCallback(
-      (id) => {
-        onBoardDelete(id);
-      },
-      [onBoardDelete],
-    );
 
     const goToBoard = useCallback((boardId) => {
       store.dispatch(push(Paths.BOARDS.replace(':id', boardId)));
     }, []);
-
-    useEffect(() => {
-      if (!currentProject) {
-        const mainProject = projects.find((project) => project.siret === currentUser.siret);
-        if (mainProject) {
-          window.location.href = `/projects/${mainProject.id}`;
-        }
-      }
-    }, [currentBoardId, projects, currentUser, currentProject]);
 
     return (
       <div className={styles.wrapper}>
         <div className={styles.topBar}>
           <BoardCreateStepPopover
             onCreate={onBoardAdd}
-            onCreateFromTemplate={(id) => onBoardDuplicate(id)}
+            onCreateFromTemplate={onBoardDuplicate}
             templateBoards={templateBoards}
             hideCloseButton
           >
-            <Button icon={<span className="material-icons">add</span>} size="medium">
+            <Button icon={<Icon name="add" type="outlined" />} size="medium">
               Nouveau tableau
             </Button>
           </BoardCreateStepPopover>
@@ -81,20 +51,13 @@ const LeftMenu = React.memo(
             ) : (
               <div className={styles.boards}>
                 {privateBoards.map((board) => (
-                  <BoardListItem
+                  <BoardListItemContainer
                     key={board.id}
-                    board={board}
-                    handleClick={() => goToBoard(board.id)}
+                    id={board.id}
                     showDescription={false}
                     editable
-                    projectName={
-                      board.project && board.project.siret !== currentUser.siret
-                        ? board.project.name
-                        : undefined
-                    }
                     isActive={board.id === currentBoardId}
-                    onUpdate={(data) => handleUpdate(board.id, data)}
-                    onDelete={() => handleDelete(board.id)}
+                    handleClick={() => goToBoard(board.id)}
                   />
                 ))}
               </div>
@@ -107,20 +70,13 @@ const LeftMenu = React.memo(
             ) : (
               <div className={styles.boards}>
                 {sharedBoards.map((board) => (
-                  <BoardListItem
+                  <BoardListItemContainer
                     key={board.id}
-                    board={board}
-                    handleClick={() => goToBoard(board.id)}
+                    id={board.id}
                     showDescription={false}
                     editable
-                    projectName={
-                      board.project && board.project.siret !== currentUser.siret
-                        ? board.project.name
-                        : undefined
-                    }
                     isActive={board.id === currentBoardId}
-                    onUpdate={(data) => handleUpdate(board.id, data)}
-                    onDelete={() => handleDelete(board.id)}
+                    handleClick={() => goToBoard(board.id)}
                   />
                 ))}
               </div>
@@ -140,28 +96,21 @@ const LeftMenu = React.memo(
 );
 
 LeftMenu.propTypes = {
+  currentBoardId: PropTypes.string,
   privateBoards: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   sharedBoards: PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  currentBoardId: PropTypes.string,
-  currentProject: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  projects: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  onBoardAdd: PropTypes.func.isRequired,
-  onBoardUpdate: PropTypes.func.isRequired,
-  onBoardDelete: PropTypes.func.isRequired,
-  onBoardDuplicate: PropTypes.func.isRequired,
-  currentUser: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  /* eslint-disable react/forbid-prop-types */
-  templateBoards: PropTypes.array.isRequired,
+  templateBoards: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   reactAppFeedbackWidgetApiUrl: PropTypes.string.isRequired,
   reactAppFeedbackWidgetPath: PropTypes.string.isRequired,
   reactAppFeedbackWidgetChannel: PropTypes.string.isRequired,
+  onBoardAdd: PropTypes.func.isRequired,
+  onBoardDuplicate: PropTypes.func.isRequired,
 };
 
 LeftMenu.defaultProps = {
   privateBoards: [],
   sharedBoards: [],
   currentBoardId: undefined,
-  currentProject: undefined,
 };
 
 export default LeftMenu;

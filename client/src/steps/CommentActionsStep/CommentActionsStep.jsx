@@ -12,7 +12,7 @@ const StepTypes = {
   DELETE: 'DELETE',
 };
 
-const CommentActionsStep = React.memo(({ onEdit, onDelete, onClose }) => {
+const CommentActionsStep = React.memo(({ canEdit, canDelete, onEdit, onDelete, onClose }) => {
   // const [t] = useTranslation();
   const [step, openStep, handleBack] = useSteps();
 
@@ -41,14 +41,16 @@ const CommentActionsStep = React.memo(({ onEdit, onDelete, onClose }) => {
     <>
       <PopoverHeader title="Actions du commentaire" />
       <Menu>
-        <MenuItem onClick={handleEditClick}>Modifier</MenuItem>
-        <MenuItem onClick={handleDeleteClick}>Supprimer le commentaire</MenuItem>
+        {canEdit && <MenuItem onClick={handleEditClick}>Modifier</MenuItem>}
+        {canDelete && <MenuItem onClick={handleDeleteClick}>Supprimer le commentaire</MenuItem>}
       </Menu>
     </>
   );
 });
 
 CommentActionsStep.propTypes = {
+  canEdit: PropTypes.bool.isRequired,
+  canDelete: PropTypes.bool.isRequired,
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,

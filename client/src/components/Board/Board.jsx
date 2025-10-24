@@ -21,20 +21,19 @@ import { Button } from '@openfun/cunningham-react';
 import { groupBy } from 'lodash';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 import CardModalContainer from '../../containers/CardModalContainer';
-import ListCreate from '../ListCreate/ListCreate';
+import ListCreate from './ListCreate';
 import Card from './Card';
-
-import Column from './Column';
+import List from './List';
 import styles from './Board.module.scss';
 
 function Board({
   currentUser,
   lists,
-  cardsFullData,
-  isCardModalOpened,
+  cards,
   allBoards,
   allBoardMemberships,
   allBoardLabels,
+  isCardModalOpened,
   canEdit,
   onBoardFetch,
   onListCreate,
@@ -58,17 +57,17 @@ function Board({
   onCardLabelDelete,
 }) {
   const [t] = useTranslation();
-  const [columns, setColumns] = useState(lists);
-  const groupedCards = useMemo(() => groupBy(cardsFullData, 'listId'), [cardsFullData]);
-  const [cards, setCards] = useState(groupedCards);
+  const [listItems, setListItems] = useState(lists);
+  const groupedCards = useMemo(() => groupBy(cards, 'listId'), [cards]);
+  const [cardItems, setCardItems] = useState(groupedCards);
   const [activeId, setActiveId] = useState(null);
 
   useEffect(() => {
-    setColumns(lists);
+    setListItems(lists);
   }, [lists]);
 
   useEffect(() => {
-    setCards(groupedCards);
+    setCardItems(groupedCards);
   }, [groupedCards]);
 
   const [isListAddOpened, setIsListAddOpened] = useState(false);
@@ -94,12 +93,12 @@ function Board({
 
   const findContainer = useCallback(
     (id) => {
-      if (id in cards) {
+      if (id in cardItems) {
         return id;
       }
-      return Object.keys(cards).find((key) => cards[key].some((card) => card.id === id));
+      return Object.keys(cardItems).find((key) => cardItems[key].some((card) => card.id === id));
     },
-    [cards],
+    [cardItems],
   );
 
   const handleDragStart = (event) => {
@@ -113,50 +112,50 @@ function Board({
     const draggedId = active.id;
     let overId = over.id;
 
-    // Check if both active and over are columns - use the CURRENT columns state
-    const isActiveColumn = columns.some((col) => col.id === draggedId);
-    let isOverColumn = columns.some((col) => col.id === overId);
+    // Check if both active and over are lists - use the CURRENT lists state
+    const isActiveList = listItems.some((col) => col.id === draggedId);
+    let isOverList = listItems.some((col) => col.id === overId);
 
-    // Check if overId is a column drop zone
-    const isOverColumnDropZone = overId.startsWith('column-drop-');
-    if (isOverColumnDropZone) {
-      overId = overId.replace('column-drop-', '');
-      isOverColumn = true;
+    // Check if overId is a list drop zone
+    const isOverListDropZone = overId.startsWith('list-drop-');
+    if (isOverListDropZone) {
+      overId = overId.replace('list-drop-', '');
+      isOverList = true;
     }
 
-    // If overId is not a column, it might be a card - find its parent column
-    if (isActiveColumn && !isOverColumn) {
+    // If overId is not a list, it might be a card - find its parent list
+    if (isActiveList && !isOverList) {
       const overContainer = findContainer(overId);
       if (overContainer) {
         overId = overContainer;
-        isOverColumn = true;
+        isOverList = true;
       }
     }
 
-    // Handle column reordering in real-time
-    if (isActiveColumn && isOverColumn) {
-      setColumns((currentColumns) => {
-        const activeIndex = currentColumns.findIndex((col) => col.id === draggedId);
-        const overIndex = currentColumns.findIndex((col) => col.id === overId);
+    // Handle list reordering in real-time
+    if (isActiveList && isOverList) {
+      setListItems((currentListItems) => {
+        const activeIndex = currentListItems.findIndex((col) => col.id === draggedId);
+        const overIndex = currentListItems.findIndex((col) => col.id === overId);
 
         if (activeIndex !== -1 && overIndex !== -1 && activeIndex !== overIndex) {
-          return arrayMove(currentColumns, activeIndex, overIndex);
+          return arrayMove(currentListItems, activeIndex, overIndex);
         }
-        return currentColumns;
+        return currentListItems;
       });
       return;
     }
 
-    // Skip card logic if dragging a column
-    if (isActiveColumn) {
+    // Skip card logic if dragging a list
+    if (isActiveList) {
       return;
     }
 
     const activeContainer = findContainer(draggedId);
     let overContainer = findContainer(overId);
 
-    // Handle dropping into empty column via drop zone
-    if (isOverColumnDropZone) {
+    // Handle dropping into empty list via drop zone
+    if (isOverListDropZone) {
       overContainer = overId;
     }
 
@@ -164,7 +163,7 @@ function Board({
       return;
     }
 
-    setCards((prev) => {
+    setCardItems((prev) => {
       const activeItems = prev[activeContainer];
       const overItems = prev[overContainer] || [];
 
@@ -202,19 +201,19 @@ function Board({
     const draggedId = active.id;
     let overId = over.id;
 
-    // Check if overId is a column drop zone
-    const isOverColumnDropZone = overId.startsWith('column-drop-');
-    if (isOverColumnDropZone) {
-      overId = overId.replace('column-drop-', '');
+    // Check if overId is a list drop zone
+    const isOverListDropZone = overId.startsWith('list-drop-');
+    if (isOverListDropZone) {
+      overId = overId.replace('list-drop-', '');
     }
 
-    // Check if dragging a column - reordering already done in handleDragOver
-    const isActiveColumn = columns.some((col) => col.id === draggedId);
-    if (isActiveColumn) {
+    // Check if dragging a list - reordering already done in handleDragOver
+    const isActiveList = listItems.some((col) => col.id === draggedId);
+    if (isActiveList) {
       // Find the new index after the drag
-      const newIndex = columns.findIndex((col) => col.id === draggedId);
+      const newIndex = listItems.findIndex((col) => col.id === draggedId);
 
-      // Call Redux action to persist the column move
+      // Call Redux action to persist the list move
       onListMove(draggedId, newIndex);
 
       setActiveId(null);
@@ -224,8 +223,8 @@ function Board({
     const activeContainer = findContainer(draggedId);
     let overContainer = findContainer(overId);
 
-    // Handle dropping into empty column via drop zone
-    if (isOverColumnDropZone) {
+    // Handle dropping into empty list via drop zone
+    if (isOverListDropZone) {
       overContainer = overId;
     }
 
@@ -235,13 +234,13 @@ function Board({
     }
 
     if (activeContainer === overContainer) {
-      // Moving within the same column
-      const items = cards[activeContainer];
+      // Moving within the same list
+      const items = cardItems[activeContainer];
       const oldIndex = items.findIndex((item) => item.id === draggedId);
       const newIndex = items.findIndex((item) => item.id === overId);
 
       if (oldIndex !== newIndex) {
-        setCards((prev) => ({
+        setCardItems((prev) => ({
           ...prev,
           [activeContainer]: arrayMove(items, oldIndex, newIndex),
         }));
@@ -250,13 +249,13 @@ function Board({
         onCardMove(draggedId, activeContainer, newIndex);
       }
     } else {
-      // Moving between different columns
-      const overItems = cards[overContainer] || [];
+      // Moving between different lists
+      const overItems = cardItems[overContainer] || [];
       const overIndex = overItems.findIndex((item) => item.id === overId);
       const newIndex = overIndex >= 0 ? overIndex : overItems.length;
 
-      // Get the current board ID from the first column
-      const currentBoardId = columns[0]?.boardId;
+      // Get the current board ID from the first list
+      const currentBoardId = listItems[0]?.boardId;
 
       // Call Redux action to persist the transfer
       if (currentBoardId) {
@@ -267,19 +266,19 @@ function Board({
     setActiveId(null);
   };
 
-  const activeColumn = columns.find((col) => col.id === activeId);
+  const activeList = listItems.find((col) => col.id === activeId);
   const activeCard = useMemo(() => {
-    if (!activeId || activeColumn) return null;
-    return Object.values(cards)
+    if (!activeId || activeList) return null;
+    return Object.values(cardItems)
       .flat()
       .find((card) => card.id === activeId);
-  }, [activeId, activeColumn, cards]);
+  }, [activeId, activeList, cardItems]);
 
   useEffect(() => {
     if (isListAddOpened) {
       window.scroll(document.body.scrollWidth, 0);
     }
-  }, [columns, isListAddOpened]);
+  }, [listItems, isListAddOpened]);
 
   return (
     <div className={styles.wrapper}>
@@ -291,28 +290,28 @@ function Board({
         onDragEnd={handleDragEnd}
       >
         <SortableContext
-          items={columns.map((col) => col.id)}
+          items={listItems.map((col) => col.id)}
           strategy={horizontalListSortingStrategy}
         >
           <div className={styles.container}>
-            {columns.map((column) => (
-              <Column
-                key={column.id}
-                id={column.id}
-                name={column.name}
-                isPersisted={column.isPersisted}
-                color={column.color}
-                cards={cards[column.id] || []}
+            {listItems.map((list) => (
+              <List
+                key={list.id}
+                id={list.id}
+                name={list.name}
+                isPersisted={list.isPersisted}
+                color={list.color}
+                cards={cardItems[list.id] || []}
                 currentUser={currentUser}
                 allBoards={allBoards}
                 allBoardMemberships={allBoardMemberships}
                 allBoardLabels={allBoardLabels}
                 canEdit={canEdit}
                 onBoardFetch={onBoardFetch}
-                onUpdate={(data) => onListUpdate(column.id, data)}
-                onSort={(data) => onListSort(column.id, data)}
-                onDelete={() => onListDelete(column.id)}
-                onCardCreate={(data, autoOpen) => onCardCreate(column.id, data, autoOpen)}
+                onUpdate={(data) => onListUpdate(list.id, data)}
+                onSort={(data) => onListSort(list.id, data)}
+                onDelete={() => onListDelete(list.id)}
+                onCardCreate={(data, autoOpen) => onCardCreate(list.id, data, autoOpen)}
                 onCardUpdate={onCardUpdate}
                 onCardMove={onCardMove}
                 onCardTransfer={onCardTransfer}
@@ -341,7 +340,7 @@ function Board({
                   >
                     <Icon name="add" />
                     <span>
-                      {columns.length > 0 ? t('action.addAnotherList') : t('action.addList')}
+                      {listItems.length > 0 ? t('action.addAnotherList') : t('action.addList')}
                     </span>
                   </Button>
                 )}
@@ -351,14 +350,14 @@ function Board({
         </SortableContext>
 
         <DragOverlay>
-          {activeColumn ? (
-            <div className={classNames(styles.dragOverlay, styles.column)}>
-              <Column
-                id={activeColumn.id}
-                name={activeColumn.name}
-                isPersisted={activeColumn.isPersisted}
-                color={activeColumn.color}
-                cards={cards[activeColumn.id] || []}
+          {activeList ? (
+            <div className={classNames(styles.dragOverlay, styles.list)}>
+              <List
+                id={activeList.id}
+                name={activeList.name}
+                isPersisted={activeList.isPersisted}
+                color={activeList.color}
+                cards={cardItems[activeList.id] || []}
                 currentUser={currentUser}
                 allBoards={allBoards}
                 allBoardMemberships={allBoardMemberships}
@@ -436,12 +435,12 @@ function Board({
 Board.propTypes = {
   currentUser: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   lists: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  cardsFullData: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  canEdit: PropTypes.bool.isRequired,
-  isCardModalOpened: PropTypes.bool.isRequired,
+  cards: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   allBoards: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   allBoardMemberships: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   allBoardLabels: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  isCardModalOpened: PropTypes.bool.isRequired,
+  canEdit: PropTypes.bool.isRequired,
   onBoardFetch: PropTypes.func.isRequired,
   onListCreate: PropTypes.func.isRequired,
   onListUpdate: PropTypes.func.isRequired,

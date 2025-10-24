@@ -1,18 +1,15 @@
-import { DropdownMenu } from '@gouvfr-lasuite/ui-kit';
-import { Button } from '@openfun/cunningham-react';
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import { DropdownMenu, Icon } from '@gouvfr-lasuite/ui-kit';
+import { Button } from '@openfun/cunningham-react';
 import LaGaufreButton from '../../ui/LaGaufreButton';
 
 // import NotificationsStep from '../../steps/NotificationsStep';
 // import usePopup from '../../lib/popup';
-// import styles from './HeaderRight.module.scss';
 
 const HeaderRight = React.memo(
-  ({ currentUser, onLogout, reactAppLagaufreWidgetApiUrl, reactAppLagaufreWidgetPath }) => {
-    // onLanguageUpdate
-    // notifications, onNotificationDelete,
+  ({ currentUser, reactAppLagaufreWidgetApiUrl, reactAppLagaufreWidgetPath, onLogout }) => {
     const [isOpen, setIsOpen] = useState(false);
     const { t } = useTranslation();
 
@@ -43,7 +40,7 @@ const HeaderRight = React.memo(
             options={[
               {
                 label: t('action.logOut_title'),
-                icon: <span className="material-icons">logout</span>,
+                icon: <Icon name="logout" type="outlined" />,
                 callback: onLogout,
               },
             ]}

@@ -22,7 +22,6 @@ function Root({ store, history }) {
             <Route path={Paths.LOGIN} element={<LoginWrapperContainer />} />
             <Route path={Paths.OIDC_CALLBACK} element={<LoginWrapperContainer />} />
             <Route path={Paths.ROOT} element={<CoreContainer />} />
-            <Route path={Paths.PROJECTS} element={<CoreContainer />} />
             <Route path={Paths.BOARDS} element={<CoreContainer />} />
             <Route path={Paths.CARDS} element={<CoreContainer />} />
             <Route path="*" element={<NotFound />} />

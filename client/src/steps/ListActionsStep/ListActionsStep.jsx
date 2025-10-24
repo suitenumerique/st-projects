@@ -8,11 +8,11 @@ import PopoverHeader from '../../ui/Popover/PopoverHeader';
 
 import ListColors from '../../constants/ListColors';
 import { useSteps } from '../../hooks';
-import ColorPicker from '../../components/ColorPicker';
+import ColorPicker from '../../ui/ColorPicker';
 import ListSortStep from '../ListSortStep/ListSortStep';
 import DeleteStep from '../DeleteStep/DeleteStep';
 
-import styles from './ColumnActionsStep.module.scss';
+import styles from './ListActionsStep.module.scss';
 
 const StepTypes = {
   DELETE: 'DELETE',
