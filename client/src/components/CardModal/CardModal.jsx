@@ -8,7 +8,7 @@ import usePopup from '../../lib/popup';
 
 import { startStopwatch, stopStopwatch } from '../../utils/stopwatch';
 import CardModalNameEdit from './CardModalNameEdit';
-import DescriptionComponent from './DescriptionComponent';
+import CardModalDescription from './CardModalDescription';
 import Tasks from './Tasks';
 import Attachments from './Attachments';
 import AttachmentAddZone from './AttachmentAddZone';
@@ -224,8 +224,6 @@ const CardModal = React.memo(
         }
       };
     }, []);
-
-    // ///////////////////////////
 
     const handleDescriptionUpdate = useCallback(
       (newDescription) => {
@@ -628,22 +626,26 @@ const CardModal = React.memo(
               </div>
             </section>
           )}
-
-          <section className={classNames(styles.cardModalSection, styles.cardDescriptionSection)}>
-            <div className={styles.cardModalSectionLeft}>
-              <Icon name="format_align_left" size="small" />
-            </div>
-            <div className={styles.cardModalSectionRight}>
-              <div className={styles.sectionTitle}>{t('common.description')}</div>
-              <div className={styles.detailsItemContent}>
-                <DescriptionComponent
-                  description={description}
-                  canEdit={canEdit}
-                  onUpdate={handleDescriptionUpdate}
-                />
-              </div>
-            </div>
-          </section>
+          {canEdit ||
+            (description && (
+              <section
+                className={classNames(styles.cardModalSection, styles.cardDescriptionSection)}
+              >
+                <div className={styles.cardModalSectionLeft}>
+                  <Icon name="format_align_left" size="small" />
+                </div>
+                <div className={styles.cardModalSectionRight}>
+                  <div className={styles.sectionTitle}>{t('common.description')}</div>
+                  <div className={styles.detailsItemContent}>
+                    <CardModalDescription
+                      description={description}
+                      canEdit={canEdit}
+                      onUpdate={handleDescriptionUpdate}
+                    />
+                  </div>
+                </div>
+              </section>
+            ))}
           {(canEdit || tasks.length > 0) && (
             <section className={classNames(styles.cardModalSection, styles.cardTasksSection)}>
               <div className={styles.cardModalSectionLeft}>
@@ -686,30 +688,32 @@ const CardModal = React.memo(
               </div>
             </section>
           )}
-          <section className={classNames(styles.cardModalSection, styles.cardActivitiesSection)}>
-            <div className={styles.cardModalSectionLeft}>
-              <Icon name="comment" type="outlined" size="small" />
-            </div>
-            <div className={styles.cardModalSectionRight}>
-              <div className={styles.sectionTitle}>Commentaires</div>
-              <div className={styles.detailsItemContent}>
-                <Activities
-                  items={activities}
-                  isFetching={isActivitiesFetching}
-                  isAllFetched={isAllActivitiesFetched}
-                  isDetailsVisible={false}
-                  // isDetailsFetching={isActivitiesDetailsFetching}
-                  canEdit={canEdit}
-                  canEditAllComments={canEditAllComments}
-                  onFetch={onActivitiesFetch}
-                  // onDetailsToggle={onActivitiesDetailsToggle}
-                  onCommentCreate={onCommentActivityCreate}
-                  onCommentUpdate={onCommentActivityUpdate}
-                  onCommentDelete={onCommentActivityDelete}
-                />
+          {(canEdit || activities.length > 0) && (
+            <section className={classNames(styles.cardModalSection, styles.cardActivitiesSection)}>
+              <div className={styles.cardModalSectionLeft}>
+                <Icon name="comment" type="outlined" size="small" />
               </div>
-            </div>
-          </section>
+              <div className={styles.cardModalSectionRight}>
+                <div className={styles.sectionTitle}>Commentaires</div>
+                <div className={styles.detailsItemContent}>
+                  <Activities
+                    items={activities}
+                    isFetching={isActivitiesFetching}
+                    isAllFetched={isAllActivitiesFetched}
+                    isDetailsVisible={false}
+                    // isDetailsFetching={isActivitiesDetailsFetching}
+                    canEdit={canEdit}
+                    canEditAllComments={canEditAllComments}
+                    onFetch={onActivitiesFetch}
+                    // onDetailsToggle={onActivitiesDetailsToggle}
+                    onCommentCreate={onCommentActivityCreate}
+                    onCommentUpdate={onCommentActivityUpdate}
+                    onCommentDelete={onCommentActivityDelete}
+                  />
+                </div>
+              </div>
+            </section>
+          )}
         </div>
       </div>
     );

@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 // import { useTranslation } from 'react-i18next';
 
 import { ActivityTypes } from '../../../constants/Enums';
-import CommentAdd from './CommentAdd';
-// import Item from './Item';
-import ItemComment from './ItemComment';
+import CommentCreate from './CommentCreate';
+// import ActivityItem from './ActivityItem';
+import CommentItem from './CommentItem';
 
 import styles from './Activities.module.scss';
 
@@ -53,12 +53,12 @@ const Activities = React.memo(
 
     return (
       <div className={styles.activitiesWrapper}>
-        {canEdit && <CommentAdd onCreate={onCommentCreate} />}
+        {canEdit && <CommentCreate onCreate={onCommentCreate} />}
         <div className={styles.activitiesList}>
           {items.map(
             (item) =>
               item.type === ActivityTypes.COMMENT_CARD && (
-                <ItemComment
+                <CommentItem
                   key={item.id}
                   data={item.data}
                   createdAt={item.createdAt}
@@ -71,7 +71,7 @@ const Activities = React.memo(
                 />
               ),
             // ) : (
-            //   <Item
+            //   <ActivityItem
             //     key={item.id}
             //     type={item.type}
             //     data={item.data}

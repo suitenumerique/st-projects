@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation, Trans } from 'react-i18next';
 
-import getDateFormat from '../../../utils/get-date-format';
-import { ActivityTypes } from '../../../constants/Enums';
-import ItemComment from './ItemComment';
-import User from '../../../ui/User';
+import getDateFormat from '../../../../utils/get-date-format';
+import { ActivityTypes } from '../../../../constants/Enums';
+import CommentItem from '../CommentItem';
+import User from '../../../../ui/User';
 
-import styles from './Item.module.scss';
+import styles from './ActivityItem.module.scss';
 
-const Item = React.memo(({ type, data, createdAt, user }) => {
+const ActivityItem = React.memo(({ type, data, createdAt, user }) => {
   const [t] = useTranslation();
 
   let contentNode;
@@ -77,13 +77,13 @@ const Item = React.memo(({ type, data, createdAt, user }) => {
   );
 });
 
-Item.Comment = ItemComment;
+ActivityItem.Comment = CommentItem;
 
-Item.propTypes = {
+ActivityItem.propTypes = {
   type: PropTypes.string.isRequired,
   data: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   createdAt: PropTypes.instanceOf(Date).isRequired,
   user: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-export default Item;
+export default ActivityItem;

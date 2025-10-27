@@ -225,7 +225,7 @@ function List({
             />
           )}
         </div>
-        {!isAddCardOpened && (
+        {!isAddCardOpened && canEdit && (
           <div className={styles.addCardButton}>
             <Button
               color="tertiary-text"

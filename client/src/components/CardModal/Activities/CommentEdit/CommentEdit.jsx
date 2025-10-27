@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 import TextareaAutosize from 'react-textarea-autosize';
 import { Button } from '@openfun/cunningham-react';
 
-import { useForm } from '../../../hooks';
-import { focusEnd } from '../../../utils/element-helpers';
+import { useForm } from '../../../../hooks';
+import { focusEnd } from '../../../../utils/element-helpers';
 
 import styles from './CommentEdit.module.scss';
 

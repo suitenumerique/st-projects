@@ -4,17 +4,17 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Button, Input } from '@openfun/cunningham-react';
 
-import { useForm, useSteps } from '../../../hooks';
-import DeleteStep from '../../../steps/DeleteStep/DeleteStep';
-import PopoverHeader from '../../../ui/Popover/PopoverHeader';
+import { useForm, useSteps } from '../../hooks';
+import DeleteStep from '../DeleteStep';
+import PopoverHeader from '../../ui/Popover/PopoverHeader';
 
-import styles from './EditStep.module.scss';
+import styles from './AttachmentEditStep.module.scss';
 
 const StepTypes = {
   DELETE: 'DELETE',
 };
 
-const EditStep = React.memo(({ defaultData, onUpdate, onDelete, onClose }) => {
+const AttachmentEditStep = React.memo(({ defaultData, onUpdate, onDelete, onClose }) => {
   const [t] = useTranslation();
 
   const [data, handleFieldChange] = useForm(() => ({
@@ -91,11 +91,11 @@ const EditStep = React.memo(({ defaultData, onUpdate, onDelete, onClose }) => {
   );
 });
 
-EditStep.propTypes = {
+AttachmentEditStep.propTypes = {
   defaultData: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   onUpdate: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
-export default EditStep;
+export default AttachmentEditStep;

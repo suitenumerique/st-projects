@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 
 // eslint-disable-next-line import/no-unresolved
 import '@mdxeditor/editor/style.css';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import {
   MDXEditor,
   headingsPlugin,
@@ -24,11 +23,10 @@ import {
   Separator,
 } from '@mdxeditor/editor';
 
-import Markdown from '../../ui/Markdown';
+import Markdown from '../../../ui/Markdown';
 
-import styles from './DescriptionComponent.module.scss';
+import styles from './CardModalDescription.module.scss';
 
-// Define toolbar component outside of render to avoid recreation
 function EditorToolbar() {
   return (
     <>
@@ -72,11 +70,9 @@ function DescriptionComponent({ description, canEdit, onUpdate }) {
     setIsEditing(false);
   }, [description]);
 
-  // Click outside to close and auto-save
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (isEditing && editorRef.current && !editorRef.current.contains(event.target)) {
-        // Auto-save when clicking outside
         handleSave();
       }
     };
@@ -101,12 +97,10 @@ function DescriptionComponent({ description, canEdit, onUpdate }) {
     [handleCancel, handleSave],
   );
 
-  // No description and can't edit - show nothing
   if (!description && !canEdit) {
     return null;
   }
 
-  // If editing, show the editor regardless of whether there's an existing description
   if (isEditing) {
     return (
       <div
@@ -134,19 +128,10 @@ function DescriptionComponent({ description, canEdit, onUpdate }) {
           ]}
           contentEditableClassName={styles.editorContent}
         />
-        {/* <div className={styles.editorControls}>
-          <button type="button" className={styles.saveButton} onClick={handleSave}>
-            {t('action.save')}
-          </button>
-          <button type="button" className={styles.cancelButton} onClick={handleCancel}>
-            {t('action.cancel')}
-          </button>
-        </div> */}
       </div>
     );
   }
 
-  // No description but can edit - show clickable button to add description
   if (!description && canEdit) {
     return (
       <button
@@ -162,7 +147,6 @@ function DescriptionComponent({ description, canEdit, onUpdate }) {
     );
   }
 
-  // Has description but can't edit - show uneditable description
   if (description && !canEdit) {
     return (
       <div className={styles.descriptionText}>
@@ -173,7 +157,6 @@ function DescriptionComponent({ description, canEdit, onUpdate }) {
     );
   }
 
-  // Has description and can edit - show clickable description
   if (description && canEdit) {
     return (
       <button

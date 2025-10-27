@@ -8,7 +8,7 @@ import { Icon } from '@gouvfr-lasuite/ui-kit';
 import { useToggle } from '../../../lib/hooks';
 import FilePicker from '../../../ui/FilePicker/FilePicker';
 
-import Item from './Item';
+import AttachmentItem from './AttachmentItem';
 
 import styles from './Attachments.module.scss';
 
@@ -102,7 +102,7 @@ const Attachments = React.memo(
         >
           {({ ref, open }) =>
             isVisible ? (
-              <Item
+              <AttachmentItem
                 ref={ref}
                 name={item.name}
                 url={item.url}

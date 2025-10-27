@@ -4,17 +4,17 @@ import { useTranslation } from 'react-i18next';
 import TextareaAutosize from 'react-textarea-autosize';
 import { Button } from '@openfun/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
-import { useDidUpdate, useToggle } from '../../../lib/hooks';
+import { useDidUpdate, useToggle } from '../../../../lib/hooks';
 
-import { useClosableForm, useForm } from '../../../hooks';
+import { useClosableForm, useForm } from '../../../../hooks';
 
-import styles from './CommentAdd.module.scss';
+import styles from './CommentCreate.module.scss';
 
 const DEFAULT_DATA = {
   text: '',
 };
 
-const CommentAdd = React.memo(({ onCreate }) => {
+const CommentCreate = React.memo(({ onCreate }) => {
   const [t] = useTranslation();
   const [isOpened, setIsOpened] = useState(false);
   const [data, handleFieldChange, setData] = useForm(DEFAULT_DATA);
@@ -103,8 +103,8 @@ const CommentAdd = React.memo(({ onCreate }) => {
   );
 });
 
-CommentAdd.propTypes = {
+CommentCreate.propTypes = {
   onCreate: PropTypes.func.isRequired,
 };
 
-export default CommentAdd;
+export default CommentCreate;

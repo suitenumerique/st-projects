@@ -5,14 +5,14 @@ import classNames from 'classnames';
 // import { Draggable } from 'react-beautiful-dnd';
 import { Button, Checkbox } from '@openfun/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
-import usePopup from '../../../lib/popup';
+import usePopup from '../../../../lib/popup';
 
-import NameEdit from './NameEdit';
-import TaskActionsStep from '../../../steps/TaskActionsStep';
+import TaskEdit from '../TaskEdit';
+import TaskActionsStep from '../../../../steps/TaskActionsStep';
 
-import styles from './Item.module.scss';
+import styles from './TaskItem.module.scss';
 
-const Item = React.memo(({ name, isCompleted, isPersisted, canEdit, onUpdate, onDelete }) => {
+const TaskItem = React.memo(({ name, isCompleted, isPersisted, canEdit, onUpdate, onDelete }) => {
   const nameEdit = useRef(null);
 
   const handleClick = useCallback(() => {
@@ -90,7 +90,7 @@ const Item = React.memo(({ name, isCompleted, isPersisted, canEdit, onUpdate, on
         className={styles.checkbox}
         onChange={handleToggleChange}
       />
-      <NameEdit ref={nameEdit} defaultValue={name} onUpdate={handleNameUpdate}>
+      <TaskEdit ref={nameEdit} defaultValue={name} onUpdate={handleNameUpdate}>
         {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
         <div
           className={classNames(styles.taskWrapper, canEdit && styles.contentHoverable)}
@@ -110,12 +110,12 @@ const Item = React.memo(({ name, isCompleted, isPersisted, canEdit, onUpdate, on
             </TaskActionsPopover>
           )}
         </div>
-      </NameEdit>
+      </TaskEdit>
     </div>
   );
 });
 
-Item.propTypes = {
+TaskItem.propTypes = {
   // id: PropTypes.string.isRequired,
   // index: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
@@ -126,4 +126,4 @@ Item.propTypes = {
   onDelete: PropTypes.func.isRequired,
 };
 
-export default Item;
+export default TaskItem;

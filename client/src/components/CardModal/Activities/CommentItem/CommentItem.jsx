@@ -5,15 +5,15 @@ import { useTranslation } from 'react-i18next';
 
 import { Button } from '@openfun/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
-import getDateFormat from '../../../utils/get-date-format';
-import CommentEdit from './CommentEdit';
-import User from '../../../ui/User';
-import CommentActionsStep from '../../../steps/CommentActionsStep';
-import usePopup from '../../../lib/popup';
+import getDateFormat from '../../../../utils/get-date-format';
+import CommentEdit from '../CommentEdit';
+import User from '../../../../ui/User';
+import CommentActionsStep from '../../../../steps/CommentActionsStep';
+import usePopup from '../../../../lib/popup';
 
-import styles from './ItemComment.module.scss';
+import styles from './CommentItem.module.scss';
 
-const ItemComment = React.memo(
+const CommentItem = React.memo(
   ({ data, createdAt, isPersisted, user, canEdit, canDelete, onUpdate, onDelete }) => {
     const [t] = useTranslation();
 
@@ -75,7 +75,7 @@ const ItemComment = React.memo(
   },
 );
 
-ItemComment.propTypes = {
+CommentItem.propTypes = {
   data: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   createdAt: PropTypes.instanceOf(Date).isRequired,
   isPersisted: PropTypes.bool.isRequired,
@@ -86,4 +86,4 @@ ItemComment.propTypes = {
   onDelete: PropTypes.func.isRequired,
 };
 
-export default ItemComment;
+export default CommentItem;

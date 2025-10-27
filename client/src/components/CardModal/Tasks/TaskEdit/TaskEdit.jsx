@@ -5,12 +5,12 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { Button } from '@openfun/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 
-import { useField } from '../../../hooks';
-import { focusEnd } from '../../../utils/element-helpers';
+import { useField } from '../../../../hooks';
+import { focusEnd } from '../../../../utils/element-helpers';
 
-import styles from './NameEdit.module.scss';
+import styles from './TaskEdit.module.scss';
 
-const NameEdit = React.forwardRef(({ children, defaultValue, onUpdate }, ref) => {
+const TaskEdit = React.forwardRef(({ children, defaultValue, onUpdate }, ref) => {
   const [t] = useTranslation();
   const [isOpened, setIsOpened] = useState(false);
   const [value, handleFieldChange, setValue] = useField(null);
@@ -99,10 +99,10 @@ const NameEdit = React.forwardRef(({ children, defaultValue, onUpdate }, ref) =>
   );
 });
 
-NameEdit.propTypes = {
+TaskEdit.propTypes = {
   children: PropTypes.element.isRequired,
   defaultValue: PropTypes.string.isRequired,
   onUpdate: PropTypes.func.isRequired,
 };
 
-export default React.memo(NameEdit);
+export default React.memo(TaskEdit);

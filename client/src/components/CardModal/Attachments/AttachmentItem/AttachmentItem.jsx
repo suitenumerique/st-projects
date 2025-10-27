@@ -5,13 +5,13 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@openfun/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 
-import usePopup from '../../../lib/popup';
+import usePopup from '../../../../lib/popup';
 
-import EditStep from './EditStep';
+import AttachmentEditStep from '../../../../steps/AttachmentEditStep';
 
-import styles from './Item.module.scss';
+import styles from './AttachmentItem.module.scss';
 
-const Item = React.forwardRef(
+const AttachmentItem = React.forwardRef(
   (
     {
       name,
@@ -52,7 +52,7 @@ const Item = React.forwardRef(
       [isCover, onCoverSelect, onCoverDeselect],
     );
 
-    const EditPopup = usePopup(EditStep);
+    const AttachmentEditPopover = usePopup(AttachmentEditStep);
 
     if (!isPersisted) {
       return (
@@ -100,7 +100,7 @@ const Item = React.forwardRef(
           )}
         </div>
         {canEdit && (
-          <EditPopup
+          <AttachmentEditPopover
             defaultData={{
               name,
             }}
@@ -113,14 +113,14 @@ const Item = React.forwardRef(
               size="small"
               icon={<Icon name="more_horiz" type="outlined" size="small" />}
             />
-          </EditPopup>
+          </AttachmentEditPopover>
         )}
       </div>
     );
   },
 );
 
-Item.propTypes = {
+AttachmentItem.propTypes = {
   name: PropTypes.string.isRequired,
   url: PropTypes.string,
   coverUrl: PropTypes.string,
@@ -135,11 +135,11 @@ Item.propTypes = {
   onDelete: PropTypes.func.isRequired,
 };
 
-Item.defaultProps = {
+AttachmentItem.defaultProps = {
   url: undefined,
   coverUrl: undefined,
   createdAt: undefined,
   onClick: undefined,
 };
 
-export default React.memo(Item);
+export default React.memo(AttachmentItem);

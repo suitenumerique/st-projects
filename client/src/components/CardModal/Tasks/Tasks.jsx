@@ -6,8 +6,8 @@ import { Icon } from '@gouvfr-lasuite/ui-kit';
 // import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 // import DroppableTypes from '../../../constants/DroppableTypes';
-import Item from './Item';
-import Add from './Add';
+import TaskItem from './TaskItem';
+import TaskCreate from './TaskCreate';
 
 import styles from './Tasks.module.scss';
 
@@ -81,7 +81,7 @@ const Tasks = React.memo(({ items, canEdit, onCreate, onUpdate, onDelete }) => {
       {items.length > 0 && (
         <div className={styles.tasksWrapper}>
           {items.map((item, index) => (
-            <Item
+            <TaskItem
               key={item.id}
               id={item.id}
               index={index}
@@ -96,11 +96,11 @@ const Tasks = React.memo(({ items, canEdit, onCreate, onUpdate, onDelete }) => {
         </div>
       )}
       {canEdit && (
-        <Add onCreate={onCreate}>
+        <TaskCreate onCreate={onCreate}>
           <Button color="tertiary" size="small" icon={<Icon type="outlined" name="add" />}>
             {items.length > 0 ? t('action.addAnotherTask') : t('action.addTask')}
           </Button>
-        </Add>
+        </TaskCreate>
       )}
     </>
   );

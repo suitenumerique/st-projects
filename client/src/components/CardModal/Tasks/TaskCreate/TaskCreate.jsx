@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import TextareaAutosize from 'react-textarea-autosize';
 import { Button } from '@openfun/cunningham-react';
-import { useDidUpdate, useToggle } from '../../../lib/hooks';
+import { useDidUpdate, useToggle } from '../../../../lib/hooks';
 
-import { useClosableForm, useForm } from '../../../hooks';
+import { useClosableForm, useForm } from '../../../../hooks';
 
-import styles from './Add.module.scss';
+import styles from './TaskCreate.module.scss';
 
 const DEFAULT_DATA = {
   name: '',
@@ -15,7 +15,7 @@ const DEFAULT_DATA = {
 
 const MULTIPLE_REGEX = /\s*\r?\n\s*/;
 
-const Add = React.forwardRef(({ children, onCreate }, ref) => {
+const TaskCreate = React.forwardRef(({ children, onCreate }, ref) => {
   const [t] = useTranslation();
   const [isOpened, setIsOpened] = useState(false);
   const [data, handleFieldChange, setData] = useForm(DEFAULT_DATA);
@@ -136,9 +136,9 @@ const Add = React.forwardRef(({ children, onCreate }, ref) => {
   );
 });
 
-Add.propTypes = {
+TaskCreate.propTypes = {
   children: PropTypes.element.isRequired,
   onCreate: PropTypes.func.isRequired,
 };
 
-export default React.memo(Add);
+export default React.memo(TaskCreate);
