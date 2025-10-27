@@ -56,7 +56,7 @@ export default function BoardListItem({
           <path d="M13 18H21" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </div>
-      <div>
+      <div className={styles.itemContent}>
         <p className={styles.itemName}>{board.name}</p>
         {project && project.siret !== currentUser.siret && (
           <p className={styles.itemProjectName}>{project.name}</p>

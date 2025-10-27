@@ -1,9 +1,7 @@
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
 import React, { useCallback } from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { useSortable } from '@dnd-kit/sortable';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { CSS } from '@dnd-kit/utilities';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';

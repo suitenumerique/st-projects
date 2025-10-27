@@ -6,9 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Input, Button, Checkbox } from '@openfun/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 
-// eslint-disable-next-line import/no-extraneous-dependencies
 // import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-// eslint-disable-next-line import/no-extraneous-dependencies
 // import { DragDropProvider } from '@dnd-kit/react';
 import Label from '../../ui/Label';
 

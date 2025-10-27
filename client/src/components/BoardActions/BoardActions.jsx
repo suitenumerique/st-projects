@@ -55,9 +55,7 @@ const BoardActions = React.memo(
       (search) => {
         const filteredUsers = allUsers.filter((user) => {
           return (
-            (user.email.includes(search) ||
-              user.name.includes(search) ||
-              user.username.includes(search)) &&
+            (user.email.includes(search) || user.name.includes(search)) &&
             !boardMemberships.some((membership) => membership.user.id === user.id)
           );
         });

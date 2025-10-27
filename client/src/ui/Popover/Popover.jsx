@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import * as RadixPopover from '@radix-ui/react-popover';
 import PropTypes from 'prop-types';
 import styles from './Popover.module.scss';

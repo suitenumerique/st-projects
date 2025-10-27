@@ -42,6 +42,7 @@
   align-items: center;
   align-self: flex-start;
   margin-top: 4.5px;
+  flex-shrink: 0;
 
   &::before {
     --icon-size: .7rem;
@@ -49,8 +50,12 @@
   }
 }
 
-.itemName {
+.itemContent {
   flex: 1;
+  overflow: hidden;
+}
+
+.itemName {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -63,9 +68,13 @@
 }
 
 .itemEdit {
-  margin-left: auto;
   display: flex;
   opacity: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 6px;
+  background-color: var(--c--theme--colors--greyscale-200);
 }
 
 .itemDescription {
