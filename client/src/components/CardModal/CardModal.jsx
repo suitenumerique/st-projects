@@ -626,26 +626,23 @@ const CardModal = React.memo(
               </div>
             </section>
           )}
-          {canEdit ||
-            (description && (
-              <section
-                className={classNames(styles.cardModalSection, styles.cardDescriptionSection)}
-              >
-                <div className={styles.cardModalSectionLeft}>
-                  <Icon name="format_align_left" size="small" />
+          {(canEdit || description) && (
+            <section className={classNames(styles.cardModalSection, styles.cardDescriptionSection)}>
+              <div className={styles.cardModalSectionLeft}>
+                <Icon name="format_align_left" size="small" />
+              </div>
+              <div className={styles.cardModalSectionRight}>
+                <div className={styles.sectionTitle}>{t('common.description')}</div>
+                <div className={styles.detailsItemContent}>
+                  <CardModalDescription
+                    description={description}
+                    canEdit={canEdit}
+                    onUpdate={handleDescriptionUpdate}
+                  />
                 </div>
-                <div className={styles.cardModalSectionRight}>
-                  <div className={styles.sectionTitle}>{t('common.description')}</div>
-                  <div className={styles.detailsItemContent}>
-                    <CardModalDescription
-                      description={description}
-                      canEdit={canEdit}
-                      onUpdate={handleDescriptionUpdate}
-                    />
-                  </div>
-                </div>
-              </section>
-            ))}
+              </div>
+            </section>
+          )}
           {(canEdit || tasks.length > 0) && (
             <section className={classNames(styles.cardModalSection, styles.cardTasksSection)}>
               <div className={styles.cardModalSectionLeft}>
