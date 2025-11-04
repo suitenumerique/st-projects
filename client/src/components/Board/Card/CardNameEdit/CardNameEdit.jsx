@@ -63,7 +63,12 @@ const CardNameEdit = React.forwardRef(({ children, defaultValue, onUpdate }, ref
           close();
 
           break;
+        case ' ':
+          // Stop propagation to prevent drag handlers (KeyboardSensor) from intercepting space key
+          event.stopPropagation();
+          break;
         default:
+          break;
       }
     },
     [close, submit],
