@@ -7,8 +7,8 @@ import LeftMenu from '../components/LeftMenu';
 
 const mapStateToProps = (state) => {
   const { boardId } = selectors.selectPath(state);
-  const privateBoards = selectors.selectPrivateBoards(state);
-  const sharedBoards = selectors.selectSharedBoards(state);
+  const privateBoards = selectors.selectPrivateBoardsForCurrentUser(state);
+  const sharedBoards = selectors.selectSharedBoardsForCurrentUser(state);
 
   const config = selectors.selectConfig(state);
 

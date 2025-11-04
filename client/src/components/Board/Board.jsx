@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
   DndContext,
   DragOverlay,
-  pointerWithin,
+  closestCorners,
   KeyboardSensor,
   PointerSensor,
   useSensor,
@@ -30,7 +30,7 @@ function Board({
   currentUser,
   lists,
   cards,
-  allBoards,
+  editableBoards,
   allBoardMemberships,
   allBoardLabels,
   isCardModalOpened,
@@ -112,7 +112,7 @@ function Board({
     const draggedId = active.id;
     let overId = over.id;
 
-    // Check if both active and over are lists - use the CURRENT lists state
+    // Check if both active and over are lists
     const isActiveList = listItems.some((col) => col.id === draggedId);
     let isOverList = listItems.some((col) => col.id === overId);
 
@@ -163,32 +163,34 @@ function Board({
       return;
     }
 
-    setCardItems((prev) => {
-      const activeItems = prev[activeContainer];
-      const overItems = prev[overContainer] || [];
+    setTimeout(() => {
+      setCardItems((prev) => {
+        const activeItems = prev[activeContainer];
+        const overItems = prev[overContainer] || [];
 
-      const activeIndex = activeItems.findIndex((item) => item.id === draggedId);
-      const overIndex = overItems.findIndex((item) => item.id === overId);
+        const activeIndex = activeItems.findIndex((item) => item.id === draggedId);
+        const overIndex = overItems.findIndex((item) => item.id === overId);
 
-      let newIndex;
-      if (overId in prev) {
-        newIndex = overItems.length + 1;
-      } else {
-        const isBelowLastItem = over && overIndex === overItems.length - 1;
-        const modifier = isBelowLastItem ? 1 : 0;
-        newIndex = overIndex >= 0 ? overIndex + modifier : overItems.length + 1;
-      }
+        let newIndex;
+        if (overId in prev) {
+          newIndex = overItems.length + 1;
+        } else {
+          const isBelowLastItem = over && overIndex === overItems.length - 1;
+          const modifier = isBelowLastItem ? 1 : 0;
+          newIndex = overIndex >= 0 ? overIndex + modifier : overItems.length + 1;
+        }
 
-      return {
-        ...prev,
-        [activeContainer]: prev[activeContainer].filter((item) => item.id !== draggedId),
-        [overContainer]: [
-          ...(prev[overContainer] || []).slice(0, newIndex),
-          activeItems[activeIndex],
-          ...(prev[overContainer] || []).slice(newIndex),
-        ],
-      };
-    });
+        return {
+          ...prev,
+          [activeContainer]: prev[activeContainer].filter((item) => item.id !== draggedId),
+          [overContainer]: [
+            ...(prev[overContainer] || []).slice(0, newIndex),
+            activeItems[activeIndex],
+            ...(prev[overContainer] || []).slice(newIndex),
+          ],
+        };
+      });
+    }, 0);
   };
 
   const handleDragEnd = (event) => {
@@ -284,7 +286,7 @@ function Board({
     <div className={styles.wrapper}>
       <DndContext
         sensors={sensors}
-        collisionDetection={pointerWithin}
+        collisionDetection={closestCorners}
         onDragStart={handleDragStart}
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
@@ -303,7 +305,7 @@ function Board({
                 color={list.color}
                 cards={cardItems[list.id] || []}
                 currentUser={currentUser}
-                allBoards={allBoards}
+                editableBoards={editableBoards}
                 allBoardMemberships={allBoardMemberships}
                 allBoardLabels={allBoardLabels}
                 canEdit={canEdit}
@@ -359,7 +361,7 @@ function Board({
                 color={activeList.color}
                 cards={cardItems[activeList.id] || []}
                 currentUser={currentUser}
-                allBoards={allBoards}
+                editableBoards={editableBoards}
                 allBoardMemberships={allBoardMemberships}
                 allBoardLabels={allBoardLabels}
                 canEdit={canEdit}
@@ -403,7 +405,7 @@ function Board({
                 users={activeCard.users}
                 labels={activeCard.labels}
                 tasks={activeCard.tasks}
-                allBoards={allBoards}
+                editableBoards={editableBoards}
                 allBoardMemberships={allBoardMemberships}
                 allLabels={allBoardLabels}
                 currentUser={currentUser}
@@ -436,7 +438,7 @@ Board.propTypes = {
   currentUser: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   lists: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   cards: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  allBoards: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  editableBoards: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   allBoardMemberships: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   allBoardLabels: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   isCardModalOpened: PropTypes.bool.isRequired,

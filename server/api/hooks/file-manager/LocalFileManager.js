@@ -38,6 +38,14 @@ class LocalFileManager {
   }
 
   // eslint-disable-next-line class-methods-use-this
+  async copy(sourcePathSegment, targetPathSegment) {
+    const sourcePath = buildPath(sourcePathSegment);
+    const targetPath = buildPath(targetPathSegment);
+
+    await fse.copy(sourcePath, targetPath);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
   async deleteDir(dirPathSegment) {
     await rimraf(buildPath(dirPathSegment));
   }

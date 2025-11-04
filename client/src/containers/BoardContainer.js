@@ -12,7 +12,7 @@ const mapStateToProps = (state) => {
 
   const lists = selectors.selectListsForCurrentBoard(state);
   const cardsWithDetails = selectors.selectCardsWithDetailsForCurrentBoard(state);
-  const allBoards = selectors.selectBoardsForCurrentProject(state);
+  const editableBoards = selectors.selectEditableBoardsForCurrentUser(state);
   const allBoardMemberships = selectors.selectMembershipsForCurrentBoard(state);
   const allBoardLabels = selectors.selectLabelsForCurrentBoard(state);
 
@@ -27,7 +27,7 @@ const mapStateToProps = (state) => {
     currentUser,
     lists,
     cards: cardsWithDetails,
-    allBoards,
+    editableBoards,
     allBoardMemberships,
     allBoardLabels,
     isCardModalOpened: !!cardId,

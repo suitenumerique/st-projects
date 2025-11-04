@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@openfun/cunningham-react';
-import { Icon } from '@gouvfr-lasuite/ui-kit';
+import { Icon, Spinner } from '@gouvfr-lasuite/ui-kit';
 
 import usePopup from '../../../../lib/popup';
 
@@ -56,7 +56,9 @@ const AttachmentItem = React.forwardRef(
 
     if (!isPersisted) {
       return (
-        <div className={classNames(styles.wrapper, styles.wrapperSubmitting)}>Chargement...</div>
+        <div className={classNames(styles.wrapper, styles.wrapperSubmitting)}>
+          <Spinner />
+        </div>
       );
     }
 

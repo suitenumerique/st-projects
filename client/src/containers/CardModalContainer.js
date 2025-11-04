@@ -30,7 +30,7 @@ const mapStateToProps = (state) => {
     listId,
   } = selectors.selectCurrentCard(state);
 
-  const allBoards = selectors.selectBoardsForCurrentProject(state);
+  const editableBoards = selectors.selectEditableBoardsForCurrentUser(state);
   const users = selectors.selectUsersForCurrentCard(state);
   const labels = selectors.selectLabelsForCurrentCard(state);
   const tasks = selectors.selectTasksForCurrentCard(state);
@@ -57,7 +57,7 @@ const mapStateToProps = (state) => {
     listId,
     boardId,
     projectId,
-    boards: allBoards,
+    boards: editableBoards,
     lists,
     users,
     labels,

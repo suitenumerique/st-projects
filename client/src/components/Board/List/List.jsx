@@ -25,7 +25,7 @@ function List({
   currentUser,
   cards,
   canEdit,
-  allBoards,
+  editableBoards,
   allBoardMemberships,
   allBoardLabels,
   onBoardFetch,
@@ -195,7 +195,7 @@ function List({
               users={card.users}
               labels={card.labels}
               tasks={card.tasks}
-              allBoards={allBoards}
+              editableBoards={editableBoards}
               allBoardMemberships={allBoardMemberships}
               allLabels={allBoardLabels}
               currentUser={currentUser}
@@ -256,7 +256,7 @@ List.propTypes = {
       content: PropTypes.string.isRequired,
     }),
   ).isRequired,
-  allBoards: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  editableBoards: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   allBoardMemberships: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   allBoardLabels: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   canEdit: PropTypes.bool.isRequired,

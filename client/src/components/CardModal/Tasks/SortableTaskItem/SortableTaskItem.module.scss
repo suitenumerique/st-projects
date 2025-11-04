@@ -5,6 +5,10 @@
     align-items: flex-start;
     width: 100%;
 
+    &.dragging {
+      opacity: 0.5;
+    }
+
     .checkbox {
       margin-top: 4px;
       margin-right: 0.5rem;
@@ -21,6 +25,14 @@
 
       &.contentHoverable:hover {
         background: var(--c--theme--colors--greyscale-100);
+      }
+
+      &.draggable {
+        cursor: grab;
+
+        &:active {
+          cursor: grabbing;
+        }
       }
     }
 

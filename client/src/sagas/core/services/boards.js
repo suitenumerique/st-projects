@@ -1,6 +1,6 @@
 import { call, put, select } from 'redux-saga/effects';
 
-import { goToBoard, goToProject } from './router';
+import { goToBoard, goToRoot } from './router';
 import request from '../request';
 import selectors from '../../../selectors';
 import actions from '../../../actions';
@@ -166,11 +166,8 @@ export function* moveBoard(id, index) {
 }
 
 export function* deleteBoard(id) {
-  const { boardId, projectId } = yield select(selectors.selectPath);
-
-  if (id === boardId) {
-    yield call(goToProject, projectId);
-  }
+  const { boardId } = yield select(selectors.selectPath);
+  const isCurrentBoard = id === boardId;
 
   yield put(actions.deleteBoard(id));
 
@@ -183,16 +180,23 @@ export function* deleteBoard(id) {
   }
 
   yield put(actions.deleteBoard.success(board));
+
+  if (isCurrentBoard) {
+    // yield call(goToProject, projectId);
+    yield call(goToRoot);
+  }
 }
 
 export function* handleBoardDelete(board) {
-  const { boardId, projectId } = yield select(selectors.selectPath);
-
-  if (board.id === boardId) {
-    yield call(goToProject, projectId);
-  }
+  const { boardId } = yield select(selectors.selectPath);
+  const isCurrentBoard = board.id === boardId;
 
   yield put(actions.handleBoardDelete(board));
+
+  if (isCurrentBoard) {
+    // yield call(goToProject, projectId);
+    yield call(goToRoot);
+  }
 }
 
 export default {

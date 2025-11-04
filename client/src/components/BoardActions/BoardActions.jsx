@@ -175,7 +175,7 @@ const BoardActions = React.memo(
             },
           ]}
           onUpdateLinkReach={(value) => {
-            handleUpdate({ isBoardPublic: value === 'public' });
+            handleUpdate({ isPublic: value === 'public' });
           }}
         />
       </div>

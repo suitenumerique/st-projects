@@ -1,19 +1,39 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@openfun/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
-// import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-
-// import DroppableTypes from '../../../constants/DroppableTypes';
-import TaskItem from './TaskItem';
+import {
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  closestCenter,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import SortableTaskItem from './SortableTaskItem';
 import TaskCreate from './TaskCreate';
 
 import styles from './Tasks.module.scss';
 
-const Tasks = React.memo(({ items, canEdit, onCreate, onUpdate, onDelete }) => {
-  // onMove
+const Tasks = React.memo(({ items, canEdit, onCreate, onUpdate, onMove, onDelete }) => {
   const [t] = useTranslation();
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 5,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
 
   const handleUpdate = useCallback(
     (id, data) => {
@@ -29,7 +49,25 @@ const Tasks = React.memo(({ items, canEdit, onCreate, onUpdate, onDelete }) => {
     [onDelete],
   );
 
+  const handleDragEnd = useCallback(
+    (event) => {
+      const { active, over } = event;
+      if (!over || active.id === over.id) {
+        return;
+      }
+
+      const oldIndex = items.findIndex((item) => item.id === active.id);
+      const newIndex = items.findIndex((item) => item.id === over.id);
+
+      if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
+        onMove(active.id, newIndex);
+      }
+    },
+    [items, onMove],
+  );
+
   const completedItems = items.filter((item) => item.isCompleted);
+  const taskIds = useMemo(() => items.map((item) => item.id), [items]);
 
   return (
     <>
@@ -46,16 +84,14 @@ const Tasks = React.memo(({ items, canEdit, onCreate, onUpdate, onDelete }) => {
           </div>
         </div>
       )}
-      {/* <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-        <Droppable droppableId="tasks" type={DroppableTypes.TASK}>
-          {({ innerRef, droppableProps, placeholder }) => (
-            // eslint-disable-next-line react/jsx-props-no-spreading
-            <div {...droppableProps} ref={innerRef}>
-              {items.map((item, index) => (
-                <Item
+      {items.length > 0 && (
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
+            <div className={styles.tasksWrapper}>
+              {items.map((item) => (
+                <SortableTaskItem
                   key={item.id}
                   id={item.id}
-                  index={index}
                   name={item.name}
                   isCompleted={item.isCompleted}
                   isPersisted={item.isPersisted}
@@ -64,36 +100,9 @@ const Tasks = React.memo(({ items, canEdit, onCreate, onUpdate, onDelete }) => {
                   onDelete={() => handleDelete(item.id)}
                 />
               ))}
-              {placeholder}
-              {canEdit && (
-                <Add onCreate={onCreate}>
-                  <button type="button" className={styles.taskButton}>
-                    <span className={styles.taskButtonText}>
-                      {items.length > 0 ? t('action.addAnotherTask') : t('action.addTask')}
-                    </span>
-                  </button>
-                </Add>
-              )}
             </div>
-          )}
-        </Droppable>
-      </DragDropContext> */}
-      {items.length > 0 && (
-        <div className={styles.tasksWrapper}>
-          {items.map((item, index) => (
-            <TaskItem
-              key={item.id}
-              id={item.id}
-              index={index}
-              name={item.name}
-              isCompleted={item.isCompleted}
-              isPersisted={item.isPersisted}
-              canEdit={canEdit}
-              onUpdate={(data) => handleUpdate(item.id, data)}
-              onDelete={() => handleDelete(item.id)}
-            />
-          ))}
-        </div>
+          </SortableContext>
+        </DndContext>
       )}
       {canEdit && (
         <TaskCreate onCreate={onCreate}>
@@ -111,7 +120,7 @@ Tasks.propTypes = {
   canEdit: PropTypes.bool.isRequired,
   onCreate: PropTypes.func.isRequired,
   onUpdate: PropTypes.func.isRequired,
-  // onMove: PropTypes.func.isRequired,
+  onMove: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
 };
 

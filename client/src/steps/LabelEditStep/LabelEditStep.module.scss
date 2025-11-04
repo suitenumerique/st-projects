@@ -1,0 +1,18 @@
+:global(#app) {
+
+  .field {
+    margin-bottom: 8px;
+  }
+
+  .fieldLabel {
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+
+  .deleteButton {
+    bottom: 12px;
+    position: absolute;
+    right: 9px;
+  }
+}

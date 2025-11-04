@@ -17,10 +17,23 @@
     justify-content: space-between;
     gap: 8px;
     width: 100%;
+    cursor: default;
+
+    &.draggable {
+      cursor: grab;
+
+      &:active {
+        cursor: grabbing;
+      }
+    }
 
     > label {
       width: 100%;
     }
+  }
+
+  .dragging {
+    opacity: 0.5;
   }
 
   .filterLabel {
@@ -32,6 +45,10 @@
   }
 
   .itemActions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
     > button {
       width: 32px;
       height: 32px;
@@ -41,6 +58,7 @@
       padding: 0;
     }
   }
+
 
   .addButton {
     margin-top: 0.5rem;

@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState, useEffect, useMemo } from 'react';
+import React, { useCallback, useRef, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
@@ -33,7 +33,7 @@ const CardModal = React.memo(
     dueDate,
     isDueDateCompleted,
     stopwatch,
-    isSubscribed,
+    // isSubscribed,
     isActivitiesFetching,
     isAllActivitiesFetched,
     // isActivitiesDetailsVisible,
@@ -110,11 +110,11 @@ const CardModal = React.memo(
       }, 3000);
     }, []);
 
-    const handleToggleSubscriptionClick = useCallback(() => {
-      onUpdate({
-        isSubscribed: !isSubscribed,
-      });
-    }, [isSubscribed, onUpdate]);
+    // const handleToggleSubscriptionClick = useCallback(() => {
+    //   onUpdate({
+    //     isSubscribed: !isSubscribed,
+    //   });
+    // }, [isSubscribed, onUpdate]);
 
     const handleDuplicateClick = useCallback(() => {
       onDuplicate();
@@ -176,55 +176,6 @@ const CardModal = React.memo(
       });
     }, [stopwatch, onUpdate]);
 
-    useEffect(() => {
-      const addClassToModal = () => {
-        const modalElement = document.querySelector('.c__modal');
-        if (modalElement) {
-          modalElement.classList.add('card-modal');
-          return true;
-        }
-        return false;
-      };
-
-      // Try immediately
-      if (!addClassToModal()) {
-        // If not found, try again after a short delay
-        const timeoutId = setTimeout(() => {
-          addClassToModal();
-        }, 100);
-
-        // Also try with MutationObserver to catch when modal is added
-        const observer = new MutationObserver(() => {
-          if (addClassToModal()) {
-            observer.disconnect();
-          }
-        });
-
-        observer.observe(document.body, {
-          childList: true,
-          subtree: true,
-        });
-
-        // Cleanup function
-        return () => {
-          clearTimeout(timeoutId);
-          observer.disconnect();
-          const modalElement = document.querySelector('.c__modal');
-          if (modalElement) {
-            modalElement.classList.remove('card-modal');
-          }
-        };
-      }
-
-      // Cleanup function for immediate success case
-      return () => {
-        const modalElement = document.querySelector('.c__modal');
-        if (modalElement) {
-          modalElement.classList.remove('card-modal');
-        }
-      };
-    }, []);
-
     const handleDescriptionUpdate = useCallback(
       (newDescription) => {
         onUpdate({
@@ -277,7 +228,7 @@ const CardModal = React.memo(
     );
 
     const contentNode = (
-      <div>
+      <div className={styles.cardModalWrapper}>
         <div className={styles.cardModalHeader}>
           <div className={styles.cardModalHeaderLeft}>
             {canEdit ? (
@@ -318,12 +269,12 @@ const CardModal = React.memo(
                 {hiddenDeletePopover}
                 <DropdownMenu
                   options={[
-                    {
-                      label: isSubscribed ? t('action.unsubscribe') : t('action.subscribe'),
-                      value: isSubscribed ? 'unsubscribe' : 'subscribe',
-                      icon: <Icon name="notifications" size="small" />,
-                      callback: handleToggleSubscriptionClick,
-                    },
+                    // {
+                    //   label: isSubscribed ? t('action.unsubscribe') : t('action.subscribe'),
+                    //   value: isSubscribed ? 'unsubscribe' : 'subscribe',
+                    //   icon: <Icon name="notifications" size="small" />,
+                    //   callback: handleToggleSubscriptionClick,
+                    // },
                     {
                       label: t('action.duplicateCard', {
                         context: 'title',
@@ -733,7 +684,7 @@ CardModal.propTypes = {
   dueDate: PropTypes.instanceOf(Date),
   isDueDateCompleted: PropTypes.bool,
   stopwatch: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  isSubscribed: PropTypes.bool.isRequired,
+  // isSubscribed: PropTypes.bool.isRequired,
   isActivitiesFetching: PropTypes.bool.isRequired,
   isAllActivitiesFetched: PropTypes.bool.isRequired,
   // isActivitiesDetailsVisible: PropTypes.bool.isRequired,

@@ -1,23 +1,29 @@
 import { dequal } from 'dequal';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
-import { Button } from '@openfun/cunningham-react';
+import { Button, Input } from '@openfun/cunningham-react';
 import PopoverHeader from '../../ui/Popover/PopoverHeader';
 import { useForm, useSteps } from '../../hooks';
 import LabelColors from '../../constants/LabelColors';
-import Editor from './Editor';
 import DeleteStep from '../DeleteStep';
+import ColorPicker from '../../ui/ColorPicker';
 
-import styles from './EditStepOverride.module.scss';
+import styles from './LabelEditStep.module.scss';
 
 const StepTypes = {
   DELETE: 'DELETE',
 };
 
-const EditStep = React.memo(({ defaultData, onUpdate, onDelete, onBack }) => {
+const LabelEditStep = React.memo(({ defaultData, onUpdate, onDelete, onBack }) => {
   const [t] = useTranslation();
+
+  const nameField = useRef(null);
+
+  useEffect(() => {
+    nameField.current.select();
+  }, []);
 
   const [data, handleFieldChange] = useForm(() => ({
     color: LabelColors[0],
@@ -65,7 +71,17 @@ const EditStep = React.memo(({ defaultData, onUpdate, onDelete, onBack }) => {
         })}
       />
       <form onSubmit={handleSubmit}>
-        <Editor data={data} onFieldChange={handleFieldChange} />
+        <div className={styles.fieldLabel}>{t('common.title')}</div>
+        <Input
+          label="Nom de l'étiquette"
+          ref={nameField}
+          name="name"
+          value={data.name}
+          className={styles.field}
+          onChange={handleFieldChange}
+        />
+        <div className={styles.fieldLabel}>{t('common.color')}</div>
+        <ColorPicker colors={LabelColors} current={data.color} onChange={handleFieldChange} />
         <Button type="submit">{t('action.save')}</Button>
       </form>
       <Button color="secondary" className={styles.deleteButton} onClick={handleDeleteClick}>
@@ -75,11 +91,11 @@ const EditStep = React.memo(({ defaultData, onUpdate, onDelete, onBack }) => {
   );
 });
 
-EditStep.propTypes = {
+LabelEditStep.propTypes = {
   defaultData: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   onUpdate: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   onBack: PropTypes.func.isRequired,
 };
 
-export default EditStep;
+export default LabelEditStep;

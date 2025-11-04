@@ -1,6 +1,8 @@
 import { createSelector } from 'redux-orm';
 
 import orm from '../orm';
+import { BoardMembershipRoles } from '../constants/Enums';
+import { isLocalId } from '../utils/local-id';
 
 export const selectCurrentUserId = ({ auth: { userId } }) => userId;
 
@@ -141,6 +143,76 @@ export const selectUserDefaultProject = createSelector(
   },
 );
 
+export const selectPrivateBoardsForCurrentUser = createSelector(
+  orm,
+  (state) => selectCurrentUserId(state),
+  ({ Board }, currentUserId) => {
+    const privateBoards = Board.all()
+      .toRefArray()
+      .filter((board) => {
+        const boardModel = Board.withId(board.id);
+        const memberships = boardModel.getOrderedMembershipsModelArray();
+        return (
+          !board.isPublic && memberships.length === 1 && memberships[0].user.id === currentUserId
+        );
+      });
+
+    return privateBoards;
+  },
+);
+
+export const selectSharedBoardsForCurrentUser = createSelector(
+  orm,
+  (state) => selectCurrentUserId(state),
+  ({ Board }, currentUserId) => {
+    const sharedBoards = Board.all()
+      .toRefArray()
+      .filter((board) => {
+        const boardModel = Board.withId(board.id);
+        const memberships = boardModel.getOrderedMembershipsModelArray();
+        return (
+          board.isPublic ||
+          (memberships.length > 1 &&
+            memberships.some((membership) => membership.user.id === currentUserId))
+        );
+      });
+
+    return sharedBoards;
+  },
+);
+
+export const selectEditableBoardsForCurrentUser = createSelector(
+  orm,
+  (state) => selectCurrentUserId(state),
+  ({ Board }, currentUserId) => {
+    return Board.all()
+      .toModelArray()
+      .filter((boardModel) => {
+        const memberships = boardModel.getOrderedMembershipsModelArray();
+        return (
+          memberships.length > 0 &&
+          memberships.some(
+            (membership) =>
+              membership.user.id === currentUserId &&
+              (membership.role === BoardMembershipRoles.EDITOR ||
+                membership.role === BoardMembershipRoles.OWNER),
+          )
+        );
+      })
+      .map((boardModel) => ({
+        ...boardModel.ref,
+        isPersisted: !isLocalId(boardModel.id),
+        lists: boardModel
+          .getOrderedListsQuerySet()
+          .toRefArray()
+          .map((list) => ({
+            ...list,
+            isPersisted: !isLocalId(list.id),
+          })),
+      }));
+  },
+);
+
 export default {
   selectCurrentUserId,
   selectUsers,
@@ -150,4 +222,7 @@ export default {
   selectProjectsToListsForCurrentUser,
   selectNotificationsForCurrentUser,
   selectUserDefaultProject,
+  selectPrivateBoardsForCurrentUser,
+  selectSharedBoardsForCurrentUser,
+  selectEditableBoardsForCurrentUser,
 };

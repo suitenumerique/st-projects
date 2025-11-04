@@ -32,14 +32,14 @@ const CardMoveStep = React.memo(
 
     const handleBoardIdChange = useCallback(
       (targetBoardId) => {
-        if (targetBoardId) {
+        if (boards.find((board) => board.id === targetBoardId).isFetching === null) {
           onBoardFetch(targetBoardId);
         }
 
         handleFieldChange(null, { name: 'boardId', value: targetBoardId });
         handleFieldChange(null, { name: 'listId', value: null });
       },
-      [handleFieldChange, onBoardFetch],
+      [handleFieldChange, onBoardFetch, boards],
     );
 
     const handleListIdChange = useCallback(
@@ -138,8 +138,7 @@ const CardMoveStep = React.memo(
           )}
           <Button
             type="submit"
-            // disabled={(selectedBoard && selectedBoard.isFetching !== false) || !selectedList}
-            disabled
+            disabled={(selectedBoard && selectedBoard.isFetching !== false) || !selectedList}
           >
             {t('action.move')}
           </Button>

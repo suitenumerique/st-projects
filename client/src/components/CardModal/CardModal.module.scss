@@ -1,14 +1,8 @@
 :global(#app) {
 
-  :global(.card-modal) {
-    transform: translate(-50%, 0);
-    top: 3.5rem;
+  .cardModalWrapper {
+    margin: -1.5rem;
     width: 700px;
-    max-height: calc(100vh - 7rem);
-
-    :global(.c__modal__scroller) {
-      padding: 0;
-    }
   }
 
   .cardModalHeader {
@@ -50,7 +44,7 @@
   }
 
   .cardModalContent {
-    padding: 58px 20px 0 20px;
+    padding: 58px 20px 20px 20px;
   }
 
   .cardModalSection {
@@ -78,6 +72,10 @@
       flex: 1;
       flex-direction: column;
     }
+  }
+
+  .cardModalContent .cardModalSection:last-child {
+    margin-bottom: 0;
   }
 
   .cardNameSection {

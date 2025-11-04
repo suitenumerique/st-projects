@@ -88,9 +88,13 @@ const TaskCreate = React.forwardRef(({ children, onCreate }, ref) => {
     isOpened,
   );
 
-  const handleSubmit = useCallback(() => {
-    submit();
-  }, [submit]);
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
+      submit();
+    },
+    [submit],
+  );
 
   useEffect(() => {
     if (isOpened) {

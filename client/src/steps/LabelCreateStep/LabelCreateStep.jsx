@@ -1,16 +1,16 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
-import { Button } from '@openfun/cunningham-react';
+import { Button, Input } from '@openfun/cunningham-react';
 import { useForm } from '../../hooks';
 import LabelColors from '../../constants/LabelColors';
-import Editor from './Editor';
+import ColorPicker from '../../ui/ColorPicker';
 
-import styles from './AddStep.module.scss';
+import styles from './LabelCreateStep.module.scss';
 import PopoverHeader from '../../ui/Popover/PopoverHeader';
 
-const AddStep = React.memo(({ defaultData, onCreate, onBack }) => {
+const LabelCreateStep = React.memo(({ defaultData, onCreate, onBack }) => {
   const [t] = useTranslation();
 
   const [data, handleFieldChange] = useForm(() => ({
@@ -18,6 +18,12 @@ const AddStep = React.memo(({ defaultData, onCreate, onBack }) => {
     color: LabelColors[0],
     ...defaultData,
   }));
+
+  const nameField = useRef(null);
+
+  useEffect(() => {
+    nameField.current.select();
+  }, []);
 
   const handleSubmit = useCallback(() => {
     const cleanData = {
@@ -38,7 +44,18 @@ const AddStep = React.memo(({ defaultData, onCreate, onBack }) => {
         })}
       />
       <form onSubmit={handleSubmit}>
-        <Editor data={data} onFieldChange={handleFieldChange} />
+        {/* <LabelEditor data={data} onFieldChange={handleFieldChange} /> */}
+        <div className={styles.fieldLabel}>{t('common.title')}</div>
+        <Input
+          label="Nom de l'étiquette"
+          ref={nameField}
+          name="name"
+          value={data.name}
+          className={styles.field}
+          onChange={handleFieldChange}
+        />
+        <div className={styles.fieldLabel}>{t('common.color')}</div>
+        <ColorPicker colors={LabelColors} current={data.color} onChange={handleFieldChange} />
         <Button
           type="submit"
           color="primary"
@@ -52,10 +69,10 @@ const AddStep = React.memo(({ defaultData, onCreate, onBack }) => {
   );
 });
 
-AddStep.propTypes = {
+LabelCreateStep.propTypes = {
   defaultData: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   onCreate: PropTypes.func.isRequired,
   onBack: PropTypes.func.isRequired,
 };
 
-export default AddStep;
+export default LabelCreateStep;

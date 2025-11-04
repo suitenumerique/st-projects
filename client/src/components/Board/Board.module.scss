@@ -17,6 +17,7 @@
     overflow-x: auto;
     padding: 0 1.25rem 1rem 1.25rem;
     height: 100%;
+    overflow-y: hidden;
   }
 
   .addListButton {
@@ -145,7 +146,7 @@
   }
 
   .emptyDropZone {
-    min-height: 20px;
+    min-height: 1px;
     display: flex;
     align-items: center;
     justify-content: center;

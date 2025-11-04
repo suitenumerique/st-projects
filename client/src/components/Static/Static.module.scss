@@ -8,7 +8,6 @@
   .message {
     align-content: space-between;
     align-items: center;
-    color: #fff;
     display: flex;
     flex: 1 1 auto;
     flex-direction: column;
@@ -22,7 +21,7 @@
 
   .messageTitle {
     font-size: 32px;
-    margin: 24px 0 8px;
+    margin: 0 0 8px;
     color: var(--c--theme--colors--greyscale-1000);
   }
 
@@ -34,7 +33,10 @@
     color: var(--c--theme--colors--greyscale-1000);
   }
 
-  .wrapperLoader {
-    position: relative;
+  .loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
   }
 }

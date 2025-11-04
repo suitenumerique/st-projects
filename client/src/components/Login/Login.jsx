@@ -84,14 +84,14 @@ const Login = React.memo(
   }) => {
     // const { t } = useTranslation();
 
-    // useEffect(() => {
-    //   if (!isOidcEnforced) {
-    //     onAuthenticate({
-    //       emailOrUsername: reactAppDefaultEmail,
-    //       password: reactAppDefaultPassword,
-    //     });
-    //   }
-    // }, [isOidcEnforced, onAuthenticate, reactAppDefaultEmail, reactAppDefaultPassword]);
+    useEffect(() => {
+      if (!isOidcEnforced) {
+        onAuthenticate({
+          emailOrUsername: reactAppDefaultEmail,
+          password: reactAppDefaultPassword,
+        });
+      }
+    }, [isOidcEnforced, onAuthenticate, reactAppDefaultEmail, reactAppDefaultPassword]);
 
     return (
       <div className="projets_login">

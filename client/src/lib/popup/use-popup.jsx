@@ -1,4 +1,3 @@
-// import { ResizeObserver } from '@juggle/resize-observer';
 import React, { useCallback, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import Popover from '../../ui/Popover';

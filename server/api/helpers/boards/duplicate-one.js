@@ -1,3 +1,5 @@
+const { v4: uuid } = require('uuid');
+
 module.exports = {
   inputs: {
     board: {
@@ -107,19 +109,46 @@ module.exports = {
           ),
         );
 
-        // Copy attachments (only in production)
-        if (sails.config.environment === 'production') {
-          const attachments = await Attachment.find({ cardId: card.id });
-          await Promise.all(
-            attachments.map((attachment) =>
-              Attachment.create({
-                name: attachment.name,
-                path: attachment.path,
-                cardId: newCard.id,
-              }),
-            ),
-          );
-        }
+        // Copy attachments
+        const attachments = await Attachment.find({ cardId: card.id });
+        await Promise.all(
+          attachments.map(async (attachment) => {
+            const fileManager = sails.hooks['file-manager'].getInstance();
+            const newDirname = uuid();
+            const sourceDirPathSegment = `${sails.config.custom.attachmentsPathSegment}/${attachment.dirname}`;
+            const targetDirPathSegment = `${sails.config.custom.attachmentsPathSegment}/${newDirname}`;
+
+            if (sails.hooks.s3.isActive()) {
+              await fileManager.copy(
+                `${sourceDirPathSegment}/${attachment.filename}`,
+                `${targetDirPathSegment}/${attachment.filename}`,
+              );
+
+              if (attachment.image && attachment.image.thumbnailsExtension) {
+                try {
+                  await fileManager.copy(
+                    `${sourceDirPathSegment}/thumbnails/cover-256.${attachment.image.thumbnailsExtension}`,
+                    `${targetDirPathSegment}/thumbnails/cover-256.${attachment.image.thumbnailsExtension}`,
+                  );
+                } catch (error) {
+                  console.warn(error.stack); // eslint-disable-line no-console
+                }
+              }
+            } else {
+              await fileManager.copy(sourceDirPathSegment, targetDirPathSegment);
+            }
+
+            // Create the new attachment record (duplicate the PostgreSQL row)
+            return Attachment.create({
+              dirname: newDirname,
+              filename: attachment.filename,
+              name: attachment.name,
+              image: attachment.image,
+              cardId: newCard.id,
+              creatorUserId: actorUser.id,
+            });
+          }),
+        );
 
         // Create a card label for each label
         await Promise.all(

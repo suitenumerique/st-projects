@@ -29,7 +29,7 @@ const StepTypes = {
 const CardActionsStep = React.memo(
   ({
     card,
-    boards,
+    editableBoards,
     boardMemberships,
     currentUserIds,
     labels,
@@ -154,7 +154,7 @@ const CardActionsStep = React.memo(
           return (
             <CardMoveStep
               defaultPath={pick(card, ['boardId', 'listId'])}
-              boards={boards}
+              boards={editableBoards}
               onMove={onMove}
               onTransfer={onTransfer}
               onBoardFetch={onBoardFetch}
@@ -232,7 +232,7 @@ const CardActionsStep = React.memo(
 
 CardActionsStep.propTypes = {
   /* eslint-disable react/forbid-prop-types */
-  boards: PropTypes.array.isRequired,
+  editableBoards: PropTypes.array.isRequired,
   card: PropTypes.object.isRequired,
   boardMemberships: PropTypes.array.isRequired,
   currentUserIds: PropTypes.array.isRequired,

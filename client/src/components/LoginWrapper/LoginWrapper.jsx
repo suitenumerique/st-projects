@@ -1,11 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Spinner } from '@gouvfr-lasuite/ui-kit';
 
-import LoginContainer from '../containers/LoginContainer';
+import LoginContainer from '../../containers/LoginContainer';
+
+import styles from './LoginWrapper.module.scss';
 
 const LoginWrapper = React.memo(({ isInitializing }) => {
   if (isInitializing) {
-    return <p>Chargement...</p>;
+    return (
+      <div className={styles.loading}>
+        <Spinner size="xl" />
+      </div>
+    );
   }
 
   return <LoginContainer />;

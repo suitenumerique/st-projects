@@ -2,6 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 // import { useTranslation } from 'react-i18next';
 
+import { Spinner } from '@gouvfr-lasuite/ui-kit';
 import { ActivityTypes } from '../../../constants/Enums';
 import CommentCreate from './CommentCreate';
 // import ActivityItem from './ActivityItem';
@@ -82,7 +83,9 @@ const Activities = React.memo(
           )}
         </div>
         {isFetching ? (
-          <div className={styles.loader}>Loading...</div>
+          <div className={styles.loading}>
+            <Spinner />
+          </div>
         ) : (
           !isAllFetched && (
             <button type="button" onClick={onFetch} className={styles.loadMore}>

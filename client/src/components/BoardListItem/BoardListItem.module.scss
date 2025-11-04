@@ -18,16 +18,16 @@
   }
 
   &:hover {
-    background-color: var(--c--theme--colors--greyscale-200);
+    background-color: var(--c--theme--colors--greyscale-100);
   }
 
   &:focus {
-    background-color: var(--c--theme--colors--greyscale-200);
+    background-color: var(--c--theme--colors--greyscale-100);
   }
 }
 
 .itemWrapperActive {
-  background-color: var(--c--theme--colors--greyscale-200);
+  background-color: var(--c--theme--colors--greyscale-100);
 }
 
 .itemIcon {
@@ -74,7 +74,7 @@
   top: 50%;
   transform: translateY(-50%);
   right: 6px;
-  background-color: var(--c--theme--colors--greyscale-200);
+  background-color: var(--c--theme--colors--greyscale-100);
 }
 
 .itemDescription {

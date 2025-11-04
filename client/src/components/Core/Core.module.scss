@@ -1,4 +1,27 @@
 :global(#app) {
+  .loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .noAuthWrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  .noAuthHeader {
+    position: fixed;
+    width: 100%;
+  }
+
+  .noAuthContent {
+    flex: 1;
+    padding-top: 52px;
+    overflow: hidden;
+  }
 
   .logoWrapper {
     display: flex;

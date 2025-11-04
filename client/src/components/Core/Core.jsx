@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation, Trans } from 'react-i18next';
-import { MainLayout } from '@gouvfr-lasuite/ui-kit';
+import { Header, MainLayout, Spinner } from '@gouvfr-lasuite/ui-kit';
 import StaticContainer from '../../containers/StaticContainer';
 import LeftMenuContainer from '../../containers/LeftMenuContainer';
 import HeaderRightContainer from '../../containers/HeaderRightContainer';
@@ -20,11 +20,9 @@ const Core = React.memo(
   }) => {
     const [t] = useTranslation();
 
-    return (
-      <>
-        {isInitializing ? (
-          <p>Chargement...</p>
-        ) : (
+    const contentNode = () => {
+      if (currentUser) {
+        return (
           <MainLayout
             enableResize
             rightHeaderContent={<HeaderRightContainer />}
@@ -43,6 +41,36 @@ const Core = React.memo(
               channel={reactAppFeedbackWidgetChannel}
             />
           </MainLayout>
+        );
+      }
+      return (
+        <div className={styles.noAuthWrapper}>
+          <div className={styles.noAuthHeader}>
+            <Header
+              leftIcon={
+                <div className={styles.logoWrapper}>
+                  <img src={logo} alt="logo" />
+                  <span>BETA</span>
+                </div>
+              }
+              rightIcon={<HeaderRightContainer />}
+            />
+          </div>
+          <div className={styles.noAuthContent}>
+            <StaticContainer />
+          </div>
+        </div>
+      );
+    };
+
+    return (
+      <>
+        {isInitializing ? (
+          <div className={styles.loading}>
+            <Spinner size="xl" />
+          </div>
+        ) : (
+          contentNode()
         )}
         {isSocketDisconnected && (
           <div className={styles.message}>

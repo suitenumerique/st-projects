@@ -1,25 +1,32 @@
 import pick from 'lodash/pick';
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-// import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { Input, Button, Checkbox } from '@openfun/cunningham-react';
+import { Input, Button } from '@openfun/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
-
-// import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-// import { DragDropProvider } from '@dnd-kit/react';
-import Label from '../../ui/Label';
-
-// import SortableItem from './SortableItem';
+import {
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  closestCenter,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 
 import PopoverHeader from '../../ui/Popover/PopoverHeader';
 
 import { useField, useSteps } from '../../hooks';
-import AddStep from './AddStep';
-import EditStep from './EditStep';
+import LabelCreateStep from '../LabelCreateStep';
+import LabelEditStep from '../LabelEditStep';
+import SortableLabelItem from './SortableLabelItem';
 
 import styles from './LabelsStep.module.scss';
-// import globalStyles from '../../assets/styles/styles.module.scss';
 
 const StepTypes = {
   ADD: 'ADD',
@@ -36,26 +43,60 @@ const LabelsStep = React.memo(
     onDeselect,
     onCreate,
     onUpdate,
-    // onMove,
+    onMove,
     onDelete,
     onBack,
   }) => {
     const [t] = useTranslation();
     const [step, openStep, handleBack] = useSteps();
     const [search, handleSearchChange] = useField('');
+    const [sortedItems, setSortedItems] = useState(items);
     const cleanSearch = useMemo(() => search.trim().toLowerCase(), [search]);
 
     const filteredItems = useMemo(
       () =>
-        items.filter(
+        sortedItems.filter(
           (label) =>
             (label.name && label.name.toLowerCase().includes(cleanSearch)) ||
             label.color.includes(cleanSearch),
         ),
-      [items, cleanSearch],
+      [sortedItems, cleanSearch],
     );
 
-    // @dnd-kit/react handles sensors automatically
+    useEffect(() => {
+      setSortedItems(items);
+    }, [items]);
+
+    const sensors = useSensors(
+      useSensor(PointerSensor, {
+        activationConstraint: {
+          distance: 5,
+        },
+      }),
+      useSensor(KeyboardSensor, {
+        coordinateGetter: sortableKeyboardCoordinates,
+      }),
+    );
+
+    const handleDragEnd = useCallback(
+      (event) => {
+        const { active, over } = event;
+        if (!over || active.id === over.id) {
+          return;
+        }
+
+        const oldIndex = sortedItems.findIndex((item) => item.id === active.id);
+        const newIndex = sortedItems.findIndex((item) => item.id === over.id);
+
+        if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
+          const newSortedItems = arrayMove(sortedItems, oldIndex, newIndex);
+          setSortedItems(newSortedItems);
+
+          onMove(active.id, newIndex);
+        }
+      },
+      [sortedItems, onMove],
+    );
 
     const searchField = useRef(null);
 
@@ -86,33 +127,6 @@ const LabelsStep = React.memo(
       [onDeselect],
     );
 
-    // const handleDragStart = useCallback(() => {
-    //   document.body.classList.add(globalStyles.dragging);
-    // }, []);
-
-    // const handleDragEnd = useCallback(
-    //   (event) => {
-    //     const { active, over } = event;
-
-    //     if (!over || active.id === over.id) {
-    //       return;
-    //     }
-
-    //     const sourceIndex = filteredItems.findIndex((item) => item.id === active.id);
-    //     const destinationIndex = filteredItems.findIndex((item) => item.id === over.id);
-
-    //     if (sourceIndex === -1 || destinationIndex === -1) {
-    //       return;
-    //     }
-
-    //     const draggedItem = filteredItems[destinationIndex];
-    //     const originalIndex = items.findIndex((item) => item.id === draggedItem.id);
-
-    //     onMove(active.id, originalIndex);
-    //   },
-    //   [onMove, filteredItems, items],
-    // );
-
     const handleUpdate = useCallback(
       (id, data) => {
         onUpdate(id, data);
@@ -137,7 +151,7 @@ const LabelsStep = React.memo(
       switch (step.type) {
         case StepTypes.ADD:
           return (
-            <AddStep
+            <LabelCreateStep
               defaultData={{
                 name: search,
               }}
@@ -146,11 +160,11 @@ const LabelsStep = React.memo(
             />
           );
         case StepTypes.EDIT: {
-          const currentItem = items.find((item) => item.id === step.params.id);
+          const currentItem = sortedItems.find((item) => item.id === step.params.id);
 
           if (currentItem) {
             return (
-              <EditStep
+              <LabelEditStep
                 defaultData={pick(currentItem, ['name', 'color'])}
                 onUpdate={(data) => handleUpdate(currentItem.id, data)}
                 onDelete={() => handleDelete(currentItem.id)}
@@ -184,34 +198,30 @@ const LabelsStep = React.memo(
             onChange={(event) => handleSearchChange(event, { value: event.target.value })}
             className={styles.search}
           />
-          <div className={styles.filterList}>
-            {filteredItems.map((label) => (
-              <div key={label.id} className={styles.filterItem}>
-                <Checkbox
-                  checked={currentIds.includes(label.id)}
-                  onChange={() => {
-                    if (currentIds.includes(label.id)) {
-                      handleDeselect(label.id);
-                    } else {
-                      handleSelect(label.id);
-                    }
-                  }}
-                  label={
-                    <div className={styles.filterLabel}>
-                      <Label name={label.name} color={label.color} size="small" />
-                    </div>
-                  }
-                />
-                {canEdit && (
-                  <div className={styles.itemActions}>
-                    <Button size="small" color="tertiary-text" onClick={() => handleEdit(label.id)}>
-                      <Icon size="small" name="edit" type="outlined" aria-hidden="true" />
-                    </Button>
-                  </div>
-                )}
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext
+              items={filteredItems.map((item) => item.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              <div className={styles.filterList}>
+                {filteredItems.map((label) => (
+                  <SortableLabelItem
+                    key={label.id}
+                    label={label}
+                    currentIds={currentIds}
+                    canEdit={canEdit}
+                    onSelect={handleSelect}
+                    onDeselect={handleDeselect}
+                    onEdit={handleEdit}
+                  />
+                ))}
               </div>
-            ))}
-          </div>
+            </SortableContext>
+          </DndContext>
           {canEdit && (
             <Button
               size="small"
@@ -230,17 +240,15 @@ const LabelsStep = React.memo(
 );
 
 LabelsStep.propTypes = {
-  /* eslint-disable react/forbid-prop-types */
-  items: PropTypes.array.isRequired,
-  currentIds: PropTypes.array.isRequired,
-  /* eslint-enable react/forbid-prop-types */
+  items: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  currentIds: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   title: PropTypes.string,
   canEdit: PropTypes.bool,
   onSelect: PropTypes.func.isRequired,
   onDeselect: PropTypes.func.isRequired,
   onCreate: PropTypes.func.isRequired,
   onUpdate: PropTypes.func.isRequired,
-  // onMove: PropTypes.func.isRequired,
+  onMove: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   onBack: PropTypes.func,
 };

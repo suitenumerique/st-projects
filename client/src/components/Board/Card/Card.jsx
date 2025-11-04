@@ -36,7 +36,7 @@ function Card({
   users,
   labels,
   tasks,
-  allBoards,
+  editableBoards,
   allBoardMemberships,
   allLabels,
   canEdit,
@@ -201,7 +201,7 @@ function Card({
                     listId,
                     projectId,
                   }}
-                  boards={allBoards}
+                  editableBoards={editableBoards}
                   boardMemberships={allBoardMemberships}
                   currentUserIds={users.map((user) => user.id)}
                   labels={allLabels}
@@ -258,7 +258,7 @@ Card.propTypes = {
   users: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   labels: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   tasks: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  allBoards: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  editableBoards: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   allBoardMemberships: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   allLabels: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   currentUser: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types

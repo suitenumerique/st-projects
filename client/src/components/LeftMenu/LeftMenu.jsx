@@ -38,7 +38,11 @@ const LeftMenu = React.memo(
             templateBoards={templateBoards}
             hideCloseButton
           >
-            <Button icon={<Icon name="add" type="outlined" />} size="medium">
+            <Button
+              className={styles.addBoardButton}
+              icon={<Icon name="add" type="outlined" />}
+              size="medium"
+            >
               Nouveau tableau
             </Button>
           </BoardCreateStepPopover>
