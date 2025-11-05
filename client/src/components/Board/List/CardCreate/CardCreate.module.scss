@@ -1,12 +1,7 @@
 :global(#app) {
-  .field {
-    border: none;
-    margin-bottom: 4px;
-    outline: none;
-    overflow: hidden;
-    padding: 0;
-    resize: none;
-    width: 100%;
+
+  .wrapper {
+    margin-bottom: 6px;
   }
 
   .fieldWrapper {
@@ -20,8 +15,19 @@
     color: var(--c--theme--colors--greyscale-400);
   }
 
-  .submitButton {
-    vertical-align: top;
+  .field {
+    border: none;
+    margin-bottom: 4px;
+    outline: none;
+    overflow: hidden;
+    padding: 0;
+    resize: none;
+    width: 100%;
+  }
+
+  .controls {
+    display: flex;
+    justify-content: flex-end;
   }
 
   .wrapperClosed {

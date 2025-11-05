@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 
 import { useSteps } from '../../hooks';
 import DeleteStep from '../DeleteStep';
-import PopoverHeader from '../../ui/Popover/PopoverHeader';
 import Menu from '../../ui/Menu';
 import MenuItem from '../../ui/Menu/MenuItem';
 
@@ -38,21 +37,16 @@ const ActionsStep = React.memo(({ onNameEdit, onDelete, onClose }) => {
   }
 
   return (
-    <>
-      <PopoverHeader
-        title={t('common.taskActions', {
+    <Menu>
+      <MenuItem icon="edit" onClick={handleEditNameClick}>
+        Modifier
+      </MenuItem>
+      <MenuItem icon="delete" onClick={handleDeleteClick}>
+        {t('action.deleteTask', {
           context: 'title',
         })}
-      />
-      <Menu>
-        <MenuItem onClick={handleEditNameClick}>Modifier</MenuItem>
-        <MenuItem onClick={handleDeleteClick}>
-          {t('action.deleteTask', {
-            context: 'title',
-          })}
-        </MenuItem>
-      </Menu>
-    </>
+      </MenuItem>
+    </Menu>
   );
 });
 

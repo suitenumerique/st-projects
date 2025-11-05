@@ -43,12 +43,6 @@ const BoardMembershipsStep = React.memo(
       [onUserDeselect],
     );
 
-    useEffect(() => {
-      searchField.current.focus({
-        preventScroll: true,
-      });
-    }, []);
-
     return (
       <>
         <PopoverHeader

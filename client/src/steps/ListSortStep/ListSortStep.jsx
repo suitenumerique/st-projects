@@ -21,22 +21,29 @@ const ListSortStep = React.memo(({ onTypeSelect, onBack }) => {
         })}
       />
       <Menu secondary vertical className={styles.menu}>
-        <MenuItem className={styles.menuItem} onClick={() => onTypeSelect(ListSortTypes.NAME_ASC)}>
+        <MenuItem
+          icon="sort_by_alpha"
+          className={styles.menuItem}
+          onClick={() => onTypeSelect(ListSortTypes.NAME_ASC)}
+        >
           {t('common.title')}
         </MenuItem>
         <MenuItem
+          icon="calendar_today"
           className={styles.menuItem}
           onClick={() => onTypeSelect(ListSortTypes.DUE_DATE_ASC)}
         >
           {t('common.dueDate')}
         </MenuItem>
         <MenuItem
+          icon="arrow_downward"
           className={styles.menuItem}
           onClick={() => onTypeSelect(ListSortTypes.CREATED_AT_ASC)}
         >
           {t('common.oldestFirst')}
         </MenuItem>
         <MenuItem
+          icon="arrow_upward"
           className={styles.menuItem}
           onClick={() => onTypeSelect(ListSortTypes.CREATED_AT_DESC)}
         >

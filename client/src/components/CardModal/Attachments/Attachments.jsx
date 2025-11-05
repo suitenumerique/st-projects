@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Gallery, Item as GalleryItem } from 'react-photoswipe-gallery';
 import { Button } from '@openfun/cunningham-react';
-import { Icon } from '@gouvfr-lasuite/ui-kit';
+import NewAttachmentInput from '../../../ui/NewAttachmentInput';
 import { useToggle } from '../../../lib/hooks';
 import FilePicker from '../../../ui/FilePicker/FilePicker';
 
@@ -157,9 +157,7 @@ const Attachments = React.memo(
         {canEdit && (
           <div>
             <FilePicker multiple onSelect={(file) => onCreate({ file })}>
-              <Button color="tertiary" size="small" icon={<Icon name="add" size="small" />}>
-                Nouvelle pièce jointe
-              </Button>
+              <NewAttachmentInput />
             </FilePicker>
           </div>
         )}

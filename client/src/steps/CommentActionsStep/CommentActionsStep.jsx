@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 import { useSteps } from '../../hooks';
 import DeleteStep from '../DeleteStep';
-import PopoverHeader from '../../ui/Popover/PopoverHeader';
 import Menu from '../../ui/Menu';
 import MenuItem from '../../ui/Menu/MenuItem';
 
@@ -38,13 +37,18 @@ const CommentActionsStep = React.memo(({ canEdit, canDelete, onEdit, onDelete, o
   }
 
   return (
-    <>
-      <PopoverHeader title="Actions du commentaire" />
-      <Menu>
-        {canEdit && <MenuItem onClick={handleEditClick}>Modifier</MenuItem>}
-        {canDelete && <MenuItem onClick={handleDeleteClick}>Supprimer le commentaire</MenuItem>}
-      </Menu>
-    </>
+    <Menu>
+      {canEdit && (
+        <MenuItem icon="edit" onClick={handleEditClick}>
+          Modifier
+        </MenuItem>
+      )}
+      {canDelete && (
+        <MenuItem icon="delete" onClick={handleDeleteClick}>
+          Supprimer le commentaire
+        </MenuItem>
+      )}
+    </Menu>
   );
 });
 

@@ -51,6 +51,30 @@
     display: flex;
     flex-direction: column;
     cursor: default;
+
+    .listHeaderButton {
+      margin: 0;
+      height: 32px;
+      width: 32px;
+      flex-shrink: 0;
+      background-color: var(--c--theme--colors--greyscale-100);
+      color: var(--c--theme--colors--greyscale-800);
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        background-color: #7c7c7c49;
+      }
+    }
+
+    &.popoverOpened {
+      .listHeaderButton {
+        background-color: var(--c--theme--colors--greyscale-300);
+      }
+    }
+
   }
 
   .list.draggable {
@@ -105,27 +129,9 @@
     padding: 6px 8px 6px 12px;
   }
 
-  .listHeaderButton {
-    margin: 0;
-    height: 32px;
-    width: 32px;
-    flex-shrink: 0;
-    background-color: var(--c--theme--colors--greyscale-100);
-    color: var(--c--theme--colors--greyscale-800);
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    &:hover {
-      background-color: #7c7c7c49;
-    }
-  }
-
   .addCardButton > button {
     height: 40px;
     width: 100%;
-    margin-top: -6px;
   }
 
   .cardsContainer {
@@ -133,7 +139,7 @@
     flex-direction: column;
     gap: 0.5rem;
     height: fit-content;
-    padding: 2px 8px 8px 8px;
+    padding: 2px 8px 2px 8px;
     overflow-y: auto;
 
   }
@@ -162,11 +168,40 @@
     box-shadow: 0px 1px 1px #1E1F2140, 0px 0px 1px #1E1F214F;
     transition: box-shadow 0.2s;
     position: relative;
+
+    .cardActionsButton {
+      padding: 0px;
+      position: absolute;
+      opacity: 0;
+      right: 6px;
+      top: 6px;
+      height: 25px;
+      width: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &.popoverOpened {
+      outline: 2px solid #000091;
+
+      .cardActionsButton {
+        opacity: 1;
+        background-color: var(--c--theme--colors--greyscale-100);
+      }
+
+    }
+
   }
 
   .card:hover {
     outline: 2px solid #000091;
     cursor: pointer;
+
+    .cardActionsButton {
+      opacity: 1;
+    }
+
   }
 
   .card.draggable {
@@ -281,23 +316,6 @@
     button {
       width: 100%;
     }
-  }
-
-  .cardActionsButton {
-    padding: 0px;
-    position: absolute;
-    opacity: 0;
-    right: 6px;
-    top: 6px;
-    height: 25px;
-    width: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .card:hover .cardActionsButton {
-    opacity: 1;
   }
 
 }

@@ -141,12 +141,6 @@ const LabelsStep = React.memo(
       [onDelete],
     );
 
-    useEffect(() => {
-      searchField.current.focus({
-        preventScroll: true,
-      });
-    }, []);
-
     if (step) {
       switch (step.type) {
         case StepTypes.ADD:

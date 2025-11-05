@@ -15,6 +15,10 @@ export default function Popover({
     e.stopPropagation();
   };
 
+  const handleOpenAutoFocus = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <RadixPopover.Root open={open} onOpenChange={onOpenChange}>
       <RadixPopover.Trigger asChild>{trigger}</RadixPopover.Trigger>
@@ -26,6 +30,7 @@ export default function Popover({
           align={align}
           className={styles.popoverWrapper}
           onClick={handlePopoverClick}
+          onOpenAutoFocus={handleOpenAutoFocus}
           avoidCollisions
         >
           <div className={styles.popoverContent}>{content}</div>

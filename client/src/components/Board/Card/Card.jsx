@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -67,6 +67,7 @@ function Card({
 
   const CardActionsPopover = usePopup(CardActionsStep);
   const nameEdit = useRef(null);
+  const [isCardActionsPopoverOpen, setIsCardActionsPopoverOpen] = useState(false);
 
   const handleClick = useCallback(() => {
     if (document.activeElement) {
@@ -175,6 +176,7 @@ function Card({
         styles.card,
         canEdit ? styles.draggable : '',
         isDragging ? styles.dragging : '',
+        isCardActionsPopoverOpen ? styles.popoverOpened : '',
       )}
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...attributes}
@@ -221,6 +223,7 @@ function Card({
                   onLabelUpdate={onLabelUpdate}
                   onLabelMove={onLabelMove}
                   onLabelDelete={onLabelDelete}
+                  onOpenChange={setIsCardActionsPopoverOpen}
                 >
                   <Button
                     className={classNames(styles.cardActionsButton)}

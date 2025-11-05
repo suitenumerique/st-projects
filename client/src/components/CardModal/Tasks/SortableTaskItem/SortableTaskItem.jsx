@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useSortable } from '@dnd-kit/sortable';
@@ -18,6 +18,7 @@ const SortableTaskItem = React.memo(
       id,
       disabled: !isPersisted || !canEdit,
     });
+    const [isTaskActionsPopoverOpen, setIsTaskActionsPopoverOpen] = useState(false);
 
     const style = {
       transform: CSS.Transform.toString(transform),
@@ -56,7 +57,11 @@ const SortableTaskItem = React.memo(
       <div
         ref={setNodeRef}
         style={style}
-        className={classNames(styles.wrapper, isDragging && styles.dragging)}
+        className={classNames(
+          styles.wrapper,
+          isDragging && styles.dragging,
+          isTaskActionsPopoverOpen && styles.popoverOpened,
+        )}
       >
         <Checkbox
           checked={isCompleted}
@@ -82,7 +87,11 @@ const SortableTaskItem = React.memo(
               {name}
             </span>
             {isPersisted && canEdit && (
-              <TaskActionsPopover onNameEdit={handleNameEdit} onDelete={onDelete}>
+              <TaskActionsPopover
+                onNameEdit={handleNameEdit}
+                onDelete={onDelete}
+                onOpenChange={setIsTaskActionsPopoverOpen}
+              >
                 <Button
                   className={styles.taskActionsButton}
                   color="tertiary-text"

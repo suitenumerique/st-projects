@@ -111,11 +111,12 @@ const CardAdd = React.memo(({ isOpened, onCreate, onClose }) => {
         <Button
           type="submit"
           color="primary"
+          size="small"
           className={styles.submitButton}
           onMouseOver={handleControlMouseOver}
           onMouseOut={handleControlMouseOut}
         >
-          {t('action.addCard')}
+          Valider
         </Button>
       </div>
     </form>

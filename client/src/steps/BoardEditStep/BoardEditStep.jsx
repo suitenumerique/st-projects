@@ -77,7 +77,7 @@ const EditBoardStep = React.memo(({ defaultData, onUpdate, onDelete, onClose }) 
           className={styles.createInput}
         />
 
-        <div style={{ display: 'flex', gap: '8px', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
           <Button type="submit" size="medium">
             {t('action.save')}
           </Button>

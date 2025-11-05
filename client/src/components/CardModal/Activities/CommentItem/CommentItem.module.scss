@@ -6,6 +6,19 @@
     gap: 0.5rem;
     width: 100%;
     padding: 0.25rem 0 0 0;
+
+    .commentActionsButton {
+      opacity: 0;
+    }
+
+    &:hover .commentActionsButton {
+      opacity: 1;
+    }
+
+    &.popoverOpened .commentActionsButton {
+      opacity: 1;
+      background-color: var(--c--theme--colors--greyscale-100);
+    }
   }
 
   .user {
@@ -56,14 +69,6 @@
     max-width: 100%;
     overflow: hidden;
     padding: 8px 12px;
-  }
-
-  .commentActionsButton {
-    opacity: 0;
-  }
-
-  .itemComment:hover .commentActionsButton {
-    opacity: 1;
   }
 
 }

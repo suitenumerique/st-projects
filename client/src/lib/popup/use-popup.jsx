@@ -4,7 +4,7 @@ import Popover from '../../ui/Popover';
 
 export default (Step) => {
   return useMemo(() => {
-    const Popup = React.memo(({ children, onClose, ...popoverProps }) => {
+    const Popup = React.memo(({ children, onClose, onOpenChange, ...popoverProps }) => {
       const [isOpened, setIsOpened] = useState(false);
 
       // const wrapper = useRef(null);
@@ -12,15 +12,21 @@ export default (Step) => {
 
       const handleOpen = useCallback(() => {
         setIsOpened(true);
-      }, []);
+        if (onOpenChange) {
+          onOpenChange(true);
+        }
+      }, [onOpenChange]);
 
       const handleClose = useCallback(() => {
         setIsOpened(false);
+        if (onOpenChange) {
+          onOpenChange(false);
+        }
 
         if (onClose) {
           onClose();
         }
-      }, [onClose]);
+      }, [onClose, onOpenChange]);
 
       const handleOpenChange = useCallback(
         (open) => {
@@ -98,11 +104,13 @@ export default (Step) => {
     Popup.propTypes = {
       children: PropTypes.node.isRequired,
       onClose: PropTypes.func,
+      onOpenChange: PropTypes.func,
       hideCloseButton: PropTypes.bool,
     };
 
     Popup.defaultProps = {
       onClose: undefined,
+      onOpenChange: undefined,
       hideCloseButton: false,
     };
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +16,7 @@ import styles from './CommentItem.module.scss';
 const CommentItem = React.memo(
   ({ data, createdAt, isPersisted, user, canEdit, canDelete, onUpdate, onDelete }) => {
     const [t] = useTranslation();
+    const [isCommentActionsPopoverOpen, setIsCommentActionsPopoverOpen] = useState(false);
 
     const CommentActionsPopover = usePopup(CommentActionsStep);
 
@@ -26,7 +27,12 @@ const CommentItem = React.memo(
     }, []);
 
     return (
-      <div className={styles.itemComment}>
+      <div
+        className={classNames(
+          styles.itemComment,
+          isCommentActionsPopoverOpen && styles.popoverOpened,
+        )}
+      >
         <span className={styles.user}>
           <User name={user.name} size="small" avatarUrl={user.avatarUrl} />
         </span>
@@ -56,6 +62,7 @@ const CommentItem = React.memo(
                       canDelete={canDelete}
                       onEdit={handleEditClick}
                       onDelete={onDelete}
+                      onOpenChange={setIsCommentActionsPopoverOpen}
                     >
                       <Button
                         className={styles.commentActionsButton}

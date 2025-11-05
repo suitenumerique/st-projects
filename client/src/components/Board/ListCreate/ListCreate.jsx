@@ -75,25 +75,25 @@ const ListAdd = React.memo(({ onCreate, onClose }) => {
   }, [onClose]);
 
   return (
-    <div className={styles.wrapper} data-list-create>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <Input
-            ref={nameField}
-            name="name"
-            value={data.name}
-            label={t('common.enterListTitle')}
-            className={styles.input}
-            onChange={(event) =>
-              handleFieldChange(event, { name: 'name', value: event.target.value })
-            }
-          />
-          <Button color="primary" type="submit">
-            {t('action.addList')}
-          </Button>
-        </div>
-      </form>
-    </div>
+    <form className={styles.wrapper} onSubmit={handleSubmit} data-list-create>
+      <div className={styles.fieldWrapper}>
+        <Input
+          ref={nameField}
+          name="name"
+          value={data.name}
+          label={t('common.enterListTitle')}
+          className={styles.input}
+          onChange={(event) =>
+            handleFieldChange(event, { name: 'name', value: event.target.value })
+          }
+        />
+      </div>
+      <div className={styles.controls}>
+        <Button color="primary" size="small" type="submit">
+          Valider
+        </Button>
+      </div>
+    </form>
   );
 });
 

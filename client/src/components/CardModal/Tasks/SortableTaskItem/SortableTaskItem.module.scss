@@ -41,7 +41,6 @@
       font-size: 14px;
       line-height: 20px;
       color: var(--c--theme--colors--greyscale-800);
-
       &.taskCompleted {
         color: var(--c--theme--colors--greyscale-400);
         text-decoration: line-through;
@@ -52,10 +51,20 @@
       opacity: 0;
     }
 
-    .taskWrapper:hover .taskActionsButton {
-      opacity: 1;
+    &:hover {
+      .taskActionsButton {
+        opacity: 1;
+      }
+    }
+
+    &.popoverOpened {
+      .taskWrapper {
+        background-color: var(--c--theme--colors--greyscale-100);
+      }
+      .taskActionsButton {
+        opacity: 1;
+      }
     }
 
   }
-
 }

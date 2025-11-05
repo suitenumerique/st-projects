@@ -10,9 +10,9 @@
     margin-bottom: 6px;
   }
 
-  .deleteButton {
-    bottom: 12px;
-    position: absolute;
-    right: 9px;
+  .controls {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
   }
 }

@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
+import { HorizontalSeparator } from '@gouvfr-lasuite/ui-kit';
 import Menu from '../../ui/Menu';
 import MenuItem from '../../ui/Menu/MenuItem';
 import PopoverHeader from '../../ui/Popover/PopoverHeader';
@@ -101,42 +102,36 @@ const ActionsStep = React.memo(
     }
 
     return (
-      <>
-        <PopoverHeader
-          title={t('common.listActions', {
-            context: 'title',
-          })}
-        />
-        <div>
-          <Menu secondary vertical className={styles.menu}>
-            <MenuItem className={styles.menuItem} onClick={handleEditNameClick}>
-              {t('action.editTitle', {
-                context: 'title',
-              })}
-            </MenuItem>
-            <MenuItem className={styles.menuItem} onClick={hanndleEditColorClick}>
-              {t('action.editColor', {
-                context: 'title',
-              })}
-            </MenuItem>
-            <MenuItem className={styles.menuItem} onClick={handleAddCardClick}>
-              {t('action.addCard', {
-                context: 'title',
-              })}
-            </MenuItem>
-            <MenuItem className={styles.menuItem} onClick={handleSortClick}>
-              {t('action.sortList', {
-                context: 'title',
-              })}
-            </MenuItem>
-            <MenuItem className={styles.menuItem} onClick={handleDeleteClick}>
-              {t('action.deleteList', {
-                context: 'title',
-              })}
-            </MenuItem>
-          </Menu>
-        </div>
-      </>
+      <div>
+        <Menu secondary vertical className={styles.menu}>
+          <MenuItem icon="edit" className={styles.menuItem} onClick={handleEditNameClick}>
+            {t('action.editTitle', {
+              context: 'title',
+            })}
+          </MenuItem>
+          <MenuItem icon="palette" className={styles.menuItem} onClick={hanndleEditColorClick}>
+            {t('action.editColor', {
+              context: 'title',
+            })}
+          </MenuItem>
+          <MenuItem icon="add" className={styles.menuItem} onClick={handleAddCardClick}>
+            {t('action.addCard', {
+              context: 'title',
+            })}
+          </MenuItem>
+          <MenuItem icon="sort" className={styles.menuItem} onClick={handleSortClick}>
+            {t('action.sortList', {
+              context: 'title',
+            })}
+          </MenuItem>
+          <HorizontalSeparator withPadding={false} />
+          <MenuItem icon="delete" className={styles.menuItem} onClick={handleDeleteClick}>
+            {t('action.deleteList', {
+              context: 'title',
+            })}
+          </MenuItem>
+        </Menu>
+      </div>
     );
   },
 );

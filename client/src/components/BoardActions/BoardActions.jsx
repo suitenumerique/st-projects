@@ -64,16 +64,14 @@ const BoardActions = React.memo(
       [allUsers, boardMemberships],
     );
 
-    const membersForModal = useMemo(() => {
+    const modalMembers = useMemo(() => {
       return boardMemberships.map((membership) => {
         return {
           id: membership.id,
-          name: membership.user.name,
-          email: membership.user.email,
           role: membership.role,
           user: {
             id: membership.user.id,
-            full_name: membership.user.name,
+            // full_name: membership.user.name,
             email: membership.user.email,
           },
         };
@@ -138,7 +136,7 @@ const BoardActions = React.memo(
           modalTitle="Partager le tableau"
           canUpdate={canEdit}
           canView
-          accesses={membersForModal}
+          accesses={modalMembers}
           invitationRoles={[
             {
               label: 'Editeur',

@@ -58,6 +58,7 @@ function List({
 
   // const [t] = useTranslation();
   const [isAddCardOpened, setIsAddCardOpened] = useState(false);
+  const [isListActionsPopoverOpen, setIsListActionsPopoverOpen] = useState(false);
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -116,6 +117,7 @@ function List({
         styles.list,
         canEdit ? styles.draggable : '',
         isDragging ? styles.dragging : '',
+        isListActionsPopoverOpen ? styles.popoverOpened : '',
       )}
     >
       <div
@@ -161,6 +163,7 @@ function List({
             onSort={onSort}
             color={color}
             onColorEdit={handleColorEdit}
+            onOpenChange={setIsListActionsPopoverOpen}
           >
             <Button className={styles.listHeaderButton}>
               <Icon outlined name="more_horiz" />

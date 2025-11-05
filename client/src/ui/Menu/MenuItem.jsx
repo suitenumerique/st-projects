@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import { useCallback } from 'react';
 
+import { Icon } from '@gouvfr-lasuite/ui-kit';
 import styles from './MenuItem.module.scss';
 
-function MenuItem({ onClick, children }) {
+function MenuItem({ onClick, children, icon }) {
   const onKeyDown = useCallback(
     (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
@@ -21,6 +22,7 @@ function MenuItem({ onClick, children }) {
       onKeyDown={onKeyDown}
       className={styles.menuItem}
     >
+      {icon && <Icon name={icon} className={styles.icon} type="outlined" />}
       {children}
     </button>
   );
@@ -29,11 +31,13 @@ function MenuItem({ onClick, children }) {
 MenuItem.propTypes = {
   onClick: PropTypes.func,
   children: PropTypes.node,
+  icon: PropTypes.string,
 };
 
 MenuItem.defaultProps = {
   onClick: () => {},
   children: undefined,
+  icon: undefined,
 };
 
 export default MenuItem;

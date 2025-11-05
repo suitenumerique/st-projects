@@ -3,6 +3,7 @@ import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
+import { HorizontalSeparator } from '@gouvfr-lasuite/ui-kit';
 import { useSteps } from '../../hooks';
 import BoardMembershipsStep from '../BoardMembershipsStep';
 import LabelsStep from '../LabelsStep';
@@ -13,7 +14,6 @@ import DeleteStep from '../DeleteStep/DeleteStep';
 
 import Menu from '../../ui/Menu';
 import MenuItem from '../../ui/Menu/MenuItem';
-import PopoverHeader from '../../ui/Popover/PopoverHeader';
 
 import styles from './CardActionsStep.module.scss';
 
@@ -177,55 +177,53 @@ const CardActionsStep = React.memo(
     }
 
     return (
-      <>
-        <PopoverHeader
-          title={t('common.cardActions', {
+      <Menu secondary vertical className={styles.menu}>
+        <MenuItem icon="edit" className={styles.menuItem} onClick={handleEditNameClick}>
+          {t('action.editTitle', {
             context: 'title',
           })}
-        />
-        <Menu secondary vertical className={styles.menu}>
-          <MenuItem className={styles.menuItem} onClick={handleEditNameClick}>
-            {t('action.editTitle', {
-              context: 'title',
-            })}
-          </MenuItem>
-          <MenuItem className={styles.menuItem} onClick={handleUsersClick}>
-            {t('common.members', {
-              context: 'title',
-            })}
-          </MenuItem>
-          <MenuItem className={styles.menuItem} onClick={handleLabelsClick}>
-            {t('common.labels', {
-              context: 'title',
-            })}
-          </MenuItem>
-          <MenuItem className={styles.menuItem} onClick={handleEditDueDateClick}>
-            {t('action.editDueDate', {
-              context: 'title',
-            })}
-          </MenuItem>
-          <MenuItem className={styles.menuItem} onClick={handleEditStopwatchClick}>
-            {t('action.editStopwatch', {
-              context: 'title',
-            })}
-          </MenuItem>
-          <MenuItem className={styles.menuItem} onClick={handleMoveClick}>
-            {t('action.moveCard', {
-              context: 'title',
-            })}
-          </MenuItem>
-          <MenuItem className={styles.menuItem} onClick={handleDuplicateClick}>
-            {t('action.duplicateCard', {
-              context: 'title',
-            })}
-          </MenuItem>
-          <MenuItem className={styles.menuItem} onClick={handleDeleteClick}>
-            {t('action.deleteCard', {
-              context: 'title',
-            })}
-          </MenuItem>
-        </Menu>
-      </>
+        </MenuItem>
+        <MenuItem icon="people" className={styles.menuItem} onClick={handleUsersClick}>
+          {t('common.members', {
+            context: 'title',
+          })}
+        </MenuItem>
+        <MenuItem icon="label" className={styles.menuItem} onClick={handleLabelsClick}>
+          {t('common.labels', {
+            context: 'title',
+          })}
+        </MenuItem>
+        <MenuItem
+          icon="calendar_today"
+          className={styles.menuItem}
+          onClick={handleEditDueDateClick}
+        >
+          {t('action.editDueDate', {
+            context: 'title',
+          })}
+        </MenuItem>
+        <MenuItem icon="timer" className={styles.menuItem} onClick={handleEditStopwatchClick}>
+          {t('action.editStopwatch', {
+            context: 'title',
+          })}
+        </MenuItem>
+        <MenuItem icon="arrow_forward" className={styles.menuItem} onClick={handleMoveClick}>
+          {t('action.moveCard', {
+            context: 'title',
+          })}
+        </MenuItem>
+        <MenuItem icon="copy" className={styles.menuItem} onClick={handleDuplicateClick}>
+          {t('action.duplicateCard', {
+            context: 'title',
+          })}
+        </MenuItem>
+        <HorizontalSeparator withPadding={false} />
+        <MenuItem icon="delete" className={styles.menuItem} onClick={handleDeleteClick}>
+          {t('action.deleteCard', {
+            context: 'title',
+          })}
+        </MenuItem>
+      </Menu>
     );
   },
 );

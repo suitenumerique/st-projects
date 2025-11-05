@@ -9,8 +9,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 12px;
-    margin-top: -12px;
+    margin: -12px -12px 12px -12px;
+    padding: 0 12px;
+    font-weight: 500;
 
     .popoverLeft, .popoverRight {
       width: 25px;
