@@ -109,9 +109,15 @@
     .cardModalSectionRight {
       display: flex;
       flex-direction: row;
-      align-items: center;
-      gap: 12px;
+      align-items: flex-start;
+      gap: 16px;
       flex-wrap: wrap;
+    }
+
+    .detailsItem {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .detailsItemTitle {

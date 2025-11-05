@@ -93,49 +93,6 @@ const BoardMembershipsStep = React.memo(
               />
             ))}
           </div>
-          {/* {filteredItems.length > 0 && (
-            <Menu className={styles.menu}>
-              {filteredItems.map((item) => (
-                <MenuItem
-                  active={currentUserIds.includes(item.user.id)}
-                  disabled={!item.isPersisted}
-                  key={item.user.id}
-                  onClick={() => {
-                    if (currentUserIds.includes(item.user.id)) {
-                      handleUserDeselect(item.user.id);
-                    } else {
-                      handleUserSelect(item.user.id);
-                    }
-                  }}
-                >
-                  <div className={styles.menuItem}>
-                    <User
-                      className={styles.user}
-                      name={item.user.name}
-                      size="small"
-                      avatarUrl={item.user.avatarUrl}
-                    />
-                    <div
-                      className={classNames(
-                        styles.menuItemText,
-                        currentUserIds.includes(item.user.id) && styles.menuItemTextActive,
-                      )}
-                    >
-                      {item.user.name}
-                    </div>
-                    {currentUserIds.includes(item.user.id) && (
-                      <Icon
-                        name="check"
-                        type="outlined"
-                        aria-hidden="true"
-                        className={styles.menuItemIcon}
-                      />
-                    )}
-                  </div>
-                </MenuItem>
-              ))}
-            </Menu>
-          )} */}
         </>
       </>
     );

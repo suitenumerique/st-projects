@@ -345,7 +345,7 @@ const CardModal = React.memo(
                   <Button
                     color="secondary"
                     size="small"
-                    icon={<Icon size="small" type="outlined" name="label" />}
+                    icon={<Icon size="small" type="outlined" name="new_label" />}
                   >
                     {t('common.labels', {
                       context: 'title',
@@ -424,27 +424,6 @@ const CardModal = React.memo(
                           )}
                         </span>
                       ))}
-                      {canEdit && (
-                        <LabelsPopover
-                          items={allLabels}
-                          currentIds={labelIds}
-                          onSelect={onLabelAdd}
-                          onDeselect={onLabelRemove}
-                          onCreate={onLabelCreate}
-                          onUpdate={onLabelUpdate}
-                          onMove={onLabelMove}
-                          onDelete={onLabelDelete}
-                        >
-                          <Button
-                            type="button"
-                            color="secondary"
-                            size="small"
-                            className={styles.detailsItemAddButton}
-                          >
-                            <Icon name="add" size="small" />
-                          </Button>
-                        </LabelsPopover>
-                      )}
                     </div>
                   </div>
                 )}
@@ -466,31 +445,14 @@ const CardModal = React.memo(
                               onUserDeselect={onUserRemove}
                             >
                               <button type="button" className="bare-button">
-                                <User name={user.name} size="small" avatarUrl={user.avatarUrl} />
+                                <User name={user.name} size="medium" avatarUrl={user.avatarUrl} />
                               </button>
                             </BoardMembershipsPopover>
                           ) : (
-                            <User name={user.name} size="small" avatarUrl={user.avatarUrl} />
+                            <User name={user.name} size="medium" avatarUrl={user.avatarUrl} />
                           )}
                         </span>
                       ))}
-                      {canEdit && (
-                        <BoardMembershipsPopover
-                          items={allBoardMemberships}
-                          currentUserIds={userIds}
-                          onUserSelect={onUserAdd}
-                          onUserDeselect={onUserRemove}
-                        >
-                          <Button
-                            type="button"
-                            color="secondary"
-                            size="small"
-                            className={styles.detailsItemAddButton}
-                          >
-                            <Icon name="add" size="small" />
-                          </Button>
-                        </BoardMembershipsPopover>
-                      )}
                     </div>
                   </div>
                 )}

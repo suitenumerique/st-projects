@@ -28,7 +28,7 @@ const CommentItem = React.memo(
     return (
       <div className={styles.itemComment}>
         <span className={styles.user}>
-          <User size="small" name={user.name} avatarUrl={user.avatarUrl} />
+          <User name={user.name} size="small" avatarUrl={user.avatarUrl} />
         </span>
         <div className={classNames(styles.content)}>
           <CommentEdit

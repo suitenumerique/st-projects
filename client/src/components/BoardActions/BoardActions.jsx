@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { ShareModal, ShareModalCopyLinkFooter, Icon } from '@gouvfr-lasuite/ui-kit';
 import { Button } from '@openfun/cunningham-react';
@@ -64,6 +64,22 @@ const BoardActions = React.memo(
       [allUsers, boardMemberships],
     );
 
+    const membersForModal = useMemo(() => {
+      return boardMemberships.map((membership) => {
+        return {
+          id: membership.id,
+          name: membership.user.name,
+          email: membership.user.email,
+          role: membership.role,
+          user: {
+            id: membership.user.id,
+            full_name: membership.user.name,
+            email: membership.user.email,
+          },
+        };
+      });
+    }, [boardMemberships]);
+
     useEffect(() => {
       const urlParams = new URLSearchParams(window.location.search);
       const labelsParam = urlParams.get('labels');
@@ -122,7 +138,7 @@ const BoardActions = React.memo(
           modalTitle="Partager le tableau"
           canUpdate={canEdit}
           canView
-          accesses={boardMemberships}
+          accesses={membersForModal}
           invitationRoles={[
             {
               label: 'Editeur',

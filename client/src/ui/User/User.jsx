@@ -1,59 +1,21 @@
-import upperFirst from 'lodash/upperFirst';
-import camelCase from 'lodash/camelCase';
 import initials from 'initials';
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
-
-import styles from './User.module.scss';
+import { UserAvatar } from '@gouvfr-lasuite/ui-kit';
 
 const SIZES = {
-  TINY: 'tiny',
+  XSMALL: 'xsmall',
   SMALL: 'small',
   MEDIUM: 'medium',
   LARGE: 'large',
-  MASSIVE: 'massive',
-};
-
-const COLORS = [
-  'emerald',
-  'peter-river',
-  'wisteria',
-  'carrot',
-  'alizarin',
-  'turquoise',
-  'midnight-blue',
-];
-
-const getColor = (name) => {
-  let sum = 0;
-  for (let i = 0; i < name.length; i += 1) {
-    sum += name.charCodeAt(i);
-  }
-
-  return COLORS[sum % COLORS.length];
 };
 
 const User = React.memo(({ name, avatarUrl, size, isDisabled, onClick }) => {
-  const contentNode = (
-    <span
-      title={name}
-      className={classNames(
-        styles.wrapper,
-        styles[`wrapper${upperFirst(size)}`],
-        onClick && styles.wrapperHoverable,
-        !avatarUrl && styles[`background${upperFirst(camelCase(getColor(name)))}`],
-      )}
-      style={{
-        background: avatarUrl && `url("${avatarUrl}") center / cover`,
-      }}
-    >
-      {!avatarUrl && <span className={styles.initials}>{initials(name)}</span>}
-    </span>
-  );
+  const initialsWithSpace = initials(name).split('').join(' ');
+  const contentNode = <UserAvatar fullName={initialsWithSpace} size={size} />;
 
   return onClick ? (
-    <button type="button" disabled={isDisabled} className={styles.button} onClick={onClick}>
+    <button type="button" disabled={isDisabled} onClick={onClick}>
       {contentNode}
     </button>
   ) : (

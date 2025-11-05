@@ -79,7 +79,7 @@ const Filters = React.memo(
               {filterUsers.length === 0 && <span className={styles.filterTitle}>Membres</span>}
               {filterUsers.map((user) => (
                 <span key={user.id} className={styles.filterItem}>
-                  <User name={user.name} avatarUrl={user.avatarUrl} size="tiny" />
+                  <User name={user.name} avatarUrl={user.avatarUrl} size="small" />
                 </span>
               ))}
             </Button>
