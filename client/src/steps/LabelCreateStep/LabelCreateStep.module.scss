@@ -9,7 +9,9 @@
     margin-bottom: 6px;
   }
 
-  .submitButton {
-    margin-top: 8px;
+  .controls {
+    display: flex;
+    justify-content: flex-end;
   }
+
 }

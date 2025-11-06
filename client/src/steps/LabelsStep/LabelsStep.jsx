@@ -176,25 +176,25 @@ const LabelsStep = React.memo(
     }
 
     return (
-      <>
+      <div style={{ width: '300px' }}>
         <PopoverHeader
           onBack={onBack}
           title={t(title, {
             context: 'title',
           })}
         />
-        <>
-          <div className={styles.searchContainer}>
-            <Icon name="search" type="outlined" aria-hidden="true" />
-            <input
-              ref={searchField}
-              value={search}
-              name="search"
-              className={styles.search}
-              onChange={(event) => handleSearchChange(event, { value: event.target.value })}
-              placeholder={t('common.searchLabels')}
-            />
-          </div>
+        <div className={styles.searchContainer}>
+          <Icon name="search" type="outlined" aria-hidden="true" />
+          <input
+            ref={searchField}
+            value={search}
+            name="search"
+            className={styles.search}
+            onChange={(event) => handleSearchChange(event, { value: event.target.value })}
+            placeholder={t('common.searchLabels')}
+          />
+        </div>
+        {filteredItems.length > 0 && (
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
@@ -219,19 +219,19 @@ const LabelsStep = React.memo(
               </div>
             </SortableContext>
           </DndContext>
-          {canEdit && (
-            <Button
-              size="small"
-              color="tertiary"
-              onClick={handleAddClick}
-              className={styles.addButton}
-              icon={<Icon size="small" name="add" type="outlined" aria-hidden="true" />}
-            >
-              {t('action.createNewLabel')}
-            </Button>
-          )}
-        </>
-      </>
+        )}
+        {canEdit && (
+          <Button
+            size="small"
+            color="tertiary"
+            onClick={handleAddClick}
+            className={styles.addButton}
+            icon={<Icon size="small" name="add" type="outlined" aria-hidden="true" />}
+          >
+            {t('action.createNewLabel')}
+          </Button>
+        )}
+      </div>
     );
   },
 );

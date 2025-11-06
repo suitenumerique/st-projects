@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
@@ -7,7 +7,7 @@ import { Icon, Spinner } from '@gouvfr-lasuite/ui-kit';
 
 import usePopup from '../../../../lib/popup';
 
-import AttachmentEditStep from '../../../../steps/AttachmentEditStep';
+import AttachmentActionsStep from '../../../../steps/AttachmentActionsStep';
 
 import styles from './AttachmentItem.module.scss';
 
@@ -30,6 +30,7 @@ const AttachmentItem = React.forwardRef(
     ref,
   ) => {
     const [t] = useTranslation();
+    const [isAttachmentActionsPopoverOpen, setIsAttachmentActionsPopoverOpen] = useState(false);
 
     const handleClick = useCallback(() => {
       if (onClick) {
@@ -52,7 +53,7 @@ const AttachmentItem = React.forwardRef(
       [isCover, onCoverSelect, onCoverDeselect],
     );
 
-    const AttachmentEditPopover = usePopup(AttachmentEditStep);
+    const AttachmentActionsPopover = usePopup(AttachmentActionsStep);
 
     if (!isPersisted) {
       return (
@@ -68,7 +69,14 @@ const AttachmentItem = React.forwardRef(
     return (
       /* eslint-disable-next-line jsx-a11y/click-events-have-key-events,
                                   jsx-a11y/no-static-element-interactions */
-      <div ref={ref} className={styles.wrapper} onClick={handleClick}>
+      <div
+        ref={ref}
+        className={classNames(
+          styles.wrapper,
+          isAttachmentActionsPopoverOpen && styles.popoverOpened,
+        )}
+        onClick={handleClick}
+      >
         <div
           className={styles.thumbnail}
           style={{
@@ -102,12 +110,13 @@ const AttachmentItem = React.forwardRef(
           )}
         </div>
         {canEdit && (
-          <AttachmentEditPopover
+          <AttachmentActionsPopover
             defaultData={{
               name,
             }}
             onUpdate={onUpdate}
             onDelete={onDelete}
+            onOpenChange={setIsAttachmentActionsPopoverOpen}
           >
             <Button
               className={styles.attachmentActionsButton}
@@ -115,7 +124,7 @@ const AttachmentItem = React.forwardRef(
               size="small"
               icon={<Icon name="more_horiz" type="outlined" size="small" />}
             />
-          </AttachmentEditPopover>
+          </AttachmentActionsPopover>
         )}
       </div>
     );

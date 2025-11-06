@@ -1,15 +1,16 @@
 :global(#app) {
+  .createInput {
+    margin-bottom: 8px;
+  }
+
   .controls {
     display: flex;
     max-width: 280px;
+    justify-content: flex-end;
 
     @media only screen and (max-width: 767px) {
       max-width: 226px;
     }
-  }
-
-  .createInput {
-    margin-bottom: 8px;
   }
 
   .templatesWrapper {

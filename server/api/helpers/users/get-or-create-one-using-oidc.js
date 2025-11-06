@@ -86,6 +86,13 @@ module.exports = {
       }
     }
 
+    // eslint-disable-next-line no-console
+    console.log('=================');
+    // eslint-disable-next-line no-console
+    console.log('claims', claims);
+    // eslint-disable-next-line no-console
+    console.log('=================');
+
     const values = {
       isAdmin,
       email: claims[sails.config.custom.oidcEmailAttribute],

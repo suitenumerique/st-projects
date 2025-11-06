@@ -11,8 +11,17 @@
     border-radius: 4px;
     padding: 0.5rem;
 
-    &:hover {
+    .attachmentActionsButton {
+      opacity: 0;
+    }
+
+    &:hover,
+    &.popoverOpened {
       background: var(--c--theme--colors--greyscale-100);
+
+      .attachmentActionsButton {
+        opacity: 1;
+      }
     }
   }
 
@@ -97,11 +106,4 @@
     text-decoration: underline;
   }
 
-  .attachmentActionsButton {
-    opacity: 0;
-  }
-
-  .wrapper:hover .attachmentActionsButton {
-    opacity: 1;
-  }
 }

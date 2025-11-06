@@ -56,14 +56,16 @@ const LabelCreateStep = React.memo(({ defaultData, onCreate, onBack }) => {
         />
         <div className={styles.fieldLabel}>{t('common.color')}</div>
         <ColorPicker colors={LabelColors} current={data.color} onChange={handleFieldChange} />
-        <Button
-          type="submit"
-          color="primary"
-          content={t('action.createLabel')}
-          className={styles.submitButton}
-        >
-          {t('action.createLabel')}
-        </Button>
+        <div className={styles.controls}>
+          <Button
+            type="submit"
+            color="primary"
+            content={t('action.createLabel')}
+            className={styles.submitButton}
+          >
+            {t('action.createLabel')}
+          </Button>
+        </div>
       </form>
     </div>
   );

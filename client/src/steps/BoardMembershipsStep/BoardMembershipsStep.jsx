@@ -44,7 +44,7 @@ const BoardMembershipsStep = React.memo(
     );
 
     return (
-      <>
+      <div style={{ width: '300px' }}>
         <PopoverHeader
           onBack={onBack}
           title={t(title || 'common.members', {
@@ -77,18 +77,20 @@ const BoardMembershipsStep = React.memo(
               }}
               label={
                 <div className={styles.filterLabel}>
-                  <User
-                    name={membership.user.name}
-                    avatarUrl={membership.user.avatarUrl}
-                    size="small"
-                  />
-                  <span>{membership.user.name}</span>
+                  <div className={styles.userAvatar}>
+                    <User
+                      name={membership.user.name}
+                      avatarUrl={membership.user.avatarUrl}
+                      size="small"
+                    />
+                  </div>
+                  <span className={styles.userName}>{membership.user.name}</span>
                 </div>
               }
             />
           ))}
         </div>
-      </>
+      </div>
     );
   },
 );

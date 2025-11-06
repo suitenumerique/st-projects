@@ -2,7 +2,7 @@
 
   .fieldWrapper {
     display: flex;
-    gap: 4px;
+    gap: 8px;
     flex-direction: row;
     width: 100%;
     margin-bottom: 12px;
@@ -24,6 +24,9 @@
       border: 1px solid var(--c--theme--colors--greyscale-400);
       height: 36px;
       width: 100%;
+      font-size: 14px;
+      padding: 0 8px;
+      width: 100px;
       &:focus {
         border-color: var(--c--theme--colors--primary-800);
         outline: none;
@@ -39,8 +42,8 @@
 
   .buttonsWrapper {
     display: flex;
-    justify-content: space-between;
-    gap: 4px;
+    justify-content: flex-end;
+    gap: 8px;
     flex-direction: row;
     width: 100%;
   }

@@ -80,7 +80,7 @@ const ActionsStep = React.memo(
           );
         case StepTypes.EDIT_COLOR:
           return (
-            <>
+            <div style={{ width: '280px' }}>
               <PopoverHeader
                 onBack={handleBack}
                 title={t('action.editColor', {
@@ -93,7 +93,7 @@ const ActionsStep = React.memo(
                 allowDeletion
                 onChange={handleColorChange}
               />
-            </>
+            </div>
           );
         default:
       }

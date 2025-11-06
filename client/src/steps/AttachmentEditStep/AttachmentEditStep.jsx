@@ -4,25 +4,18 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Button, Input } from '@openfun/cunningham-react';
 
-import { useForm, useSteps } from '../../hooks';
-import DeleteStep from '../DeleteStep';
+import { useForm } from '../../hooks';
 import PopoverHeader from '../../ui/Popover/PopoverHeader';
 
 import styles from './AttachmentEditStep.module.scss';
 
-const StepTypes = {
-  DELETE: 'DELETE',
-};
-
-const AttachmentEditStep = React.memo(({ defaultData, onUpdate, onDelete, onClose }) => {
+const AttachmentEditStep = React.memo(({ defaultData, onUpdate, onClose }) => {
   const [t] = useTranslation();
 
   const [data, handleFieldChange] = useForm(() => ({
     name: '',
     ...defaultData,
   }));
-
-  const [step, openStep, handleBack] = useSteps();
 
   const nameField = useRef(null);
 
@@ -44,25 +37,9 @@ const AttachmentEditStep = React.memo(({ defaultData, onUpdate, onDelete, onClos
     onClose();
   }, [defaultData, onUpdate, onClose, data]);
 
-  const handleDeleteClick = useCallback(() => {
-    openStep(StepTypes.DELETE);
-  }, [openStep]);
-
   useEffect(() => {
     nameField.current.select();
   }, []);
-
-  if (step && step.type === StepTypes.DELETE) {
-    return (
-      <DeleteStep
-        title="common.deleteAttachment"
-        content="common.areYouSureYouWantToDeleteThisAttachment"
-        buttonContent="action.deleteAttachment"
-        onConfirm={onDelete}
-        onBack={handleBack}
-      />
-    );
-  }
 
   return (
     <>
@@ -82,9 +59,6 @@ const AttachmentEditStep = React.memo(({ defaultData, onUpdate, onDelete, onClos
         />
         <div className={styles.buttons}>
           <Button type="submit">{t('action.save')}</Button>
-          <Button color="secondary" onClick={handleDeleteClick}>
-            {t('action.delete')}
-          </Button>
         </div>
       </form>
     </>
@@ -94,7 +68,6 @@ const AttachmentEditStep = React.memo(({ defaultData, onUpdate, onDelete, onClos
 AttachmentEditStep.propTypes = {
   defaultData: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   onUpdate: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 

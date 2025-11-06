@@ -34,7 +34,7 @@ const ColorPicker = React.memo(({ current, onChange, colors, allowDeletion }) =>
       </div>
       {current && allowDeletion && (
         <Button color="secondary" onClick={onChange}>
-          {t('action.removeColor')}
+          Retirer la couleur
         </Button>
       )}
     </>
