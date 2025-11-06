@@ -15,8 +15,6 @@ import DeleteStep from '../DeleteStep/DeleteStep';
 import Menu from '../../ui/Menu';
 import MenuItem from '../../ui/Menu/MenuItem';
 
-import styles from './CardActionsStep.module.scss';
-
 const StepTypes = {
   USERS: 'USERS',
   LABELS: 'LABELS',
@@ -177,48 +175,44 @@ const CardActionsStep = React.memo(
     }
 
     return (
-      <Menu secondary vertical className={styles.menu}>
-        <MenuItem icon="edit" className={styles.menuItem} onClick={handleEditNameClick}>
+      <Menu>
+        <MenuItem icon="edit" onClick={handleEditNameClick}>
           {t('action.editTitle', {
             context: 'title',
           })}
         </MenuItem>
-        <MenuItem icon="people" className={styles.menuItem} onClick={handleUsersClick}>
+        <MenuItem icon="people" onClick={handleUsersClick}>
           {t('common.members', {
             context: 'title',
           })}
         </MenuItem>
-        <MenuItem icon="label" className={styles.menuItem} onClick={handleLabelsClick}>
+        <MenuItem icon="label" onClick={handleLabelsClick}>
           {t('common.labels', {
             context: 'title',
           })}
         </MenuItem>
-        <MenuItem
-          icon="calendar_today"
-          className={styles.menuItem}
-          onClick={handleEditDueDateClick}
-        >
+        <MenuItem icon="calendar_today" onClick={handleEditDueDateClick}>
           {t('action.editDueDate', {
             context: 'title',
           })}
         </MenuItem>
-        <MenuItem icon="timer" className={styles.menuItem} onClick={handleEditStopwatchClick}>
+        <MenuItem icon="timer" onClick={handleEditStopwatchClick}>
           {t('action.editStopwatch', {
             context: 'title',
           })}
         </MenuItem>
-        <MenuItem icon="arrow_forward" className={styles.menuItem} onClick={handleMoveClick}>
+        <MenuItem icon="arrow_forward" onClick={handleMoveClick}>
           {t('action.moveCard', {
             context: 'title',
           })}
         </MenuItem>
-        <MenuItem icon="copy" className={styles.menuItem} onClick={handleDuplicateClick}>
+        <MenuItem icon="copy" onClick={handleDuplicateClick}>
           {t('action.duplicateCard', {
             context: 'title',
           })}
         </MenuItem>
         <HorizontalSeparator withPadding={false} />
-        <MenuItem icon="delete" className={styles.menuItem} onClick={handleDeleteClick}>
+        <MenuItem icon="delete" onClick={handleDeleteClick}>
           {t('action.deleteCard', {
             context: 'title',
           })}

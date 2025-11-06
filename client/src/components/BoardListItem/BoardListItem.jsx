@@ -6,7 +6,7 @@ import classNames from 'classnames';
 // import { useTranslation } from 'react-i18next';
 import styles from './BoardListItem.module.scss';
 
-import BoardEditStep from '../../steps/BoardEditStep';
+import BoardActionsStep from '../../steps/BoardActionsStep';
 import usePopup from '../../lib/popup/use-popup';
 
 export default function BoardListItem({
@@ -24,7 +24,7 @@ export default function BoardListItem({
 }) {
   // const [t] = useTranslation();
 
-  const BoardEditStepPopover = usePopup(BoardEditStep);
+  const BoardActionsPopover = usePopup(BoardActionsStep);
 
   return (
     <div
@@ -63,7 +63,7 @@ export default function BoardListItem({
         )}
       </div>
       {editable && canEdit && (
-        <BoardEditStepPopover
+        <BoardActionsPopover
           defaultData={pick(board, 'name')}
           onUpdate={(data) => onBoardUpdate(board.id, data)}
           onDelete={() => onBoardDelete(board.id)}
@@ -78,7 +78,7 @@ export default function BoardListItem({
           >
             <Icon type="outlined" name="more_horiz" size="medium" />
           </div>
-        </BoardEditStepPopover>
+        </BoardActionsPopover>
       )}
       {showDescription && <div className={styles.itemDescription}>{board.description}</div>}
     </div>

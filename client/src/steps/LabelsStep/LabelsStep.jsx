@@ -2,7 +2,7 @@ import pick from 'lodash/pick';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Input, Button } from '@openfun/cunningham-react';
+import { Button } from '@openfun/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 import {
   DndContext,
@@ -184,14 +184,17 @@ const LabelsStep = React.memo(
           })}
         />
         <>
-          <Input
-            ref={searchField}
-            value={search}
-            label={t('common.searchLabels')}
-            icon={<Icon name="search" type="outlined" aria-hidden="true" />}
-            onChange={(event) => handleSearchChange(event, { value: event.target.value })}
-            className={styles.search}
-          />
+          <div className={styles.searchContainer}>
+            <Icon name="search" type="outlined" aria-hidden="true" />
+            <input
+              ref={searchField}
+              value={search}
+              name="search"
+              className={styles.search}
+              onChange={(event) => handleSearchChange(event, { value: event.target.value })}
+              placeholder={t('common.searchLabels')}
+            />
+          </div>
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}

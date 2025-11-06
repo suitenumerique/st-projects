@@ -10,10 +10,8 @@ import PopoverHeader from '../../ui/Popover/PopoverHeader';
 import ListColors from '../../constants/ListColors';
 import { useSteps } from '../../hooks';
 import ColorPicker from '../../ui/ColorPicker';
-import ListSortStep from '../ListSortStep/ListSortStep';
-import DeleteStep from '../DeleteStep/DeleteStep';
-
-import styles from './ListActionsStep.module.scss';
+import ListSortStep from '../ListSortStep';
+import DeleteStep from '../DeleteStep';
 
 const StepTypes = {
   DELETE: 'DELETE',
@@ -103,29 +101,29 @@ const ActionsStep = React.memo(
 
     return (
       <div>
-        <Menu secondary vertical className={styles.menu}>
-          <MenuItem icon="edit" className={styles.menuItem} onClick={handleEditNameClick}>
+        <Menu>
+          <MenuItem icon="edit" onClick={handleEditNameClick}>
             {t('action.editTitle', {
               context: 'title',
             })}
           </MenuItem>
-          <MenuItem icon="palette" className={styles.menuItem} onClick={hanndleEditColorClick}>
+          <MenuItem icon="palette" onClick={hanndleEditColorClick}>
             {t('action.editColor', {
               context: 'title',
             })}
           </MenuItem>
-          <MenuItem icon="add" className={styles.menuItem} onClick={handleAddCardClick}>
+          <MenuItem icon="add" onClick={handleAddCardClick}>
             {t('action.addCard', {
               context: 'title',
             })}
           </MenuItem>
-          <MenuItem icon="sort" className={styles.menuItem} onClick={handleSortClick}>
+          <MenuItem icon="sort" onClick={handleSortClick}>
             {t('action.sortList', {
               context: 'title',
             })}
           </MenuItem>
           <HorizontalSeparator withPadding={false} />
-          <MenuItem icon="delete" className={styles.menuItem} onClick={handleDeleteClick}>
+          <MenuItem icon="delete" onClick={handleDeleteClick}>
             {t('action.deleteList', {
               context: 'title',
             })}

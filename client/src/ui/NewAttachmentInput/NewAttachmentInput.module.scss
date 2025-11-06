@@ -4,19 +4,16 @@
     background-color: var(--c--theme--colors--primary-050);
     border-radius: 4px;
     border: 1px dashed var(--c--theme--colors--primary-400);
-    padding: 40px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 26px 16px;
     cursor: pointer;
+    max-width: 350px;
   }
 
   .content {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     gap: 16px;
-    text-align: center;
   }
 
   .iconWrapper {
@@ -29,9 +26,13 @@
     border-radius: 50%;
     color: var(--c--theme--colors--primary-800);
     font-size: 20px;
+    flex-shrink: 0;
   }
 
   .text {
+    text-align: left;
+    flex: 1;
+
     .bold {
       font-weight: 600;
     }

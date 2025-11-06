@@ -8,14 +8,11 @@
     font-size: 13px;
     width: 280px;
     height: 36px;
-    &::placeholder {
-      color: var(--c--theme--colors--greyscale-600);
-    }
     &:focus {
       border-color: var(--c--theme--colors--primary-500);
     }
-    ::placeholder {
-      color: var(--c--theme--colors--greyscale-200);
+    &::placeholder {
+      color: var(--c--theme--colors--greyscale-400);
     }
   }
 

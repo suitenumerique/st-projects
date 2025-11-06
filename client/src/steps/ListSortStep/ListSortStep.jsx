@@ -7,8 +7,6 @@ import PopoverHeader from '../../ui/Popover/PopoverHeader';
 import Menu from '../../ui/Menu';
 import MenuItem from '../../ui/Menu/MenuItem';
 
-import styles from './ListSortStep.module.scss';
-
 const ListSortStep = React.memo(({ onTypeSelect, onBack }) => {
   const [t] = useTranslation();
 
@@ -20,33 +18,17 @@ const ListSortStep = React.memo(({ onTypeSelect, onBack }) => {
           context: 'title',
         })}
       />
-      <Menu secondary vertical className={styles.menu}>
-        <MenuItem
-          icon="sort_by_alpha"
-          className={styles.menuItem}
-          onClick={() => onTypeSelect(ListSortTypes.NAME_ASC)}
-        >
+      <Menu>
+        <MenuItem icon="sort_by_alpha" onClick={() => onTypeSelect(ListSortTypes.NAME_ASC)}>
           {t('common.title')}
         </MenuItem>
-        <MenuItem
-          icon="calendar_today"
-          className={styles.menuItem}
-          onClick={() => onTypeSelect(ListSortTypes.DUE_DATE_ASC)}
-        >
+        <MenuItem icon="calendar_today" onClick={() => onTypeSelect(ListSortTypes.DUE_DATE_ASC)}>
           {t('common.dueDate')}
         </MenuItem>
-        <MenuItem
-          icon="arrow_downward"
-          className={styles.menuItem}
-          onClick={() => onTypeSelect(ListSortTypes.CREATED_AT_ASC)}
-        >
+        <MenuItem icon="arrow_downward" onClick={() => onTypeSelect(ListSortTypes.CREATED_AT_ASC)}>
           {t('common.oldestFirst')}
         </MenuItem>
-        <MenuItem
-          icon="arrow_upward"
-          className={styles.menuItem}
-          onClick={() => onTypeSelect(ListSortTypes.CREATED_AT_DESC)}
-        >
+        <MenuItem icon="arrow_upward" onClick={() => onTypeSelect(ListSortTypes.CREATED_AT_DESC)}>
           {t('common.newestFirst')}
         </MenuItem>
       </Menu>

@@ -64,8 +64,9 @@ const CardNameEdit = React.forwardRef(({ children, defaultValue, onUpdate }, ref
 
           break;
         case ' ':
-          // Stop propagation to prevent drag handlers (KeyboardSensor) from intercepting space key
-          event.stopPropagation();
+          if (event.target === event.currentTarget && document.activeElement === event.target) {
+            event.stopPropagation();
+          }
           break;
         default:
           break;
@@ -125,16 +126,18 @@ const CardNameEdit = React.forwardRef(({ children, defaultValue, onUpdate }, ref
           onMouseDown={handleFormMouseDown}
           onDragStart={handleFormDragStart}
         />
-        <Button
-          color="primary"
-          type="submit"
-          onMouseOver={handleControlMouseOver}
-          onMouseOut={handleControlMouseOut}
-          onMouseDown={handleFormMouseDown}
-          onDragStart={handleFormDragStart}
-        >
-          {t('action.save')}
-        </Button>
+        <div className={styles.buttons}>
+          <Button
+            color="primary"
+            type="submit"
+            onMouseOver={handleControlMouseOver}
+            onMouseOut={handleControlMouseOut}
+            onMouseDown={handleFormMouseDown}
+            onDragStart={handleFormDragStart}
+          >
+            {t('action.save')}
+          </Button>
+        </div>
       </form>
     </div>
   );

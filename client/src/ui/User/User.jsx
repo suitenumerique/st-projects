@@ -10,6 +10,7 @@ const SIZES = {
   LARGE: 'large',
 };
 
+// eslint-disable-next-line no-unused-vars
 const User = React.memo(({ name, avatarUrl, size, isDisabled, onClick }) => {
   const initialsWithSpace = initials(name).split('').join(' ');
   const contentNode = <UserAvatar fullName={initialsWithSpace} size={size} />;

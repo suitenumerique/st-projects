@@ -1,7 +1,12 @@
 :global(#app) {
   .content {
-    color: #212121;
-    padding-bottom: 6px;
-    padding-left: 2px;
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
   }
 }
