@@ -1,0 +1,27 @@
+:global(#app) {
+  .search {
+    border: 1px solid var(--c--theme--colors--greyscale-300);
+    border-radius: 0.25rem;
+    padding: 0.5rem 1rem;
+    outline: none;
+    width: 100%;
+    font-size: 13px;
+    width: 280px;
+    height: 36px;
+    &:focus {
+      border-color: var(--c--theme--colors--primary-500);
+    }
+    &::placeholder {
+      color: var(--c--theme--colors--greyscale-400);
+    }
+  }
+
+  .labelsButton, .membersButton {
+    height: 36px;
+
+    &.labelsButtonFilled, &.membersButtonFilled {
+      padding-right: 8px;
+    }
+  }
+
+}

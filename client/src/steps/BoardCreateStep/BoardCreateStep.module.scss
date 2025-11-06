@@ -1,0 +1,32 @@
+:global(#app) {
+  .createInput {
+    margin-bottom: 8px;
+  }
+
+  .controls {
+    display: flex;
+    max-width: 280px;
+    justify-content: flex-end;
+
+    @media only screen and (max-width: 767px) {
+      max-width: 226px;
+    }
+  }
+
+  .templatesWrapper {
+    border-top: 1px solid var(--c--theme--colors--greyscale-200);
+    margin-top: 10px;
+    padding-top: 10px;
+    > p {
+      font-size: 14px;
+      color: var(--c--theme--colors--greyscale-600);
+      margin-bottom: 6px;
+    }
+  }
+
+  .templatesList {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+}

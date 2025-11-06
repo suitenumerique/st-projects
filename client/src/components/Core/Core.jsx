@@ -1,72 +1,76 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation, Trans } from 'react-i18next';
-import { Loader } from 'semantic-ui-react';
-
-import ModalTypes from '../../constants/ModalTypes';
-import FixedContainer from '../../containers/FixedContainer';
+import { Header, MainLayout, Spinner } from '@gouvfr-lasuite/ui-kit';
 import StaticContainer from '../../containers/StaticContainer';
-import UsersModalContainer from '../../containers/UsersModalContainer';
-import UserSettingsModalContainer from '../../containers/UserSettingsModalContainer';
-import ProjectAddModalContainer from '../../containers/ProjectAddModalContainer';
-
+import LeftMenuContainer from '../../containers/LeftMenuContainer';
+import HeaderRightContainer from '../../containers/HeaderRightContainer';
+import { FeedbackWidget } from '../../ui/FeedbackWidget/index.tsx';
 import styles from './Core.module.scss';
+import logo from '../../assets/images/projets_logo.svg';
 
 const Core = React.memo(
   ({
     isInitializing,
     isSocketDisconnected,
-    currentModal,
-    currentProject,
-    currentBoard,
     currentUser,
-    currentUserMembership,
+    reactAppFeedbackWidgetApiUrl,
+    reactAppFeedbackWidgetPath,
+    reactAppFeedbackWidgetChannel,
   }) => {
     const [t] = useTranslation();
 
-    const defaultTitle = useRef(document.title);
-
-    useEffect(() => {
-      let title;
-      if (currentProject) {
-        title = currentProject.name;
-
-        if (currentBoard) {
-          title += ` | ${currentBoard.name}`;
-        }
-      } else {
-        title = defaultTitle.current;
+    const contentNode = () => {
+      if (currentUser) {
+        return (
+          <MainLayout
+            enableResize
+            rightHeaderContent={<HeaderRightContainer />}
+            leftPanelContent={currentUser && <LeftMenuContainer />}
+            icon={
+              <div className={styles.logoWrapper}>
+                <img src={logo} alt="logo" />
+                <span>BETA</span>
+              </div>
+            }
+          >
+            <StaticContainer />
+            <FeedbackWidget
+              apiUrl={reactAppFeedbackWidgetApiUrl}
+              widgetPath={reactAppFeedbackWidgetPath}
+              channel={reactAppFeedbackWidgetChannel}
+            />
+          </MainLayout>
+        );
       }
-
-      document.title = title;
-    }, [currentProject, currentBoard]);
+      return (
+        <div className={styles.noAuthWrapper}>
+          <div className={styles.noAuthHeader}>
+            <Header
+              leftIcon={
+                <div className={styles.logoWrapper}>
+                  <img src={logo} alt="logo" />
+                  <span>BETA</span>
+                </div>
+              }
+              rightIcon={<HeaderRightContainer />}
+            />
+          </div>
+          <div className={styles.noAuthContent}>
+            <StaticContainer />
+          </div>
+        </div>
+      );
+    };
 
     return (
       <>
         {isInitializing ? (
-          <Loader active size="massive" />
+          <div className={styles.loading}>
+            <Spinner size="xl" />
+          </div>
         ) : (
-          <>
-            <FixedContainer />
-            <div
-              style={{
-                width:
-                  currentUser && (!currentBoard || currentUserMembership)
-                    ? 'calc(100% - 300px)'
-                    : '100%',
-                height: '100%',
-                marginLeft: currentUser && (!currentBoard || currentUserMembership) ? '300px' : '0',
-                marginTop: '128px',
-                zIndex: 10,
-                overflowY: 'hidden',
-              }}
-            >
-              <StaticContainer />
-            </div>
-            {currentModal === ModalTypes.USERS && <UsersModalContainer />}
-            {currentModal === ModalTypes.USER_SETTINGS && <UserSettingsModalContainer />}
-            {currentModal === ModalTypes.PROJECT_ADD && <ProjectAddModalContainer />}
-          </>
+          contentNode()
         )}
         {isSocketDisconnected && (
           <div className={styles.message}>
@@ -88,21 +92,16 @@ const Core = React.memo(
 Core.propTypes = {
   isInitializing: PropTypes.bool.isRequired,
   isSocketDisconnected: PropTypes.bool.isRequired,
-  currentModal: PropTypes.oneOf(Object.values(ModalTypes)),
   /* eslint-disable react/forbid-prop-types */
-  currentProject: PropTypes.object,
-  currentBoard: PropTypes.object,
   currentUser: PropTypes.object,
-  currentUserMembership: PropTypes.object,
   /* eslint-enable react/forbid-prop-types */
+  reactAppFeedbackWidgetApiUrl: PropTypes.string.isRequired,
+  reactAppFeedbackWidgetPath: PropTypes.string.isRequired,
+  reactAppFeedbackWidgetChannel: PropTypes.string.isRequired,
 };
 
 Core.defaultProps = {
-  currentModal: undefined,
-  currentProject: undefined,
-  currentBoard: undefined,
   currentUser: undefined,
-  currentUserMembership: undefined,
 };
 
 export default Core;

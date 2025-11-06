@@ -1,6 +1,6 @@
 import { call, put, select } from 'redux-saga/effects';
 
-import { goToProject } from './router';
+import { goToRoot } from './router';
 import request from '../request';
 import requests from '../requests';
 import selectors from '../../../selectors';
@@ -157,16 +157,10 @@ export function* deleteBoardMembership(id) {
   let boardMembership = yield select(selectors.selectBoardMembershipById, id);
 
   const currentUserId = yield select(selectors.selectCurrentUserId);
-  const { boardId, projectId } = yield select(selectors.selectPath);
+  const { boardId } = yield select(selectors.selectPath);
 
   if (boardMembership.userId === currentUserId && boardMembership.boardId === boardId) {
-    const isCurrentUserManager = yield select(
-      selectors.selectIsCurrentUserManagerForCurrentProject,
-    );
-
-    if (!isCurrentUserManager) {
-      yield call(goToProject, projectId);
-    }
+    yield call(goToRoot);
   }
 
   yield put(actions.deleteBoardMembership(id));
@@ -183,16 +177,10 @@ export function* deleteBoardMembership(id) {
 
 export function* handleBoardMembershipDelete(boardMembership) {
   const currentUserId = yield select(selectors.selectCurrentUserId);
-  const { boardId, projectId } = yield select(selectors.selectPath);
+  const { boardId } = yield select(selectors.selectPath);
 
   if (boardMembership.userId === currentUserId && boardMembership.boardId === boardId) {
-    const isCurrentUserManager = yield select(
-      selectors.selectIsCurrentUserManagerForCurrentProject,
-    );
-
-    if (!isCurrentUserManager) {
-      yield call(goToProject, projectId);
-    }
+    yield call(goToRoot);
   }
 
   yield put(actions.handleBoardMembershipDelete(boardMembership));

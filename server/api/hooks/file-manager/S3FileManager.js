@@ -1,5 +1,6 @@
 const fs = require('fs');
 const {
+  CopyObjectCommand,
   DeleteObjectsCommand,
   GetObjectCommand,
   ListObjectsV2Command,
@@ -43,6 +44,16 @@ class S3FileManager {
 
     const result = await this.client.send(command);
     return result.Body;
+  }
+
+  async copy(sourcePathSegment, targetPathSegment) {
+    const command = new CopyObjectCommand({
+      Bucket: sails.config.custom.s3Bucket,
+      CopySource: `${sails.config.custom.s3Bucket}/${sourcePathSegment}`,
+      Key: targetPathSegment,
+    });
+
+    await this.client.send(command);
   }
 
   async deleteDir(dirPathSegment) {

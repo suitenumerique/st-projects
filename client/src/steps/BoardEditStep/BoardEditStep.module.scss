@@ -1,0 +1,11 @@
+:global(#app) {
+  .createInput {
+    margin-bottom: 8px;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+}

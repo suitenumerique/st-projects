@@ -1,0 +1,31 @@
+:global(#app) {
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .field {
+    width: 100%;
+    padding: 5px 8px 5px 12px;
+    line-height: 20px;
+    resize: none;
+    min-height: 32px;
+    display: flex;
+    border-radius: 4px;
+    border: none;
+    font-size: 14px;
+    &:focus {
+      border: 1px solid #000091;
+      outline: none;
+    }
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+}

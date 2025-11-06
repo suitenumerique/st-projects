@@ -59,7 +59,9 @@ module.exports.custom = {
   oidcAdminRoles: process.env.OIDC_ADMIN_ROLES ? process.env.OIDC_ADMIN_ROLES.split(',') : [],
   oidcClaimsSource: process.env.OIDC_CLAIMS_SOURCE || 'userinfo',
   oidcEmailAttribute: process.env.OIDC_EMAIL_ATTRIBUTE || 'email',
-  oidcNameAttribute: process.env.OIDC_NAME_ATTRIBUTE || 'name',
+  oidcFullnameAttributes: process.env.OIDC_FULLNAME_ATTRIBUTES
+    ? process.env.OIDC_FULLNAME_ATTRIBUTES.split(',').map((attr) => attr.trim())
+    : ['given_name', 'usual_name'],
   oidcUsernameAttribute: process.env.OIDC_USERNAME_ATTRIBUTE || 'preferred_username',
   oidcRolesAttribute: process.env.OIDC_ROLES_ATTRIBUTE || 'groups',
   oidcIgnoreUsername: process.env.OIDC_IGNORE_USERNAME === 'true',
@@ -92,4 +94,14 @@ module.exports.custom = {
   telegramThreadId: process.env.TELEGRAM_THREAD_ID,
 
   templateBoards: JSON.parse(process.env.TEMPLATE_BOARDS || '[]'),
+
+  reactAppDefaultEmail: process.env.REACT_APP_DEFAULT_EMAIL,
+  reactAppDefaultPassword: process.env.REACT_APP_DEFAULT_PASSWORD,
+
+  reactAppFeedbackWidgetApiUrl: process.env.REACT_APP_FEEDBACK_WIDGET_API_URL,
+  reactAppFeedbackWidgetPath: process.env.REACT_APP_FEEDBACK_WIDGET_PATH,
+  reactAppFeedbackWidgetChannel: process.env.REACT_APP_FEEDBACK_WIDGET_CHANNEL,
+
+  reactAppLagaufreWidgetApiUrl: process.env.REACT_APP_LAGAUFRE_WIDGET_API_URL,
+  reactAppLagaufreWidgetPath: process.env.REACT_APP_LAGAUFRE_WIDGET_PATH,
 };

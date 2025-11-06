@@ -1,0 +1,119 @@
+import { dequal } from 'dequal';
+import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
+import TextareaAutosize from 'react-textarea-autosize';
+import { Button } from '@openfun/cunningham-react';
+
+import { useForm } from '../../../../hooks';
+import { focusEnd } from '../../../../utils/element-helpers';
+
+import styles from './CommentEdit.module.scss';
+
+const CommentEdit = React.forwardRef(({ defaultData, onUpdate, text, actions }, ref) => {
+  const [t] = useTranslation();
+  const [isOpened, setIsOpened] = useState(false);
+  const [data, handleFieldChange, setData] = useForm(null);
+
+  const textField = useRef(null);
+
+  const open = useCallback(() => {
+    setIsOpened(true);
+    setData({
+      text: '',
+      ...defaultData,
+    });
+  }, [defaultData, setData]);
+
+  const close = useCallback(() => {
+    setIsOpened(false);
+    setData(null);
+  }, [setData]);
+
+  const submit = useCallback(() => {
+    const cleanData = {
+      ...data,
+      text: data.text.trim(),
+    };
+
+    if (cleanData.text && !dequal(cleanData, defaultData)) {
+      onUpdate(cleanData);
+    }
+
+    close();
+  }, [defaultData, onUpdate, data, close]);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      open,
+      close,
+    }),
+    [open, close],
+  );
+
+  const handleFieldKeyDown = useCallback(
+    (event) => {
+      if (event.ctrlKey && event.key === 'Enter') {
+        submit();
+      }
+    },
+    [submit],
+  );
+
+  const handleFieldBlur = useCallback(() => {
+    submit();
+  }, [submit]);
+
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
+      submit();
+    },
+    [submit],
+  );
+
+  useEffect(() => {
+    if (isOpened) {
+      focusEnd(textField.current);
+    }
+  }, [isOpened]);
+
+  if (!isOpened) {
+    return (
+      <>
+        {actions}
+        {text}
+      </>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <TextareaAutosize
+        ref={textField}
+        as={TextareaAutosize}
+        name="text"
+        value={data.text}
+        minRows={3}
+        spellCheck={false}
+        className={styles.field}
+        onKeyDown={handleFieldKeyDown}
+        onChange={handleFieldChange}
+        onBlur={handleFieldBlur}
+      />
+      <div className={styles.controls}>
+        <Button color="primary">{t('action.save')}</Button>
+      </div>
+    </form>
+  );
+});
+
+CommentEdit.propTypes = {
+  defaultData: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  onUpdate: PropTypes.func.isRequired,
+  text: PropTypes.element.isRequired,
+  actions: PropTypes.element.isRequired,
+};
+
+export default React.memo(CommentEdit);

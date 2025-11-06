@@ -1,16 +1,10 @@
-@import '../../styles.variables.scss';
-
 :global(#app) {
   .wrapper {
-    height: calc(100vh - 52px);
-    width: 300px;
-    background-color: #ffffff;
-    border-right: 1px solid $border-grey;
+    position: relative;
+    background-color: var(--c--theme--colors--greyscale-000);
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
-    max-height: calc(100vh - 52px);
-    min-height: 0;
+    height: 100%;
   }
 
   .topBar {
@@ -18,27 +12,50 @@
     justify-content: flex-start;
     align-items: center;
     padding: 0.75rem;
-    border-bottom: 1px solid $border-grey;
+    border-bottom: 1px solid var(--c--theme--colors--greyscale-200);
+    flex-shrink: 0;
   }
 
-  .space {
+  .addBoardButton {
+    font-weight: 500;
+  }
+
+  .spaces {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    padding: 10px 0.75rem 0.75rem 0.75rem;
-    border-bottom: 1px solid $border-grey;
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
 
-    .spaceTitle {
-      font-size: 14px;
-      font-weight: 700;
-      color: $dark-grey;
-      height: 35px;
-      margin-bottom: 0;
+    .space {
       display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: flex-start;
+      align-items: flex-start;
+      padding: 10px 0.75rem 0.75rem 0.75rem;
+
+      &:not(:last-child) {
+        border-bottom: 1px solid var(--c--theme--colors--greyscale-200);
+      }
+
+      .spaceTitle {
+        font-size: var(--c--theme--font--sizes--sm);
+        font-weight: 700;
+        color: var(--c--theme--colors--greyscale-1000);
+        height: 35px;
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+      }
     }
+  }
+
+  .emptySpace {
+    font-size: var(--c--theme--font--sizes--sm);
+    font-weight: 500;
+    color: var(--c--theme--colors--greyscale-600);
+    text-align: center;
   }
 
   .boards {
@@ -47,263 +64,19 @@
     flex-direction: column;
   }
 
-  .editProject {
-    background-color: transparent;
-    border: none;
-    cursor: pointer !important;
+  .bottomBar {
     width: 100%;
-    padding: 0;
-    margin: 0 0 0 5px;
     display: flex;
-    align-items: center;
     justify-content: flex-start;
-    gap: 0.5rem;
-    font-size: 14px;
-    font-weight: 500;
-    color: $dark-grey;
-  }
-
-  .selectProject {
-    width: 100%;
-    padding: 0.5rem 0.5rem 0.5rem 1rem;
-    color: $dark-grey;
-    text-align: left;
-    width: 100%;
-    font-weight: 500;
-    font-size: 14px;
-    border-radius: 0.25rem;
-    line-height: 1.5;
-    display: flex;
     align-items: center;
-    margin-bottom: 0.5rem;
-
-    .projectItemIcon {
-      background-color: $main-blue;
-      width: 30px;
-      height: 30px;
-      flex-shrink: 0;
-      margin-right: 0.7rem;
-      border-radius: 0.25rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      span {
-        color: #ffffff;
-        &::before {
-          --icon-size: 1.3rem;
-        }
-      }
-    }
-  }
-
-  .projets {
     padding: 0.75rem;
-  }
-
-  .project {
-    position: relative;
-    font-size: 0.875rem;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    border-top: 1px solid var(--c--theme--colors--greyscale-200);
+    background-color: #FFFFFF;
+    flex-shrink: 0;
 
     button {
       width: 100%;
-      text-align: left;
-      padding-left: 1rem;
-    }
-
-    .moreIconWrapper {
-      opacity: 0;
-      position: absolute;
-      right: 0;
-
-      button > span::before {
-        --icon-size: 1.3rem;
-      }
-    }
-
-    &:hover {
-      button {
-        font-weight: 500;
-      }
-
-      .moreIconWrapper {
-        opacity: 1;
-      }
-    }
-
-    button {
-      background-color: transparent;
-    }
-
-    > button > span::before {
-      --icon-size: 1rem;
-      margin-right: 0.3rem;
-    }
-  }
-
-  .arrowDown {
-    color: $dark-grey;
-  }
-
-  .currentProject {
-    width: 100%;
-    h6 {
-      margin-bottom: 1rem;
-    }
-  }
-
-  .projectName {
-    flex: 1;
-    overflow: hidden;
-  }
-
-  .boardWrapper {
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .moreIconWrapper {
-      opacity: 0;
-      position: absolute;
-      right: 0;
-
-      button {
-        background-color: transparent;
-      }
-
-      button > span::before {
-        --icon-size: 1.3rem;
-      }
-    }
-
-    &:hover {
-      .moreIconWrapper {
-        opacity: 1;
-      }
-    }
-
-  }
-
-  .board {
-    position: relative;
-    font-size: 0.875rem;
-    font-weight: 500;
-    padding: 0.35rem 1rem 0.35rem 1rem;
-    cursor: pointer;
-    background-image: none;
-    color: $dark-grey;
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    width: 100%;
-
-    span {
-      line-height: 1.1;
-    }
-
-    &:focus {
-      background-color: #ffffff;
-    }
-  }
-
-  .boardIcon {
-    background-color: #5F60DE;
-    height: 1.1rem;
-    width: 1.1rem;
-    border-radius: 0.25rem;
-    margin-right: 0.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-shrink: 0;
-    margin-top: 4px;
-
-    &::before {
-      --icon-size: .7rem;
-      color: #ffffff;
-    }
-  }
-
-  .boardName {
-    font-size: 14px;
-    color: $dark-grey;
-    margin-bottom: 0;
-  }
-
-  .projectName {
-    font-size: 12px;
-    color: $middle-grey;
-    line-height: 1.4;
-  }
-
-  .addBoard {
-    font-size: 0.875rem;
-    font-weight: 500;
-    padding: 0.5rem 0.5rem 0.5rem 1rem;
-    color: $middle-grey;
-    text-align: left;
-    width: 100%;
-    margin-top: 0.5rem;
-    span::before {
-      --icon-size: 1rem;
-      margin-right: 0.3rem;
-    }
-  }
-
-  .emptySpace {
-    font-size: 14px;
-    font-weight: 500;
-    color: $middle-grey;
-    text-align: center;
-  }
-
-  .boardActive {
-    background-color: $background-grey-hover !important;
-    border-radius: 0.25rem;
-
-    .boardName {
-      font-weight: 600;
-    }
-
-    .projectName {
-      font-weight: 500;
-    }
-  }
-
-  .otherProjects {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: $middle-grey;
-    margin-bottom: 0.5rem;
-  }
-
-  .separator {
-    width: 100%;
-    height: 1px;
-    background-color: $border-grey;
-    margin: 0.75rem 0;
-  }
-
-  .emptySpace {
-    font-size: 14px;
-    font-weight: 500;
-    color: $middle-grey;
-    text-align: center;
-  }
-
-  .bottomBar {
-    width: 100%;
-    padding: 0.75rem;
-    border-top: 1px solid $border-grey;
-
-    button {
-      cursor: pointer;
+      justify-content: center;
     }
   }
 }

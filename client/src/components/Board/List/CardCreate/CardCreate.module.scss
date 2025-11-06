@@ -1,0 +1,36 @@
+:global(#app) {
+
+  .wrapper {
+    margin-bottom: 6px;
+  }
+
+  .fieldWrapper {
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 0 #ccc;
+    margin-bottom: 8px;
+    min-height: 20px;
+    padding: 6px 8px 2px;
+    font-size: 14px;
+    color: var(--c--theme--colors--greyscale-400);
+  }
+
+  .field {
+    border: none;
+    margin-bottom: 4px;
+    outline: none;
+    overflow: hidden;
+    padding: 0;
+    resize: none;
+    width: 100%;
+  }
+
+  .controls {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .wrapperClosed {
+    display: none;
+  }
+}

@@ -8,19 +8,22 @@ import Login from '../components/Login';
 const mapStateToProps = (state) => {
   const oidcConfig = selectors.selectOidcConfig(state);
 
+  const config = selectors.selectConfig(state);
   const {
-    ui: {
-      authenticateForm: { data: defaultData, isSubmitting, isSubmittingUsingOidc, error },
-    },
-  } = state;
+    reactAppDefaultEmail,
+    reactAppDefaultPassword,
+    reactAppFeedbackWidgetApiUrl,
+    reactAppFeedbackWidgetPath,
+    reactAppFeedbackWidgetChannel,
+  } = config || {};
 
   return {
-    defaultData,
-    isSubmitting,
-    isSubmittingUsingOidc,
-    error,
-    withOidc: !!oidcConfig,
     isOidcEnforced: !!oidcConfig && oidcConfig.isEnforced,
+    reactAppDefaultEmail,
+    reactAppDefaultPassword,
+    reactAppFeedbackWidgetApiUrl,
+    reactAppFeedbackWidgetPath,
+    reactAppFeedbackWidgetChannel,
   };
 };
 
@@ -29,7 +32,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       onAuthenticate: entryActions.authenticate,
       onAuthenticateUsingOidc: entryActions.authenticateUsingOidc,
-      onMessageDismiss: entryActions.clearAuthenticateError,
+      // onMessageDismiss: entryActions.clearAuthenticateError,
     },
     dispatch,
   );

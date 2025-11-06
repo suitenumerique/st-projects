@@ -140,7 +140,7 @@ export default class extends BaseModel {
       cardModels = cardModels.filter((cardModel) => {
         const users = cardModel.users.toRefArray();
 
-        return users.some((user) => filterUserIds.includes(user.id));
+        return filterUserIds.some((userId) => users.some((user) => user.id === userId));
       });
     }
 
@@ -148,7 +148,7 @@ export default class extends BaseModel {
       cardModels = cardModels.filter((cardModel) => {
         const labels = cardModel.labels.toRefArray();
 
-        return labels.some((label) => filterLabelIds.includes(label.id));
+        return filterLabelIds.some((labelId) => labels.some((label) => label.id === labelId));
       });
     }
 

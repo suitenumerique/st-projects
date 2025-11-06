@@ -11,8 +11,6 @@ import CardModal from '../components/CardModal';
 
 const mapStateToProps = (state) => {
   const { projectId } = selectors.selectPath(state);
-  const allProjectsToLists = selectors.selectProjectsToListsForCurrentUser(state);
-  const isCurrentUserManager = selectors.selectIsCurrentUserManagerForCurrentProject(state);
   const allBoardMemberships = selectors.selectMembershipsForCurrentBoard(state);
   const allLabels = selectors.selectLabelsForCurrentBoard(state);
   const currentUserMembership = selectors.selectCurrentUserMembershipForCurrentBoard(state);
@@ -26,27 +24,24 @@ const mapStateToProps = (state) => {
     isSubscribed,
     isActivitiesFetching,
     isAllActivitiesFetched,
-    isActivitiesDetailsVisible,
-    isActivitiesDetailsFetching,
+    // isActivitiesDetailsVisible,
+    // isActivitiesDetailsFetching,
     boardId,
     listId,
   } = selectors.selectCurrentCard(state);
 
+  const editableBoards = selectors.selectEditableBoardsForCurrentUser(state);
   const users = selectors.selectUsersForCurrentCard(state);
   const labels = selectors.selectLabelsForCurrentCard(state);
   const tasks = selectors.selectTasksForCurrentCard(state);
   const attachments = selectors.selectAttachmentsForCurrentCard(state);
   const activities = selectors.selectActivitiesForCurrentCard(state);
+  const lists = selectors.selectListsForCurrentBoard(state);
 
-  let isCurrentUserEditor = false;
-  let isCurrentUserOwner = false;
-  let isCurrentUserEditorOrCanComment = false;
-
-  if (currentUserMembership) {
-    isCurrentUserEditor = currentUserMembership.role === BoardMembershipRoles.EDITOR;
-    isCurrentUserOwner = currentUserMembership.role === BoardMembershipRoles.OWNER;
-    isCurrentUserEditorOrCanComment = isCurrentUserEditor || currentUserMembership.canComment;
-  }
+  const isCurrentUserOwner =
+    !!currentUserMembership && currentUserMembership.role === BoardMembershipRoles.OWNER;
+  const isCurrentUserEditor =
+    !!currentUserMembership && currentUserMembership.role === BoardMembershipRoles.EDITOR;
 
   return {
     name,
@@ -57,22 +52,22 @@ const mapStateToProps = (state) => {
     isSubscribed,
     isActivitiesFetching,
     isAllActivitiesFetched,
-    isActivitiesDetailsVisible,
-    isActivitiesDetailsFetching,
+    // isActivitiesDetailsVisible,
+    // isActivitiesDetailsFetching,
     listId,
     boardId,
     projectId,
+    boards: editableBoards,
+    lists,
     users,
     labels,
     tasks,
     attachments,
     activities,
-    allProjectsToLists,
     allBoardMemberships,
     allLabels,
     canEdit: isCurrentUserEditor || isCurrentUserOwner,
-    canEditCommentActivities: isCurrentUserEditorOrCanComment || isCurrentUserOwner,
-    canEditAllCommentActivities: isCurrentUserManager,
+    canEditAllComments: isCurrentUserOwner,
   };
 };
 

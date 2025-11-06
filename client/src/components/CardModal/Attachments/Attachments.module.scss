@@ -1,4 +1,9 @@
 :global(#app) {
+
+  .attachmentsGallery {
+    margin-bottom: 0.75rem;
+  }
+
   .content {
     bottom: 0;
     left: 0;
@@ -19,22 +24,5 @@
     font-weight: bold;
     height: 20px;
     width: 470px;
-  }
-
-  .toggleButton {
-    background: transparent;
-    box-shadow: none;
-    color: #6b808c;
-    font-weight: normal;
-    margin-top: 8px;
-    padding: 6px 11px;
-    text-align: left;
-    text-decoration: underline;
-    transition: none;
-
-    &:hover {
-      background: rgba(9, 30, 66, 0.08);
-      color: #092d42;
-    }
   }
 }

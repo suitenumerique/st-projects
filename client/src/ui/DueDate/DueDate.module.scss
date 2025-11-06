@@ -1,0 +1,65 @@
+:global(#app) {
+  .wrapper {
+    background: #dce0e4;
+    border-radius: 3px;
+    color: #6a808b;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.3s ease;
+  }
+
+  .wrapperHoverable:hover {
+    background: #d2d8dc;
+    color: #17394d;
+  }
+
+  .button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    outline: none;
+    padding: 0;
+  }
+
+  .statusIcon {
+    margin-left: 4px;
+  }
+
+  /* Sizes */
+
+  .wrapperTiny {
+    font-size: 12px;
+    line-height: 20px;
+    padding: 0px 6px;
+  }
+
+  .wrapperSmall {
+    font-size: 12px;
+    line-height: 20px;
+    padding: 2px 6px;
+  }
+
+  .wrapperMedium {
+    line-height: 20px;
+    padding: 6px 12px;
+  }
+
+  /* Statuses */
+
+  .wrapperDueSoon {
+    background: #f2711c;
+    color: #fff;
+  }
+
+  .wrapperOverdue {
+    background: #db2828;
+    color: #fff;
+  }
+
+  .wrapperCompleted {
+    background: #21ba45;
+    color: #fff;
+  }
+}

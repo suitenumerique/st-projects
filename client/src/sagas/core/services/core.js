@@ -21,6 +21,8 @@ export function* initializeCore() {
   const accessToken = yield call(getAccessToken);
 
   if (!accessToken) {
+    yield call(i18n.loadCoreLocale);
+
     yield put({ type: 'SET_INITIALIZING_FALSE' });
     return;
   }

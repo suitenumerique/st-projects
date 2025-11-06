@@ -3,10 +3,13 @@ import { useCallback, useState } from 'react';
 export default (initialData) => {
   const [data, setData] = useState(initialData);
 
-  const handleFieldChange = useCallback((_, { name: fieldName, value }) => {
+  const handleFieldChange = useCallback((event, { name: fieldName, value } = {}) => {
+    const actualFieldName = fieldName || event.target.name;
+    const actualValue = value !== undefined ? value : event.target.value;
+
     setData((prevData) => ({
       ...prevData,
-      [fieldName]: value,
+      [actualFieldName]: actualValue,
     }));
   }, []);
 

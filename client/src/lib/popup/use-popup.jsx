@@ -1,29 +1,43 @@
-import { ResizeObserver } from '@juggle/resize-observer';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Popup as SemanticUIPopup } from 'semantic-ui-react';
+import Popover from '../../ui/Popover';
 
-import styles from './Popup.module.css';
-
-export default (Step, props) => {
+export default (Step) => {
   return useMemo(() => {
-    const Popup = React.memo(({ children, onClose, ...stepProps }) => {
+    const Popup = React.memo(({ children, onClose, onOpenChange, ...popoverProps }) => {
       const [isOpened, setIsOpened] = useState(false);
 
-      const wrapper = useRef(null);
-      const resizeObserver = useRef(null);
+      // const wrapper = useRef(null);
+      // const resizeObserver = useRef(null);
 
       const handleOpen = useCallback(() => {
         setIsOpened(true);
-      }, []);
+        if (onOpenChange) {
+          onOpenChange(true);
+        }
+      }, [onOpenChange]);
 
       const handleClose = useCallback(() => {
         setIsOpened(false);
+        if (onOpenChange) {
+          onOpenChange(false);
+        }
 
         if (onClose) {
           onClose();
         }
-      }, [onClose]);
+      }, [onClose, onOpenChange]);
+
+      const handleOpenChange = useCallback(
+        (open) => {
+          if (open) {
+            handleOpen();
+          } else {
+            handleClose();
+          }
+        },
+        [handleOpen, handleClose],
+      );
 
       const handleMouseDown = useCallback((event) => {
         event.stopPropagation();
@@ -46,81 +60,60 @@ export default (Step, props) => {
         [children],
       );
 
-      const handleContentRef = useCallback((element) => {
-        if (resizeObserver.current) {
-          resizeObserver.current.disconnect();
-        }
+      // const handleContentRef = useCallback((element) => {
+      //   if (resizeObserver.current) {
+      //     resizeObserver.current.disconnect();
+      //   }
 
-        if (!element) {
-          resizeObserver.current = null;
-          return;
-        }
+      //   if (!element) {
+      //     resizeObserver.current = null;
+      //     return;
+      //   }
 
-        resizeObserver.current = new ResizeObserver(() => {
-          if (resizeObserver.current.isInitial) {
-            resizeObserver.current.isInitial = false;
-            return;
-          }
+      //   resizeObserver.current = new ResizeObserver(() => {
+      //     if (resizeObserver.current.isInitial) {
+      //       resizeObserver.current.isInitial = false;
+      //       return;
+      //     }
 
-          wrapper.current.positionUpdate();
-        });
+      //     wrapper.current.positionUpdate();
+      //   });
 
-        resizeObserver.current.isInitial = true;
-        resizeObserver.current.observe(element);
-      }, []);
+      //   resizeObserver.current.isInitial = true;
+      //   resizeObserver.current.observe(element);
+      // }, []);
 
-      const tigger = React.cloneElement(children, {
+      const trigger = React.cloneElement(children, {
         onClick: handleTriggerClick,
       });
 
       return (
-        <SemanticUIPopup
-          basic
-          wide
-          ref={wrapper}
-          trigger={tigger}
-          on="click"
+        <Popover
+          trigger={trigger}
+          content={<Step {...popoverProps} onClose={handleClose} />} // eslint-disable-line react/jsx-props-no-spreading
+          hideCloseButton={popoverProps.hideCloseButton}
           open={isOpened}
-          position="bottom left"
-          popperModifiers={[
-            {
-              name: 'preventOverflow',
-              enabled: true,
-              options: {
-                altAxis: true,
-                padding: 20,
-              },
-            },
-          ]}
-          className={styles.wrapper}
-          onOpen={handleOpen}
-          onClose={handleClose}
+          onOpenChange={handleOpenChange}
           onMouseDown={handleMouseDown}
           onClick={handleClick}
-          {...props} // eslint-disable-line react/jsx-props-no-spreading
-        >
-          <div ref={handleContentRef}>
-            {!stepProps.hideCloseButton && (
-              <Button icon="close" onClick={handleClose} className={styles.closeButton} />
-            )}
-            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-            <Step {...stepProps} onClose={handleClose} />
-          </div>
-        </SemanticUIPopup>
+          {...popoverProps} // eslint-disable-line react/jsx-props-no-spreading
+        />
       );
     });
 
     Popup.propTypes = {
       children: PropTypes.node.isRequired,
       onClose: PropTypes.func,
+      onOpenChange: PropTypes.func,
       hideCloseButton: PropTypes.bool,
     };
 
     Popup.defaultProps = {
       onClose: undefined,
+      onOpenChange: undefined,
       hideCloseButton: false,
     };
 
     return Popup;
-  }, [props]);
+  }, []);
 };

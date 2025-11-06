@@ -1,242 +1,153 @@
 :global(#app) {
-  .actionButton {
-    background: #ebeef0;
-    box-shadow: 0 1px 0 0 rgba(9, 30, 66, 0.13);
-    color: #444;
-    margin-top: 8px;
-    overflow: hidden;
-    padding: 6px 8px 6px 18px;
-    text-align: left;
-    text-overflow: ellipsis;
-    transition: background 85ms ease;
-    white-space: nowrap;
 
-    &:hover {
-      background: #dfe3e6;
-      box-shadow: 0 1px 0 0 rgba(9, 30, 66, 0.25);
-      color: #4c4c4c;
-    }
+  .cardModalWrapper {
+    margin: -1.5rem;
+    width: 700px;
   }
 
-  .actionIcon {
-    color: #17394d;
-    margin-right: 8px;
-  }
-
-  .actions {
-    margin-bottom: 24px;
-
-    @media only screen and (max-width: 797px) {
-      flex: 1;
-    }
-
-    @media only screen and (max-width: 425px) {
-      padding: 0;
-      width: 100%;
-    }
-  }
-
-  .actionsTitle {
-    color: #8c8c8c;
-    font-size: 12px;
-    font-weight: normal;
-    letter-spacing: 0.04em;
-    margin-top: 16px;
-    text-transform: uppercase;
-    line-height: 20px;
-    margin-bottom: -4px;
-  }
-
-  .addAttachment {
-    margin: 0 -4.3px;
-    text-decoration: none;
-  }
-
-  .attachment {
-    display: inline-block;
-    margin: 0 4px 4px 0;
-    max-width: 100%;
-  }
-
-  .attachmentDueDate {
-    align-items: center;
+  .cardModalHeader {
+    border-bottom: 1px solid var(--c--theme--colors--greyscale-200);
+    padding: 14px 20px;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    position: fixed;
+    background-color: #ffffff;
+    z-index: 1000;
+
+    .cardModalHeaderLeft {
+      .boardSelectorIcon {
+        margin-left: 4px;
+      }
+    }
+
+    .cardModalHeaderRight {
+      display: flex;
+      flex-direction: row;
+      gap: 16px;
+      position: relative;
+    }
+
+    .optionsButtonContainer {
+      position: relative;
+    }
+
+    .deletePopupContainer {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 8px;
+      z-index: 1000;
+    }
+
+  }
+
+  .cardModalContent {
+    padding: 58px 20px 20px 20px;
+  }
+
+  .cardModalSection {
+    margin-bottom: 32px;
+    display: flex;
+    flex-direction: row;
     gap: 4px;
+
+    .sectionTitle {
+      font-size: 14px;
+      font-weight: bold;
+      line-height: 20px;
+      color: var(--c--theme--colors--greyscale-800);
+      margin-bottom: 0.5rem;
+    }
+
+    .cardModalSectionLeft {
+      width: 28px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .cardModalSectionRight {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+    }
   }
 
-  .attachments {
-    display: inline-block;
-    margin: 0 8px 8px 0;
-    max-width: 100%;
-    vertical-align: top;
+  .cardModalContent .cardModalSection:last-child {
+    margin-bottom: 0;
   }
 
-  .contentModule {
+  .cardNameSection {
+    padding-top: 24px;
     margin-bottom: 24px;
-  }
 
-  .contentPadding {
-    padding: 8px 8px 0 16px;
-
-    @media only screen and (max-width: 797px) {
-      padding-right: 16px;
-      width: 100% !important;
+    .cardName {
+      font-size: 22px;
+      font-weight: bold;
+      line-height: 28px;
     }
   }
 
-  .cursorPointer {
-    cursor: pointer;
-  }
+  .cardButtonsSection {
+    margin-bottom: 32px;
 
-  .dueDate {
-    background: rgba(9, 30, 66, 0.04);
-    border: none;
-    border-radius: 3px;
-    color: #6b808c;
-    cursor: pointer;
-    line-height: 20px;
-    outline: none;
-    padding: 6px 14px;
-    text-align: left;
-    text-decoration: underline;
-    transition: background 0.3s ease;
-    vertical-align: top;
-
-    &:hover {
-      background: rgba(9, 30, 66, 0.08);
-      color: #17394d;
-    }
-  }
-
-  .descriptionButton {
-    background: rgba(9, 30, 66, 0.04);
-    border: none;
-    border-radius: 3px;
-    display: block;
-    color: #6b808c;
-    cursor: pointer;
-    min-height: 54px;
-    outline: none;
-    padding: 8px 12px;
-    position: relative;
-    text-align: left;
-    text-decoration: none;
-    width: 100%;
-
-    &:hover {
-      background: rgba(9, 30, 66, 0.08);
-      color: #092d42;
-    }
-  }
-
-  .descriptionButtonText {
-    position: absolute;
-    top: 12px;
-  }
-
-  .descriptionText {
-    background: transparent;
-    border: none;
-    color: #17394d;
-    margin-bottom: 8px;
-    outline: none;
-    overflow: hidden;
-    padding: 0;
-    text-align: left;
-    width: 100%;
-  }
-
-  .grid {
-    background: #f5f6f7;
-    margin: 0;
-  }
-
-  .headerPadding {
-    padding: 0;
-  }
-
-  .headerTitle {
-    color: #17394d;
-    font-size: 20px;
-    font-weight: bold;
-    line-height: 24px;
-  }
-
-  .headerTitleWrapper {
-    margin: 4px 0;
-    padding: 6px 0 0;
-  }
-
-  .headerWrapper {
-    margin: 12px 48px 12px 56px;
-    position: relative;
-  }
-
-  .modalPadding {
-    padding: 0px;
-
-    @media only screen and (max-width: 797px) {
+    .cardModalSectionRight {
       display: flex;
-      flex-flow: column nowrap;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+
+      button {
+        height: 32px;
+      }
     }
   }
 
-  .moduleHeader {
-    color: #17394d;
-    font-size: 16px;
-    font-weight: bold;
-    line-height: 20px;
-    margin: 0 0 4px;
-    padding: 8px 0;
-  }
+  .cardDetailsSection {
 
-  .moduleIcon {
-    color: #17394d;
-    font-size: 17px;
-    height: 32px;
-    left: -40px;
-    line-height: 32px;
-    margin-right: 0;
-    position: absolute;
-    top: 2px;
-    width: 32px;
-  }
-
-  .moduleWrapper {
-    margin: 0 0 0 40px;
-    position: relative;
-  }
-
-  .sidebarPadding {
-    padding: 8px 16px 0 8px;
-
-    @media only screen and (max-width: 797px) {
+    .cardModalSectionRight {
+      display: flex;
+      flex-direction: row;
       align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .detailsItem {
       display: flex;
-      flex-flow: row wrap;
-      gap: 10px;
-      padding-left: 16px;
-      width: 100% !important;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .detailsItemTitle {
+      font-size: 12px;
+      font-weight: bold;
+      line-height: 20px;
+      color: var(--c--theme--colors--greyscale-800);
+      margin-bottom: 4px;
+    }
+
+    .detailsItemContent {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      gap: 4px;
+
+      &.dueDateContent {
+        margin: -1px;
+      }
+    }
+
+    .detailsItemAddButton {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 4px;
     }
   }
 
-  .text {
-    color: #6b808c;
-    font-size: 12px;
-    font-weight: bold;
-    letter-spacing: 0.3px;
-    line-height: 20px;
-    margin: 0 8px 4px 0;
-    text-transform: uppercase;
-  }
-
-  .wrapper {
-    width: 880px;
-  }
-
-  @media (max-width: 926px) {
-    .wrapper {
-      width: 95%;
-    }
-  }
 }

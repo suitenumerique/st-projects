@@ -43,18 +43,13 @@ module.exports = {
       throw Errors.PROJECT_NOT_FOUND;
     }
 
-    // const isSourceProjectManager = await sails.helpers.users.isProjectManager(
-    //   currentUser.id,
-    //   project.id,
-    // );
-
     const isTargetProjectManager = await sails.helpers.users.isProjectManager(
       currentUser.id,
       targetProject.id,
     );
 
     if (!isTargetProjectManager) {
-      throw Errors.BOARD_NOT_FOUND; // Forbidden
+      throw Errors.BOARD_NOT_FOUND;
     }
 
     const newBoard = await sails.helpers.boards.duplicateOne.with({

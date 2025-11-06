@@ -115,6 +115,7 @@ export default {
       memberActions_title: 'Member Actions',
       minutes: 'Minutes',
       moveCard_title: 'Move Card',
+      myAccount: 'My account',
       name: 'Name',
       newestFirst: 'Newest first',
       newEmail: 'New e-mail',
@@ -247,6 +248,15 @@ export default {
       unsubscribe: 'Unsubscribe',
       uploadNewAvatar: 'Upload new avatar',
       uploadNewImage: 'Upload new image',
+    },
+    feedback_widget: {
+      shortTitle: 'Feedback?',
+      title: 'Do you have any feedback?',
+      placeholder: 'Share your feedback here...',
+      email_placeholder: 'Your email...',
+      submit_text: 'Send Feedback',
+      success_text: 'Thank you for your feedback!',
+      success_text2: "In case of questions, we'll get back to you soon.",
     },
   },
 };

@@ -1,0 +1,35 @@
+:global(#app) {
+
+  .menuItem {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    padding: 8px 24px 8px 16px;
+    font-size: 0.875rem;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    line-height: 19px;
+    font-weight: 500;
+
+    &:hover {
+      background: var(--c--theme--colors--greyscale-100);
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .icon {
+    width: 24px;
+    height: 24px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+}

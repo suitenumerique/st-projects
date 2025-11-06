@@ -1,8 +1,8 @@
-import { all, apply, fork, select, take } from 'redux-saga/effects';
+import { all, apply, fork, take } from 'redux-saga/effects';
 
 import watchers from './watchers';
 import services from './services';
-import selectors from '../../selectors';
+// import selectors from '../../selectors';
 import { socket } from '../../api';
 import ActionTypes from '../../constants/ActionTypes';
 import Paths from '../../constants/Paths';

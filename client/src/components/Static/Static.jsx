@@ -2,19 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation, Trans } from 'react-i18next';
-import { Icon, Loader } from 'semantic-ui-react';
+import { Spinner } from '@gouvfr-lasuite/ui-kit';
 
 import BoardContainer from '../../containers/BoardContainer';
+import BoardActionsContainer from '../../containers/BoardActionsContainer';
 
-// import styles from './Static.module.scss';
-import styles from './StaticOverride.module.scss';
+import styles from './Static.module.scss';
 
-function Static({ projectId, cardId, board }) {
+function Static({ cardId, currentBoard }) {
   const [t] = useTranslation();
 
   if (cardId === null) {
     return (
-      <div className={classNames(styles.wrapper, styles.wrapperFlex)}>
+      <div className={classNames(styles.wrapper)}>
         <div className={styles.message}>
           <h1>
             {t('common.cardNotFound', {
@@ -26,9 +26,9 @@ function Static({ projectId, cardId, board }) {
     );
   }
 
-  if (board === null) {
+  if (currentBoard === null) {
     return (
-      <div className={classNames(styles.wrapper, styles.wrapperFlex)}>
+      <div className={classNames(styles.wrapper)}>
         <div className={styles.message}>
           <h1>
             {t('common.boardNotFound', {
@@ -40,25 +40,10 @@ function Static({ projectId, cardId, board }) {
     );
   }
 
-  if (projectId === null) {
+  if (currentBoard === undefined) {
     return (
-      <div className={classNames(styles.wrapper, styles.wrapperFlex)}>
+      <div className={classNames(styles.wrapper)}>
         <div className={styles.message}>
-          <h1>
-            {t('common.projectNotFound', {
-              context: 'title',
-            })}
-          </h1>
-        </div>
-      </div>
-    );
-  }
-
-  if (board === undefined) {
-    return (
-      <div className={classNames(styles.wrapper, styles.wrapperFlex, styles.wrapperProject)}>
-        <div className={styles.message}>
-          <Icon inverted name="hand point up outline" size="huge" className={styles.messageIcon} />
           <h1 className={styles.messageTitle}>
             {t('common.openBoard', {
               context: 'title',
@@ -72,31 +57,32 @@ function Static({ projectId, cardId, board }) {
     );
   }
 
-  if (board.isFetching) {
+  if (currentBoard.isFetching) {
     return (
-      <div className={classNames(styles.wrapper, styles.wrapperLoader, styles.wrapperProject)}>
-        <Loader active size="big" />
+      <div className={classNames(styles.wrapper)}>
+        <div className={styles.loading}>
+          <Spinner size="xl" />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className={classNames(styles.wrapper, styles.wrapperFlex, styles.wrapperBoard)}>
+    <div className={classNames(styles.wrapper)}>
+      {currentBoard && !currentBoard.isFetching && <BoardActionsContainer />}
       <BoardContainer />
     </div>
   );
 }
 
 Static.propTypes = {
-  projectId: PropTypes.string,
   cardId: PropTypes.string,
-  board: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  currentBoard: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
 Static.defaultProps = {
-  projectId: undefined,
   cardId: undefined,
-  board: undefined,
+  currentBoard: undefined,
 };
 
 export default Static;

@@ -5,6 +5,23 @@ import { selectPath } from './router';
 import { selectCurrentUserId } from './users';
 import { isLocalId } from '../utils/local-id';
 
+export const makeSelectProjectById = () =>
+  createSelector(
+    orm,
+    (_, id) => id,
+    ({ Project }, id) => {
+      const projectModel = Project.withId(id);
+
+      if (!projectModel) {
+        return projectModel;
+      }
+
+      return projectModel.ref;
+    },
+  );
+
+export const selectProjectById = makeSelectProjectById();
+
 export const selectCurrentProject = createSelector(
   orm,
   (state) => selectPath(state).projectId,
@@ -72,6 +89,13 @@ export const selectBoardsForCurrentProject = createSelector(
       .map((boardModel) => ({
         ...boardModel.ref,
         isPersisted: !isLocalId(boardModel.id),
+        lists: boardModel
+          .getOrderedListsQuerySet()
+          .toRefArray()
+          .map((list) => ({
+            ...list,
+            isPersisted: !isLocalId(list.id),
+          })),
       }));
   },
 );
@@ -96,6 +120,13 @@ export const selectBoardsForSpecificProject = createSelector(
       .map((boardModel) => ({
         ...boardModel.ref,
         isPersisted: !isLocalId(boardModel.id),
+        lists: boardModel
+          .getOrderedListsQuerySet()
+          .toRefArray()
+          .map((list) => ({
+            ...list,
+            isPersisted: !isLocalId(list.id),
+          })),
       }));
   },
 );
@@ -120,6 +151,7 @@ export const selectIsCurrentUserManagerForCurrentProject = createSelector(
 );
 
 export default {
+  selectProjectById,
   selectCurrentProject,
   selectManagersForCurrentProject,
   selectBoardsForCurrentProject,

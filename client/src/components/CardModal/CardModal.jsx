@@ -1,33 +1,30 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { Button, Checkbox, Grid, Icon, Modal } from 'semantic-ui-react';
-import { usePopup } from '../../lib/popup';
-import { Markdown } from '../../lib/custom-ui';
+import { Modal, Button, Checkbox } from '@openfun/cunningham-react';
+import { Icon, DropdownMenu } from '@gouvfr-lasuite/ui-kit';
+import usePopup from '../../lib/popup';
 
 import { startStopwatch, stopStopwatch } from '../../utils/stopwatch';
-import NameField from './NameField';
-import DescriptionEdit from './DescriptionEdit';
+import CardModalNameEdit from './CardModalNameEdit';
+import CardModalDescription from './CardModalDescription';
 import Tasks from './Tasks';
 import Attachments from './Attachments';
 import AttachmentAddZone from './AttachmentAddZone';
-import AttachmentAddStep from './AttachmentAddStep';
 import Activities from './Activities';
-import User from '../User';
-import Label from '../Label';
-import DueDate from '../DueDate';
-import Stopwatch from '../Stopwatch';
-import BoardMembershipsStep from '../BoardMembershipsStep';
-import LabelsStep from '../LabelsStep';
-import DueDateEditStep from '../DueDateEditStep';
-import StopwatchEditStep from '../StopwatchEditStep';
-import CardMoveStep from '../CardMoveStep';
-import DeleteStep from '../DeleteStep';
+import User from '../../ui/User';
+import Label from '../../ui/Label';
+import DueDate from '../../ui/DueDate';
+import Stopwatch from '../../ui/Stopwatch';
+import BoardMembershipsStep from '../../steps/BoardMembershipsStep';
+import LabelsStep from '../../steps/LabelsStep';
+import DueDateEditStep from '../../steps/DueDateEditStep/DueDateEditStep';
+import StopwatchEditStep from '../../steps/StopwatchEditStep/StopwatchEditStep';
+import CardMoveStep from '../../steps/CardMoveStep/CardMoveStep';
+import DeleteStep from '../../steps/DeleteStep/DeleteStep';
 
-import ButtonOverride from '../ButtonOverride';
-
-import styles from './CardModalOverride.module.scss';
+import styles from './CardModal.module.scss';
 
 const CardModal = React.memo(
   ({
@@ -36,25 +33,25 @@ const CardModal = React.memo(
     dueDate,
     isDueDateCompleted,
     stopwatch,
-    isSubscribed,
+    // isSubscribed,
     isActivitiesFetching,
     isAllActivitiesFetched,
-    isActivitiesDetailsVisible,
-    isActivitiesDetailsFetching,
+    // isActivitiesDetailsVisible,
+    // isActivitiesDetailsFetching,
     listId,
     boardId,
     projectId,
+    boards,
+    lists,
     users,
     labels,
     tasks,
     attachments,
     activities,
-    allProjectsToLists,
     allBoardMemberships,
     allLabels,
     canEdit,
-    canEditCommentActivities,
-    canEditAllCommentActivities,
+    canEditAllComments,
     onUpdate,
     onMove,
     onTransfer,
@@ -77,36 +74,73 @@ const CardModal = React.memo(
     onAttachmentUpdate,
     onAttachmentDelete,
     onActivitiesFetch,
-    onActivitiesDetailsToggle,
+    // onActivitiesDetailsToggle,
     onCommentActivityCreate,
     onCommentActivityUpdate,
     onCommentActivityDelete,
     onClose,
   }) => {
     const [t] = useTranslation();
+    const [currentListName, setCurrentListName] = useState();
     const [isLinkCopied, setIsLinkCopied] = useState(false);
+    const [cardModalOptionsOpen, setCardModalOptionsOpen] = useState(false);
+
+    const userIds = users.map((user) => user.id);
+    const labelIds = labels.map((label) => label.id);
 
     const isGalleryOpened = useRef(false);
+    const deletePopupRef = useRef(null);
 
-    const handleToggleStopwatchClick = useCallback(() => {
-      onUpdate({
-        stopwatch: stopwatch.startedAt ? stopStopwatch(stopwatch) : startStopwatch(stopwatch),
-      });
-    }, [stopwatch, onUpdate]);
+    const LabelsPopover = usePopup(LabelsStep);
+    const CardMovePopover = usePopup(CardMoveStep);
+    const DeletePopover = usePopup(DeleteStep);
+    const DueDateEditPopover = usePopup(DueDateEditStep);
+    const BoardMembershipsPopover = usePopup(BoardMembershipsStep);
+    const StopwatchEditPopover = usePopup(StopwatchEditStep);
+
+    useMemo(() => {
+      setCurrentListName(lists.find((list) => list.id === listId)?.name || null);
+    }, [lists, listId]);
+
+    const handleCopyLinkClick = useCallback(() => {
+      navigator.clipboard.writeText(window.location.href);
+      setIsLinkCopied(true);
+      setTimeout(() => {
+        setIsLinkCopied(false);
+      }, 3000);
+    }, []);
+
+    // const handleToggleSubscriptionClick = useCallback(() => {
+    //   onUpdate({
+    //     isSubscribed: !isSubscribed,
+    //   });
+    // }, [isSubscribed, onUpdate]);
+
+    const handleDuplicateClick = useCallback(() => {
+      onDuplicate();
+      setTimeout(() => {
+        onClose();
+      }, 200);
+    }, [onDuplicate, onClose]);
+
+    const handleDeleteClick = useCallback(() => {
+      setCardModalOptionsOpen(false);
+      if (deletePopupRef.current) {
+        deletePopupRef.current.click();
+      }
+    }, [setCardModalOptionsOpen]);
+
+    const handleClose = useCallback(() => {
+      if (isGalleryOpened.current) {
+        return;
+      }
+      onClose();
+    }, [onClose]);
 
     const handleNameUpdate = useCallback(
       (newName) => {
         onUpdate({
           name: newName,
-        });
-      },
-      [onUpdate],
-    );
-
-    const handleDescriptionUpdate = useCallback(
-      (newDescription) => {
-        onUpdate({
-          description: newDescription,
         });
       },
       [onUpdate],
@@ -136,6 +170,21 @@ const CardModal = React.memo(
       [onUpdate],
     );
 
+    const handleToggleStopwatchClick = useCallback(() => {
+      onUpdate({
+        stopwatch: stopwatch.startedAt ? stopStopwatch(stopwatch) : startStopwatch(stopwatch),
+      });
+    }, [stopwatch, onUpdate]);
+
+    const handleDescriptionUpdate = useCallback(
+      (newDescription) => {
+        onUpdate({
+          description: newDescription,
+        });
+      },
+      [onUpdate],
+    );
+
     const handleCoverUpdate = useCallback(
       (newCoverAttachmentId) => {
         onUpdate({
@@ -145,25 +194,6 @@ const CardModal = React.memo(
       [onUpdate],
     );
 
-    const handleToggleSubscriptionClick = useCallback(() => {
-      onUpdate({
-        isSubscribed: !isSubscribed,
-      });
-    }, [isSubscribed, onUpdate]);
-
-    const handleDuplicateClick = useCallback(() => {
-      onDuplicate();
-      onClose();
-    }, [onDuplicate, onClose]);
-
-    const handleCopyLinkClick = useCallback(() => {
-      navigator.clipboard.writeText(window.location.href);
-      setIsLinkCopied(true);
-      setTimeout(() => {
-        setIsLinkCopied(false);
-      }, 5000);
-    }, []);
-
     const handleGalleryOpen = useCallback(() => {
       isGalleryOpened.current = true;
     }, []);
@@ -172,144 +202,268 @@ const CardModal = React.memo(
       isGalleryOpened.current = false;
     }, []);
 
-    const handleClose = useCallback(() => {
-      if (isGalleryOpened.current) {
-        return;
-      }
-
-      onClose();
-    }, [onClose]);
-
-    const AttachmentAddPopup = usePopup(AttachmentAddStep);
-    const BoardMembershipsPopup = usePopup(BoardMembershipsStep);
-    const LabelsPopup = usePopup(LabelsStep);
-    const DueDateEditPopup = usePopup(DueDateEditStep);
-    const StopwatchEditPopup = usePopup(StopwatchEditStep);
-    const CardMovePopup = usePopup(CardMoveStep);
-    const DeletePopup = usePopup(DeleteStep);
-
-    const userIds = users.map((user) => user.id);
-    const labelIds = labels.map((label) => label.id);
+    const hiddenDeletePopover = (
+      <DeletePopover
+        title="common.deleteCard"
+        content="common.areYouSureYouWantToDeleteThisCard"
+        buttonContent="action.deleteCard"
+        onConfirm={onDelete}
+        side="bottom"
+        align="end"
+      >
+        <button
+          ref={deletePopupRef}
+          type="button"
+          style={{
+            pointerEvents: 'none',
+            position: 'absolute',
+            opacity: 0,
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+          }}
+          aria-hidden="true"
+        />
+      </DeletePopover>
+    );
 
     const contentNode = (
-      <Grid className={styles.grid}>
-        <Grid.Row className={styles.headerPadding}>
-          <Grid.Column width={16} className={styles.headerPadding}>
-            <div className={styles.headerWrapper}>
-              <Icon name="list alternate outline" className={styles.moduleIcon} />
-              <div className={styles.headerTitleWrapper}>
-                {canEdit ? (
-                  <NameField defaultValue={name} onUpdate={handleNameUpdate} />
-                ) : (
-                  <div className={styles.headerTitle}>{name}</div>
-                )}
-              </div>
-            </div>
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row className={styles.modalPadding}>
-          <Grid.Column width={canEdit ? 12 : 16} className={styles.contentPadding}>
-            {(users.length > 0 || labels.length > 0 || dueDate || stopwatch) && (
-              <div className={styles.moduleWrapper}>
-                {users.length > 0 && (
-                  <div className={styles.attachments}>
-                    <div className={styles.text}>
-                      {t('common.members', {
+      <div className={styles.cardModalWrapper}>
+        <div className={styles.cardModalHeader}>
+          <div className={styles.cardModalHeaderLeft}>
+            {canEdit ? (
+              <CardMovePopover
+                boards={boards}
+                defaultPath={{
+                  projectId,
+                  boardId,
+                  listId,
+                }}
+                onMove={onMove}
+                onTransfer={onTransfer}
+                onBoardFetch={onBoardFetch}
+              >
+                <Button size="small" color="tertiary">
+                  {currentListName}
+                  <Icon
+                    name="keyboard_arrow_down"
+                    className={styles.boardSelectorIcon}
+                    size="small"
+                  />
+                </Button>
+              </CardMovePopover>
+            ) : (
+              <Button size="small" color="tertiary">
+                {currentListName}
+              </Button>
+            )}
+          </div>
+          <div className={styles.cardModalHeaderRight}>
+            {window.isSecureContext && (
+              <button type="button" className="modal-button" onClick={handleCopyLinkClick}>
+                <Icon name={isLinkCopied ? 'check' : 'link'} size="medium" />
+              </button>
+            )}
+            {canEdit && (
+              <div className={styles.optionsButtonContainer}>
+                {hiddenDeletePopover}
+                <DropdownMenu
+                  options={[
+                    // {
+                    //   label: isSubscribed ? t('action.unsubscribe') : t('action.subscribe'),
+                    //   value: isSubscribed ? 'unsubscribe' : 'subscribe',
+                    //   icon: <Icon name="notifications" size="small" />,
+                    //   callback: handleToggleSubscriptionClick,
+                    // },
+                    {
+                      label: t('action.duplicateCard', {
                         context: 'title',
-                      })}
-                    </div>
-                    {users.map((user) => (
-                      <span key={user.id} className={styles.attachment}>
-                        {canEdit ? (
-                          <BoardMembershipsPopup
-                            items={allBoardMemberships}
-                            currentUserIds={userIds}
-                            onUserSelect={onUserAdd}
-                            onUserDeselect={onUserRemove}
-                          >
-                            <User name={user.name} avatarUrl={user.avatarUrl} />
-                          </BoardMembershipsPopup>
-                        ) : (
-                          <User name={user.name} avatarUrl={user.avatarUrl} />
-                        )}
-                      </span>
-                    ))}
-                    {canEdit && (
-                      <BoardMembershipsPopup
-                        items={allBoardMemberships}
-                        currentUserIds={userIds}
-                        onUserSelect={onUserAdd}
-                        onUserDeselect={onUserRemove}
-                      >
-                        {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-                        <button
-                          type="button"
-                          className={classNames(styles.attachment, styles.dueDate)}
-                        >
-                          <Icon name="add" size="small" className={styles.addAttachment} />
-                        </button>
-                      </BoardMembershipsPopup>
-                    )}
-                  </div>
-                )}
+                      }),
+                      value: 'duplicate',
+                      icon: <Icon name="content_copy" size="small" />,
+                      callback: handleDuplicateClick,
+                    },
+                    {
+                      label: t('action.deleteCard', {
+                        context: 'title',
+                      }),
+                      value: 'delete',
+                      icon: <Icon name="delete" size="small" />,
+                      callback: handleDeleteClick,
+                    },
+                  ]}
+                  isOpen={cardModalOptionsOpen}
+                  onOpenChange={setCardModalOptionsOpen}
+                  onSelectValue={(value) => {
+                    if (value === 'close') {
+                      handleClose();
+                    }
+                  }}
+                >
+                  <button
+                    type="button"
+                    className="modal-button"
+                    onClick={() => setCardModalOptionsOpen(true)}
+                  >
+                    <Icon name="more_horiz" size="medium" />
+                  </button>
+                </DropdownMenu>
+              </div>
+            )}
+
+            <button type="button" onClick={handleClose} className="modal-button">
+              <Icon name="close" size="medium" />
+            </button>
+          </div>
+        </div>
+
+        <div className={styles.cardModalContent}>
+          <section className={classNames(styles.cardModalSection, styles.cardNameSection)}>
+            <div className={styles.cardModalSectionLeft} />
+            <div className={styles.cardModalSectionRight}>
+              {canEdit ? (
+                <CardModalNameEdit defaultValue={name} onUpdate={handleNameUpdate} />
+              ) : (
+                <div className={styles.cardName}>{name}</div>
+              )}
+            </div>
+          </section>
+          {canEdit && (
+            <section className={classNames(styles.cardModalSection, styles.cardButtonsSection)}>
+              <div className={styles.cardModalSectionLeft} />
+              <div className={styles.cardModalSectionRight}>
+                <LabelsPopover
+                  items={allLabels}
+                  currentIds={labelIds}
+                  onSelect={onLabelAdd}
+                  onDeselect={onLabelRemove}
+                  onCreate={onLabelCreate}
+                  onUpdate={onLabelUpdate}
+                  onMove={onLabelMove}
+                  onDelete={onLabelDelete}
+                >
+                  <Button
+                    color="secondary"
+                    size="small"
+                    icon={<Icon size="small" type="outlined" name="new_label" />}
+                  >
+                    {t('common.labels', {
+                      context: 'title',
+                    })}
+                  </Button>
+                </LabelsPopover>
+                <BoardMembershipsPopover
+                  items={allBoardMemberships}
+                  currentUserIds={userIds}
+                  onUserSelect={onUserAdd}
+                  onUserDeselect={onUserRemove}
+                >
+                  <Button
+                    color="secondary"
+                    size="small"
+                    icon={<Icon size="small" type="outlined" name="person_add" />}
+                  >
+                    {t('common.members')}
+                  </Button>
+                </BoardMembershipsPopover>
+                <DueDateEditPopover defaultValue={dueDate} onUpdate={handleDueDateUpdate}>
+                  <Button
+                    color="secondary"
+                    size="small"
+                    icon={<Icon size="small" type="outlined" name="calendar_today" />}
+                  >
+                    {t('common.dueDate', {
+                      context: 'title',
+                    })}
+                  </Button>
+                </DueDateEditPopover>
+                <StopwatchEditPopover defaultValue={stopwatch} onUpdate={handleStopwatchUpdate}>
+                  <Button
+                    color="secondary"
+                    size="small"
+                    icon={<Icon size="small" type="outlined" name="schedule" />}
+                  >
+                    {t('common.stopwatch')}
+                  </Button>
+                </StopwatchEditPopover>
+              </div>
+            </section>
+          )}
+          {(users.length > 0 || labels.length > 0 || dueDate || stopwatch) && (
+            <section className={classNames(styles.cardModalSection, styles.cardDetailsSection)}>
+              <div className={styles.cardModalSectionLeft} />
+              <div className={styles.cardModalSectionRight}>
                 {labels.length > 0 && (
-                  <div className={styles.attachments}>
-                    <div className={styles.text}>
+                  <div className={styles.detailsItem}>
+                    <div className={styles.detailsItemTitle}>
                       {t('common.labels', {
                         context: 'title',
                       })}
                     </div>
-                    {labels.map((label) => (
-                      <span key={label.id} className={styles.attachment}>
-                        {canEdit ? (
-                          <LabelsPopup
-                            key={label.id}
-                            items={allLabels}
-                            currentIds={labelIds}
-                            onSelect={onLabelAdd}
-                            onDeselect={onLabelRemove}
-                            onCreate={onLabelCreate}
-                            onUpdate={onLabelUpdate}
-                            onMove={onLabelMove}
-                            onDelete={onLabelDelete}
-                          >
-                            <Label name={label.name} color={label.color} />
-                          </LabelsPopup>
-                        ) : (
-                          <Label name={label.name} color={label.color} />
-                        )}
-                      </span>
-                    ))}
-                    {canEdit && (
-                      <LabelsPopup
-                        items={allLabels}
-                        currentIds={labelIds}
-                        onSelect={onLabelAdd}
-                        onDeselect={onLabelRemove}
-                        onCreate={onLabelCreate}
-                        onUpdate={onLabelUpdate}
-                        onMove={onLabelMove}
-                        onDelete={onLabelDelete}
-                      >
-                        {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-                        <button
-                          type="button"
-                          className={classNames(styles.attachment, styles.dueDate)}
-                        >
-                          <Icon name="add" size="small" className={styles.addAttachment} />
-                        </button>
-                      </LabelsPopup>
-                    )}
+                    <div className={styles.detailsItemContent}>
+                      {labels.map((label) => (
+                        <span key={label.id}>
+                          {canEdit ? (
+                            <LabelsPopover
+                              key={label.id}
+                              items={allLabels}
+                              currentIds={labelIds}
+                              onSelect={onLabelAdd}
+                              onDeselect={onLabelRemove}
+                              onCreate={onLabelCreate}
+                              onUpdate={onLabelUpdate}
+                              onMove={onLabelMove}
+                              onDelete={onLabelDelete}
+                            >
+                              <button type="button" className="bare-button">
+                                <Label name={label.name} color={label.color} size="medium" />
+                              </button>
+                            </LabelsPopover>
+                          ) : (
+                            <Label name={label.name} color={label.color} size="medium" />
+                          )}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {users.length > 0 && (
+                  <div className={styles.detailsItem}>
+                    <div className={styles.detailsItemTitle}>
+                      {t('common.members', {
+                        context: 'title',
+                      })}
+                    </div>
+                    <div className={styles.detailsItemContent}>
+                      {users.map((user) => (
+                        <span key={user.id}>
+                          {canEdit ? (
+                            <BoardMembershipsPopover
+                              items={allBoardMemberships}
+                              currentUserIds={userIds}
+                              onUserSelect={onUserAdd}
+                              onUserDeselect={onUserRemove}
+                            >
+                              <button type="button" className="bare-button">
+                                <User name={user.name} size="medium" avatarUrl={user.avatarUrl} />
+                              </button>
+                            </BoardMembershipsPopover>
+                          ) : (
+                            <User name={user.name} size="medium" avatarUrl={user.avatarUrl} />
+                          )}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 )}
                 {dueDate && (
-                  <div className={styles.attachments}>
-                    <div className={styles.text}>
+                  <div className={styles.detailsItem}>
+                    <div className={styles.detailsItemTitle}>
                       {t('common.dueDate', {
                         context: 'title',
                       })}
                     </div>
-                    <span className={classNames(styles.attachment, styles.attachmentDueDate)}>
+                    <div className={classNames(styles.detailsItemContent, styles.dueDateContent)}>
                       {canEdit ? (
                         <>
                           <Checkbox
@@ -317,96 +471,99 @@ const CardModal = React.memo(
                             disabled={!canEdit}
                             onChange={handleDueDateCompletionChange}
                           />
-                          <DueDateEditPopup defaultValue={dueDate} onUpdate={handleDueDateUpdate}>
-                            <DueDate
-                              withStatusIcon
-                              value={dueDate}
-                              isCompleted={isDueDateCompleted}
-                            />
-                          </DueDateEditPopup>
+                          <DueDateEditPopover defaultValue={dueDate} onUpdate={handleDueDateUpdate}>
+                            <button type="button" className="bare-button">
+                              <DueDate
+                                size="medium"
+                                withStatusIcon
+                                value={dueDate}
+                                isCompleted={isDueDateCompleted}
+                                onClick={() => {}}
+                              />
+                            </button>
+                          </DueDateEditPopover>
                         </>
                       ) : (
-                        <DueDate withStatusIcon value={dueDate} isCompleted={isDueDateCompleted} />
+                        <DueDate
+                          size="medium"
+                          withStatusIcon
+                          value={dueDate}
+                          isCompleted={isDueDateCompleted}
+                        />
                       )}
-                    </span>
+                    </div>
                   </div>
                 )}
                 {stopwatch && (
-                  <div className={styles.attachments}>
-                    <div className={styles.text}>
+                  <div className={styles.detailsItem}>
+                    <div className={styles.detailsItemTitle}>
                       {t('common.stopwatch', {
                         context: 'title',
                       })}
                     </div>
-                    <span className={styles.attachment}>
+                    <div className={styles.detailsItemContent}>
                       {canEdit ? (
-                        <StopwatchEditPopup
+                        <StopwatchEditPopover
                           defaultValue={stopwatch}
                           onUpdate={handleStopwatchUpdate}
                         >
-                          <Stopwatch startedAt={stopwatch.startedAt} total={stopwatch.total} />
-                        </StopwatchEditPopup>
+                          <button type="button" className="bare-button">
+                            <Stopwatch
+                              startedAt={stopwatch.startedAt}
+                              total={stopwatch.total}
+                              size="medium"
+                            />
+                          </button>
+                        </StopwatchEditPopover>
                       ) : (
-                        <Stopwatch startedAt={stopwatch.startedAt} total={stopwatch.total} />
-                      )}
-                    </span>
-                    {canEdit && (
-                      // eslint-disable-next-line jsx-a11y/control-has-associated-label
-                      <button
-                        type="button"
-                        className={classNames(styles.attachment, styles.dueDate)}
-                        onClick={handleToggleStopwatchClick}
-                      >
-                        <Icon
-                          name={stopwatch.startedAt ? 'pause' : 'play'}
-                          size="small"
-                          className={styles.addAttachment}
+                        <Stopwatch
+                          startedAt={stopwatch.startedAt}
+                          total={stopwatch.total}
+                          size="medium"
                         />
-                      </button>
-                    )}
+                      )}
+                      {canEdit && (
+                        <Button
+                          type="button"
+                          color="secondary"
+                          size="small"
+                          className={styles.detailsItemAddButton}
+                          onClick={handleToggleStopwatchClick}
+                        >
+                          <Icon name={stopwatch.startedAt ? 'pause' : 'play_arrow'} size="small" />
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>
-            )}
-            {(description || canEdit) && (
-              <div className={styles.contentModule}>
-                <div className={styles.moduleWrapper}>
-                  <Icon name="align left" className={styles.moduleIcon} />
-                  <div className={styles.moduleHeader}>{t('common.description')}</div>
-                  {canEdit ? (
-                    <DescriptionEdit defaultValue={description} onUpdate={handleDescriptionUpdate}>
-                      {description ? (
-                        <button
-                          type="button"
-                          className={classNames(styles.descriptionText, styles.cursorPointer)}
-                        >
-                          <Markdown linkStopPropagation linkTarget="_blank">
-                            {description}
-                          </Markdown>
-                        </button>
-                      ) : (
-                        <button type="button" className={styles.descriptionButton}>
-                          <span className={styles.descriptionButtonText}>
-                            {t('action.addMoreDetailedDescription')}
-                          </span>
-                        </button>
-                      )}
-                    </DescriptionEdit>
-                  ) : (
-                    <div className={styles.descriptionText}>
-                      <Markdown linkStopPropagation linkTarget="_blank">
-                        {description}
-                      </Markdown>
-                    </div>
-                  )}
+            </section>
+          )}
+          {(canEdit || description) && (
+            <section className={classNames(styles.cardModalSection, styles.cardDescriptionSection)}>
+              <div className={styles.cardModalSectionLeft}>
+                <Icon name="format_align_left" size="small" />
+              </div>
+              <div className={styles.cardModalSectionRight}>
+                <div className={styles.sectionTitle}>{t('common.description')}</div>
+                <div className={styles.detailsItemContent}>
+                  <CardModalDescription
+                    description={description}
+                    canEdit={canEdit}
+                    onUpdate={handleDescriptionUpdate}
+                  />
                 </div>
               </div>
-            )}
-            {(tasks.length > 0 || canEdit) && (
-              <div className={styles.contentModule}>
-                <div className={styles.moduleWrapper}>
-                  <Icon name="check square outline" className={styles.moduleIcon} />
-                  <div className={styles.moduleHeader}>{t('common.tasks')}</div>
+            </section>
+          )}
+          {(canEdit || tasks.length > 0) && (
+            <section className={classNames(styles.cardModalSection, styles.cardTasksSection)}>
+              <div className={styles.cardModalSectionLeft}>
+                <Icon name="check_box" type="outlined" size="small" />
+              </div>
+              <div className={styles.cardModalSectionRight}>
+                <div className={styles.sectionTitle}>{t('common.tasks')}</div>
+                <div className={styles.detailsItemContent}>
                   <Tasks
                     items={tasks}
                     canEdit={canEdit}
@@ -417,15 +574,20 @@ const CardModal = React.memo(
                   />
                 </div>
               </div>
-            )}
-            {attachments.length > 0 && (
-              <div className={styles.contentModule}>
-                <div className={styles.moduleWrapper}>
-                  <Icon name="attach" className={styles.moduleIcon} />
-                  <div className={styles.moduleHeader}>{t('common.attachments')}</div>
+            </section>
+          )}
+          {(canEdit || attachments.length > 0) && (
+            <section className={classNames(styles.cardModalSection, styles.cardAttachmentsSection)}>
+              <div className={styles.cardModalSectionLeft}>
+                <Icon name="attach_file" type="outlined" size="small" />
+              </div>
+              <div className={styles.cardModalSectionRight}>
+                <div className={styles.sectionTitle}>{t('common.attachments')}</div>
+                <div className={styles.detailsItemContent}>
                   <Attachments
                     items={attachments}
                     canEdit={canEdit}
+                    onCreate={onAttachmentCreate}
                     onUpdate={onAttachmentUpdate}
                     onDelete={onAttachmentDelete}
                     onCoverUpdate={handleCoverUpdate}
@@ -434,148 +596,40 @@ const CardModal = React.memo(
                   />
                 </div>
               </div>
-            )}
-            <Activities
-              items={activities}
-              isFetching={isActivitiesFetching}
-              isAllFetched={isAllActivitiesFetched}
-              isDetailsVisible={isActivitiesDetailsVisible}
-              isDetailsFetching={isActivitiesDetailsFetching}
-              canEdit={canEditCommentActivities}
-              canEditAllComments={canEditAllCommentActivities}
-              onFetch={onActivitiesFetch}
-              onDetailsToggle={onActivitiesDetailsToggle}
-              onCommentCreate={onCommentActivityCreate}
-              onCommentUpdate={onCommentActivityUpdate}
-              onCommentDelete={onCommentActivityDelete}
-            />
-          </Grid.Column>
-          {canEdit && (
-            <Grid.Column width={4} className={styles.sidebarPadding}>
-              <div className={styles.actions}>
-                <span className={styles.actionsTitle}>{t('action.addToCard')}</span>
-                <BoardMembershipsPopup
-                  items={allBoardMemberships}
-                  currentUserIds={userIds}
-                  onUserSelect={onUserAdd}
-                  onUserDeselect={onUserRemove}
-                >
-                  <ButtonOverride priority="secondary" className={styles.actionButton}>
-                    <Icon name="user outline" className={styles.actionIcon} />
-                    {t('common.members')}
-                  </ButtonOverride>
-                </BoardMembershipsPopup>
-                <LabelsPopup
-                  items={allLabels}
-                  currentIds={labelIds}
-                  onSelect={onLabelAdd}
-                  onDeselect={onLabelRemove}
-                  onCreate={onLabelCreate}
-                  onUpdate={onLabelUpdate}
-                  onMove={onLabelMove}
-                  onDelete={onLabelDelete}
-                >
-                  <ButtonOverride priority="secondary" className={styles.actionButton}>
-                    <Icon name="bookmark outline" className={styles.actionIcon} />
-                    {t('common.labels')}
-                  </ButtonOverride>
-                </LabelsPopup>
-                <DueDateEditPopup defaultValue={dueDate} onUpdate={handleDueDateUpdate}>
-                  <ButtonOverride priority="secondary" className={styles.actionButton}>
-                    <Icon name="calendar check outline" className={styles.actionIcon} />
-                    {t('common.dueDate', {
-                      context: 'title',
-                    })}
-                  </ButtonOverride>
-                </DueDateEditPopup>
-                <StopwatchEditPopup defaultValue={stopwatch} onUpdate={handleStopwatchUpdate}>
-                  <ButtonOverride priority="secondary" className={styles.actionButton}>
-                    <Icon name="clock outline" className={styles.actionIcon} />
-                    {t('common.stopwatch')}
-                  </ButtonOverride>
-                </StopwatchEditPopup>
-                <AttachmentAddPopup onCreate={onAttachmentCreate}>
-                  <ButtonOverride priority="secondary" className={styles.actionButton}>
-                    <Icon name="attach" className={styles.actionIcon} />
-                    {t('common.attachment')}
-                  </ButtonOverride>
-                </AttachmentAddPopup>
-              </div>
-              <div className={styles.actions}>
-                <span className={styles.actionsTitle}>{t('common.actions')}</span>
-                <ButtonOverride
-                  priority="secondary"
-                  className={styles.actionButton}
-                  onClick={handleToggleSubscriptionClick}
-                >
-                  <Icon name="paper plane outline" className={styles.actionIcon} />
-                  {isSubscribed ? t('action.unsubscribe') : t('action.subscribe')}
-                </ButtonOverride>
-                <CardMovePopup
-                  projectsToLists={allProjectsToLists}
-                  defaultPath={{
-                    projectId,
-                    boardId,
-                    listId,
-                  }}
-                  onMove={onMove}
-                  onTransfer={onTransfer}
-                  onBoardFetch={onBoardFetch}
-                >
-                  <ButtonOverride
-                    priority="secondary"
-                    className={styles.actionButton}
-                    onClick={handleToggleSubscriptionClick}
-                  >
-                    <Icon name="share square outline" className={styles.actionIcon} />
-                    {t('action.move')}
-                  </ButtonOverride>
-                </CardMovePopup>
-                <ButtonOverride
-                  priority="secondary"
-                  className={styles.actionButton}
-                  onClick={handleDuplicateClick}
-                >
-                  <Icon name="copy outline" className={styles.actionIcon} />
-                  {t('action.duplicate')}
-                </ButtonOverride>
-                {window.isSecureContext && (
-                  <ButtonOverride
-                    priority="secondary"
-                    className={styles.actionButton}
-                    onClick={handleCopyLinkClick}
-                  >
-                    <Icon
-                      name={isLinkCopied ? 'linkify' : 'unlink'}
-                      className={styles.actionIcon}
-                    />
-                    {isLinkCopied
-                      ? t('common.linkIsCopied')
-                      : t('action.copyLink', {
-                          context: 'title',
-                        })}
-                  </ButtonOverride>
-                )}
-                <DeletePopup
-                  title="common.deleteCard"
-                  content="common.areYouSureYouWantToDeleteThisCard"
-                  buttonContent="action.deleteCard"
-                  onConfirm={onDelete}
-                >
-                  <ButtonOverride priority="secondary" className={styles.actionButton}>
-                    <Icon name="trash alternate outline" className={styles.actionIcon} />
-                    {t('action.delete')}
-                  </ButtonOverride>
-                </DeletePopup>
-              </div>
-            </Grid.Column>
+            </section>
           )}
-        </Grid.Row>
-      </Grid>
+          {(canEdit || activities.length > 0) && (
+            <section className={classNames(styles.cardModalSection, styles.cardActivitiesSection)}>
+              <div className={styles.cardModalSectionLeft}>
+                <Icon name="comment" type="outlined" size="small" />
+              </div>
+              <div className={styles.cardModalSectionRight}>
+                <div className={styles.sectionTitle}>Commentaires</div>
+                <div className={styles.detailsItemContent}>
+                  <Activities
+                    items={activities}
+                    isFetching={isActivitiesFetching}
+                    isAllFetched={isAllActivitiesFetched}
+                    isDetailsVisible={false}
+                    // isDetailsFetching={isActivitiesDetailsFetching}
+                    canEdit={canEdit}
+                    canEditAllComments={canEditAllComments}
+                    onFetch={onActivitiesFetch}
+                    // onDetailsToggle={onActivitiesDetailsToggle}
+                    onCommentCreate={onCommentActivityCreate}
+                    onCommentUpdate={onCommentActivityUpdate}
+                    onCommentDelete={onCommentActivityDelete}
+                  />
+                </div>
+              </div>
+            </section>
+          )}
+        </div>
+      </div>
     );
 
     return (
-      <Modal open closeIcon centered={false} onClose={handleClose} className={styles.wrapper}>
+      <Modal isOpen closeIcon onClose={handleClose} hideCloseButton closeOnClickOutside>
         {canEdit ? (
           <AttachmentAddZone onCreate={onAttachmentCreate}>{contentNode}</AttachmentAddZone>
         ) : (
@@ -592,27 +646,27 @@ CardModal.propTypes = {
   dueDate: PropTypes.instanceOf(Date),
   isDueDateCompleted: PropTypes.bool,
   stopwatch: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  isSubscribed: PropTypes.bool.isRequired,
+  // isSubscribed: PropTypes.bool.isRequired,
   isActivitiesFetching: PropTypes.bool.isRequired,
   isAllActivitiesFetched: PropTypes.bool.isRequired,
-  isActivitiesDetailsVisible: PropTypes.bool.isRequired,
-  isActivitiesDetailsFetching: PropTypes.bool.isRequired,
+  // isActivitiesDetailsVisible: PropTypes.bool.isRequired,
+  // isActivitiesDetailsFetching: PropTypes.bool.isRequired,
   listId: PropTypes.string.isRequired,
   boardId: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   /* eslint-disable react/forbid-prop-types */
+  boards: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  lists: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   users: PropTypes.array.isRequired,
   labels: PropTypes.array.isRequired,
   tasks: PropTypes.array.isRequired,
   attachments: PropTypes.array.isRequired,
   activities: PropTypes.array.isRequired,
-  allProjectsToLists: PropTypes.array.isRequired,
   allBoardMemberships: PropTypes.array.isRequired,
   allLabels: PropTypes.array.isRequired,
   /* eslint-enable react/forbid-prop-types */
   canEdit: PropTypes.bool.isRequired,
-  canEditCommentActivities: PropTypes.bool.isRequired,
-  canEditAllCommentActivities: PropTypes.bool.isRequired,
+  canEditAllComments: PropTypes.bool.isRequired,
   onUpdate: PropTypes.func.isRequired,
   onMove: PropTypes.func.isRequired,
   onTransfer: PropTypes.func.isRequired,
@@ -635,7 +689,7 @@ CardModal.propTypes = {
   onAttachmentUpdate: PropTypes.func.isRequired,
   onAttachmentDelete: PropTypes.func.isRequired,
   onActivitiesFetch: PropTypes.func.isRequired,
-  onActivitiesDetailsToggle: PropTypes.func.isRequired,
+  // onActivitiesDetailsToggle: PropTypes.func.isRequired,
   onCommentActivityCreate: PropTypes.func.isRequired,
   onCommentActivityUpdate: PropTypes.func.isRequired,
   onCommentActivityDelete: PropTypes.func.isRequired,

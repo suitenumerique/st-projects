@@ -1,0 +1,50 @@
+:global(#app) {
+
+  .searchContainer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: -12px -12px 12px -12px;
+    padding: 0 12px;
+    border-bottom: 1px solid var(--c--theme--colors--greyscale-200);
+
+    input {
+      width: 100%;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      height: 50px;
+      color: var(--c--theme--colors--greyscale-800);
+
+      &::placeholder {
+        color: var(--c--theme--colors--greyscale-400);
+      }
+    }
+  }
+
+  .filterList {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+  }
+
+  .filterLabel {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    width: 262px;
+
+    .userAvatar {
+      flex-shrink: 0;
+    }
+
+    span {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+
+}

@@ -1,0 +1,18 @@
+:global(#app) {
+
+  .field {
+    margin-bottom: 8px;
+  }
+
+  .fieldLabel {
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+
+  .controls {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+}

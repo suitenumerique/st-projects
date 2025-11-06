@@ -1,0 +1,12 @@
+:global(#app) {
+  .content {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+}

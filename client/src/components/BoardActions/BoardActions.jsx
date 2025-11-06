@@ -1,27 +1,25 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
-
+import { ShareModal, ShareModalCopyLinkFooter, Icon } from '@gouvfr-lasuite/ui-kit';
+import { Button } from '@openfun/cunningham-react';
+import Badge from '../../ui/Badge';
 import Filters from './Filters';
-import Memberships from '../Memberships';
-import BoardMembershipPermissionsSelectStep from '../BoardMembershipPermissionsSelectStep';
-import BoardVisibility from './BoardVisibility';
-
-import styles from './BoardActionsOverride.module.scss';
+import styles from './BoardActions.module.scss';
 
 const BoardActions = React.memo(
   ({
-    memberships,
-    labels,
-    filterUsers,
-    filterLabels,
+    currentBoardId,
+    currentBoardName,
     filterText,
     allUsers,
+    filterUsers,
+    boardLabels,
+    filterLabels,
+    boardMemberships,
+    isCurrentUserMember,
     canEdit,
-    canEditMemberships,
-    isPublic,
-    onMembershipCreate,
-    onMembershipUpdate,
-    onMembershipDelete,
+    isBoardPublic,
+    onTextFilterUpdate,
     onUserToFilterAdd,
     onUserFromFilterRemove,
     onLabelToFilterAdd,
@@ -30,18 +28,55 @@ const BoardActions = React.memo(
     onLabelUpdate,
     onLabelMove,
     onLabelDelete,
-    onTextFilterUpdate,
+    onMembershipCreate,
+    onMembershipUpdate,
+    onMembershipDelete,
     onBoardUpdate,
-    currentUser,
-    currentBoardId,
-    isCurrentUserMember,
   }) => {
+    const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+    const [searchedUsers, setSearchedUsers] = useState([]);
+
     const handleUpdate = useCallback(
       (data) => {
         onBoardUpdate(currentBoardId, data);
       },
       [onBoardUpdate, currentBoardId],
     );
+
+    const handleShareClick = useCallback(() => {
+      setIsShareModalOpen(true);
+    }, []);
+
+    const handleShareModalClose = useCallback(() => {
+      setIsShareModalOpen(false);
+    }, []);
+
+    const onSearchUsers = useCallback(
+      (search) => {
+        const filteredUsers = allUsers.filter((user) => {
+          return (
+            (user.email.includes(search) || user.name.includes(search)) &&
+            !boardMemberships.some((membership) => membership.user.id === user.id)
+          );
+        });
+        setSearchedUsers(filteredUsers);
+      },
+      [allUsers, boardMemberships],
+    );
+
+    const modalMembers = useMemo(() => {
+      return boardMemberships.map((membership) => {
+        return {
+          id: membership.id,
+          role: membership.role,
+          user: {
+            id: membership.user.id,
+            full_name: membership.user.name,
+            email: membership.user.email,
+          },
+        };
+      });
+    }, [boardMemberships]);
 
     useEffect(() => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -58,33 +93,17 @@ const BoardActions = React.memo(
 
     return (
       <div className={styles.wrapper}>
+        <h4 className={styles.boardName}>{currentBoardName}</h4>
         <div className={styles.actions}>
           <div className={styles.action}>
-            {currentUser && (
-              <Memberships
-                items={memberships}
-                allUsers={allUsers}
-                permissionsSelectStep={BoardMembershipPermissionsSelectStep}
-                canEdit={canEditMemberships}
-                onCreate={onMembershipCreate}
-                onUpdate={onMembershipUpdate}
-                onDelete={onMembershipDelete}
-                currentUser={currentUser}
-              />
-            )}
-            <div style={{ marginLeft: '15px' }}>
-              {canEdit && <BoardVisibility isPublic={isPublic} onToggle={handleUpdate} />}
-            </div>
-          </div>
-          <div className={styles.action}>
             <Filters
-              users={filterUsers}
-              labels={filterLabels}
               filterText={filterText}
-              allBoardMemberships={memberships}
-              allLabels={labels}
+              boardLabels={boardLabels}
+              filterLabels={filterLabels}
+              filterUsers={filterUsers}
+              boardMemberships={boardMemberships}
               canEdit={canEdit}
-              isCurrentUserMember={isCurrentUserMember}
+              onTextFilterUpdate={onTextFilterUpdate}
               onUserAdd={onUserToFilterAdd}
               onUserRemove={onUserFromFilterRemove}
               onLabelAdd={onLabelToFilterAdd}
@@ -93,30 +112,106 @@ const BoardActions = React.memo(
               onLabelUpdate={onLabelUpdate}
               onLabelMove={onLabelMove}
               onLabelDelete={onLabelDelete}
-              onTextFilterUpdate={onTextFilterUpdate}
             />
           </div>
+          {isCurrentUserMember && (
+            <div className={styles.action}>
+              {boardMemberships.length === 1 && canEdit ? (
+                <Button onClick={handleShareClick} title="Share board" color="tertiary-text">
+                  Partager
+                </Button>
+              ) : (
+                <Badge style={{ cursor: 'pointer' }} onClick={handleShareClick}>
+                  <Icon type="outlined" name="group" />
+                  <span style={{ fontSize: '16px' }}>{boardMemberships.length}</span>
+                </Badge>
+              )}
+            </div>
+          )}
         </div>
+
+        <ShareModal
+          isOpen={isShareModalOpen}
+          onClose={handleShareModalClose}
+          modalTitle="Partager le tableau"
+          canUpdate={canEdit}
+          canView
+          accesses={modalMembers}
+          invitationRoles={[
+            {
+              label: 'Editeur',
+              value: 'editor',
+            },
+            {
+              label: 'Lecteur',
+              value: 'viewer',
+            },
+            {
+              label: 'Propriétaire',
+              value: 'owner',
+            },
+          ]}
+          onDeleteAccess={(e) => {
+            onMembershipDelete(e.id);
+          }}
+          onDeleteInvitation={() => {}}
+          onUpdateInvitation={() => {}}
+          onUpdateAccess={(e, role) => {
+            onMembershipUpdate(e.id, { role });
+          }}
+          onSearchUsers={onSearchUsers}
+          hasNextMembers={false}
+          hasNextInvitations={false}
+          searchUsersResult={searchedUsers || []}
+          onInviteUser={(users) => {
+            users.forEach((user) => {
+              onMembershipCreate({ userId: user.id, role: 'editor' });
+            });
+          }}
+          outsideSearchContent={
+            <ShareModalCopyLinkFooter
+              onCopyLink={() => {
+                navigator.clipboard.writeText(window.location.href);
+              }}
+              onOk={() => {
+                handleShareModalClose();
+              }}
+            />
+          }
+          linkSettings={canEdit}
+          linkReach={isBoardPublic ? 'public' : 'restricted'}
+          linkReachChoices={[
+            {
+              value: 'public',
+            },
+            {
+              value: 'restricted',
+            },
+          ]}
+          onUpdateLinkReach={(value) => {
+            handleUpdate({ isPublic: value === 'public' });
+          }}
+        />
       </div>
     );
   },
 );
 
 BoardActions.propTypes = {
-  /* eslint-disable react/forbid-prop-types */
-  memberships: PropTypes.array.isRequired,
-  labels: PropTypes.array.isRequired,
-  filterUsers: PropTypes.array.isRequired,
-  filterLabels: PropTypes.array.isRequired,
+  currentBoardId: PropTypes.string.isRequired,
+  currentBoardName: PropTypes.string.isRequired,
   filterText: PropTypes.string.isRequired,
+  /* eslint-disable react/forbid-prop-types */
   allUsers: PropTypes.array.isRequired,
+  filterUsers: PropTypes.array.isRequired,
+  boardLabels: PropTypes.array.isRequired,
+  filterLabels: PropTypes.array.isRequired,
+  boardMemberships: PropTypes.array.isRequired,
   /* eslint-enable react/forbid-prop-types */
   canEdit: PropTypes.bool.isRequired,
-  canEditMemberships: PropTypes.bool.isRequired,
-  isPublic: PropTypes.bool.isRequired,
-  onMembershipCreate: PropTypes.func.isRequired,
-  onMembershipUpdate: PropTypes.func.isRequired,
-  onMembershipDelete: PropTypes.func.isRequired,
+  isCurrentUserMember: PropTypes.bool.isRequired,
+  isBoardPublic: PropTypes.bool.isRequired,
+  onTextFilterUpdate: PropTypes.func.isRequired,
   onUserToFilterAdd: PropTypes.func.isRequired,
   onUserFromFilterRemove: PropTypes.func.isRequired,
   onLabelToFilterAdd: PropTypes.func.isRequired,
@@ -125,12 +220,10 @@ BoardActions.propTypes = {
   onLabelUpdate: PropTypes.func.isRequired,
   onLabelMove: PropTypes.func.isRequired,
   onLabelDelete: PropTypes.func.isRequired,
-  onTextFilterUpdate: PropTypes.func.isRequired,
+  onMembershipCreate: PropTypes.func.isRequired,
+  onMembershipUpdate: PropTypes.func.isRequired,
+  onMembershipDelete: PropTypes.func.isRequired,
   onBoardUpdate: PropTypes.func.isRequired,
-  /* eslint-disable react/forbid-prop-types */
-  currentUser: PropTypes.object.isRequired,
-  currentBoardId: PropTypes.string.isRequired,
-  isCurrentUserMember: PropTypes.bool.isRequired,
 };
 
 export default BoardActions;

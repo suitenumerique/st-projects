@@ -6,7 +6,7 @@ import { Router } from 'react-router-dom';
 import { handleLocationChange } from './actions';
 
 function ReduxRouter({ children, history, selector, basename }) {
-  const state = useSelector(selector);
+  const state = useSelector(selector || (({ router }) => router));
   const dispatch = useDispatch();
 
   useLayoutEffect(() => {

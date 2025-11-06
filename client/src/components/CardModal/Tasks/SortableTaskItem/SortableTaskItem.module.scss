@@ -1,0 +1,70 @@
+:global(#app) {
+
+  .wrapper {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+
+    &.dragging {
+      opacity: 0.5;
+    }
+
+    .checkbox {
+      margin-top: 4px;
+      margin-right: 0.5rem;
+    }
+
+    .taskWrapper {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+
+      &.contentHoverable:hover {
+        background: var(--c--theme--colors--greyscale-100);
+      }
+
+      &.draggable {
+        cursor: grab;
+
+        &:active {
+          cursor: grabbing;
+        }
+      }
+    }
+
+    .task {
+      flex: 1;
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--c--theme--colors--greyscale-800);
+      &.taskCompleted {
+        color: var(--c--theme--colors--greyscale-400);
+        text-decoration: line-through;
+      }
+    }
+
+    .taskActionsButton {
+      opacity: 0;
+    }
+
+    &:hover {
+      .taskActionsButton {
+        opacity: 1;
+      }
+    }
+
+    &.popoverOpened {
+      .taskWrapper {
+        background-color: var(--c--theme--colors--greyscale-100);
+      }
+      .taskActionsButton {
+        opacity: 1;
+      }
+    }
+
+  }
+}

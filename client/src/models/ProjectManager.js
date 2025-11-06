@@ -1,7 +1,7 @@
 import { attr, fk } from 'redux-orm';
 
 import BaseModel from './BaseModel';
-import ActionTypes from '../constants/ActionTypes';
+// import ActionTypes from '../constants/ActionTypes';
 
 export default class extends BaseModel {
   static modelName = 'ProjectManager';
@@ -23,7 +23,7 @@ export default class extends BaseModel {
     }),
   };
 
-  static reducer({ type, payload }, ProjectManager) {
+  static reducer({ type }) {
     switch (type) {
       // case ActionTypes.SOCKET_RECONNECT_HANDLE:
       //   // ProjectManager.all().delete();

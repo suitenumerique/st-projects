@@ -1,0 +1,18 @@
+:global(#app) {
+
+  .wrapper {
+    width: 100%;
+    background-color: var(--c--theme--colors--greyscale-100);
+    padding: 0.5rem;
+    border-radius: 4px;
+  }
+
+  .field {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 0.25rem;
+    padding: 0.5rem;
+    height: 32px;
+  }
+
+}
