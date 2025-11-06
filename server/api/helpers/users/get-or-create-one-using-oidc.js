@@ -67,9 +67,14 @@ module.exports = {
       }
     }
 
+    if (!claims[sails.config.custom.oidcEmailAttribute]) {
+      throw 'missingValues';
+    }
+    // Validate that all fullname attributes exist
     if (
-      !claims[sails.config.custom.oidcEmailAttribute] ||
-      !claims[sails.config.custom.oidcNameAttribute]
+      !Array.isArray(sails.config.custom.oidcFullnameAttributes) ||
+      sails.config.custom.oidcFullnameAttributes.length === 0 ||
+      !sails.config.custom.oidcFullnameAttributes.every((attr) => claims[attr])
     ) {
       throw 'missingValues';
     }
@@ -86,18 +91,14 @@ module.exports = {
       }
     }
 
-    // eslint-disable-next-line no-console
-    console.log('=================');
-    // eslint-disable-next-line no-console
-    console.log('claims', claims);
-    // eslint-disable-next-line no-console
-    console.log('=================');
+    // Build name from array of attributes
+    const name = sails.config.custom.oidcFullnameAttributes.map((attr) => claims[attr]).join(' ');
 
     const values = {
       isAdmin,
       email: claims[sails.config.custom.oidcEmailAttribute],
       isSso: true,
-      name: claims[sails.config.custom.oidcNameAttribute],
+      name,
       subscribeToOwnCards: false,
     };
     if (!sails.config.custom.oidcIgnoreUsername) {
@@ -170,12 +171,12 @@ module.exports = {
     if (user.siret) {
       let project = await Project.findOne({ siret: user.siret });
       if (!project) {
-        const name = await sails.helpers.utils.getNameFromSiren.with({
+        const projectName = await sails.helpers.utils.getNameFromSiren.with({
           siren: user.siret,
         });
         project = await Project.create({
           siret: user.siret,
-          name,
+          name: projectName,
         }).fetch();
       }
 

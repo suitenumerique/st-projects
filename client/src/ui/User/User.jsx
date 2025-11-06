@@ -1,4 +1,3 @@
-import initials from 'initials';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { UserAvatar } from '@gouvfr-lasuite/ui-kit';
@@ -12,8 +11,7 @@ const SIZES = {
 
 // eslint-disable-next-line no-unused-vars
 const User = React.memo(({ name, avatarUrl, size, isDisabled, onClick }) => {
-  const initialsWithSpace = initials(name).split('').join(' ');
-  const contentNode = <UserAvatar fullName={initialsWithSpace} size={size} />;
+  const contentNode = <UserAvatar fullName={name} size={size} />;
 
   return onClick ? (
     <button type="button" disabled={isDisabled} onClick={onClick}>

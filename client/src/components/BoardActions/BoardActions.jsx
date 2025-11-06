@@ -71,7 +71,7 @@ const BoardActions = React.memo(
           role: membership.role,
           user: {
             id: membership.user.id,
-            // full_name: membership.user.name,
+            full_name: membership.user.name,
             email: membership.user.email,
           },
         };
