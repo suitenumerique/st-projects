@@ -19,7 +19,7 @@ const Errors = {
     usernameAlreadyInUse: 'Username already in use',
   },
   MISSING_VALUES: {
-    missingValues: 'Unable to retrieve required values (email, name)',
+    missingValues: 'Unable to retrieve required values',
   },
 };
 

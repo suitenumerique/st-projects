@@ -71,11 +71,7 @@ module.exports = {
       throw 'missingValues';
     }
     // Validate that all fullname attributes exist
-    if (
-      !Array.isArray(sails.config.custom.oidcFullnameAttributes) ||
-      sails.config.custom.oidcFullnameAttributes.length === 0 ||
-      !sails.config.custom.oidcFullnameAttributes.every((attr) => claims[attr])
-    ) {
+    if (!sails.config.custom.oidcFullnameAttributes) {
       throw 'missingValues';
     }
 
