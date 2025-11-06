@@ -27,6 +27,8 @@
     flex-direction: column;
     gap: 4px;
     margin-bottom: 1rem;
+    max-height: 400px;
+    overflow-y: auto;
   }
 
   .filterItem {
