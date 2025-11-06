@@ -19,10 +19,25 @@
 
   &:hover {
     background-color: var(--c--theme--colors--greyscale-100);
+    .itemEdit {
+      opacity: 1;
+    }
+
+    .itemDescription {
+      opacity: 1;
+    }
   }
 
   &:focus {
     background-color: var(--c--theme--colors--greyscale-100);
+  }
+
+  &.popoverOpened {
+    background-color: var(--c--theme--colors--greyscale-100);
+
+    .itemEdit {
+      opacity: 1;
+    }
   }
 }
 
@@ -90,14 +105,4 @@
   width: 300px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   opacity: 0;
-}
-
-.itemWrapper:hover {
-  .itemEdit {
-    opacity: 1;
-  }
-
-  .itemDescription {
-    opacity: 1;
-  }
 }

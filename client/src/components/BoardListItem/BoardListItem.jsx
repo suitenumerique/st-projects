@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import pick from 'lodash/pick';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
@@ -23,12 +23,17 @@ export default function BoardListItem({
   // onBoardDuplicate,
 }) {
   // const [t] = useTranslation();
+  const [isBoardActionsPopoverOpen, setIsBoardActionsPopoverOpen] = useState(false);
 
   const BoardActionsPopover = usePopup(BoardActionsStep);
 
   return (
     <div
-      className={classNames(styles.itemWrapper, isActive && styles.itemWrapperActive)}
+      className={classNames(
+        styles.itemWrapper,
+        isActive && styles.itemWrapperActive,
+        isBoardActionsPopoverOpen && styles.popoverOpened,
+      )}
       onClick={handleClick}
       role="button"
       tabIndex={0}
@@ -67,6 +72,7 @@ export default function BoardListItem({
           defaultData={pick(board, 'name')}
           onUpdate={(data) => onBoardUpdate(board.id, data)}
           onDelete={() => onBoardDelete(board.id)}
+          onOpenChange={setIsBoardActionsPopoverOpen}
         >
           <div
             type="button"
