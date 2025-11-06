@@ -59,7 +59,9 @@ module.exports.custom = {
   oidcAdminRoles: process.env.OIDC_ADMIN_ROLES ? process.env.OIDC_ADMIN_ROLES.split(',') : [],
   oidcClaimsSource: process.env.OIDC_CLAIMS_SOURCE || 'userinfo',
   oidcEmailAttribute: process.env.OIDC_EMAIL_ATTRIBUTE || 'email',
-  oidcFullnameAttributes: process.env.OIDC_FULLNAME_ATTRIBUTES || ['given_name', 'usual_name'],
+  oidcFullnameAttributes: process.env.OIDC_FULLNAME_ATTRIBUTES
+    ? process.env.OIDC_FULLNAME_ATTRIBUTES.split(',').map((attr) => attr.trim())
+    : ['given_name', 'usual_name'],
   oidcUsernameAttribute: process.env.OIDC_USERNAME_ATTRIBUTE || 'preferred_username',
   oidcRolesAttribute: process.env.OIDC_ROLES_ATTRIBUTE || 'groups',
   oidcIgnoreUsername: process.env.OIDC_IGNORE_USERNAME === 'true',
