@@ -222,12 +222,33 @@ function Board({
       return;
     }
 
-    const activeContainer = findContainer(draggedId);
+    // Find the original container from props (before any drag state changes)
+    const originalContainer = Object.keys(groupedCards).find((key) =>
+      groupedCards[key].some((card) => card.id === draggedId),
+    );
+    const activeContainer = originalContainer || findContainer(draggedId);
     let overContainer = findContainer(overId);
 
     // Handle dropping into empty list via drop zone
     if (isOverListDropZone) {
       overContainer = overId;
+    }
+
+    // Special case: when active.id === over.id (e.g., dragging first card into empty list)
+    // The card might have been moved to a different container during handleDragOver
+    if (draggedId === overId && activeContainer) {
+      // Check if the card is now in a different container (moved during drag)
+      const currentContainer = findContainer(draggedId);
+      if (currentContainer && currentContainer !== activeContainer) {
+        // Card was moved to a different container, use that as the target
+        overContainer = currentContainer;
+        overId = null; // No specific card target, just the container
+      } else if (activeContainer === currentContainer) {
+        // Card wasn't moved, this might be a no-op
+        // If active and over are the same and in same container, treat as no-op
+        setActiveId(null);
+        return;
+      }
     }
 
     if (!activeContainer || !overContainer) {
@@ -239,7 +260,7 @@ function Board({
       // Moving within the same list
       const items = cardItems[activeContainer];
       const oldIndex = items.findIndex((item) => item.id === draggedId);
-      const newIndex = items.findIndex((item) => item.id === overId);
+      const newIndex = overId ? items.findIndex((item) => item.id === overId) : items.length;
 
       if (oldIndex !== newIndex) {
         setCardItems((prev) => ({
@@ -253,7 +274,7 @@ function Board({
     } else {
       // Moving between different lists
       const overItems = cardItems[overContainer] || [];
-      const overIndex = overItems.findIndex((item) => item.id === overId);
+      const overIndex = overId ? overItems.findIndex((item) => item.id === overId) : -1;
       const newIndex = overIndex >= 0 ? overIndex : overItems.length;
 
       // Get the current board ID from the first list
