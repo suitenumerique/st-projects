@@ -210,8 +210,8 @@ const LabelsStep = React.memo(
                 }}
                 label={
                   <div className={styles.filterLabel}>
-                    <div className={styles.labelIcon}>
-                      <Icon name="label_off" type="outlined" aria-hidden="true" />
+                    <div className={styles.noLabel}>
+                      <Icon name="label_off" type="outlined" size="small" aria-hidden="true" />
                     </div>
                     <span className={styles.labelName}>Aucune étiquette</span>
                   </div>

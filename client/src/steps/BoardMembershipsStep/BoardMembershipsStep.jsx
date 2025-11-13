@@ -85,8 +85,8 @@ const BoardMembershipsStep = React.memo(
                 }}
                 label={
                   <div className={styles.filterLabel}>
-                    <div className={styles.userAvatar}>
-                      <Icon name="person_off" type="outlined" aria-hidden="true" />
+                    <div className={styles.noMember}>
+                      <Icon name="person_off" type="outlined" size="small" aria-hidden="true" />
                     </div>
                     <span className={styles.userName}>Aucun membre</span>
                   </div>

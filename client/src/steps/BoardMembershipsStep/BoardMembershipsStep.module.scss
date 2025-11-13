@@ -64,6 +64,17 @@
       justify-content: center;
     }
 
+    .noMember {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border: 1px solid var(--c--theme--colors--greyscale-800);
+      border-radius: 100%;
+    }
+
     span {
       text-overflow: ellipsis;
       overflow: hidden;
