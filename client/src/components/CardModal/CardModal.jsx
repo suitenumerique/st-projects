@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Modal, Button, Checkbox } from '@openfun/cunningham-react';
-import { Icon, DropdownMenu } from '@gouvfr-lasuite/ui-kit';
+import { Icon } from '@gouvfr-lasuite/ui-kit';
 import usePopup from '../../lib/popup';
 
 import { startStopwatch, stopStopwatch } from '../../utils/stopwatch';
@@ -22,7 +22,7 @@ import LabelsStep from '../../steps/LabelsStep';
 import DueDateEditStep from '../../steps/DueDateEditStep/DueDateEditStep';
 import StopwatchEditStep from '../../steps/StopwatchEditStep/StopwatchEditStep';
 import CardMoveStep from '../../steps/CardMoveStep/CardMoveStep';
-import DeleteStep from '../../steps/DeleteStep/DeleteStep';
+import CardModalActionsStep from '../../steps/CardModalActionsStep/CardModalActionsStep';
 
 import styles from './CardModal.module.scss';
 
@@ -83,20 +83,18 @@ const CardModal = React.memo(
     const [t] = useTranslation();
     const [currentListName, setCurrentListName] = useState();
     const [isLinkCopied, setIsLinkCopied] = useState(false);
-    const [cardModalOptionsOpen, setCardModalOptionsOpen] = useState(false);
 
     const userIds = users.map((user) => user.id);
     const labelIds = labels.map((label) => label.id);
 
     const isGalleryOpened = useRef(false);
-    const deletePopupRef = useRef(null);
 
     const LabelsPopover = usePopup(LabelsStep);
     const CardMovePopover = usePopup(CardMoveStep);
-    const DeletePopover = usePopup(DeleteStep);
     const DueDateEditPopover = usePopup(DueDateEditStep);
     const BoardMembershipsPopover = usePopup(BoardMembershipsStep);
     const StopwatchEditPopover = usePopup(StopwatchEditStep);
+    const CardModalActionsPopover = usePopup(CardModalActionsStep);
 
     useMemo(() => {
       setCurrentListName(lists.find((list) => list.id === listId)?.name || null);
@@ -115,20 +113,6 @@ const CardModal = React.memo(
     //     isSubscribed: !isSubscribed,
     //   });
     // }, [isSubscribed, onUpdate]);
-
-    const handleDuplicateClick = useCallback(() => {
-      onDuplicate();
-      setTimeout(() => {
-        onClose();
-      }, 200);
-    }, [onDuplicate, onClose]);
-
-    const handleDeleteClick = useCallback(() => {
-      setCardModalOptionsOpen(false);
-      if (deletePopupRef.current) {
-        deletePopupRef.current.click();
-      }
-    }, [setCardModalOptionsOpen]);
 
     const handleClose = useCallback(() => {
       if (isGalleryOpened.current) {
@@ -202,31 +186,6 @@ const CardModal = React.memo(
       isGalleryOpened.current = false;
     }, []);
 
-    const hiddenDeletePopover = (
-      <DeletePopover
-        title="common.deleteCard"
-        content="common.areYouSureYouWantToDeleteThisCard"
-        buttonContent="action.deleteCard"
-        onConfirm={onDelete}
-        side="bottom"
-        align="end"
-      >
-        <button
-          ref={deletePopupRef}
-          type="button"
-          style={{
-            pointerEvents: 'none',
-            position: 'absolute',
-            opacity: 0,
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-          }}
-          aria-hidden="true"
-        />
-      </DeletePopover>
-    );
-
     const contentNode = (
       <div className={styles.cardModalWrapper}>
         <div className={styles.cardModalHeader}>
@@ -266,48 +225,11 @@ const CardModal = React.memo(
             )}
             {canEdit && (
               <div className={styles.optionsButtonContainer}>
-                {hiddenDeletePopover}
-                <DropdownMenu
-                  options={[
-                    // {
-                    //   label: isSubscribed ? t('action.unsubscribe') : t('action.subscribe'),
-                    //   value: isSubscribed ? 'unsubscribe' : 'subscribe',
-                    //   icon: <Icon name="notifications" size="small" />,
-                    //   callback: handleToggleSubscriptionClick,
-                    // },
-                    {
-                      label: t('action.duplicateCard', {
-                        context: 'title',
-                      }),
-                      value: 'duplicate',
-                      icon: <Icon name="content_copy" size="small" />,
-                      callback: handleDuplicateClick,
-                    },
-                    {
-                      label: t('action.deleteCard', {
-                        context: 'title',
-                      }),
-                      value: 'delete',
-                      icon: <Icon name="delete" size="small" />,
-                      callback: handleDeleteClick,
-                    },
-                  ]}
-                  isOpen={cardModalOptionsOpen}
-                  onOpenChange={setCardModalOptionsOpen}
-                  onSelectValue={(value) => {
-                    if (value === 'close') {
-                      handleClose();
-                    }
-                  }}
-                >
-                  <button
-                    type="button"
-                    className="modal-button"
-                    onClick={() => setCardModalOptionsOpen(true)}
-                  >
+                <CardModalActionsPopover onDuplicate={onDuplicate} onDelete={onDelete}>
+                  <button type="button" className="modal-button">
                     <Icon name="more_horiz" size="medium" />
                   </button>
-                </DropdownMenu>
+                </CardModalActionsPopover>
               </div>
             )}
 

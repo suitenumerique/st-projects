@@ -21,7 +21,8 @@ COPY client .
 RUN npm install npm --global \
   && npm install pnpm@9 --global \
   && pnpm import \
-  && pnpm install --prod
+  && pnpm config set shamefully-hoist true \
+  && pnpm install
 
 RUN DISABLE_ESLINT_PLUGIN=true npm run build
 
@@ -45,7 +46,6 @@ COPY --from=client --chown=node:node /app/build public
 COPY --from=client --chown=node:node /app/build/index.html views/index.ejs
 
 VOLUME /app/public/user-avatars
-VOLUME /app/public/project-background-images
 VOLUME /app/private/attachments
 
 EXPOSE 1337

@@ -25,10 +25,29 @@
   .filterList {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    width: 100%;
+    margin: 0 -12px;
+    width: calc(100% + 24px);
     max-height: 400px;
     overflow-y: auto;
+
+    .filterItem {
+      width: 100%;
+
+      &:hover {
+        background-color: var(--c--theme--colors--greyscale-100);
+      }
+
+      label {
+        padding: 0;
+        margin: 0;
+        border: none !important;
+        width: 100%;
+        background-color: transparent !important;
+        > div {
+          padding: 4px 12px;
+        }
+      }
+    }
   }
 
   .filterLabel {

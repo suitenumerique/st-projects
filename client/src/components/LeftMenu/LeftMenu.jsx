@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button } from '@openfun/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 import usePopup from '../../lib/popup/use-popup';
-import { SurveyButton as FeedbackButton } from '../../ui/FeedbackButton/index.tsx';
+// import { SurveyButton as FeedbackButton } from '../../ui/FeedbackButton/index.tsx';
 import BoardListItemContainer from '../../containers/BoardListItemContainer';
 import BoardCreateStep from '../../steps/BoardCreateStep';
 import styles from './LeftMenu.module.scss';
@@ -17,9 +17,9 @@ const LeftMenu = React.memo(
     privateBoards,
     sharedBoards,
     templateBoards,
-    reactAppFeedbackWidgetApiUrl,
-    reactAppFeedbackWidgetPath,
-    reactAppFeedbackWidgetChannel,
+    // reactAppFeedbackWidgetApiUrl,
+    // reactAppFeedbackWidgetPath,
+    // reactAppFeedbackWidgetChannel,
     onBoardAdd,
     onBoardDuplicate,
   }) => {
@@ -87,13 +87,13 @@ const LeftMenu = React.memo(
             )}
           </div>
         </div>
-        <div className={styles.bottomBar}>
+        {/* <div className={styles.bottomBar}>
           <FeedbackButton
             apiUrl={reactAppFeedbackWidgetApiUrl}
             widgetPath={reactAppFeedbackWidgetPath}
             channel={reactAppFeedbackWidgetChannel}
           />
-        </div>
+        </div> */}
       </div>
     );
   },
@@ -104,9 +104,9 @@ LeftMenu.propTypes = {
   privateBoards: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   sharedBoards: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   templateBoards: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  reactAppFeedbackWidgetApiUrl: PropTypes.string.isRequired,
-  reactAppFeedbackWidgetPath: PropTypes.string.isRequired,
-  reactAppFeedbackWidgetChannel: PropTypes.string.isRequired,
+  // reactAppFeedbackWidgetApiUrl: PropTypes.string.isRequired,
+  // reactAppFeedbackWidgetPath: PropTypes.string.isRequired,
+  // reactAppFeedbackWidgetChannel: PropTypes.string.isRequired,
   onBoardAdd: PropTypes.func.isRequired,
   onBoardDuplicate: PropTypes.func.isRequired,
 };

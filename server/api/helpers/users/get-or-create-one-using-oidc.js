@@ -41,7 +41,18 @@ module.exports = {
         },
       );
     } catch (error) {
-      sails.log.warn(`Error while exchanging OIDC code: ${error}`);
+      sails.log.warn(`Error while exchanging OIDC code: ${error.message || error}`);
+      sails.log.warn(`Error details:`, {
+        errorName: error.name,
+        errorMessage: error.message,
+        errorStack: error.stack,
+        redirectUri: sails.config.custom.oidcRedirectUri,
+        issuer: sails.config.custom.oidcIssuer,
+        hasCode: !!inputs.code,
+        hasNonce: !!inputs.nonce,
+        codeLength: inputs.code ? inputs.code.length : 0,
+        nonceLength: inputs.nonce ? inputs.nonce.length : 0,
+      });
       throw 'invalidCodeOrNonce';
     }
 

@@ -7,6 +7,7 @@ import { Button } from '@openfun/cunningham-react';
 import NewAttachmentInput from '../../../ui/NewAttachmentInput';
 import { useToggle } from '../../../lib/hooks';
 import FilePicker from '../../../ui/FilePicker/FilePicker';
+import 'photoswipe/dist/photoswipe.css';
 
 import AttachmentItem from './AttachmentItem';
 

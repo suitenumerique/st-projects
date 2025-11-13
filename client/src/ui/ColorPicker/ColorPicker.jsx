@@ -4,7 +4,7 @@ import upperFirst from 'lodash/upperFirst';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 
 import { Button } from '@openfun/cunningham-react';
 
@@ -12,7 +12,7 @@ import globalStyles from '../../assets/styles/styles.module.scss';
 import styles from './ColorPicker.module.scss';
 
 const ColorPicker = React.memo(({ current, onChange, colors, allowDeletion }) => {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   return (
     <>
       <div className={styles.colorButtons}>

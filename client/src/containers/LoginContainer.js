@@ -6,21 +6,14 @@ import entryActions from '../entry-actions';
 import Login from '../components/Login';
 
 const mapStateToProps = (state) => {
-  const oidcConfig = selectors.selectOidcConfig(state);
-
   const config = selectors.selectConfig(state);
   const {
-    reactAppDefaultEmail,
-    reactAppDefaultPassword,
     reactAppFeedbackWidgetApiUrl,
     reactAppFeedbackWidgetPath,
     reactAppFeedbackWidgetChannel,
   } = config || {};
 
   return {
-    isOidcEnforced: !!oidcConfig && oidcConfig.isEnforced,
-    reactAppDefaultEmail,
-    reactAppDefaultPassword,
     reactAppFeedbackWidgetApiUrl,
     reactAppFeedbackWidgetPath,
     reactAppFeedbackWidgetChannel,

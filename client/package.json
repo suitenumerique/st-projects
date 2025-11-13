@@ -1,5 +1,5 @@
 {
-  "name": "planka-client",
+  "name": "st-projets-client",
   "private": true,
   "scripts": {
     "build": "react-app-rewired build",
@@ -41,7 +41,7 @@
     "extends": [
       "airbnb",
       "airbnb/hooks",
-      "../package.json"
+      "plugin:prettier/recommended"
     ],
     "rules": {
       "react/react-in-jsx-scope": "off",
@@ -121,11 +121,14 @@
     "chai": "^4.5.0",
     "eslint": "8.57.0",
     "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^4.6.2",
     "playwright": "^1.49.0",
+    "prettier": "^3.3.3",
     "react-app-rewired": "^2.2.1",
     "react-scripts": "^5.0.1",
     "string-replace-loader": "^3.2.0",

@@ -64,30 +64,31 @@ const BoardMembershipsStep = React.memo(
         </div>
         <div className={styles.filterList}>
           {filteredItems.map((membership) => (
-            <Checkbox
-              key={membership.user.id}
-              disabled={!membership.isPersisted}
-              checked={currentUserIds.includes(membership.user.id)}
-              onChange={() => {
-                if (currentUserIds.includes(membership.user.id)) {
-                  handleUserDeselect(membership.user.id);
-                } else {
-                  handleUserSelect(membership.user.id);
-                }
-              }}
-              label={
-                <div className={styles.filterLabel}>
-                  <div className={styles.userAvatar}>
-                    <User
-                      name={membership.user.name}
-                      avatarUrl={membership.user.avatarUrl}
-                      size="small"
-                    />
+            <div className={styles.filterItem} key={membership.user.id}>
+              <Checkbox
+                disabled={!membership.isPersisted}
+                checked={currentUserIds.includes(membership.user.id)}
+                onChange={() => {
+                  if (currentUserIds.includes(membership.user.id)) {
+                    handleUserDeselect(membership.user.id);
+                  } else {
+                    handleUserSelect(membership.user.id);
+                  }
+                }}
+                label={
+                  <div className={styles.filterLabel}>
+                    <div className={styles.userAvatar}>
+                      <User
+                        name={membership.user.name}
+                        avatarUrl={membership.user.avatarUrl}
+                        size="small"
+                      />
+                    </div>
+                    <span className={styles.userName}>{membership.user.name}</span>
                   </div>
-                  <span className={styles.userName}>{membership.user.name}</span>
-                </div>
-              }
-            />
+                }
+              />
+            </div>
           ))}
         </div>
       </div>

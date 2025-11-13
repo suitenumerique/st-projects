@@ -14,6 +14,6 @@ mv client/build server/public
 cp server/public/index.html server/views/index.ejs
 
 # Cleanup
-rm -rf client charts config docker-* Docker* package* *.md
+rm -rf client config docker-* Docker* package* *.md
 
 mv server/* ./

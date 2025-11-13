@@ -25,30 +25,48 @@
   .filterList {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    margin-bottom: 1rem;
+    margin: 0 -12px;
+    width: calc(100% + 24px);
     max-height: 400px;
     overflow-y: auto;
-  }
+    margin-bottom: 12px;
 
-  .filterItem {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    width: 100%;
-    cursor: default;
-
-    &.draggable {
-      cursor: grab;
-
-      &:active {
-        cursor: grabbing;
-      }
-    }
-
-    > label {
+    .filterItem {
       width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: default;
+      padding-right: 12px;
+
+      &:hover {
+        background-color: var(--c--theme--colors--greyscale-100);
+        .itemActions {
+          opacity: 1;
+        }
+      }
+
+      &.draggable {
+        cursor: grab;
+
+        &:active {
+          cursor: grabbing;
+        }
+      }
+
+      label {
+        padding: 0;
+        margin: 0;
+        border: none !important;
+        width: 100%;
+        background-color: transparent !important;
+
+        > div {
+          width: 100%;
+          padding: 4px 12px;
+        }
+      }
     }
   }
 
@@ -62,12 +80,14 @@
     gap: 8px;
     width: 100%;
     flex: 1;
+    height: 32px;
   }
 
   .itemActions {
     display: flex;
     align-items: center;
     gap: 4px;
+    opacity: 0;
 
     > button {
       width: 32px;

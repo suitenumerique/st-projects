@@ -31,7 +31,6 @@ module.exports.custom = {
   uploadsBasePath: sails.config.appPath,
 
   userAvatarsPathSegment: 'public/user-avatars',
-  projectBackgroundImagesPathSegment: 'public/project-background-images',
   attachmentsPathSegment:
     sails.config.environment === 'production' ? '/attachments' : 'private/attachments',
 
@@ -68,10 +67,11 @@ module.exports.custom = {
   oidcIgnoreRoles: process.env.OIDC_IGNORE_ROLES === 'true',
   oidcEnforced: process.env.OIDC_ENFORCED === 'true',
 
-  // TODO: move client base url to environment variable?
-  oidcRedirectUri: `${
-    sails.config.environment === 'production' ? process.env.BASE_URL : 'http://localhost:3000'
-  }/oidc-callback`,
+  oidcRedirectUri:
+    process.env.OIDC_REDIRECT_URI ||
+    `${
+      sails.config.environment === 'production' ? process.env.BASE_URL : 'http://localhost:3000'
+    }/oidc-callback`,
 
   smtpHost: process.env.SMTP_HOST,
   smtpPort: process.env.SMTP_PORT || 587,
@@ -84,19 +84,7 @@ module.exports.custom = {
 
   webhooks: JSON.parse(process.env.WEBHOOKS || '[]'), // TODO: validate structure
 
-  slackBotToken: process.env.SLACK_BOT_TOKEN,
-  slackChannelId: process.env.SLACK_CHANNEL_ID,
-
-  googleChatWebhookUrl: process.env.GOOGLE_CHAT_WEBHOOK_URL,
-
-  telegramBotToken: process.env.TELEGRAM_BOT_TOKEN,
-  telegramChatId: process.env.TELEGRAM_CHAT_ID,
-  telegramThreadId: process.env.TELEGRAM_THREAD_ID,
-
   templateBoards: JSON.parse(process.env.TEMPLATE_BOARDS || '[]'),
-
-  reactAppDefaultEmail: process.env.REACT_APP_DEFAULT_EMAIL,
-  reactAppDefaultPassword: process.env.REACT_APP_DEFAULT_PASSWORD,
 
   reactAppFeedbackWidgetApiUrl: process.env.REACT_APP_FEEDBACK_WIDGET_API_URL,
   reactAppFeedbackWidgetPath: process.env.REACT_APP_FEEDBACK_WIDGET_PATH,

@@ -1,21 +1,15 @@
 {
-  "name": "planka",
-  "version": "1.25.1",
+  "name": "st-projects",
+  "version": "1.0.0",
   "private": true,
-  "homepage": "https://plankanban.github.io/planka",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/plankanban/planka.git"
-  },
+  "homepage": "https://projets.suite.anct.gouv.fr/",
   "license": "AGPL-3.0",
-  "author": "Maksim Eltyshev",
+  "author": "ANCT",
   "scripts": {
     "client:build": "npm run build --prefix client",
     "client:lint": "npm run lint --prefix client",
     "client:start": "npm start --prefix client",
     "client:test": "npm test --prefix client",
-    "docker:build": "docker build -t ghcr.io/plankanban/planka:local -f Dockerfile .",
-    "docker:build:base": "docker build -t ghcr.io/plankanban/planka:base-local -f Dockerfile.base .",
     "gv": "npm i --package-lock-only --ignore-scripts && genversion --source ./ --template client/version-template.ejs client/src/version.js",
     "postinstall": "(cd server && npm i && cd ../client && npm i)",
     "lint": "npm run server:lint && npm run client:lint",
@@ -43,18 +37,6 @@
     "printWidth": 100,
     "singleQuote": true,
     "trailingComma": "all"
-  },
-  "eslintConfig": {
-    "plugins": [
-      "prettier"
-    ],
-    "extends": [
-      "plugin:prettier/recommended"
-    ],
-    "rules": {
-      "no-undef": "off",
-      "prettier/prettier": "error"
-    }
   },
   "dependencies": {
     "concurrently": "^8.2.2",

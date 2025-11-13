@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Hero,
@@ -73,25 +73,12 @@ import illustration from '../../assets/images/illustration.jpg';
 
 const Login = React.memo(
   ({
-    isOidcEnforced,
-    onAuthenticate,
     onAuthenticateUsingOidc,
-    reactAppDefaultEmail,
-    reactAppDefaultPassword,
     reactAppFeedbackWidgetApiUrl,
     reactAppFeedbackWidgetPath,
     reactAppFeedbackWidgetChannel,
   }) => {
     // const { t } = useTranslation();
-
-    useEffect(() => {
-      if (!isOidcEnforced) {
-        onAuthenticate({
-          emailOrUsername: reactAppDefaultEmail,
-          password: reactAppDefaultPassword,
-        });
-      }
-    }, [isOidcEnforced, onAuthenticate, reactAppDefaultEmail, reactAppDefaultPassword]);
 
     return (
       <div className="projets_login">
@@ -171,12 +158,8 @@ const Login = React.memo(
 );
 
 Login.propTypes = {
-  isOidcEnforced: PropTypes.bool.isRequired,
-  onAuthenticate: PropTypes.func.isRequired,
   onAuthenticateUsingOidc: PropTypes.func.isRequired,
   // onMessageDismiss: PropTypes.func.isRequired,
-  reactAppDefaultEmail: PropTypes.string.isRequired,
-  reactAppDefaultPassword: PropTypes.string.isRequired,
   reactAppFeedbackWidgetApiUrl: PropTypes.string.isRequired,
   reactAppFeedbackWidgetPath: PropTypes.string.isRequired,
   reactAppFeedbackWidgetChannel: PropTypes.string.isRequired,

@@ -67,6 +67,12 @@ module.exports = {
       .getOrCreateOneUsingOidc(inputs.code, inputs.nonce)
       .intercept('invalidCodeOrNonce', () => {
         sails.log.warn(`Invalid code or nonce! (IP: ${remoteAddress})`);
+        sails.log.warn(`Request details:`, {
+          code: inputs.code ? `${inputs.code.substring(0, 10)}...` : 'missing',
+          nonce: inputs.nonce ? `${inputs.nonce.substring(0, 10)}...` : 'missing',
+          redirectUri: sails.config.custom.oidcRedirectUri,
+          userAgent: this.req.headers['user-agent'],
+        });
         return Errors.INVALID_CODE_OR_NONCE;
       })
       .intercept('invalidOIDCConfiguration', () => Errors.INVALID_OIDC_CONFIGURATION)

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { DropdownMenu, Icon } from '@gouvfr-lasuite/ui-kit';
 import { Button } from '@openfun/cunningham-react';
+import posthog from 'posthog-js';
 import LaGaufreButton from '../../ui/LaGaufreButton';
 
 // import NotificationsStep from '../../steps/NotificationsStep';

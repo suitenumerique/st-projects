@@ -11,7 +11,6 @@ const knex = require('knex');
 const dbConfig = {
   client: 'postgresql',
   connection: process.env.DATABASE_URL,
-  // connection: 'postgresql://postgres@localhost:5433/planka',
 };
 
 const db = knex(dbConfig);

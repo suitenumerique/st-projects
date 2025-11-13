@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 // import { useTranslation } from 'react-i18next';
 
 // import styles from './BoardImportStep.module.scss';
@@ -33,9 +33,9 @@ import PropTypes from 'prop-types';
 //   );
 // });
 
-ImportBoardStep.propTypes = {
-  onSelect: PropTypes.func.isRequired,
-  onBack: PropTypes.func.isRequired,
-};
+// ImportBoardStep.propTypes = {
+//   onSelect: PropTypes.func.isRequired,
+//   onBack: PropTypes.func.isRequired,
+// };
 
-export default ImportBoardStep;
+// export default ImportBoardStep;

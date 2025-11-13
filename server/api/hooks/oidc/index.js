@@ -26,6 +26,9 @@ module.exports = function defineOidcHook(sails) {
     async getClient() {
       if (client === null && this.isActive()) {
         sails.log.info('Initializing OIDC client');
+        sails.log.info(`OIDC Issuer: ${sails.config.custom.oidcIssuer}`);
+        sails.log.info(`OIDC Redirect URI: ${sails.config.custom.oidcRedirectUri}`);
+        sails.log.info(`OIDC Client ID: ${sails.config.custom.oidcClientId}`);
 
         const issuer = await openidClient.Issuer.discover(sails.config.custom.oidcIssuer);
 
@@ -42,6 +45,7 @@ module.exports = function defineOidcHook(sails) {
         }
 
         client = new issuer.Client(metadata);
+        sails.log.info('OIDC client initialized successfully');
       }
 
       return client;

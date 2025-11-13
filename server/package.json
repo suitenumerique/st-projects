@@ -1,5 +1,5 @@
 {
-  "name": "planka-server",
+  "name": "st-projects-server",
   "private": true,
   "main": "app.js",
   "scripts": {
@@ -15,7 +15,7 @@
   "eslintConfig": {
     "extends": [
       "airbnb-base",
-      "../package.json"
+      "plugin:prettier/recommended"
     ],
     "rules": {
       "no-throw-literal": "off",

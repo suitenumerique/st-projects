@@ -9,76 +9,28 @@ services:
       - ./server:/app
       - /app/node_modules
     environment:
+      - BASE_URL=http://localhost:3000
       - NODE_ENV=development
-      - DATABASE_URL=postgresql://user:password@postgres:5432/planka_db
+      - DATABASE_URL=postgresql://user:password@postgres:5432/projets
       - SECRET_KEY=notsecretkey
-
-      # - TRUST_PROXY=0
-      # - TOKEN_EXPIRES_IN=365 # In days
-
-      # related: https://github.com/knex/knex/issues/2354
-      # As knex does not pass query parameters from the connection string we
-      # have to use environment variables in order to pass the desired values, e.g.
-      # - PGSSLMODE=<value>
-
-      # Configure knex to accept SSL certificates
-      # - KNEX_REJECT_UNAUTHORIZED_SSL_CERTIFICATE=false
-
-      # - SHOW_DETAILED_AUTH_ERRORS=false # Set to true to show more detailed authentication error messages. It should not be enabled without a rate limiter for security reasons.
-      # - ALLOW_ALL_TO_CREATE_PROJECTS=true
-
-      # - S3_ENDPOINT=
-      # - S3_REGION=
-      # - S3_ACCESS_KEY_ID=
-      # - S3_SECRET_ACCESS_KEY=
-      # - S3_BUCKET=
-      # - S3_FORCE_PATH_STYLE=true
-
-      # - OIDC_ISSUER=
-      # - OIDC_CLIENT_ID=
-      # - OIDC_CLIENT_SECRET=
-      # - OIDC_ID_TOKEN_SIGNED_RESPONSE_ALG=
-      # - OIDC_USERINFO_SIGNED_RESPONSE_ALG=
-      # - OIDC_SCOPES=openid email
+      - OIDC_CLIENT_ID=st-projects-client
+      - OIDC_CLIENT_SECRET=LCP8yqJPkXqbGwQ19V7mSw3IXtTdrGzF
+      - OIDC_ENFORCED=true
+      - OIDC_FULLNAME_ATTRIBUTES=given_name,usual_name
+      - OIDC_ID_TOKEN_SIGNED_RESPONSE_ALG=RS256
+      - OIDC_IGNORE_ROLES=true
+      - OIDC_IGNORE_USERNAME=true
+      - OIDC_ISSUER=http://keycloak-1:8080/realms/st-projects
+      - OIDC_ROLES_ATTRIBUTE=groups
+      - OIDC_SCOPES=openid profile email siret
+      - OIDC_USERINFO_SIGNED_RESPONSE_ALG=RS256
+      - OIDC_USE_DEFAULT_RESPONSE_MODE=true
       # - OIDC_RESPONSE_MODE=fragment
-      # - OIDC_USE_DEFAULT_RESPONSE_MODE=true
       # - OIDC_ADMIN_ROLES=admin
       # - OIDC_CLAIMS_SOURCE=userinfo
       # - OIDC_EMAIL_ATTRIBUTE=email
       # - OIDC_NAME_ATTRIBUTE=name
       # - OIDC_USERNAME_ATTRIBUTE=preferred_username
-      # - OIDC_ROLES_ATTRIBUTE=groups
-      # - OIDC_IGNORE_USERNAME=true
-      # - OIDC_IGNORE_ROLES=true
-      # - OIDC_ENFORCED=true
-
-      # Email Notifications (https://nodemailer.com/smtp/)
-      # - SMTP_HOST=
-      # - SMTP_PORT=587
-      # - SMTP_NAME=
-      # - SMTP_SECURE=true
-      # - SMTP_USER=
-      # - SMTP_PASSWORD=
-      # - SMTP_FROM="Demo Demo" <demo@demo.demo>
-      # - SMTP_TLS_REJECT_UNAUTHORIZED=false
-
-      # Optional fields: accessToken, events, excludedEvents
-      # - |
-      #   WEBHOOKS=[{
-      #     "url": "http://localhost:3001",
-      #     "accessToken": "notaccesstoken",
-      #     "events": ["cardCreate", "cardUpdate", "cardDelete"],
-      #     "excludedEvents": ["notificationCreate", "notificationUpdate"]
-      #   }]
-
-      # - SLACK_BOT_TOKEN=
-      # - SLACK_CHANNEL_ID=
-
-      # - GOOGLE_CHAT_WEBHOOK_URL=
-
-      # - TELEGRAM_BOT_TOKEN=
-      # - TELEGRAM_CHAT_ID=
-      # - TELEGRAM_THREAD_ID=
     working_dir: /app
     command: ['sh', '-c', 'npm run start']
     depends_on:
@@ -98,8 +50,6 @@ services:
       - CHOKIDAR_USEPOLLING=true
       - BASE_URL=http://localhost:3000
       - REACT_APP_SERVER_BASE_URL=http://localhost:3000
-      - REACT_APP_POSTHOG_KEY=phc_nktM4r41tMiXDGcVSmGogUChHTeR6tGBzDzhUcGNNya
-      - REACT_APP_POSTHOG_HOST=https://eu.i.posthog.com
     working_dir: /app/client
     command: npm start
 
@@ -108,11 +58,11 @@ services:
       context: ./server
       dockerfile: ../config/development/Dockerfile.server
     environment:
-      - DATABASE_URL=postgresql://user:password@postgres:5432/planka_db
-      - DEFAULT_ADMIN_EMAIL=julien.demoutiez.ext@anct.gouv.fr
+      - DATABASE_URL=postgresql://user:password@postgres:5432/projets
+      - DEFAULT_ADMIN_EMAIL=user.test@anct.gouv.fr
       - DEFAULT_ADMIN_PASSWORD=password
-      - DEFAULT_ADMIN_NAME=Julien Demoutiez
-      - DEFAULT_ADMIN_USERNAME=judemout
+      - DEFAULT_ADMIN_NAME=Test User
+      - DEFAULT_ADMIN_USERNAME=test.user
     working_dir: /app
     command: ['sh', '-c', 'npm run db:init']
     volumes:
@@ -127,14 +77,14 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: planka_db
+      POSTGRES_DB: projets
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
     ports:
       - '5433:5432'
     restart: unless-stopped
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U user -d planka_db']
+      test: ['CMD-SHELL', 'pg_isready -U user -d projets']
       interval: 10s
       timeout: 5s
       retries: 5
