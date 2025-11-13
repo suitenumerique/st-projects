@@ -2,7 +2,7 @@ import pick from 'lodash/pick';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@openfun/cunningham-react';
+import { Button, Checkbox } from '@openfun/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 import {
   DndContext,
@@ -37,8 +37,10 @@ const LabelsStep = React.memo(
   ({
     items,
     currentIds,
+    includeCardsWithoutLabels,
     title = 'common.labels',
     canEdit = true,
+    displayNoLabelOption = false,
     onSelect,
     onDeselect,
     onCreate,
@@ -194,17 +196,39 @@ const LabelsStep = React.memo(
             placeholder={t('common.searchLabels')}
           />
         </div>
-        {filteredItems.length > 0 && (
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            onDragEnd={handleDragEnd}
-          >
-            <SortableContext
-              items={filteredItems.map((item) => item.id)}
-              strategy={verticalListSortingStrategy}
+        <div className={styles.filterList}>
+          {displayNoLabelOption && (
+            <div className={styles.filterItem}>
+              <Checkbox
+                checked={includeCardsWithoutLabels}
+                onChange={() => {
+                  if (includeCardsWithoutLabels) {
+                    handleDeselect(null);
+                  } else {
+                    handleSelect(null);
+                  }
+                }}
+                label={
+                  <div className={styles.filterLabel}>
+                    <div className={styles.labelIcon}>
+                      <Icon name="label_off" type="outlined" aria-hidden="true" />
+                    </div>
+                    <span className={styles.labelName}>Aucune étiquette</span>
+                  </div>
+                }
+              />
+            </div>
+          )}
+          {filteredItems.length > 0 && (
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
             >
-              <div className={styles.filterList}>
+              <SortableContext
+                items={filteredItems.map((item) => item.id)}
+                strategy={verticalListSortingStrategy}
+              >
                 {filteredItems.map((label) => (
                   <SortableLabelItem
                     key={label.id}
@@ -216,10 +240,10 @@ const LabelsStep = React.memo(
                     onEdit={handleEdit}
                   />
                 ))}
-              </div>
-            </SortableContext>
-          </DndContext>
-        )}
+              </SortableContext>
+            </DndContext>
+          )}
+        </div>
         {canEdit && (
           <Button
             size="small"
@@ -239,8 +263,10 @@ const LabelsStep = React.memo(
 LabelsStep.propTypes = {
   items: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   currentIds: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  includeCardsWithoutLabels: PropTypes.bool.isRequired,
   title: PropTypes.string,
   canEdit: PropTypes.bool,
+  displayNoLabelOption: PropTypes.bool.isRequired,
   onSelect: PropTypes.func.isRequired,
   onDeselect: PropTypes.func.isRequired,
   onCreate: PropTypes.func.isRequired,

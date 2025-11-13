@@ -15,6 +15,9 @@ const mapStateToProps = (state) => {
   const filterLabels = selectors.selectFilterLabelsForCurrentBoard(state);
   const allUsers = selectors.selectUsers(state);
   const filterUsers = selectors.selectFilterUsersForCurrentBoard(state);
+  const includeCardsWithoutMembers =
+    selectors.selectIncludeCardsWithoutMembersForCurrentBoard(state);
+  const includeCardsWithoutLabels = selectors.selectIncludeCardsWithoutLabelsForCurrentBoard(state);
   const boardMemberships = selectors.selectMembershipsForCurrentBoard(state);
 
   const currentUserMembership = selectors.selectCurrentUserMembershipForCurrentBoard(state);
@@ -30,8 +33,10 @@ const mapStateToProps = (state) => {
     filterText,
     allUsers,
     filterUsers,
+    includeCardsWithoutMembers,
     boardLabels,
     filterLabels,
+    includeCardsWithoutLabels,
     boardMemberships,
     canEdit: isCurrentUserEditor || isCurrentUserOwner,
     isCurrentUserMember,

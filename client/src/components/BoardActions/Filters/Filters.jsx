@@ -18,7 +18,9 @@ const Filters = React.memo(
     filterText,
     boardLabels,
     filterLabels,
+    includeCardsWithoutLabels,
     filterUsers,
+    includeCardsWithoutMembers,
     boardMemberships,
     canEdit,
     onTextFilterUpdate,
@@ -61,6 +63,8 @@ const Filters = React.memo(
           <BoardMembershipsPopover
             items={boardMemberships}
             currentUserIds={filterUsers.map((user) => user.id)}
+            displayNoMemberOption
+            includeCardsWithoutMembers={includeCardsWithoutMembers}
             title="common.filterByMembers"
             onUserSelect={onUserAdd}
             onUserDeselect={onUserRemove}
@@ -76,11 +80,16 @@ const Filters = React.memo(
                 filterUsers.length > 0 && styles.membersButtonFilled,
               )}
             >
-              {filterUsers.length === 0 && <span className={styles.filterTitle}>Membres</span>}
+              {filterUsers.length === 0 && !includeCardsWithoutMembers && (
+                <span className={styles.filterTitle}>Membres</span>
+              )}
+              {includeCardsWithoutMembers && (
+                <div className={styles.noMember}>
+                  <Icon name="person_off" type="outlined" aria-hidden="true" size="small" />
+                </div>
+              )}
               {filterUsers.map((user) => (
-                <span key={user.id} className={styles.filterItem}>
-                  <User name={user.name} avatarUrl={user.avatarUrl} size="small" />
-                </span>
+                <User key={user.id} name={user.name} avatarUrl={user.avatarUrl} size="small" />
               ))}
             </Button>
           </BoardMembershipsPopover>
@@ -89,6 +98,8 @@ const Filters = React.memo(
           <LabelsPopover
             items={boardLabels}
             currentIds={filterLabels.map((label) => label.id)}
+            displayNoLabelOption
+            includeCardsWithoutLabels={includeCardsWithoutLabels}
             title="common.filterByLabels"
             canEdit={canEdit}
             onSelect={onLabelAdd}
@@ -109,11 +120,16 @@ const Filters = React.memo(
                 filterLabels.length > 0 && styles.labelsButtonFilled,
               )}
             >
-              {filterLabels.length === 0 && <span className={styles.filterTitle}>Etiquettes</span>}
+              {filterLabels.length === 0 && !includeCardsWithoutLabels && (
+                <span className={styles.filterTitle}>Etiquettes</span>
+              )}
+              {includeCardsWithoutLabels && (
+                <div className={styles.noLabel}>
+                  <Icon name="label_off" type="outlined" aria-hidden="true" size="small" />
+                </div>
+              )}
               {filterLabels.map((label) => (
-                <span key={label.id} className={styles.filterItem}>
-                  <Label name={label.name} color={label.color} size="small" />
-                </span>
+                <Label key={label.id} name={label.name} color={label.color} size="small" />
               ))}
             </Button>
           </LabelsPopover>
@@ -128,7 +144,9 @@ Filters.propTypes = {
   /* eslint-disable react/forbid-prop-types */
   boardLabels: PropTypes.array.isRequired,
   filterLabels: PropTypes.array.isRequired,
+  includeCardsWithoutLabels: PropTypes.bool.isRequired,
   filterUsers: PropTypes.array.isRequired,
+  includeCardsWithoutMembers: PropTypes.bool.isRequired,
   boardMemberships: PropTypes.array.isRequired,
   /* eslint-enable react/forbid-prop-types */
   canEdit: PropTypes.bool.isRequired,

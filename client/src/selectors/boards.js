@@ -282,6 +282,42 @@ export const selectFilterUsersForCurrentBoard = createSelector(
   },
 );
 
+export const selectIncludeCardsWithoutMembersForCurrentBoard = createSelector(
+  orm,
+  (state) => selectPath(state).boardId,
+  ({ Board }, id) => {
+    if (!id) {
+      return false;
+    }
+
+    const boardModel = Board.withId(id);
+
+    if (!boardModel) {
+      return false;
+    }
+
+    return boardModel.includeCardsWithoutMembers || false;
+  },
+);
+
+export const selectIncludeCardsWithoutLabelsForCurrentBoard = createSelector(
+  orm,
+  (state) => selectPath(state).boardId,
+  ({ Board }, id) => {
+    if (!id) {
+      return false;
+    }
+
+    const boardModel = Board.withId(id);
+
+    if (!boardModel) {
+      return false;
+    }
+
+    return boardModel.includeCardsWithoutLabels || false;
+  },
+);
+
 export const selectFilterLabelsForCurrentBoard = createSelector(
   orm,
   (state) => selectPath(state).boardId,
@@ -340,4 +376,6 @@ export default {
   selectFilterLabelsForCurrentBoard,
   selectFilterTextForCurrentBoard,
   selectIsBoardWithIdExists,
+  selectIncludeCardsWithoutMembersForCurrentBoard,
+  selectIncludeCardsWithoutLabelsForCurrentBoard,
 };

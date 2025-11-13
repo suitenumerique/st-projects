@@ -11,7 +11,16 @@ import User from '../../ui/User';
 import styles from './BoardMembershipsStep.module.scss';
 
 const BoardMembershipsStep = React.memo(
-  ({ items, currentUserIds, title, onUserSelect, onUserDeselect, onBack }) => {
+  ({
+    items,
+    currentUserIds,
+    displayNoMemberOption,
+    includeCardsWithoutMembers,
+    title,
+    onUserSelect,
+    onUserDeselect,
+    onBack,
+  }) => {
     const [t] = useTranslation();
     const [search, handleSearchChange] = useField('');
     const cleanSearch = useMemo(() => search.trim().toLowerCase(), [search]);
@@ -63,6 +72,28 @@ const BoardMembershipsStep = React.memo(
           />
         </div>
         <div className={styles.filterList}>
+          {displayNoMemberOption && (
+            <div className={styles.filterItem}>
+              <Checkbox
+                checked={includeCardsWithoutMembers}
+                onChange={() => {
+                  if (includeCardsWithoutMembers) {
+                    handleUserDeselect(null);
+                  } else {
+                    handleUserSelect(null);
+                  }
+                }}
+                label={
+                  <div className={styles.filterLabel}>
+                    <div className={styles.userAvatar}>
+                      <Icon name="person_off" type="outlined" aria-hidden="true" />
+                    </div>
+                    <span className={styles.userName}>Aucun membre</span>
+                  </div>
+                }
+              />
+            </div>
+          )}
           {filteredItems.map((membership) => (
             <div className={styles.filterItem} key={membership.user.id}>
               <Checkbox
@@ -100,7 +131,9 @@ BoardMembershipsStep.propTypes = {
   /* eslint-disable react/forbid-prop-types */
   items: PropTypes.array.isRequired,
   currentUserIds: PropTypes.array.isRequired,
+  displayNoMemberOption: PropTypes.bool.isRequired,
   /* eslint-enable react/forbid-prop-types */
+  includeCardsWithoutMembers: PropTypes.bool.isRequired,
   title: PropTypes.string,
   onUserSelect: PropTypes.func.isRequired,
   onUserDeselect: PropTypes.func.isRequired,

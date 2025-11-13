@@ -13,8 +13,10 @@ const BoardActions = React.memo(
     filterText,
     allUsers,
     filterUsers,
+    includeCardsWithoutMembers,
     boardLabels,
     filterLabels,
+    includeCardsWithoutLabels,
     boardMemberships,
     isCurrentUserMember,
     canEdit,
@@ -100,7 +102,9 @@ const BoardActions = React.memo(
               filterText={filterText}
               boardLabels={boardLabels}
               filterLabels={filterLabels}
+              includeCardsWithoutLabels={includeCardsWithoutLabels}
               filterUsers={filterUsers}
+              includeCardsWithoutMembers={includeCardsWithoutMembers}
               boardMemberships={boardMemberships}
               canEdit={canEdit}
               onTextFilterUpdate={onTextFilterUpdate}
@@ -204,8 +208,10 @@ BoardActions.propTypes = {
   /* eslint-disable react/forbid-prop-types */
   allUsers: PropTypes.array.isRequired,
   filterUsers: PropTypes.array.isRequired,
+  includeCardsWithoutMembers: PropTypes.bool.isRequired,
   boardLabels: PropTypes.array.isRequired,
   filterLabels: PropTypes.array.isRequired,
+  includeCardsWithoutLabels: PropTypes.bool.isRequired,
   boardMemberships: PropTypes.array.isRequired,
   /* eslint-enable react/forbid-prop-types */
   canEdit: PropTypes.bool.isRequired,
