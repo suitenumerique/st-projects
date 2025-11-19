@@ -25,6 +25,7 @@
     ]
   },
   "eslintConfig": {
+    "root": true,
     "env": {
       "browser": true,
       "jest": true
@@ -59,7 +60,10 @@
       "prettier/prettier": [
         "error",
         {
-          "endOfLine": "auto"
+          "endOfLine": "auto",
+          "singleQuote": true,
+          "printWidth": 100,
+          "trailingComma": "all"
         }
       ]
     }

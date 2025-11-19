@@ -1,0 +1,85 @@
+{
+  "name": "Projets",
+  "description": "Project management application",
+  "repository": "https://github.com/suitenumerique/st-projects",
+  "website": "https://projets.suite.anct.gouv.fr",
+  "stack": "scalingo-22",
+  "env": {
+    "BASE_URL": {
+      "description": "The base URL of the application",
+      "required": true
+    },
+    "DATABASE_URL": {
+      "description": "The database URL",
+      "required": true
+    },
+    "SECRET_KEY": {
+      "description": "The session secret key for encrypting cookies",
+      "required": true
+    },
+    "OIDC_ISSUER": {
+      "description": "The OIDC issuer",
+      "required": true
+    },
+    "OIDC_CLIENT_ID": {
+      "description": "The OIDC client ID",
+      "required": true
+    },
+    "OIDC_CLIENT_SECRET": {
+      "description": "The OIDC client secret",
+      "required": true
+    },
+    "OIDC_SCOPES": {
+      "description": "The OIDC scopes",
+      "required": true
+    },
+    "OIDC_FULLNAME_ATTRIBUTES": {
+      "description": "The OIDC fullname attributes",
+      "required": true
+    },
+    "OIDC_ID_TOKEN_SIGNED_RESPONSE_ALG": {
+      "description": "The OIDC ID token signed response algorithm",
+      "required": false
+    },
+    "OIDC_USERINFO_SIGNED_RESPONSE_ALG": {
+      "description": "The OIDC userinfo signed response algorithm",
+      "required": false
+    },
+    "OIDC_USE_DEFAULT_RESPONSE_MODE": {
+      "description": "Whether to use the default OIDC response mode",
+      "value": true
+    },
+    "S3_ACCESS_KEY_ID": {
+      "description": "The S3 access key ID",
+      "required": true
+    },
+    "S3_SECRET_ACCESS_KEY": {
+      "description": "The S3 secret access key",
+      "required": true
+    },
+    "S3_BUCKET": {
+      "description": "The S3 bucket",
+      "required": true
+    },
+    "S3_ENDPOINT": {
+      "description": "The S3 endpoint",
+      "required": true
+    },
+    "S3_REGION": {
+      "description": "The S3 region",
+      "required": true
+    }
+  },
+  "addons": [
+    {
+      "name": "postgresql",
+      "plan": "postgresql:postgresql-starter-512"
+    }
+  ],
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "M"
+    }
+  }
+}

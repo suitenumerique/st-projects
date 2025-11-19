@@ -1,20 +1,22 @@
-FROM node:18-alpine AS server-dependencies
+FROM node:22-alpine
 
 RUN apk -U upgrade \
   && apk add build-base python3 --no-cache
 
+# Install pnpm globally (faster than npm install pnpm)
+RUN npm install -g pnpm@9
+
 WORKDIR /app/client
 
-COPY package.json package-lock.json .
+# Copy package files first for better Docker layer caching
+COPY package.json package-lock.json ./
 
-RUN npm install npm --global \
-  && npm install pnpm@9 --global \
-  && pnpm import \
-  && pnpm install
+# Install client dependencies
+RUN pnpm import && pnpm install --frozen-lockfile
 
 WORKDIR /app
 
-COPY ../../package.json ../../package-lock.json .
+# Copy root package files and install root dependencies
+COPY package.json package-lock.json ./
 
-RUN pnpm import \
-  && pnpm install
+RUN pnpm import && pnpm install --frozen-lockfile

@@ -114,20 +114,22 @@ const BoardCreateStep = React.memo(
           {data.import ? data.import.file.name : t('action.import')}
         </Button> */}
           </div>
-          <div className={styles.templatesWrapper}>
-            <p>Ou choisissez un tableau pré-défini :</p>
-            <div className={styles.templatesList}>
-              {(templateBoards || []).map((board) => (
-                <BoardListItem
-                  key={board.id}
-                  board={board}
-                  handleClick={() => handleTemplateClick(board.id)}
-                  showDescription
-                  editable={false}
-                />
-              ))}
+          {templateBoards && templateBoards.length > 0 && (
+            <div className={styles.templatesWrapper}>
+              <p>Ou choisissez un tableau pré-défini :</p>
+              <div className={styles.templatesList}>
+                {(templateBoards || []).map((board) => (
+                  <BoardListItem
+                    key={board.id}
+                    board={board}
+                    handleClick={() => handleTemplateClick(board.id)}
+                    showDescription
+                    editable={false}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </form>
       </>
     );

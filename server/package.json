@@ -12,20 +12,6 @@
     "start:prod": "node app.js --prod",
     "test": "mocha test/lifecycle.test.js test/integration/**/*.test.js test/utils/**/*.test.js"
   },
-  "eslintConfig": {
-    "extends": [
-      "airbnb-base",
-      "plugin:prettier/recommended"
-    ],
-    "rules": {
-      "no-throw-literal": "off",
-      "no-undef": "off"
-    },
-    "globals": {
-      "_": true,
-      "sails": true
-    }
-  },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.698.0",
     "bcrypt": "^5.1.1",

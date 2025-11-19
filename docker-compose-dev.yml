@@ -1,6 +1,87 @@
-version: '3.8'
-
 services:
+  postgres:
+    image: postgres:16-alpine
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: projets
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - '5433:5432'
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U user -d projets']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  keycloak-db:
+    image: postgres:16-alpine
+    volumes:
+      - keycloak-db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U keycloak -d keycloak']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    command: start-dev --import-realm
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloak-db:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak
+      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME_STRICT_HTTPS: false
+      KC_HTTP_ENABLED: true
+      KC_HOSTNAME: auth.local
+      KC_HOSTNAME_PORT: 8080
+      KC_HTTP_RELATIVE_PATH: /
+    volumes:
+      - ./config/development/realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
+    ports:
+      - '8080:8080'
+    depends_on:
+      keycloak-db:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'exec 3<>/dev/tcp/localhost/8080 && echo -e "GET /realms/master/.well-known/openid-configuration HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n" >&3 && cat <&3 | grep -q "HTTP/1.1 200" || exit 1',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - default
+
+  keycloak-post-import:
+    image: node:18-alpine
+    environment:
+      KEYCLOAK_URL: http://keycloak:8080
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      REALM_NAME: st-projects
+      CLIENT_ID: st-projects-client
+    volumes:
+      - ./config/development/keycloak-post-import.js:/script.js:ro
+    command: ['node', '/script.js']
+    depends_on:
+      keycloak:
+        condition: service_started
+    restart: 'no'
+
   server:
     build:
       context: ./server
@@ -14,27 +95,30 @@ services:
       - DATABASE_URL=postgresql://user:password@postgres:5432/projets
       - SECRET_KEY=notsecretkey
       - OIDC_CLIENT_ID=st-projects-client
-      - OIDC_CLIENT_SECRET=LCP8yqJPkXqbGwQ19V7mSw3IXtTdrGzF
+      - OIDC_CLIENT_SECRET=a-not-so-secret-secret
       - OIDC_ENFORCED=true
-      - OIDC_FULLNAME_ATTRIBUTES=given_name,usual_name
-      - OIDC_ID_TOKEN_SIGNED_RESPONSE_ALG=RS256
       - OIDC_IGNORE_ROLES=true
       - OIDC_IGNORE_USERNAME=true
-      - OIDC_ISSUER=http://keycloak-1:8080/realms/st-projects
-      - OIDC_ROLES_ATTRIBUTE=groups
-      - OIDC_SCOPES=openid profile email siret
-      - OIDC_USERINFO_SIGNED_RESPONSE_ALG=RS256
+      - OIDC_ISSUER=http://auth.local:8080/realms/st-projects
+      - OIDC_SCOPES=openid profile email organization
+      - OIDC_FULLNAME_ATTRIBUTES=given_name,family_name
       - OIDC_USE_DEFAULT_RESPONSE_MODE=true
+      # - OIDC_USERNAME_ATTRIBUTE=preferred_username
+      # - OIDC_EMAIL_ATTRIBUTE=email
+      # - OIDC_ROLES_ATTRIBUTE=groups
+      # - OIDC_ID_TOKEN_SIGNED_RESPONSE_ALG=RS256
+      # - OIDC_USERINFO_SIGNED_RESPONSE_ALG=RS256
       # - OIDC_RESPONSE_MODE=fragment
       # - OIDC_ADMIN_ROLES=admin
       # - OIDC_CLAIMS_SOURCE=userinfo
-      # - OIDC_EMAIL_ATTRIBUTE=email
-      # - OIDC_NAME_ATTRIBUTE=name
-      # - OIDC_USERNAME_ATTRIBUTE=preferred_username
     working_dir: /app
+    extra_hosts:
+      - 'auth.local:host-gateway'
     command: ['sh', '-c', 'npm run start']
     depends_on:
       postgres:
+        condition: service_healthy
+      keycloak:
         condition: service_healthy
 
   client:
@@ -47,7 +131,6 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=development
-      - CHOKIDAR_USEPOLLING=true
       - BASE_URL=http://localhost:3000
       - REACT_APP_SERVER_BASE_URL=http://localhost:3000
     working_dir: /app/client
@@ -72,23 +155,6 @@ services:
       postgres:
         condition: service_healthy
 
-  postgres:
-    image: postgres:16-alpine
-    volumes:
-      - db-data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: projets
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-    ports:
-      - '5433:5432'
-    restart: unless-stopped
-    healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U user -d projets']
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   proxy:
     image: nginx:alpine
     ports:
@@ -101,3 +167,4 @@ services:
 
 volumes:
   db-data:
+  keycloak-db-data:

@@ -63,9 +63,9 @@ module.exports.custom = {
     : ['given_name', 'usual_name'],
   oidcUsernameAttribute: process.env.OIDC_USERNAME_ATTRIBUTE || 'preferred_username',
   oidcRolesAttribute: process.env.OIDC_ROLES_ATTRIBUTE || 'groups',
-  oidcIgnoreUsername: process.env.OIDC_IGNORE_USERNAME === 'true',
-  oidcIgnoreRoles: process.env.OIDC_IGNORE_ROLES === 'true',
-  oidcEnforced: process.env.OIDC_ENFORCED === 'true',
+  oidcIgnoreUsername: true, // process.env.OIDC_IGNORE_USERNAME === 'true',
+  oidcIgnoreRoles: true, // process.env.OIDC_IGNORE_ROLES === 'true',
+  oidcEnforced: true, // process.env.OIDC_ENFORCED === 'true',
 
   oidcRedirectUri:
     process.env.OIDC_REDIRECT_URI ||

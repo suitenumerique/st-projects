@@ -1,4 +1,5 @@
 {
+  "root": true,
   "env": {
     "node": true,
     "es2021": true
@@ -19,6 +20,14 @@
   "rules": {
     "no-undef": "off",
     "no-console": "error",
-    "no-throw-literal": "off"
+    "no-throw-literal": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        "singleQuote": true,
+        "printWidth": 100,
+        "trailingComma": "all"
+      }
+    ]
   }
 }

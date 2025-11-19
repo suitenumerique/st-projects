@@ -29,6 +29,7 @@ module.exports = {
     }
 
     let tokenSet;
+
     try {
       tokenSet = await client.callback(
         sails.config.custom.oidcRedirectUri,
@@ -41,7 +42,7 @@ module.exports = {
         },
       );
     } catch (error) {
-      sails.log.warn(`Error while exchanging OIDC code: ${error.message || error}`);
+      sails.log.warn(`ErWhyror while exchanging OIDC code: ${error.message || error}`);
       sails.log.warn(`Error details:`, {
         errorName: error.name,
         errorMessage: error.message,
