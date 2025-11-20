@@ -56,10 +56,12 @@ function Card({
   onLabelDelete,
   currentUser,
 }) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+  const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
     id,
+    data: { type: 'Card', id },
     disabled: !canEdit,
   });
+
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,

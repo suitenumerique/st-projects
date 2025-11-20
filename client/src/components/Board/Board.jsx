@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
   DndContext,
   DragOverlay,
-  closestCorners,
+  closestCenter,
   KeyboardSensor,
   PointerSensor,
   useSensor,
@@ -72,10 +72,12 @@ function Board({
 
   const [isListAddOpened, setIsListAddOpened] = useState(false);
 
+  const listsIds = useMemo(() => listItems.map((list) => list.id), [listItems]);
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 5,
+        distance: 1,
       },
     }),
     useSensor(KeyboardSensor, {
@@ -107,6 +109,7 @@ function Board({
 
   const handleDragOver = (event) => {
     const { active, over } = event;
+
     if (!over) return;
 
     const draggedId = active.id;
@@ -134,16 +137,17 @@ function Board({
 
     // Handle list reordering in real-time
     if (isActiveList && isOverList) {
-      setListItems((currentListItems) => {
-        const activeIndex = currentListItems.findIndex((col) => col.id === draggedId);
-        const overIndex = currentListItems.findIndex((col) => col.id === overId);
+      setTimeout(() => {
+        setListItems((currentListItems) => {
+          const activeIndex = currentListItems.findIndex((col) => col.id === draggedId);
+          const overIndex = currentListItems.findIndex((col) => col.id === overId);
 
-        if (activeIndex !== -1 && overIndex !== -1 && activeIndex !== overIndex) {
-          return arrayMove(currentListItems, activeIndex, overIndex);
-        }
-        return currentListItems;
-      });
-      return;
+          if (activeIndex !== -1 && overIndex !== -1 && activeIndex !== overIndex) {
+            return arrayMove(currentListItems, activeIndex, overIndex);
+          }
+          return currentListItems;
+        });
+      }, 0);
     }
 
     // Skip card logic if dragging a list
@@ -195,6 +199,7 @@ function Board({
 
   const handleDragEnd = (event) => {
     const { active, over } = event;
+
     if (!over) {
       setActiveId(null);
       return;
@@ -307,15 +312,12 @@ function Board({
     <div className={styles.wrapper}>
       <DndContext
         sensors={sensors}
-        collisionDetection={closestCorners}
+        collisionDetection={closestCenter}
         onDragStart={handleDragStart}
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
-        <SortableContext
-          items={listItems.map((col) => col.id)}
-          strategy={horizontalListSortingStrategy}
-        >
+        <SortableContext items={listsIds} strategy={horizontalListSortingStrategy}>
           <div className={styles.container}>
             {listItems.map((list) => (
               <List

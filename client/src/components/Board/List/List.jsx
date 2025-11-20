@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
 import { SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable';
@@ -49,6 +49,7 @@ function List({
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id,
+    data: { type: 'List', id },
     disabled: !canEdit,
   });
 
@@ -64,6 +65,10 @@ function List({
     transform: CSS.Transform.toString(transform),
     transition,
   };
+
+  const cardsIds = useMemo(() => {
+    return cards.map((card) => card.id);
+  }, [cards]);
 
   const nameEdit = useRef(null);
 
@@ -171,14 +176,8 @@ function List({
           </ListActionsPopover>
         )}
       </div>
-      <SortableContext items={cards.map((c) => c.id)} strategy={verticalListSortingStrategy}>
-        <div
-          ref={setDropRef}
-          className={classNames(
-            styles.cardsContainer,
-            isOver && cards.length === 0 && styles.dropZoneActive,
-          )}
-        >
+      <SortableContext items={cardsIds} strategy={verticalListSortingStrategy}>
+        <div ref={setDropRef} className={classNames(styles.cardsContainer)}>
           {cards.map((card) => (
             <Card
               key={card.id}
