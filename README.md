@@ -1,3 +1,5 @@
+<img width="705" height="177" alt="banner-projets-2" src="https://github.com/user-attachments/assets/0a0d0741-9bf1-4ce6-ab8a-9adebbabbdf0" />
+
 # Projets
 
 Projets is the project management tool for [La Suite territoriale](https://suiteterritoriale.anct.gouv.fr/).
