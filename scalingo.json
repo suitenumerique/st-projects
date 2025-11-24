@@ -1,7 +1,7 @@
 {
   "name": "Projets",
   "description": "Project management application",
-  "repository": "https://github.com/suitenumerique/st-projects",
+  "repository": "https://github.com/suitenumerique/st-project#main",
   "website": "https://projets.suite.anct.gouv.fr",
   "stack": "scalingo-22",
   "env": {
@@ -16,6 +16,10 @@
     "SECRET_KEY": {
       "description": "The session secret key for encrypting cookies",
       "required": true
+    },
+    "NODE_ENV": {
+      "description": "The environment",
+      "value": "production"
     },
     "OIDC_ISSUER": {
       "description": "The OIDC issuer",
