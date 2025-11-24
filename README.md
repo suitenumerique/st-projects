@@ -9,10 +9,6 @@
   <img alt="License" src="https://img.shields.io/badge/license-MIT-blue" />
 </p>
 
-<p align="center">
-  <img width="100%" alt="Projets" src="https://github.com/user-attachments/assets/251c203a-b13a-442c-b5cd-a5ab0bbc6d35" />
-</p>
-
 # Projets
 
 Projets is the project management tool for [La Suite territoriale](https://suiteterritoriale.anct.gouv.fr/).
@@ -20,6 +16,10 @@ Projets is the project management tool for [La Suite territoriale](https://suite
 Built on [Planka](https://github.com/plankanban/planka), it provides a customized Kanban-style interface designed specifically for teams managing territorial and digital transformation projects.
 
 [![Deploy to Scalingo](https://cdn.scalingo.com/deploy/button.svg)](https://my.scalingo.com/deploy?source=https://github.com/suitenumerique/st-projects#main)
+
+<p align="center">
+  <img width="100%" alt="Projets" src="https://github.com/user-attachments/assets/251c203a-b13a-442c-b5cd-a5ab0bbc6d35" />
+</p>
 
 ## 🎯 Features
 
