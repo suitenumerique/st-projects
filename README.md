@@ -6,7 +6,6 @@
 <p align="center">
   <img alt="Node" src="https://img.shields.io/badge/node-22-green" />
   <img alt="Docker" src="https://img.shields.io/badge/docker-required-blue" />
-  <img alt="License" src="https://img.shields.io/badge/license-MIT-blue" />
 </p>
 
 # Projets
@@ -163,9 +162,7 @@ For major changes, please open an issue first to discuss what you'd like to chan
 
 ## License 📝
 
-This work is released under the MIT License (see [LICENSE](https://github.com/suitenumerique/st-projects/blob/main/LICENSE)).
-
-While Projets is a public-driven initiative, our license choice is an invitation for private sector actors to use, sell and contribute to the project.
+This work is released under the AGPL-3.0 license.
 
 ## 📧 Contact
 
