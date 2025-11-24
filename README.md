@@ -1,4 +1,13 @@
-<img width="100%" alt="banner-projets-2" src="https://github.com/user-attachments/assets/0a0d0741-9bf1-4ce6-ab8a-9adebbabbdf0" />
+<p align="center">
+  <a href="https://github.com/suitenumerique/st-projects">
+    <img width="100%" alt="Projets" src="https://github.com/user-attachments/assets/0a0d0741-9bf1-4ce6-ab8a-9adebbabbdf0" />
+  </a>
+</p>
+<p align="center">
+  <img alt="Node" src="https://img.shields.io/badge/node-22-green" />
+  <img alt="Docker" src="https://img.shields.io/badge/docker-required-blue" />
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-blue" />
+</p>
 
 # Projets
 
@@ -6,22 +15,19 @@ Projets is the project management tool for [La Suite territoriale](https://suite
 
 Built on [Planka](https://github.com/plankanban/planka), it provides a customized Kanban-style interface designed specifically for teams managing territorial and digital transformation projects.
 
-![Node](https://img.shields.io/badge/node-22-green)
-![License]()
-
 [![Deploy to Scalingo](https://cdn.scalingo.com/deploy/button.svg)](https://my.scalingo.com/deploy?source=https://github.com/suitenumerique/st-projects)
 
 ## 🎯 Features
 
-- **Project Management**: Create projects, boards, lists, cards, labels, and tasks
-- **Collaboration**: Add card members, track time, set due dates, add attachments, write comments
-- **Rich Content**: Markdown support in card descriptions and comments
-- **Filtering**: Filter by members and labels
-- **Real-time Updates**: Live synchronization across all clients
-- **Notifications**: Internal notification system
-- **Internationalization**: Multiple interface languages (French, English)
-- **Single Sign-On**: OpenID Connect (OIDC) authentication via Keycloak
-- **Modern UI**: Built with React and modern design components
+- 📊 **Project Management**: Create projects, boards, lists, cards, labels, and tasks
+- 🤝 **Collaboration**: Add card members, track time, set due dates, add attachments, write comments
+- ✍️ **Rich Content**: Markdown support in card descriptions and comments
+- 🔍 **Filtering**: Filter by members and labels
+- ⚡ **Real-time Updates**: Live synchronization across all clients
+- 🔔 **Notifications**: Internal notification system
+- 🌍 **Internationalization**: Multiple interface languages (French, English)
+- 🔐 **Single Sign-On**: OpenID Connect (OIDC) authentication via Keycloak
+- 🎨 **Modern UI**: Built with React and modern design components
 
 ## 🏗️ Architecture
 
@@ -138,6 +144,18 @@ The development environment includes:
 - [Sails.js Documentation](https://sailsjs.com/documentation)
 - [React Documentation](https://react.dev/)
 - [Keycloak Documentation](https://www.keycloak.org/documentation)
+
+## 🤝 Contributing
+
+We welcome contributions! Please:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+For major changes, please open an issue first to discuss what you'd like to change.
 
 ## License 📝
 
