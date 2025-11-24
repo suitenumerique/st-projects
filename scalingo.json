@@ -1,7 +1,7 @@
 {
   "name": "Projets",
   "description": "Project management application",
-  "repository": "https://github.com/suitenumerique/st-project#main",
+  "repository": "https://github.com/suitenumerique/st-projects",
   "website": "https://projets.suite.anct.gouv.fr",
   "stack": "scalingo-22",
   "env": {

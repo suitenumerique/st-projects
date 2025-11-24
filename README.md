@@ -15,7 +15,7 @@ Projets is the project management tool for [La Suite territoriale](https://suite
 
 Built on [Planka](https://github.com/plankanban/planka), it provides a customized Kanban-style interface designed specifically for teams managing territorial and digital transformation projects.
 
-[![Deploy to Scalingo](https://cdn.scalingo.com/deploy/button.svg)](https://my.scalingo.com/deploy?source=https://github.com/suitenumerique/st-projects)
+[![Deploy to Scalingo](https://cdn.scalingo.com/deploy/button.svg)](https://my.scalingo.com/deploy?source=https://github.com/suitenumerique/st-projects#main)
 
 ## 🎯 Features
 
