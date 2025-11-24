@@ -18,7 +18,7 @@ Built on [Planka](https://github.com/plankanban/planka), it provides a customize
 [![Deploy to Scalingo](https://cdn.scalingo.com/deploy/button.svg)](https://my.scalingo.com/deploy?source=https://github.com/suitenumerique/st-projects#main)
 
 <p align="center">
-  <img width="100%" alt="Projets" src="https://github.com/user-attachments/assets/251c203a-b13a-442c-b5cd-a5ab0bbc6d35" />
+  <img width="100%" alt="Projets" src="https://github.com/user-attachments/assets/f2ed0705-1016-4465-879c-c28fdc2480f7" />
 </p>
 
 ## 🎯 Features
