@@ -9,6 +9,10 @@
   <img alt="License" src="https://img.shields.io/badge/license-MIT-blue" />
 </p>
 
+<p align="center">
+  <img width="100%" alt="Projets" src="https://github.com/user-attachments/assets/251c203a-b13a-442c-b5cd-a5ab0bbc6d35" />
+</p>
+
 # Projets
 
 Projets is the project management tool for [La Suite territoriale](https://suiteterritoriale.anct.gouv.fr/).
