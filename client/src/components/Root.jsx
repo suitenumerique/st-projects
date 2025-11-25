@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import { CunninghamProvider } from '@gouvfr-lasuite/ui-kit';
 import { ReduxRouter } from '../lib/redux-router';
+import i18n from '../i18n';
 
 import Paths from '../constants/Paths';
 import LoginWrapperContainer from '../containers/LoginWrapperContainer';
@@ -16,7 +17,7 @@ import '../assets/styles/globals.scss';
 function Root({ store, history }) {
   return (
     <Provider store={store}>
-      <CunninghamProvider theme="light">
+      <CunninghamProvider currentLocale={i18n.resolvedLanguage} theme="light">
         <ReduxRouter history={history}>
           <Routes>
             <Route path={Paths.LOGIN} element={<LoginWrapperContainer />} />
