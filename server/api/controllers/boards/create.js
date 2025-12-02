@@ -19,7 +19,6 @@ module.exports = {
     },
     position: {
       type: 'number',
-      required: true,
     },
     name: {
       type: 'string',
@@ -62,7 +61,11 @@ module.exports = {
       throw Errors.PROJECT_NOT_FOUND; // Forbidden
     }
 
-    const values = _.pick(inputs, ['position', 'name']);
+    const values = _.pick(inputs, ['name']);
+    // Position is now optional and handled via user preferences
+    if (inputs.position !== undefined) {
+      values.position = inputs.position;
+    }
 
     let boardImport;
     if (inputs.importType && Object.values(Board.ImportTypes).includes(inputs.importType)) {

@@ -41,9 +41,12 @@
     "chai": "^4.5.0",
     "eslint": "^8.57.1",
     "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-prettier": "^5.5.4",
     "mocha": "^10.8.2",
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.7",
+    "prettier": "^3.7.3"
   },
   "engines": {
     "node": "22"

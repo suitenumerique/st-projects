@@ -53,7 +53,7 @@ function List({
     disabled: !canEdit,
   });
 
-  const { setNodeRef: setDropRef, isOver } = useDroppable({
+  const { setNodeRef: setDropRef } = useDroppable({
     id: `list-drop-${id}`,
   });
 

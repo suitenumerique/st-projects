@@ -3,10 +3,6 @@ const valuesValidator = (value) => {
     return false;
   }
 
-  if (!_.isUndefined(value.position) && !_.isFinite(value.position)) {
-    return false;
-  }
-
   return true;
 };
 
@@ -45,41 +41,11 @@ module.exports = {
     // const boardRelatedUserIds = _.union(projectManagerUserIds, boardMemberUserIds);
     const boardRelatedUserIds = boardMemberUserIds;
 
-    if (!_.isUndefined(values.position)) {
-      const boards = await sails.helpers.projects.getBoards(
-        inputs.record.projectId,
-        inputs.record.id,
-      );
+    // Position is now handled via user preferences, not board properties
+    // Remove position from values if present
+    const boardValues = _.omit(values, 'position', 'folderId');
 
-      const { position, repositions } = sails.helpers.utils.insertToPositionables(
-        values.position,
-        boards,
-      );
-
-      values.position = position;
-
-      repositions.forEach(async ({ id, position: nextPosition }) => {
-        await Board.update({
-          id,
-          projectId: inputs.record.projectId,
-        }).set({
-          position: nextPosition,
-        });
-
-        boardRelatedUserIds.forEach((userId) => {
-          sails.sockets.broadcast(`user:${userId}`, 'boardUpdate', {
-            item: {
-              id,
-              position: nextPosition,
-            },
-          });
-
-          // TODO: send webhooks
-        });
-      });
-    }
-
-    const board = await Board.updateOne(inputs.record.id).set({ ...values });
+    const board = await Board.updateOne(inputs.record.id).set({ ...boardValues });
 
     if (board) {
       boardRelatedUserIds.forEach((userId) => {

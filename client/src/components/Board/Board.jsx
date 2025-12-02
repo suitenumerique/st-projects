@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {
   DndContext,
   DragOverlay,
-  closestCenter,
   pointerWithin,
   KeyboardSensor,
   PointerSensor,

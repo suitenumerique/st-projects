@@ -11,7 +11,13 @@ export function* fetchCore() {
 
   const {
     items: projects1,
-    included: { projectManagers, boards, boardMemberships: boardMemberships1 },
+    included: {
+      projectManagers,
+      boards,
+      boardMemberships: boardMemberships1,
+      folders: folders1,
+      userBoardPreferences: userBoardPreferences1,
+    },
   } = yield call(request, api.getProjects);
 
   let board;
@@ -73,6 +79,8 @@ export function* fetchCore() {
     board,
     projectManagers,
     boards,
+    folders: folders1 || [],
+    userBoardPreferences: userBoardPreferences1 || [],
     labels,
     lists,
     cardMemberships,
