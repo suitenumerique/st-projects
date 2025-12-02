@@ -45,6 +45,14 @@
     "mocha": "^10.8.2",
     "nodemon": "^3.1.7"
   },
+  "overrides": {
+    "async": "^2.6.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "async": "^2.6.4"
+    }
+  },
   "engines": {
     "node": "22"
   }
