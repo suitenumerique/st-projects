@@ -2,8 +2,7 @@
   position: relative;
   font-size: 0.875rem;
   font-weight: 500;
-  padding: 0.2rem 1rem;
-  min-height: 35px;
+  padding: 0.125rem 0;
   cursor: pointer;
   background-image: none;
   color: var(--c--theme--colors--greyscale-1000);
@@ -12,13 +11,14 @@
   align-items: center;
   width: 100%;
   border-radius: 0.25rem;
+  border: 1.5px solid rgba(0,0,0,0);
 
   span {
     line-height: 1;
   }
 
-  &:hover {
-    background-color: var(--c--theme--colors--greyscale-100);
+  &:not(.disableHover):hover {
+    background-color: var(--c--globals--colors--black-050);
     .itemEdit {
       opacity: 1;
     }
@@ -29,11 +29,11 @@
   }
 
   &:focus {
-    background-color: var(--c--theme--colors--greyscale-100);
+    background-color: var(--c--globals--colors--black-050);
   }
 
   &.popoverOpened {
-    background-color: var(--c--theme--colors--greyscale-100);
+    background-color: var(--c--globals--colors--black-050);
 
     .itemEdit {
       opacity: 1;
@@ -41,8 +41,19 @@
   }
 }
 
+// Define the class so it is exported by CSS Modules
+.disableHover {}
+
+.itemContent {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  height: 24px;
+}
+
 .itemWrapperActive {
-  background-color: var(--c--theme--colors--greyscale-100);
+  background-color: var(--c--globals--colors--black-050);
 }
 
 .itemIcon {
@@ -51,21 +62,20 @@
   height: 1.1rem;
   width: 1.1rem;
   border-radius: 0.25rem;
-  margin-right: 0.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
   align-self: flex-start;
-  margin-top: 4.5px;
+  margin: 0.25rem;
+  margin-right: 0.5rem;
   flex-shrink: 0;
 
   &::before {
-    --icon-size: .7rem;
     color: #ffffff;
   }
 }
 
-.itemContent {
+.itemLabels {
   flex: 1;
   overflow: hidden;
 }
@@ -88,8 +98,18 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  right: 6px;
-  background-color: var(--c--theme--colors--greyscale-100);
+  right: 4px;
+  border-radius: 4px;
+  border: 1px solid rgba(0,0,0,0);
+
+  &:hover {
+    background-color: var(--c--globals--colors--black-050);
+  }
+
+  span {
+    font-size: 20px;
+    color: var(--c--theme--colors--primary-text);
+  }
 }
 
 .itemDescription {

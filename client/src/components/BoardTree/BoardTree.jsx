@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import {
   DndContext,
   KeyboardSensor,
@@ -11,6 +10,7 @@ import {
   DragOverlay,
   useDroppable,
   defaultDropAnimationSideEffects,
+  useDndContext,
 } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -19,17 +19,14 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { Icon } from '@gouvfr-lasuite/ui-kit';
 
 import BoardTreeItem from './BoardTreeItem';
 import { enrichBoardWithUserPreference } from '../../selectors/user-board-preferences';
 import styles from './BoardTree.module.scss';
 
-// ----------------------------------------------------------------------
-// HELPER: Position Calculation
-// ----------------------------------------------------------------------
-const calculateNewPosition = (itemsInList, activeId, overId) => {
+const calculateNewPosition = (itemsInList, active, over) => {
+  const activeId = active.id;
+  const overId = over.id;
   const activeIndex = itemsInList.findIndex((i) => i.id === activeId);
   const overIndex = itemsInList.findIndex((i) => i.id === overId);
 
@@ -40,19 +37,40 @@ const calculateNewPosition = (itemsInList, activeId, overId) => {
       : 65535;
   }
 
+  // Determine Direction
+  let isMovingDown;
+
+  // SCENARIO A: Reordering within the same list
+  if (activeIndex !== -1) {
+    isMovingDown = activeIndex < overIndex;
+  }
+  // SCENARIO B: Moving between lists (Cross-Container)
+  else {
+    // Use Geometry (Center-to-Center) to determine insertion point
+    const activeRect = active.rect.current.translated;
+    const overRect = over.rect;
+
+    if (activeRect && overRect) {
+      const activeCenterY = activeRect.top + activeRect.height / 2;
+      const overCenterY = overRect.top + overRect.height / 2;
+      isMovingDown = activeCenterY > overCenterY;
+    } else {
+      // Fallback if rects unavailable (should be rare)
+      isMovingDown = true; // Default to Insert After
+    }
+  }
+
   let newPosition;
-  // If we are dragging from outside this list, activeIndex is -1
-  // If activeIndex < overIndex, we are moving DOWN
-  const isMovingDown = activeIndex !== -1 && activeIndex < overIndex;
 
   if (isMovingDown) {
+    // Insert AFTER the target
     const targetItem = itemsInList[overIndex];
     const nextItem = itemsInList[overIndex + 1];
     const targetPos = targetItem.position ?? 0;
     const nextPos = nextItem ? (nextItem.position ?? targetPos + 65535) : targetPos + 65535;
     newPosition = targetPos + (nextPos - targetPos) / 2;
   } else {
-    // Moving UP or Inserting into list
+    // Insert BEFORE the target
     const targetItem = itemsInList[overIndex];
     const prevItem = itemsInList[overIndex - 1];
     const targetPos = targetItem.position ?? 0;
@@ -62,15 +80,21 @@ const calculateNewPosition = (itemsInList, activeId, overId) => {
   return Math.floor(newPosition);
 };
 
-// ----------------------------------------------------------------------
-// COMPONENT: Draggable Item Wrapper
-// ----------------------------------------------------------------------
-function SortableTreeItem({ id, depth, data, children, isExpanded, onToggle, ...props }) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+function SortableTreeItem({
+  id,
+  depth,
+  data,
+  children,
+  isExpanded,
+  onToggle,
+  disabled,
+  disableHover,
+  ...props
+}) {
+  const { attributes, listeners, setNodeRef, transition, isDragging, isOver } = useSortable({
     id,
     data: { type: data.type, parentId: data.parentId, entity: data },
-    // 2. Add this custom animation strategy
-    // This prevents the "jump" or layout thrashing when an item starts/stops dragging
+    disabled,
     animateLayoutChanges: (args) => {
       const { isSorting, wasDragging } = args;
       if (isSorting || wasDragging) {
@@ -80,20 +104,91 @@ function SortableTreeItem({ id, depth, data, children, isExpanded, onToggle, ...
     },
   });
 
+  const { active, over } = useDndContext();
+
+  let showLineTop = false;
+  let showLineBottom = false;
+  let isDropTarget = false;
+
+  console.log('active', active);
+  console.log('over', over);
+
+  if (isOver && active && over && active.id !== over.id) {
+    const activeSortable = active.data.current?.sortable;
+    const overSortable = over.data.current?.sortable;
+
+    const activeType = active.data.current?.type;
+    const overType = over.data.current?.type;
+
+    // Case 1: Dragging Board OVER Folder -> Highlight Folder (Drop Inside)
+    if (activeType === 'board' && overType === 'folder') {
+      // Check if the board is already in this folder
+      const parentId = active.data.current?.parentId;
+      const folderId = over.id;
+
+      // Only highlight as drop target if it's NOT the current parent
+      if (parentId !== folderId) {
+        isDropTarget = true;
+      }
+      // Do NOT show lines, because we are dropping inside, not reordering
+    }
+    // Case 2: Standard Reordering (Board<->Board)
+    // Relaxed condition: Check types OR sortables (to handle single-item lists where sortables might be undefined)
+    else if ((activeSortable && overSortable) || (activeType === 'board' && overType === 'board')) {
+      // If both sortables exist AND are in same container, use Index Logic (Stable)
+      if (
+        activeSortable &&
+        overSortable &&
+        activeSortable.containerId === overSortable.containerId
+      ) {
+        const activeIndex = activeSortable.index;
+        const overIndex = overSortable.index;
+
+        if (activeIndex < overIndex) {
+          showLineBottom = true;
+        } else {
+          showLineTop = true;
+        }
+      } else {
+        // Different containers OR missing sortable data: Use Geometry Logic (Dynamic)
+        const activeRect = active.rect.current.translated;
+        const overRect = over.rect;
+
+        if (activeRect && overRect) {
+          const activeCenterY = activeRect.top + activeRect.height / 2;
+          const overCenterY = overRect.top + overRect.height / 2;
+
+          if (activeCenterY > overCenterY) {
+            showLineBottom = true; // Insert After
+          } else {
+            showLineTop = true; // Insert Before
+          }
+        } else {
+          // Fallback
+          showLineBottom = true;
+        }
+      }
+    }
+  }
+
   const style = {
     // 3. CHANGE THIS: Use Translate instead of Transform
-    // 'Translate' moves the item without squishing/scaling it.
-    // This eliminates the cumulative error.
-    transform: CSS.Translate.toString(transform),
+    // - If useLineIndicator (Boards): Disable transform for ALL items (static list).
+    // - If !useLineIndicator (Folders): Enable transform always (standard reordering).
+    // NOTE: We use Translate to avoid scale distortion.
+    // FORCE transform to undefined to prevent any reordering/shifting during drag.
+    // The list should remain static, with only the drop line indicating position.
+    transform: undefined,
 
     // 4. CHANGE THIS: Disable transition ONLY for the item being dragged
-    // If you animate the item you are holding, it lags behind the mouse (ghost gap misalignment).
     transition: isDragging ? undefined : transition,
 
-    opacity: isDragging ? 0.5 : 1,
+    // 5. Reduce opacity while dragging (standard practice)
+    // This keeps it visible but indicates it is the source.
+    opacity: isDragging ? 0.3 : 1,
     zIndex: isDragging ? 999 : 'auto',
 
-    // 5. Ensure "touch-action" is set here if not in CSS
+    // 6. Ensure "touch-action" is set here if not in CSS
     touchAction: 'none',
   };
 
@@ -107,14 +202,17 @@ function SortableTreeItem({ id, depth, data, children, isExpanded, onToggle, ...
       {...listeners}
       className={styles.sortableWrapper}
     >
+      {showLineTop && <div className={styles.dropLineTop} />}
       <BoardTreeItem
         item={{ ...data, id, children }}
-        level={depth}
         isExpanded={isExpanded}
         onToggle={onToggle}
+        isDropTarget={isDropTarget}
+        disableHover={disableHover}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...props}
       />
+      {showLineBottom && <div className={styles.dropLineBottom} />}
       {isExpanded && <div className={styles.nestedContainer}>{children}</div>}
     </div>
   );
@@ -127,11 +225,15 @@ SortableTreeItem.propTypes = {
   children: PropTypes.node,
   isExpanded: PropTypes.bool,
   onToggle: PropTypes.func,
+  disabled: PropTypes.bool,
+  disableHover: PropTypes.bool,
 };
 
 SortableTreeItem.defaultProps = {
   children: null,
   isExpanded: false,
+  disabled: false,
+  disableHover: false,
   onToggle: () => {},
 };
 
@@ -158,11 +260,6 @@ const BoardTree = React.memo(
     // Use a specific ID for the empty space in the root board section
     const ROOT_BOARD_ZONE_ID = 'root-board-drop-zone';
 
-    // Register the root zone as droppable
-    const { setNodeRef: setRootZoneRef, isOver: isOverRootZone } = useDroppable({
-      id: ROOT_BOARD_ZONE_ID,
-    });
-
     const sensors = useSensors(
       useSensor(PointerSensor, {
         activationConstraint: {
@@ -188,7 +285,7 @@ const BoardTree = React.memo(
       // Process Folders
       const processedFolders = folders
         .filter((f) => !f.parentFolderId)
-        .sort(byPos)
+        .sort((a, b) => a.name.localeCompare(b.name))
         .map((f) => ({
           id: `folder-${f.id}`,
           type: 'folder',
@@ -242,7 +339,6 @@ const BoardTree = React.memo(
       };
     }, [boards, folders, userBoardPreferences]);
 
-    // 2. Handlers
     const handleToggle = useCallback((folderId) => {
       setExpandedFolders((prev) => {
         const next = new Set(prev);
@@ -266,42 +362,23 @@ const BoardTree = React.memo(
 
       const activeItem = flatItems[active.id];
 
-      // --- SCENARIO 1: Dragging a FOLDER ---
-      if (activeItem.type === 'folder') {
-        // Folders cannot go into root zone or over boards
-        if (over.id === ROOT_BOARD_ZONE_ID || flatItems[over.id]?.type === 'board') {
-          return;
-        }
-
-        // Must be over another folder
-        const newPos = calculateNewPosition(rootFolders, active.id, over.id);
-        if (newPos !== activeItem.position) {
-          onFolderUpdate(activeItem.data.id, { position: newPos });
-        }
-        return;
-      }
-
       // --- SCENARIO 2: Dragging a BOARD ---
       if (activeItem.type === 'board') {
         let targetFolderId = null;
         let targetPosition = 0;
 
         // Case A: Dropped into the Empty Root Zone (Moving out of folder)
-        if (over.id === ROOT_BOARD_ZONE_ID) {
+        if (over.id === ROOT_BOARD_ZONE_ID || over.data.current?.type === 'root-zone') {
           targetFolderId = null;
-          // Place at the very end of root boards
-          const lastBoard = rootBoards[rootBoards.length - 1];
-          targetPosition = lastBoard ? (lastBoard.position ?? 0) + 65535 : 65535;
+          targetPosition = 65535;
         }
-        // Case B: Dropped onto a Folder (Moving into folder)
+        // Case B: Moving into folder
         else if (flatItems[over.id]?.type === 'folder') {
           targetFolderId = flatItems[over.id].data.id;
-          // Place at the end of that folder's list
           const targetList = nestedBoardsMap[targetFolderId] || [];
-          const lastBoard = targetList[targetList.length - 1];
-          targetPosition = lastBoard ? (lastBoard.position ?? 0) + 65535 : 65535;
-
-          // Optional: Auto-expand folder on drop
+          const firstBoard = targetList[0];
+          const firstPos = firstBoard?.position ?? 0;
+          targetPosition = targetList.length > 0 ? Math.max(1, firstPos / 2) : 65535;
           if (!expandedFolders.has(targetFolderId)) {
             handleToggle(targetFolderId);
           }
@@ -315,18 +392,17 @@ const BoardTree = React.memo(
             // It is inside a folder
             targetFolderId = parentId.replace('folder-', '');
             const siblings = nestedBoardsMap[targetFolderId] || [];
-            targetPosition = calculateNewPosition(siblings, active.id, over.id);
+            targetPosition = calculateNewPosition(siblings, active, over);
           } else {
-            // It is at Root
+            // It is at root
             targetFolderId = null;
-            targetPosition = calculateNewPosition(rootBoards, active.id, over.id);
+            targetPosition = calculateNewPosition(rootBoards, active, over);
           }
         } else {
           // Dropped somewhere invalid
           return;
         }
 
-        // Execute Update
         onBoardUpdate(activeItem.data.id, {
           folderId: targetFolderId,
           position: targetPosition,
@@ -348,6 +424,7 @@ const BoardTree = React.memo(
             onUpdate={onBoardUpdate}
             onDelete={onBoardDelete}
             onClick={() => onBoardClick(item.data.id)}
+            disableHover={!!activeId}
           />
         ))}
       </SortableContext>
@@ -360,54 +437,18 @@ const BoardTree = React.memo(
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
       >
-        <div className={styles.tree}>
-          {/* --- SECTION 1: FOLDERS --- */}
-          {rootFolders.length > 0 && (
-            <div className={styles.folderSection}>
-              <SortableContext
-                items={rootFolders.map((f) => f.id)}
-                strategy={verticalListSortingStrategy}
-              >
-                {rootFolders.map((folder) => {
-                  const isExpanded = expandedFolders.has(folder.data.id);
-                  return (
-                    <SortableTreeItem
-                      key={folder.id}
-                      id={folder.id}
-                      depth={0}
-                      data={folder}
-                      isExpanded={isExpanded}
-                      onToggle={() => handleToggle(folder.data.id)}
-                      canEdit={canEdit}
-                      onUpdate={onFolderUpdate}
-                      onDelete={onFolderDelete}
-                    >
-                      {/* Only render nested list if expanded */}
-                      {isExpanded && renderBoardList(folder.children, 1)}
-                    </SortableTreeItem>
-                  );
-                })}
-              </SortableContext>
-            </div>
-          )}
-
-          {/* --- SECTION 2: ROOT BOARDS --- */}
-          <div
-            ref={setRootZoneRef}
-            className={classNames(styles.boardSection, {
-              [styles.boardSectionActive]: isOverRootZone,
-            })}
-          >
-            {rootBoards.length > 0 ? (
-              renderBoardList(rootBoards, 0)
-            ) : (
-              // Visual cue that you can drop here
-              <div className={styles.emptyRootPlaceholder}>
-                Glissez ici pour sortir un tableau d&apos;un dossier
-              </div>
-            )}
-          </div>
-        </div>
+        <BoardTreeContent
+          activeId={activeId}
+          rootFolders={rootFolders}
+          rootBoards={rootBoards}
+          expandedFolders={expandedFolders}
+          renderBoardList={renderBoardList}
+          handleToggle={handleToggle}
+          onFolderUpdate={onFolderUpdate}
+          onFolderDelete={onFolderDelete}
+          canEdit={canEdit}
+          ROOT_BOARD_ZONE_ID={ROOT_BOARD_ZONE_ID}
+        />
 
         {/* --- DRAG OVERLAY --- */}
         <DragOverlay
@@ -429,7 +470,6 @@ const BoardTree = React.memo(
                   activeItemData.type === 'board' && activeItemData.parentId ? '40px' : '0px',
               }}
             >
-              <Icon name={activeItemData.type === 'folder' ? 'folder' : 'dashboard'} />
               <span>{activeItemData.data.name}</span>
             </div>
           ) : null}
@@ -438,6 +478,61 @@ const BoardTree = React.memo(
     );
   },
 );
+
+// eslint-disable-next-line react/prop-types
+function BoardTreeContent({
+  activeId,
+  rootFolders,
+  rootBoards,
+  expandedFolders,
+  renderBoardList,
+  handleToggle,
+  onFolderUpdate,
+  onFolderDelete,
+  canEdit,
+  ROOT_BOARD_ZONE_ID,
+}) {
+  // Register the root zone as droppable - NOW CORRECTLY INSIDE DndContext
+  const { setNodeRef: setRootZoneRef, isOver: isOverRootZone } = useDroppable({
+    id: ROOT_BOARD_ZONE_ID,
+    data: { type: 'root-zone' },
+  });
+
+  return (
+    <div className={styles.tree}>
+      {rootFolders.length > 0 && (
+        <div className={styles.folderSection}>
+          {rootFolders.map((folder) => {
+            const isExpanded = expandedFolders.has(folder.data.id);
+            return (
+              <SortableTreeItem
+                key={folder.id}
+                id={folder.id}
+                depth={0}
+                data={folder}
+                isExpanded={isExpanded}
+                onToggle={() => handleToggle(folder.data.id)}
+                canEdit={canEdit}
+                onUpdate={onFolderUpdate}
+                onDelete={onFolderDelete}
+                disabled
+                disableHover={!!activeId}
+              >
+                {isExpanded && renderBoardList(folder.children, 1)}
+              </SortableTreeItem>
+            );
+          })}
+        </div>
+      )}
+
+      <div ref={setRootZoneRef} className={styles.rootBoardSection}>
+        {rootBoards.length > 0
+          ? renderBoardList(rootBoards, 0)
+          : isOverRootZone && <div className={styles.dropLine} />}
+      </div>
+    </div>
+  );
+}
 
 BoardTree.propTypes = {
   boards: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
@@ -455,6 +550,23 @@ BoardTree.propTypes = {
 BoardTree.defaultProps = {
   currentBoardId: undefined,
   userBoardPreferences: [],
+};
+
+BoardTreeContent.propTypes = {
+  activeId: PropTypes.string,
+  rootFolders: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  rootBoards: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  expandedFolders: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  renderBoardList: PropTypes.func.isRequired,
+  handleToggle: PropTypes.func.isRequired,
+  onFolderUpdate: PropTypes.func.isRequired,
+  onFolderDelete: PropTypes.func.isRequired,
+  canEdit: PropTypes.bool.isRequired,
+  ROOT_BOARD_ZONE_ID: PropTypes.string.isRequired,
+};
+
+BoardTreeContent.defaultProps = {
+  activeId: null,
 };
 
 export default BoardTree;

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 import pick from 'lodash/pick';
 
@@ -9,17 +10,24 @@ import usePopup from '../../lib/popup/use-popup';
 import styles from './BoardTree.module.scss';
 
 const BoardTreeItem = React.memo(
-  ({ item, level, isExpanded, isActive, canEdit, onToggle, onClick, onUpdate, onDelete }) => {
+  ({
+    item,
+    isExpanded,
+    isActive,
+    isDropTarget,
+    canEdit,
+    onToggle,
+    onClick,
+    onUpdate,
+    onDelete,
+    disableHover,
+  }) => {
     const [, setIsActionsPopoverOpen] = useState(false);
     const BoardActionsPopover = usePopup(BoardActionsStep);
 
-    const style = {
-      paddingLeft: `${level * 16}px`,
-    };
-
     if (item.type === 'board') {
       return (
-        <div style={style} className={styles.item}>
+        <div className={styles.boardItem}>
           <BoardListItem
             board={item.data}
             project={item.data.project}
@@ -31,14 +39,20 @@ const BoardTreeItem = React.memo(
             handleClick={onClick}
             onBoardUpdate={onUpdate}
             onBoardDelete={onDelete}
+            disableHover={disableHover}
           />
         </div>
       );
     }
 
-    // Folder item
     return (
-      <div style={style} className={styles.folderItem}>
+      <div
+        className={classNames(
+          styles.folderItem,
+          isDropTarget && styles.folderItemDropTarget,
+          disableHover && styles.disableHover,
+        )}
+      >
         <div className={styles.folderHeader}>
           <button
             type="button"
@@ -52,7 +66,7 @@ const BoardTreeItem = React.memo(
               size="small"
             />
           </button>
-          <Icon name="folder" type="outlined" size="small" className={styles.folderIcon} />
+          <Icon name="folder" type="filled" size="small" className={styles.folderIcon} />
           <span className={styles.folderName}>{item.data.name}</span>
           {canEdit && (
             <BoardActionsPopover
@@ -66,7 +80,7 @@ const BoardTreeItem = React.memo(
                 className={styles.folderActions}
                 onClick={(e) => e.stopPropagation()}
               >
-                <Icon type="outlined" name="more_horiz" size="small" />
+                <Icon type="outlined" name="more_horiz" size="medium" />
               </button>
             </BoardActionsPopover>
           )}
@@ -78,19 +92,22 @@ const BoardTreeItem = React.memo(
 
 BoardTreeItem.propTypes = {
   item: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  level: PropTypes.number.isRequired,
   isExpanded: PropTypes.bool,
   isActive: PropTypes.bool,
+  isDropTarget: PropTypes.bool,
   canEdit: PropTypes.bool.isRequired,
   onToggle: PropTypes.func,
   onClick: PropTypes.func,
   onUpdate: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
+  disableHover: PropTypes.bool,
 };
 
 BoardTreeItem.defaultProps = {
   isExpanded: false,
   isActive: false,
+  isDropTarget: false,
+  disableHover: false,
   onToggle: null,
   onClick: null,
 };

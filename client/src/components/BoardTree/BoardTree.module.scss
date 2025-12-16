@@ -4,7 +4,7 @@
 // Variables for easy tweaking
 $indentation: 24px; // How much nested boards are indented
 $item-gap: 4px;     // Space between individual items
-$section-gap: 12px; // Space between Folder section and Board section
+$section-gap: 0px; // Space between Folder section and Board section
 $hover-color: rgba(0, 0, 0, 0.04);
 $active-drop-zone: rgba(0, 0, 0, 0.04);
 $text-muted: #666;
@@ -14,34 +14,52 @@ $border-color: #e0e0e0;
   display: flex;
   flex-direction: column;
   gap: $section-gap;
-  padding-bottom: 60px; // Extra scrolling space at bottom
+  padding-bottom: 0px; // Extra scrolling space at bottom
   width: 100%;
   box-sizing: border-box;
 }
 
-// --- Layout Containers ---
-// We use flex + gap instead of margins to ensure dnd-kit calculates positions accurately
-.folderSection,
-.boardSection {
+.folderSection {
   display: flex;
   flex-direction: column;
   gap: $item-gap;
+  margin-bottom: 8px;
 }
 
-// The Root Board Zone needs special treatment to allow dropping "out" of folders
-.boardSection {
-  min-height: 120px; // CRITICAL: Gives a target area even if empty
+.rootBoardSection {
+  display: flex;
+  flex-direction: column;
+  gap: $item-gap;
+  min-height: 4px;
   border-radius: 8px;
   transition: background-color 0.2s ease;
-  padding: 8px 4px; // Slight padding so the border highlight looks nice
+  position: relative;
 
-  // Visual cue when dragging a board over the root zone
-  &.boardSectionActive {
-    background-color: $active-drop-zone;
-    outline: 2px dashed rgba(0, 0, 0, 0.1);
-    outline-offset: -2px;
+  .dropLine {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #000091;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: -4px;
+      top: -3px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: inherit;
+    }
   }
 }
+
+
+
+
+
 
 // --- The Draggable Item Wrapper ---
 // This wraps the TreeItem AND the nested children
@@ -57,7 +75,7 @@ $border-color: #e0e0e0;
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: $item-gap;
+  // gap: $item-gap;
 }
 
 // --- Nested Container (Inside an expanded folder) ---
@@ -69,16 +87,16 @@ $border-color: #e0e0e0;
 
   // Optional: Add a left border line for tree visualization
   position: relative;
-  &::before {
-    content: '';
-    position: absolute;
-    left: ($indentation / 2);
-    top: 0;
-    bottom: 8px;
-    width: 2px;
-    background-color: rgba(0,0,0,0.05);
-    border-radius: 2px;
-  }
+  // &::before {
+  //   content: '';
+  //   position: absolute;
+  //   left: ($indentation / 2);
+  //   top: 0;
+  //   bottom: 8px;
+  //   width: 2px;
+  //   background-color: rgba(0,0,0,0.05);
+  //   border-radius: 2px;
+  // }
 }
 
 // --- Drag Overlay ( The item following the mouse ) ---
@@ -143,16 +161,52 @@ $border-color: #e0e0e0;
   pointer-events: none; // Let clicks pass through to the container
 }
 
+.dropLineTop,
+.dropLineBottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #000091;
+  z-index: 100;
+  pointer-events: none;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: -3px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: inherit;
+  }
+}
+
+.dropLineTop {
+  top: -3px;
+}
+
+.dropLineBottom {
+  bottom: -3px;
+}
+
 // --- Optional: styling for the inner TreeItem if you don't have separate CSS for it ---
 // This ensures the item inside the wrapper fills the space
 .treeItemWrapper {
   width: 100%;
 }
 
+// Export empty class for JS usage
+.disableHover {}
+
   .folderItem {
     display: flex;
     flex-direction: column;
     cursor: grab;
+    border: 1.5px solid rgba(0,0,0,0);
+    padding: 0.125rem 0;
+    border-radius: 4px;
 
     &:active {
       cursor: grabbing;
@@ -161,18 +215,28 @@ $border-color: #e0e0e0;
     &.dragging {
       opacity: 0.5;
     }
+
+    &:not(.disableHover):hover {
+      background-color: var(--c--globals--colors--black-050);
+      .folderActions {
+        opacity: 1;
+      }
+    }
+
   }
 
   .folderHeader {
     display: flex;
     align-items: center;
-    padding: 0.5rem 0.75rem;
-    gap: 0.5rem;
-    min-height: 40px;
+    flex-wrap: nowrap;
+    gap: 0.25rem;
+    height: 24px;
+    cursor: pointer;
+  }
 
-    &:hover {
-      background-color: var(--c--theme--colors--greyscale-100);
-    }
+  .folderItemDropTarget {
+    background-color: rgba(0, 0, 145, 0.05);
+    outline: 1px solid #000091;
   }
 
   .folderToggle {
@@ -210,12 +274,18 @@ $border-color: #e0e0e0;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0.25rem;
-    color: var(--c--theme--colors--greyscale-600);
+    margin-right: 4px;
+    color: var(--c--theme--colors--primary-text);
+    opacity: 0;
+    padding: 0;
+    border: 1px solid rgba(0,0,0,0);
+
+    > span {
+      font-size: 20px;
+    }
 
     &:hover {
-      color: var(--c--theme--colors--greyscale-1000);
-      background-color: var(--c--theme--colors--greyscale-200);
+      background-color: var(--c--globals--colors--black-050);
       border-radius: 4px;
     }
   }
