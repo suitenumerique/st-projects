@@ -112,16 +112,20 @@ const Login = React.memo(
           <Footer
             legalLinks={[
               {
+                label: "Conditions générales d'utilisation",
+                href: 'https://docs.suite.anct.gouv.fr/docs/bf7ff5c9-766a-409c-8f62-d4acc9517218/',
+              },
+              {
+                label: 'Politique de confidentialité',
+                href: 'https://docs.suite.anct.gouv.fr/docs/b77fef2d-ee20-4f3b-b795-e8210849331c/',
+              },
+              {
+                label: "Déclaration d'accessibilité",
+                href: 'https://docs.suite.anct.gouv.fr/docs/ec1f62fd-1af3-419c-8f72-1d7fe64c13ac/',
+              },
+              {
                 label: 'Mentions légales',
-                href: '#',
-              },
-              {
-                label: 'Données personnelles et cookies',
-                href: '#',
-              },
-              {
-                label: 'Accessibilité: non conforme',
-                href: '#',
+                href: 'https://docs.suite.anct.gouv.fr/docs/714f5518-4d1a-47f2-8878-3b7216ae902b/',
               },
             ]}
             externalLinks={[
