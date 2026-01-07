@@ -1,5 +1,5 @@
 {
-  "realm": "st-projects",
+  "realm": "planka",
   "enabled": true,
   "sslRequired": "external",
   "registrationAllowed": false,
@@ -23,9 +23,9 @@
   "adminEventsDetailsEnabled": false,
   "clients": [
     {
-      "clientId": "st-projects-client",
-      "name": "ST Projects Client",
-      "description": "Client for ST Projects",
+      "clientId": "planka-client",
+      "name": "Planka Client",
+      "description": "Client for Planka",
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
       "standardFlowEnabled": true,
@@ -65,19 +65,14 @@
       "emailVerified": true,
       "firstName": "Test",
       "lastName": "User",
-      "email": "user.test@anct.gouv.fr",
+      "email": "user.test@numerique.gouv.fr",
       "credentials": [
         {
           "type": "password",
           "value": "password",
           "temporary": false
         }
-      ],
-      "attributes": {
-        "siret": [
-          "12345678901234"
-        ]
-      }
+      ]
     }
   ]
 }

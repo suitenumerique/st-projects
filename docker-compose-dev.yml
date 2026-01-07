@@ -1,17 +1,146 @@
 services:
+  server:
+    build:
+      context: ./server
+      dockerfile: ../config/development/Dockerfile.server
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    environment:
+      - BASE_URL=http://localhost:3000
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://user:password@postgres:5432/planka_db
+      - SECRET_KEY=notsecretkey
+
+      # - TRUST_PROXY=0
+      # - TOKEN_EXPIRES_IN=365 # In days
+
+      # related: https://github.com/knex/knex/issues/2354
+      # As knex does not pass query parameters from the connection string we
+      # have to use environment variables in order to pass the desired values, e.g.
+      # - PGSSLMODE=<value>
+
+      # Configure knex to accept SSL certificates
+      # - KNEX_REJECT_UNAUTHORIZED_SSL_CERTIFICATE=false
+
+      # - SHOW_DETAILED_AUTH_ERRORS=false # Set to true to show more detailed authentication error messages. It should not be enabled without a rate limiter for security reasons.
+      # - ALLOW_ALL_TO_CREATE_PROJECTS=true
+
+      # - S3_ENDPOINT=
+      # - S3_REGION=
+      # - S3_ACCESS_KEY_ID=
+      # - S3_SECRET_ACCESS_KEY=
+      # - S3_BUCKET=
+      # - S3_FORCE_PATH_STYLE=true
+
+      - OIDC_ISSUER=http://auth.local:8080/realms/planka
+      - OIDC_CLIENT_ID=planka-client
+      - OIDC_CLIENT_SECRET=a-not-so-secret-secret
+      - OIDC_SCOPES=openid profile email organization
+      - OIDC_FULLNAME_ATTRIBUTES=given_name,family_name
+      # - OIDC_USERNAME_ATTRIBUTE=preferred_username
+      # - OIDC_EMAIL_ATTRIBUTE=email
+      # - OIDC_ROLES_ATTRIBUTE=groups
+      # - OIDC_ID_TOKEN_SIGNED_RESPONSE_ALG=RS256
+      # - OIDC_USERINFO_SIGNED_RESPONSE_ALG=RS256
+      # - OIDC_RESPONSE_MODE=fragment
+      - OIDC_USE_DEFAULT_RESPONSE_MODE=true
+      # - OIDC_ADMIN_ROLES=admin
+      # - OIDC_CLAIMS_SOURCE=userinfo
+      # - OIDC_EMAIL_ATTRIBUTE=email
+      # - OIDC_NAME_ATTRIBUTE=name
+      # - OIDC_USERNAME_ATTRIBUTE=preferred_username
+      # - OIDC_ROLES_ATTRIBUTE=groups
+      - OIDC_IGNORE_USERNAME=true
+      - OIDC_IGNORE_ROLES=true
+      - OIDC_ENFORCED=true
+
+      # Email Notifications (https://nodemailer.com/smtp/)
+      # - SMTP_HOST=
+      # - SMTP_PORT=587
+      # - SMTP_NAME=
+      # - SMTP_SECURE=true
+      # - SMTP_USER=
+      # - SMTP_PASSWORD=
+      # - SMTP_FROM="Demo Demo" <demo@demo.demo>
+      # - SMTP_TLS_REJECT_UNAUTHORIZED=false
+
+      # Optional fields: accessToken, events, excludedEvents
+      # - |
+      #   WEBHOOKS=[{
+      #     "url": "http://localhost:3001",
+      #     "accessToken": "notaccesstoken",
+      #     "events": ["cardCreate", "cardUpdate", "cardDelete"],
+      #     "excludedEvents": ["notificationCreate", "notificationUpdate"]
+      #   }]
+
+      # - SLACK_BOT_TOKEN=
+      # - SLACK_CHANNEL_ID=
+
+      # - GOOGLE_CHAT_WEBHOOK_URL=
+
+      # - TELEGRAM_BOT_TOKEN=
+      # - TELEGRAM_CHAT_ID=
+      # - TELEGRAM_THREAD_ID=
+    working_dir: /app
+    extra_hosts:
+      - 'auth.local:host-gateway'
+    command: ["sh", "-c", "npm run start"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+
+  client:
+    build:
+      context: ./client
+      dockerfile: ../config/development/Dockerfile.client
+    volumes:
+      - ./client:/app/client
+      - /app/client/node_modules
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - BASE_URL=http://localhost:3000
+      - REACT_APP_SERVER_BASE_URL=http://localhost:3000
+    working_dir: /app/client
+    command: npm start
+
+  init-db:
+    build:
+      context: ./server
+      dockerfile: ../config/development/Dockerfile.server
+    environment:
+      - DATABASE_URL=postgresql://user:password@postgres:5432/planka_db
+
+      - DEFAULT_ADMIN_EMAIL=user.test@numerique.gouv.fr
+      - DEFAULT_ADMIN_PASSWORD=password
+      - DEFAULT_ADMIN_NAME=Test User
+      - DEFAULT_ADMIN_USERNAME=test.user
+    working_dir: /app
+    command: ["sh", "-c", "npm run db:init"]
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   postgres:
     image: postgres:16-alpine
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: projets
+      POSTGRES_DB: planka_db
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
     ports:
-      - '5433:5432'
+      - "5432:5432"
     restart: unless-stopped
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U user -d projets']
+      test: ["CMD-SHELL", "pg_isready -U user -d planka_db"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -31,7 +160,7 @@ services:
       retries: 5
 
   keycloak:
-    image: quay.io/keycloak/keycloak:latest
+    image: quay.io/keycloak/keycloak:26.4
     command: start-dev --import-realm
     environment:
       KEYCLOAK_ADMIN: admin
@@ -66,103 +195,10 @@ services:
     networks:
       - default
 
-  keycloak-post-import:
-    image: node:22-alpine
-    environment:
-      KEYCLOAK_URL: http://keycloak:8080
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
-      REALM_NAME: st-projects
-      CLIENT_ID: st-projects-client
-    volumes:
-      - ./config/development/keycloak-post-import.js:/script.js:ro
-    command: ['node', '/script.js']
-    depends_on:
-      keycloak:
-        condition: service_started
-    restart: 'no'
-
-  server:
-    build:
-      context: ./server
-      dockerfile: ../config/development/Dockerfile.server
-    volumes:
-      - ./server:/app
-      - /app/node_modules
-    environment:
-      - BASE_URL=http://localhost:3000
-      - NODE_ENV=development
-      - DATABASE_URL=postgresql://user:password@postgres:5432/projets
-      - SECRET_KEY=notsecretkey
-      - OIDC_CLIENT_ID=st-projects-client
-      - OIDC_CLIENT_SECRET=a-not-so-secret-secret
-      - OIDC_ENFORCED=true
-      - OIDC_IGNORE_ROLES=true
-      - OIDC_IGNORE_USERNAME=true
-      - OIDC_ISSUER=http://auth.local:8080/realms/st-projects
-      - OIDC_SCOPES=openid profile email organization
-      - OIDC_FULLNAME_ATTRIBUTES=given_name,family_name
-      - OIDC_USE_DEFAULT_RESPONSE_MODE=true
-      - SMTP_HOST=host.docker.internal
-      - SMTP_PORT=1025
-      - SMTP_SECURE=false
-      - SMTP_FROM="Projets" <noreply@projets.local>
-      # - OIDC_USERNAME_ATTRIBUTE=preferred_username
-      # - OIDC_EMAIL_ATTRIBUTE=email
-      # - OIDC_ROLES_ATTRIBUTE=groups
-      # - OIDC_ID_TOKEN_SIGNED_RESPONSE_ALG=RS256
-      # - OIDC_USERINFO_SIGNED_RESPONSE_ALG=RS256
-      # - OIDC_RESPONSE_MODE=fragment
-      # - OIDC_ADMIN_ROLES=admin
-      # - OIDC_CLAIMS_SOURCE=userinfo
-    working_dir: /app
-    extra_hosts:
-      - 'auth.local:host-gateway'
-    command: ['sh', '-c', 'npm run start']
-    depends_on:
-      postgres:
-        condition: service_healthy
-      keycloak:
-        condition: service_healthy
-
-  client:
-    build:
-      context: ./client
-      dockerfile: ../config/development/Dockerfile.client
-    volumes:
-      - ./client:/app/client
-      - /app/client/node_modules
-      - /app/node_modules
-    environment:
-      - NODE_ENV=development
-      - BASE_URL=http://localhost:3000
-      - REACT_APP_SERVER_BASE_URL=http://localhost:3000
-    working_dir: /app/client
-    command: npm start
-
-  init-db:
-    build:
-      context: ./server
-      dockerfile: ../config/development/Dockerfile.server
-    environment:
-      - DATABASE_URL=postgresql://user:password@postgres:5432/projets
-      - DEFAULT_ADMIN_EMAIL=user.test@anct.gouv.fr
-      - DEFAULT_ADMIN_PASSWORD=password
-      - DEFAULT_ADMIN_NAME=Test User
-      - DEFAULT_ADMIN_USERNAME=test.user
-    working_dir: /app
-    command: ['sh', '-c', 'npm run db:init']
-    volumes:
-      - ./server:/app
-      - /app/node_modules
-    depends_on:
-      postgres:
-        condition: service_healthy
-
   proxy:
     image: nginx:alpine
     ports:
-      - '3000:80'
+      - "3000:80"
     volumes:
       - ./config/development/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
