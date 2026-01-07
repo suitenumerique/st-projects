@@ -1,5 +1,5 @@
 {
-  "name": "st-projects-server",
+  "name": "planka-server",
   "private": true,
   "main": "app.js",
   "scripts": {
@@ -11,6 +11,20 @@
     "start": "nodemon",
     "start:prod": "node app.js --prod",
     "test": "mocha test/lifecycle.test.js test/integration/**/*.test.js test/utils/**/*.test.js"
+  },
+  "eslintConfig": {
+    "extends": [
+      "airbnb-base",
+      "../package.json"
+    ],
+    "rules": {
+      "no-throw-literal": "off",
+      "no-undef": "off"
+    },
+    "globals": {
+      "_": true,
+      "sails": true
+    }
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.698.0",
@@ -41,26 +55,11 @@
     "chai": "^4.5.0",
     "eslint": "^8.57.1",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-prettier": "^5.5.4",
     "mocha": "^10.8.2",
-    "nodemon": "^3.1.7",
-    "prettier": "^3.7.3"
-  },
-  "optionalDependencies": {
-    "@img/sharp-linux-musl-x64": "^0.33.5",
-    "@img/sharp-linux-x64": "^0.33.5"
-  },
-  "overrides": {
-    "async": "^2.6.4"
-  },
-  "pnpm": {
-    "overrides": {
-      "async": "^2.6.4"
-    }
+    "nodemon": "^3.1.7"
   },
   "engines": {
-    "node": "22"
+    "node": ">=22.21.1"
   }
 }

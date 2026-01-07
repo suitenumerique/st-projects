@@ -1,4 +1,4 @@
-FROM node:22-alpine AS server-dependencies
+FROM node:22.21.1-alpine AS server-dependencies
 
 RUN apk -U upgrade \
   && apk add build-base python3 --no-cache
@@ -21,12 +21,11 @@ COPY client .
 RUN npm install npm --global \
   && npm install pnpm@9 --global \
   && pnpm import \
-  && pnpm config set shamefully-hoist true \
-  && pnpm install
+  && pnpm install --prod
 
 RUN DISABLE_ESLINT_PLUGIN=true npm run build
 
-FROM node:22-alpine
+FROM node:22.21.1-alpine
 
 RUN apk -U upgrade \
   && apk add bash --no-cache
@@ -46,6 +45,7 @@ COPY --from=client --chown=node:node /app/build public
 COPY --from=client --chown=node:node /app/build/index.html views/index.ejs
 
 VOLUME /app/public/user-avatars
+VOLUME /app/public/project-background-images
 VOLUME /app/private/attachments
 
 EXPOSE 1337
