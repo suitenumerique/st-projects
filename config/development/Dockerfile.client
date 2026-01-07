@@ -10,11 +10,11 @@ COPY package.json package-lock.json .
 RUN npm install npm --global \
   && npm install pnpm@9 --global \
   && pnpm import \
-  && pnpm install
+  && pnpm install --frozen-lockfile
 
 WORKDIR /app
 
 COPY ../../package.json ../../package-lock.json .
 
 RUN pnpm import \
-  && pnpm install
+  && pnpm install --frozen-lockfile
