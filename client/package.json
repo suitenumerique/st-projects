@@ -75,7 +75,6 @@
     "linkifyjs": "^4.1.4",
     "lodash": "^4.17.21",
     "nanoid": "^5.0.9",
-    "node-sass": "^9.0.0",
     "photoswipe": "^5.4.4",
     "prop-types": "^15.8.1",
     "react": "18.2.0",
@@ -101,6 +100,7 @@
     "remark-gfm": "^3.0.1",
     "reselect": "^4.1.8",
     "sails.io.js": "^1.2.1",
+    "sass": "^1.97.2",
     "semantic-ui-react": "^2.1.5",
     "socket.io-client": "^2.5.0",
     "validator": "^13.12.0",
@@ -126,5 +126,8 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "playwright": "^1.49.0",
     "react-test-renderer": "18.2.0"
+  },
+  "engines": {
+    "node": ">=22.21.1"
   }
 }
