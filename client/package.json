@@ -22,6 +22,7 @@
     ]
   },
   "eslintConfig": {
+    "root": true,
     "env": {
       "browser": true,
       "jest": true
@@ -38,9 +39,10 @@
     "extends": [
       "airbnb",
       "airbnb/hooks",
-      "../package.json"
+      "plugin:prettier/recommended"
     ],
     "rules": {
+      "no-undef": "off",
       "no-unused-vars": "warn",
       "import/no-extraneous-dependencies": [
         "error",
@@ -54,7 +56,10 @@
       "prettier/prettier": [
         "error",
         {
-          "endOfLine": "auto"
+          "endOfLine": "auto",
+          "singleQuote": true,
+          "printWidth": 100,
+          "trailingComma": "all"
         }
       ]
     }
@@ -120,11 +125,14 @@
     "chai": "^4.5.0",
     "eslint": "8.57.0",
     "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^4.6.2",
     "playwright": "^1.49.0",
+    "prettier": "^3.3.3",
     "react-test-renderer": "18.2.0"
   },
   "engines": {
