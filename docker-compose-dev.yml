@@ -67,7 +67,7 @@ services:
       - default
 
   keycloak-post-import:
-    image: node:18-alpine
+    image: node:22-alpine
     environment:
       KEYCLOAK_URL: http://keycloak:8080
       KEYCLOAK_ADMIN: admin
