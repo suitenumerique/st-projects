@@ -48,6 +48,14 @@
     "nodemon": "^3.1.7",
     "prettier": "^3.7.3"
   },
+  "overrides": {
+    "async": "^2.6.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "async": "^2.6.4"
+    }
+  },
   "engines": {
     "node": "22"
   }
