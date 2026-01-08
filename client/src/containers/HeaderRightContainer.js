@@ -10,22 +10,21 @@ const mapStateToProps = (state) => {
   const notifications = selectors.selectNotificationsForCurrentUser(state);
   const config = selectors.selectConfig(state);
 
-  const { reactAppLagaufreWidgetApiUrl, reactAppLagaufreWidgetPath } = config;
+  const { lagaufreWidgetApiUrl, lagaufreWidgetPath } = config;
 
   return {
     currentUser,
     notifications,
-    reactAppLagaufreWidgetApiUrl,
-    reactAppLagaufreWidgetPath,
+    lagaufreWidgetApiUrl,
+    lagaufreWidgetPath,
   };
 };
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      // onLanguageUpdate: entryActions.updateCurrentUserLanguage,
-      onNotificationMarkAsRead: entryActions.deleteNotification,
-      onLogin: entryActions.authenticateUsingOidc,
+      onNotificationDelete: entryActions.deleteNotification,
+      onSettingsClick: entryActions.openUserSettingsModal,
       onLogout: entryActions.logout,
     },
     dispatch,

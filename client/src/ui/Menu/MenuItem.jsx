@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 import styles from './MenuItem.module.scss';
@@ -40,4 +40,4 @@ MenuItem.defaultProps = {
   icon: undefined,
 };
 
-export default React.memo(MenuItem);
+export default MenuItem;

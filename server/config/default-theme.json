@@ -1,0 +1,130 @@
+{
+  "footer": {
+    "default": {
+      "legalLinks": [
+        {
+          "label": "Accessibility: non compliant",
+          "href": "#"
+        },
+        {
+          "label": "Legal notice",
+          "href": "#"
+        },
+        {
+          "label": "Privacy policy",
+          "href": "#"
+        },
+        {
+          "label": "Terms of use",
+          "href": "#"
+        },
+        {
+          "label": "Source code",
+          "href": "#"
+        }
+      ],
+      "externalLinks": [
+        {
+          "label": "legifrance.gouv.fr",
+          "href": "https://legifrance.gouv.fr"
+        },
+        {
+          "label": "info.gouv.fr",
+          "href": "https://info.gouv.fr/"
+        },
+        {
+          "label": "service-public.fr",
+          "href": "https://service-public.fr/"
+        },
+        {
+          "label": "data.gouv.fr",
+          "href": "https://data.gouv.fr/"
+        }
+      ],
+      "license": {
+        "label": "Unless otherwise stated, all content on this site is under",
+        "link": {
+          "label": "licence etalab-2.0",
+          "href": "https://github.com/etalab/licence-ouverte/blob/master/LO.md"
+        }
+      }
+    },
+    "fr": {
+      "legalLinks": [
+        {
+          "label": "Accessibilité : non conforme",
+          "href": "#"
+        },
+        {
+          "label": "Mentions légales",
+          "href": "#"
+        },
+        {
+          "label": "Politique de confidentialité",
+          "href": "#"
+        },
+        {
+          "label": "Modalités d'utilisation",
+          "href": "#"
+        },
+        {
+          "label": "Code source",
+          "href": "#"
+        }
+      ],
+      "license": {
+        "label": "Sauf mention contraire, tout le contenu de ce site est sous",
+        "link": {
+          "label": "licence etalab-2.0",
+          "href": "https://github.com/etalab/licence-ouverte/blob/master/LO.md"
+        }
+      }
+    }
+  },
+  "feedback": {
+    "default": {
+      "items": [
+        {
+          "type": "survey",
+          "title": "Give quick feedback",
+          "description": "30 seconds to tell us what you think or report a bug",
+          "href": "#"
+        },
+        {
+          "type": "chat",
+          "title": "Write on Tchap",
+          "description": "Direct exchange with our team",
+          "href": "#"
+        },
+        {
+          "type": "video",
+          "title": "Talk on video",
+          "description": "20 minutes for an in-depth discussion",
+          "href": "#"
+        }
+      ]
+    },
+    "fr": {
+      "items": [
+        {
+          "type": "survey",
+          "title": "Donner un avis rapide",
+          "description": "30 secondes pour nous dire ce que vous pensez ou signaler un bug",
+          "href": "#"
+        },
+        {
+          "type": "chat",
+          "title": "Écrire sur Tchap",
+          "description": "Échange direct avec notre équipe",
+          "href": "#"
+        },
+        {
+          "type": "video",
+          "title": "Parler en visio",
+          "description": "20 minutes pour aller en profondeur",
+          "href": "#"
+        }
+      ]
+    }
+  }
+}

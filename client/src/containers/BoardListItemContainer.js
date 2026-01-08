@@ -13,20 +13,14 @@ const makeMapStateToProps = () => {
 
   return (state, { id }) => {
     const board = selectBoardById(state, id);
-    const project = selectors.selectProjectById(state, board.projectId);
-    const currentUser = selectors.selectCurrentUser(state);
     const currentUserMembership = selectCurrentUserMembershipForBoard(state, id);
     const isCurrentUserEditor =
       !!currentUserMembership && currentUserMembership.role === BoardMembershipRoles.EDITOR;
-    const isCurrentUserOwner =
-      !!currentUserMembership && currentUserMembership.role === BoardMembershipRoles.OWNER;
 
     return {
       id,
       board,
-      project,
-      currentUser,
-      canEdit: isCurrentUserEditor || isCurrentUserOwner,
+      canEdit: isCurrentUserEditor,
     };
   };
 };
@@ -36,7 +30,6 @@ const mapDispatchToProps = (dispatch) =>
     {
       onBoardUpdate: entryActions.updateBoard,
       onBoardDelete: entryActions.deleteBoard,
-      onBoardDuplicate: entryActions.duplicateBoard,
     },
     dispatch,
   );

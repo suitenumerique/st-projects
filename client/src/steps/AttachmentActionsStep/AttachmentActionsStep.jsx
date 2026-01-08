@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 import Menu from '../../ui/Menu';
 import MenuItem from '../../ui/Menu/MenuItem';
@@ -13,6 +14,8 @@ const StepTypes = {
 };
 
 const BoardActionsStep = React.memo(({ defaultData, onUpdate, onDelete, onClose }) => {
+  const { t } = useTranslation();
+
   const [step, openStep, handleBack] = useSteps();
 
   const handleEditNameClick = useCallback(() => {
@@ -53,10 +56,10 @@ const BoardActionsStep = React.memo(({ defaultData, onUpdate, onDelete, onClose 
   return (
     <Menu>
       <MenuItem icon="edit" onClick={handleEditNameClick}>
-        Renommer
+        {t('action.rename')}
       </MenuItem>
       <MenuItem icon="delete" onClick={handleDeleteClick}>
-        Supprimer
+        {t('action.remove')}
       </MenuItem>
     </Menu>
   );

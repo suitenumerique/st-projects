@@ -1,31 +1,33 @@
 :global(#app) {
-
-  .itemActivity {
-    display: flex;
-    flex-direction: row;
-    gap: 0.5rem;
-    width: 100%;
-    padding: 0.25rem 0 0 0;
-  }
-
-  .user {
-    margin-top: -2px;
-  }
-
-  .content {
-    padding-bottom: 0.5rem;
-    flex: 1;
-  }
-
   .author {
+    color: #17394d;
+    display: inline-block;
     font-weight: bold;
     line-height: 20px;
   }
 
+  .content {
+    border-bottom: 1px solid #092d4221;
+    display: inline-block;
+    padding-bottom: 14px;
+    vertical-align: top;
+    width: calc(100% - 40px);
+  }
+
   .date {
-    color: var(--c--contextuals--content--semantic--neutral--tertiary);
+    color: #6b808c;
+    display: inline-block;
     font-size: 12px;
     line-height: 20px;
   }
 
+  .text {
+    line-height: 20px;
+  }
+
+  .user {
+    display: inline-block;
+    padding: 4px 8px 0 0;
+    vertical-align: top;
+  }
 }

@@ -25,15 +25,20 @@ const LabelCreateStep = React.memo(({ defaultData, onCreate, onBack }) => {
     nameField.current.select();
   }, []);
 
-  const handleSubmit = useCallback(() => {
-    const cleanData = {
-      ...data,
-      name: data.name.trim() || null,
-    };
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
 
-    onCreate(cleanData);
-    onBack();
-  }, [data, onCreate, onBack]);
+      const cleanData = {
+        ...data,
+        name: data.name.trim() || null,
+      };
+
+      onCreate(cleanData);
+      onBack();
+    },
+    [data, onCreate, onBack],
+  );
 
   return (
     <div style={{ width: '290px' }}>
@@ -57,13 +62,7 @@ const LabelCreateStep = React.memo(({ defaultData, onCreate, onBack }) => {
         <div className={styles.fieldLabel}>{t('common.color')}</div>
         <ColorPicker colors={LabelColors} current={data.color} onChange={handleFieldChange} />
         <div className={styles.controls}>
-          <Button
-            type="submit"
-            color="brand"
-            variant="primary"
-            content={t('action.createLabel')}
-            className={styles.submitButton}
-          >
+          <Button type="submit" color="primary" className={styles.submitButton}>
             {t('action.createLabel')}
           </Button>
         </div>

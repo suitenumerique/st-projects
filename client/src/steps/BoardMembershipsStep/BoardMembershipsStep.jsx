@@ -88,7 +88,7 @@ const BoardMembershipsStep = React.memo(
                     <div className={styles.noMember}>
                       <Icon name="person_off" type="outlined" size="small" aria-hidden="true" />
                     </div>
-                    <span className={styles.userName}>Aucun membre</span>
+                    <span className={styles.userName}>{t('common.noMembers')}</span>
                   </div>
                 }
               />

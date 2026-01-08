@@ -20,10 +20,16 @@ const ActivityItem = React.memo(({ type, data, createdAt, user }) => {
       contentNode = (
         <Trans
           i18nKey="common.userAddedThisCardToList"
-          values={{ user: user.name, list: data.list.name }}
+          values={{
+            user: user.name,
+            list: data.list.name,
+          }}
         >
-          <strong />
-          <strong />
+          <span className={styles.author}>{user.name}</span>
+          <span className={styles.text}>
+            {' added this card to '}
+            {data.list.name}
+          </span>
         </Trans>
       );
 
@@ -32,53 +38,31 @@ const ActivityItem = React.memo(({ type, data, createdAt, user }) => {
       contentNode = (
         <Trans
           i18nKey="common.userMovedThisCardFromListToList"
-          values={{ user: user.name, fromList: data.fromList.name, toList: data.toList.name }}
+          values={{
+            user: user.name,
+            fromList: data.fromList.name,
+            toList: data.toList.name,
+          }}
         >
-          <strong />
-          <strong />
-          <strong />
+          <span className={styles.author}>{user.name}</span>
+          <span className={styles.text}>
+            {' moved this card from '}
+            {data.fromList.name}
+            {' to '}
+            {data.toList.name}
+          </span>
         </Trans>
       );
 
       break;
-
-    case ActivityTypes.ADD_MEMBER_TO_CARD:
-      contentNode = (
-        <Trans
-          i18nKey="common.userAssignedMember"
-          values={{ user: user.name, member: data.member.name }}
-        >
-          <strong />
-          <strong />
-          <strong />
-        </Trans>
-      );
-      break;
-
-    case ActivityTypes.CHANGE_DUE_DATE:
-      contentNode = (
-        <Trans i18nKey="common.userChangedDueDateOfThisCard" values={{ user: user.name }}>
-          <strong />
-        </Trans>
-      );
-      break;
-
-    case ActivityTypes.ADD_ATTACHMENT:
-      contentNode = (
-        <Trans i18nKey="common.userAddedAttachmentToThisCard" values={{ user: user.name }}>
-          <strong />
-        </Trans>
-      );
-      break;
-
     default:
       contentNode = null;
   }
 
   return (
-    <div className={styles.itemActivity}>
+    <div>
       <span className={styles.user}>
-        <User name={user.name} avatarUrl={user.avatarUrl} size="small" />
+        <User name={user.name} avatarUrl={user.avatarUrl} size="xsmall" />
       </span>
       <div className={classNames(styles.content)}>
         <div>{contentNode}</div>

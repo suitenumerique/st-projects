@@ -59,7 +59,7 @@ const BoardEditStep = React.memo(({ defaultData, onUpdate, onBack, onClose }) =>
         />
 
         <div className={styles.buttons}>
-          <Button type="submit" size="medium" color="brand" variant="primary">
+          <Button type="submit" size="medium">
             {t('action.save')}
           </Button>
         </div>

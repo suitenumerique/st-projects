@@ -66,38 +66,43 @@ const StopwatchEditStep = React.memo(({ defaultValue, onUpdate, onBack, onClose 
     toggleEditing();
   }, [defaultValue, setData, toggleEditing]);
 
-  const handleSubmit = useCallback(() => {
-    const parts = {
-      hours: parseInt(data.hours, 10),
-      minutes: parseInt(data.minutes, 10),
-      seconds: parseInt(data.seconds, 10),
-    };
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
 
-    if (Number.isNaN(parts.hours)) {
-      hoursField.current.select();
-      return;
-    }
+      const parts = {
+        hours: parseInt(data.hours, 10),
+        minutes: parseInt(data.minutes, 10),
+        seconds: parseInt(data.seconds, 10),
+      };
 
-    if (Number.isNaN(parts.minutes) || parts.minutes > 60) {
-      minutesField.current.select();
-      return;
-    }
-
-    if (Number.isNaN(parts.seconds) || parts.seconds > 60) {
-      secondsField.current.select();
-      return;
-    }
-
-    if (defaultValue) {
-      if (!dequal(parts, getStopwatchParts(defaultValue))) {
-        onUpdate(updateStopwatch(defaultValue, parts));
+      if (Number.isNaN(parts.hours)) {
+        hoursField.current.select();
+        return;
       }
-    } else {
-      onUpdate(createStopwatch(parts));
-    }
 
-    onClose();
-  }, [defaultValue, onUpdate, onClose, data]);
+      if (Number.isNaN(parts.minutes) || parts.minutes > 60) {
+        minutesField.current.select();
+        return;
+      }
+
+      if (Number.isNaN(parts.seconds) || parts.seconds > 60) {
+        secondsField.current.select();
+        return;
+      }
+
+      if (defaultValue) {
+        if (!dequal(parts, getStopwatchParts(defaultValue))) {
+          onUpdate(updateStopwatch(defaultValue, parts));
+        }
+      } else {
+        onUpdate(createStopwatch(parts));
+      }
+
+      onClose();
+    },
+    [defaultValue, onUpdate, onClose, data],
+  );
 
   useEffect(() => {
     if (isEditing) {
@@ -150,37 +155,27 @@ const StopwatchEditStep = React.memo(({ defaultValue, onUpdate, onBack, onClose 
           </div>
           <Button
             type="button"
-            color="brand"
-            variant="tertiary"
+            color="secondary"
             icon={<Icon type="outlined" name={isEditing ? 'check' : 'edit'} />}
             className={styles.editButton}
-            onClick={isEditing ? handleSubmit : handleToggleEditingClick}
+            onClick={handleToggleEditingClick}
           />
         </div>
+        {isEditing && <Button>{t('action.save')}</Button>}
       </form>
       <div className={styles.buttonsWrapper}>
-        {defaultValue && defaultValue.startedAt ? (
-          <Button
-            color="brand"
-            variant="tertiary"
-            icon={<Icon type="outlined" name="pause" />}
-            onClick={handleStopClick}
-          >
-            {t('action.stop')}
-          </Button>
-        ) : (
-          <Button
-            color="brand"
-            variant="primary"
-            icon={<Icon type="outlined" name="play_arrow" />}
-            onClick={handleStartClick}
-          >
-            {t('action.start')}
-          </Button>
-        )}
+        {!isEditing &&
+          (defaultValue && defaultValue.startedAt ? (
+            <Button icon={<Icon type="outlined" name="pause" />} onClick={handleStopClick}>
+              {t('action.stop')}
+            </Button>
+          ) : (
+            <Button icon={<Icon type="outlined" name="play_arrow" />} onClick={handleStartClick}>
+              {t('action.start')}
+            </Button>
+          ))}
         <Button
-          color="error"
-          variant="bordered"
+          color="danger"
           icon={<Icon type="outlined" name="delete" />}
           className={styles.deleteButton}
           onClick={handleClearClick}

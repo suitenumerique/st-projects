@@ -33,18 +33,23 @@ const LabelEditStep = React.memo(({ defaultData, onUpdate, onDelete, onBack }) =
 
   const [step, openStep, handleBack] = useSteps();
 
-  const handleSubmit = useCallback(() => {
-    const cleanData = {
-      ...data,
-      name: data.name.trim() || null,
-    };
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
 
-    if (!dequal(cleanData, defaultData)) {
-      onUpdate(cleanData);
-    }
+      const cleanData = {
+        ...data,
+        name: data.name.trim() || null,
+      };
 
-    onBack();
-  }, [defaultData, data, onUpdate, onBack]);
+      if (!dequal(cleanData, defaultData)) {
+        onUpdate(cleanData);
+      }
+
+      onBack();
+    },
+    [defaultData, data, onUpdate, onBack],
+  );
 
   const handleDeleteClick = useCallback(() => {
     openStep(StepTypes.DELETE);
@@ -83,15 +88,8 @@ const LabelEditStep = React.memo(({ defaultData, onUpdate, onDelete, onBack }) =
         <div className={styles.fieldLabel}>{t('common.color')}</div>
         <ColorPicker colors={LabelColors} current={data.color} onChange={handleFieldChange} />
         <div className={styles.controls}>
-          <Button color="brand" variant="primary" type="submit">
-            {t('action.save')}
-          </Button>
-          <Button
-            color="error"
-            variant="bordered"
-            className={styles.deleteButton}
-            onClick={handleDeleteClick}
-          >
+          <Button type="submit">{t('action.save')}</Button>
+          <Button color="secondary" className={styles.deleteButton} onClick={handleDeleteClick}>
             {t('action.delete')}
           </Button>
         </div>

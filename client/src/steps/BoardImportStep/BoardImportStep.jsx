@@ -22,12 +22,10 @@
 //       })} />
 //         <FilePicker onSelect={(file) => handleFileSelect('trello', file)} accept=".json">
 //           <Button
-//             fluid
 //             type="button"
 //             icon="trello"
-//             content={t('common.fromTrello')}
 //             className={styles.button}
-//           />
+//           >{t('common.fromTrello')}</Button>
 //         </FilePicker>
 //     </>
 //   );

@@ -19,23 +19,28 @@ const AttachmentEditStep = React.memo(({ defaultData, onUpdate, onClose }) => {
 
   const nameField = useRef(null);
 
-  const handleSubmit = useCallback(() => {
-    const cleanData = {
-      ...data,
-      name: data.name.trim(),
-    };
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
 
-    if (!cleanData.name) {
-      nameField.current.select();
-      return;
-    }
+      const cleanData = {
+        ...data,
+        name: data.name.trim(),
+      };
 
-    if (!dequal(cleanData, defaultData)) {
-      onUpdate(cleanData);
-    }
+      if (!cleanData.name) {
+        nameField.current.select();
+        return;
+      }
 
-    onClose();
-  }, [defaultData, onUpdate, onClose, data]);
+      if (!dequal(cleanData, defaultData)) {
+        onUpdate(cleanData);
+      }
+
+      onClose();
+    },
+    [defaultData, onUpdate, onClose, data],
+  );
 
   useEffect(() => {
     nameField.current.select();
@@ -58,9 +63,7 @@ const AttachmentEditStep = React.memo(({ defaultData, onUpdate, onClose }) => {
           onChange={handleFieldChange}
         />
         <div className={styles.buttons}>
-          <Button color="brand" variant="primary" type="submit">
-            {t('action.save')}
-          </Button>
+          <Button type="submit">{t('action.save')}</Button>
         </div>
       </form>
     </>

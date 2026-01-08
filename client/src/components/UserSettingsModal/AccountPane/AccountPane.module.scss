@@ -1,0 +1,13 @@
+:global(#app) {
+  .wrapper {
+    border: none;
+    box-shadow: none;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 20px;
+  }
+}

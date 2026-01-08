@@ -39,7 +39,7 @@ const ActionsStep = React.memo(({ onNameEdit, onDelete, onClose }) => {
   return (
     <Menu>
       <MenuItem icon="edit" onClick={handleEditNameClick}>
-        Modifier
+        {t('action.edit')}
       </MenuItem>
       <MenuItem icon="delete" onClick={handleDeleteClick}>
         {t('action.deleteTask', {

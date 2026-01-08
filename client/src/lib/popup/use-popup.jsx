@@ -89,6 +89,7 @@ export default (Step) => {
 
       return (
         <Popover
+          {...popoverProps} // eslint-disable-line react/jsx-props-no-spreading
           trigger={trigger}
           content={<Step {...popoverProps} onClose={handleClose} />} // eslint-disable-line react/jsx-props-no-spreading
           hideCloseButton={popoverProps.hideCloseButton}
@@ -96,7 +97,6 @@ export default (Step) => {
           onOpenChange={handleOpenChange}
           onMouseDown={handleMouseDown}
           onClick={handleClick}
-          {...popoverProps} // eslint-disable-line react/jsx-props-no-spreading
         />
       );
     });

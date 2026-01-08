@@ -29,7 +29,7 @@ const CardAdd = React.memo(({ isOpened, onCreate, onClose }) => {
       };
 
       if (!cleanData.name) {
-        nameField.current.select();
+        nameField.current.ref.current.select();
         return;
       }
 
@@ -110,14 +110,13 @@ const CardAdd = React.memo(({ isOpened, onCreate, onClose }) => {
         {/* eslint-disable-next-line jsx-a11y/mouse-events-have-key-events */}
         <Button
           type="submit"
-          color="brand"
-          variant="primary"
+          color="primary"
           size="small"
           className={styles.submitButton}
           onMouseOver={handleControlMouseOver}
           onMouseOut={handleControlMouseOut}
         >
-          Valider
+          {t('action.submit')}
         </Button>
       </div>
     </form>

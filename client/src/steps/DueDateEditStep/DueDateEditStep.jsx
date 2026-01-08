@@ -65,32 +65,37 @@ const DueDateEditStep = React.memo(({ defaultValue, onUpdate, onBack, onClose })
     [setData, selectTimeField, t],
   );
 
-  const handleSubmit = useCallback(() => {
-    if (!nullableDate) {
-      dateField.current.select();
-      return;
-    }
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
 
-    let value = t('format:dateTime', {
-      postProcess: 'parseDate',
-      value: `${data.date} ${data.time}`,
-    });
-
-    if (Number.isNaN(value.getTime())) {
-      value = parseTime(data.time, nullableDate);
-
-      if (Number.isNaN(value.getTime())) {
-        timeField.current.select();
+      if (!nullableDate) {
+        dateField.current.select();
         return;
       }
-    }
 
-    if (!defaultValue || value.getTime() !== defaultValue.getTime()) {
-      onUpdate(value);
-    }
+      let value = t('format:dateTime', {
+        postProcess: 'parseDate',
+        value: `${data.date} ${data.time}`,
+      });
 
-    onClose();
-  }, [defaultValue, onUpdate, onClose, data, nullableDate, t]);
+      if (Number.isNaN(value.getTime())) {
+        value = parseTime(data.time, nullableDate);
+
+        if (Number.isNaN(value.getTime())) {
+          timeField.current.select();
+          return;
+        }
+      }
+
+      if (!defaultValue || value.getTime() !== defaultValue.getTime()) {
+        onUpdate(value);
+      }
+
+      onClose();
+    },
+    [defaultValue, onUpdate, onClose, data, nullableDate, t],
+  );
 
   const handleClearClick = useCallback(() => {
     if (defaultValue) {
@@ -146,12 +151,9 @@ const DueDateEditStep = React.memo(({ defaultValue, onUpdate, onBack, onClose })
           onChange={handleDatePickerChange}
         />
         <div className={styles.buttonsWrapper}>
-          <Button type="submit" color="brand" variant="primary">
-            {t('action.save')}
-          </Button>
+          <Button type="submit">{t('action.save')}</Button>
           <Button
-            color="error"
-            variant="bordered"
+            color="danger"
             icon={<Icon type="outlined" name="delete" />}
             onClick={handleClearClick}
           />

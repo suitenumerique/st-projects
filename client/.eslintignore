@@ -1,7 +1,7 @@
-# Ignore TypeScript files
+# The project was mainly configured for JS, do not consider our tiny TS code
 *.ts
 *.tsx
 
-# Ignore build directories
+# Improve performance
 build/
 node_modules/

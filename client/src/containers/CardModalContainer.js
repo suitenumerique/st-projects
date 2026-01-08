@@ -14,6 +14,7 @@ const mapStateToProps = (state) => {
   const allBoardMemberships = selectors.selectMembershipsForCurrentBoard(state);
   const allLabels = selectors.selectLabelsForCurrentBoard(state);
   const currentUserMembership = selectors.selectCurrentUserMembershipForCurrentBoard(state);
+  const isCurrentUserManager = selectors.selectIsCurrentUserManagerForCurrentProject(state);
 
   const {
     name,
@@ -24,8 +25,8 @@ const mapStateToProps = (state) => {
     isSubscribed,
     isActivitiesFetching,
     isAllActivitiesFetched,
-    isActivitiesDetailsVisible,
-    isActivitiesDetailsFetching,
+    // isActivitiesDetailsVisible,
+    // isActivitiesDetailsFetching,
     boardId,
     listId,
   } = selectors.selectCurrentCard(state);
@@ -52,8 +53,8 @@ const mapStateToProps = (state) => {
     isSubscribed,
     isActivitiesFetching,
     isAllActivitiesFetched,
-    isActivitiesDetailsVisible,
-    isActivitiesDetailsFetching,
+    // isActivitiesDetailsVisible,
+    // isActivitiesDetailsFetching,
     listId,
     boardId,
     projectId,

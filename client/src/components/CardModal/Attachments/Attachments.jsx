@@ -128,7 +128,7 @@ const Attachments = React.memo(
 
     return (
       <>
-        <div className={galleryItemsNode.length > 0 ? styles.attachmentsGallery : undefined}>
+        <div className={galleryItemsNode.length > 0 && styles.attachmentsGallery}>
           <Gallery
             withCaption
             withDownloadButton
@@ -146,12 +146,7 @@ const Attachments = React.memo(
             {galleryItemsNode}
           </Gallery>
           {items.length > INITIALLY_VISIBLE && (
-            <Button
-              color="neutral"
-              variant="bordered"
-              size="small"
-              onClick={handleToggleAllVisibleClick}
-            >
+            <Button color="secondary" size="small" onClick={handleToggleAllVisibleClick}>
               {isAllVisible
                 ? t('action.showFewerAttachments')
                 : t('action.showAllAttachments', {

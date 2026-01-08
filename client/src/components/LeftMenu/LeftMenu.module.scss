@@ -1,6 +1,7 @@
 :global(#app) {
   .wrapper {
     position: relative;
+    background-color: var(--c--theme--colors--greyscale-000);
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -8,15 +9,31 @@
 
   .topBar {
     display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
     justify-content: flex-start;
     align-items: center;
     padding: 0.75rem;
-    border-bottom: 1px solid var(--c--contextuals--border--semantic--neutral--tertiary);
+    border-bottom: 1px solid var(--c--theme--colors--greyscale-200);
     flex-shrink: 0;
   }
 
   .addBoardButton {
+    flex: 1;
     font-weight: 500;
+  }
+
+  .projects {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 10px 0.75rem 0.75rem 0.75rem;
+    border-bottom: 1px solid var(--c--theme--colors--greyscale-200);
+  }
+
+  .projectsSelect {
+    width: 100%;
   }
 
   .spaces {
@@ -34,48 +51,26 @@
       padding: 10px 0.75rem 0.75rem 0.75rem;
 
       &:not(:last-child) {
-        border-bottom: 1px solid var(--c--contextuals--border--semantic--neutral--tertiary);
-      }
-
-      .spaceHeader {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
+        border-bottom: 1px solid var(--c--theme--colors--greyscale-200);
       }
 
       .spaceTitle {
-        font-size: 14px;
+        font-size: var(--c--theme--font--sizes--sm);
         font-weight: 700;
-        color: var(--c--contextuals--content--semantic--neutral--primary);
+        color: var(--c--theme--colors--greyscale-1000);
         height: 35px;
         margin-bottom: 0;
         display: flex;
         align-items: center;
         justify-content: flex-start;
       }
-
-      .addFolderButton {
-        opacity: 0;
-        width: 18px !important;
-        height: 18px !important;
-        padding: 0;
-        border-radius: 2px;
-      }
-
-      &:hover {
-        .addFolderButton {
-          opacity: 1;
-        }
-      }
-
     }
   }
 
   .emptySpace {
-    font-size: 14px;
+    font-size: var(--c--theme--font--sizes--sm);
     font-weight: 500;
-    color: var(--c--contextuals--content--semantic--neutral--secondary);
+    color: var(--c--theme--colors--greyscale-600);
     text-align: center;
   }
 
@@ -91,7 +86,7 @@
     justify-content: flex-start;
     align-items: center;
     padding: 0.75rem;
-    border-top: 1px solid var(--c--contextuals--border--semantic--neutral--tertiary);
+    border-top: 1px solid var(--c--theme--colors--greyscale-200);
     background-color: #FFFFFF;
     flex-shrink: 0;
 

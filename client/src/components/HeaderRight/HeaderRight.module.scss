@@ -1,0 +1,33 @@
+:global(#app) {
+  .notification {
+    background: #eb5a46;
+    border-radius: 8px;
+    color: #fff;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    height: 16px;
+    line-height: 16px;
+    position: absolute;
+    right: 3px;
+    text-align: center;
+    top: 6px;
+    width: 16px;
+  }
+
+  .notificationButton {
+    position: relative;
+  }
+
+  .overSm {
+    @media (max-width: 575px) {
+      display: none !important;
+    }
+  }
+
+  .onlySm {
+    @media (min-width: 576px) {
+      display: none !important;
+    }
+  }
+}

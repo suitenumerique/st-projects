@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import { Trans } from 'react-i18next';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
+
 import styles from './NewAttachmentInput.module.scss';
 
 const NewAttachmentInput = React.memo(({ onClick }) => {
@@ -27,9 +28,14 @@ const NewAttachmentInput = React.memo(({ onClick }) => {
           <Icon name="note_add" />
         </div>
         <p className={styles.text}>
-          <span className={styles.bold}>Glisser déposer</span> ou
-          <br />
-          <span className={styles.link}>cliquer ici pour téléverser un fichier</span>
+          <Trans
+            i18nKey="action.selectFile"
+            components={[
+              <span className={styles.bold} />,
+              <br />,
+              <span className={styles.link} />,
+            ]}
+          />
         </p>
       </div>
     </div>

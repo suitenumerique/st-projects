@@ -12,6 +12,7 @@ export default class extends BaseModel {
 
   static fields = {
     id: attr(),
+    position: attr(),
     name: attr(),
     isPublic: attr(),
     isFetching: attr({
@@ -29,12 +30,6 @@ export default class extends BaseModel {
     }),
     filterUsers: many('User', 'filterBoards'),
     filterLabels: many('Label', 'filterBoards'),
-    includeCardsWithoutMembers: attr({
-      getDefault: () => false,
-    }),
-    includeCardsWithoutLabels: attr({
-      getDefault: () => false,
-    }),
     filterText: attr({
       getDefault: () => '',
     }),
@@ -53,8 +48,7 @@ export default class extends BaseModel {
         break;
       case ActionTypes.LOCATION_CHANGE_HANDLE__BOARD_FETCH:
       case ActionTypes.BOARD_FETCH:
-        Board.upsert({
-          id: payload.id,
+        Board.withId(payload.id).update({
           isFetching: true,
         });
 
@@ -102,19 +96,11 @@ export default class extends BaseModel {
 
         break;
       case ActionTypes.USER_TO_BOARD_FILTER_ADD:
-        if (payload.id === null) {
-          Board.withId(payload.boardId).update({ includeCardsWithoutMembers: true });
-        } else {
-          Board.withId(payload.boardId).filterUsers.add(payload.id);
-        }
+        Board.withId(payload.boardId).filterUsers.add(payload.id);
 
         break;
       case ActionTypes.USER_FROM_BOARD_FILTER_REMOVE:
-        if (payload.id === null) {
-          Board.withId(payload.boardId).update({ includeCardsWithoutMembers: false });
-        } else {
-          Board.withId(payload.boardId).filterUsers.remove(payload.id);
-        }
+        Board.withId(payload.boardId).filterUsers.remove(payload.id);
 
         break;
       case ActionTypes.PROJECT_CREATE_HANDLE:
@@ -142,18 +128,20 @@ export default class extends BaseModel {
       case ActionTypes.BOARD_CREATE_HANDLE:
       case ActionTypes.BOARD_UPDATE__SUCCESS:
       case ActionTypes.BOARD_UPDATE_HANDLE:
-      case ActionTypes.BOARD_DUPLICATE__SUCCESS:
         Board.upsert(payload.board);
+
         break;
       case ActionTypes.BOARD_CREATE__SUCCESS:
         Board.withId(payload.localId).delete();
         Board.upsert(payload.board);
+
         break;
       case ActionTypes.BOARD_FETCH__SUCCESS:
         Board.upsert({
           ...payload.board,
           isFetching: false,
         });
+
         break;
       case ActionTypes.BOARD_FETCH__FAILURE:
         Board.withId(payload.id).update({
@@ -179,23 +167,12 @@ export default class extends BaseModel {
 
         break;
       }
-      case ActionTypes.BOARD_DUPLICATE:
-        // Initial action only contains boardId and targetProjectId
-        break;
       case ActionTypes.LABEL_TO_BOARD_FILTER_ADD:
-        if (payload.id === null) {
-          Board.withId(payload.boardId).update({ includeCardsWithoutLabels: true });
-        } else {
-          Board.withId(payload.boardId).filterLabels.add(payload.id);
-        }
+        Board.withId(payload.boardId).filterLabels.add(payload.id);
 
         break;
       case ActionTypes.LABEL_FROM_BOARD_FILTER_REMOVE:
-        if (payload.id === null) {
-          Board.withId(payload.boardId).update({ includeCardsWithoutLabels: false });
-        } else {
-          Board.withId(payload.boardId).filterLabels.remove(payload.id);
-        }
+        Board.withId(payload.boardId).filterLabels.remove(payload.id);
 
         break;
       case ActionTypes.TEXT_FILTER_IN_CURRENT_BOARD: {
@@ -251,19 +228,10 @@ export default class extends BaseModel {
     return this.lists.orderBy('position');
   }
 
-  getOrderedCardsQuerySet() {
-    return this.cards.orderBy('position');
-  }
-
   getOrderedMembershipsModelArray() {
-    return orderBy(
-      this.memberships.toModelArray().filter((boardMembershipModel) => boardMembershipModel.user),
-      (boardMembershipModel) => boardMembershipModel.user.name.toLocaleLowerCase(),
+    return orderBy(this.memberships.toModelArray(), (boardMembershipModel) =>
+      boardMembershipModel.user.name.toLocaleLowerCase(),
     );
-  }
-
-  getMembershipsCount() {
-    return this.memberships.count();
   }
 
   getMembershipModelForUser(userId) {
@@ -288,7 +256,6 @@ export default class extends BaseModel {
       return true;
     }
 
-    // For private boards, check if user is a project manager or board member
     return (
       this.project && (this.project.hasManagerForUser(userId) || this.hasMembershipForUser(userId))
     );

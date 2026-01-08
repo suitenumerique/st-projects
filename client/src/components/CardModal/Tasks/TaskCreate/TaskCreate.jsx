@@ -39,7 +39,7 @@ const TaskCreate = React.forwardRef(({ children, onCreate }, ref) => {
       };
 
       if (!cleanData.name) {
-        nameField.current?.select();
+        nameField.current.ref.current.select();
         return;
       }
 
@@ -128,13 +128,12 @@ const TaskCreate = React.forwardRef(({ children, onCreate }, ref) => {
       <div>
         {/* eslint-disable-next-line jsx-a11y/mouse-events-have-key-events */}
         <Button
-          color="brand"
-          variant="secondary"
+          color="tertiary"
           size="small"
           onMouseOver={handleControlMouseOver}
           onMouseOut={handleControlMouseOut}
         >
-          Enregistrer
+          {t('action.save')}
         </Button>
       </div>
     </form>

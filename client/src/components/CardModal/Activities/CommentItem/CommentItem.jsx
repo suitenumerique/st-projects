@@ -7,7 +7,6 @@ import { Button } from '@openfun/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 import getDateFormat from '../../../../utils/get-date-format';
 import CommentEdit from '../CommentEdit';
-import Markdown from '../../../../ui/Markdown';
 import User from '../../../../ui/User';
 import CommentActionsStep from '../../../../steps/CommentActionsStep';
 import usePopup from '../../../../lib/popup';
@@ -42,11 +41,7 @@ const CommentItem = React.memo(
             ref={commentEdit}
             defaultData={data}
             onUpdate={onUpdate}
-            text={
-              <div className={styles.text}>
-                <Markdown linkStopPropagation>{data.text}</Markdown>
-              </div>
-            }
+            text={<div className={styles.text}>{data.text}</div>}
             actions={
               <div className={styles.header}>
                 <div className={styles.title}>
@@ -71,8 +66,7 @@ const CommentItem = React.memo(
                     >
                       <Button
                         className={styles.commentActionsButton}
-                        color="neutral"
-                        variant="tertiary"
+                        color="tertiary-text"
                         size="small"
                         icon={<Icon name="more_horiz" type="outlined" size="small" />}
                       />

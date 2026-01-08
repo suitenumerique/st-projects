@@ -38,4 +38,4 @@ PopoverHeader.defaultProps = {
   // hideCloseButton: false,
 };
 
-export default React.memo(PopoverHeader);
+export default PopoverHeader;

@@ -92,21 +92,21 @@ const BoardCreateStep = React.memo(
 
     return (
       <>
-        <PopoverHeader title="Créer un tableau" />
+        <PopoverHeader title={t('action.createBoard')} />
         <form onSubmit={handleSubmit}>
           <Input
             ref={nameField}
             name="name"
-            label="Nom du tableau"
+            label={t('common.boardName')}
             value={data.name}
             onChange={handleFieldChange}
             className={styles.createInput}
           />
           <div className={styles.controls}>
-            <Button size="medium" type="submit" color="brand" variant="primary">
-              {t('action.createBoard')}
+            <Button size="medium" type="submit">
+              {t('action.create')}
             </Button>
-            {/* <Button type="button" color="brand" variant="tertiary" className={styles.importButton} onClick={handleImportClick}>
+            {/* <Button type="button" className={styles.importButton} onClick={handleImportClick}>
           <Icon
             name={data.import ? data.import.type : 'arrow down'}
             className={styles.importButtonIcon}
@@ -116,7 +116,7 @@ const BoardCreateStep = React.memo(
           </div>
           {templateBoards && templateBoards.length > 0 && (
             <div className={styles.templatesWrapper}>
-              <p>Ou choisissez un tableau pré-défini :</p>
+              <p>{t('common.orChooseTemplateBoard')}</p>
               <div className={styles.templatesList}>
                 {(templateBoards || []).map((board) => (
                   <BoardListItem

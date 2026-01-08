@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
-// import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import { useSteps } from '../../hooks';
 import DeleteStep from '../DeleteStep';
@@ -12,7 +12,8 @@ const StepTypes = {
 };
 
 const CommentActionsStep = React.memo(({ canEdit, canDelete, onEdit, onDelete, onClose }) => {
-  // const [t] = useTranslation();
+  const [t] = useTranslation();
+
   const [step, openStep, handleBack] = useSteps();
 
   const handleEditClick = useCallback(() => {
@@ -40,12 +41,14 @@ const CommentActionsStep = React.memo(({ canEdit, canDelete, onEdit, onDelete, o
     <Menu>
       {canEdit && (
         <MenuItem icon="edit" onClick={handleEditClick}>
-          Modifier
+          {t('action.edit')}
         </MenuItem>
       )}
       {canDelete && (
         <MenuItem icon="delete" onClick={handleDeleteClick}>
-          Supprimer le commentaire
+          {t('common.deleteComment', {
+            context: 'title',
+          })}
         </MenuItem>
       )}
     </Menu>

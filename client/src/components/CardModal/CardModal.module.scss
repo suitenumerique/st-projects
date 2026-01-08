@@ -6,7 +6,7 @@
   }
 
   .cardModalHeader {
-    border-bottom: 1px solid var(--c--contextuals--border--semantic--neutral--tertiary);
+    border-bottom: 1px solid var(--c--theme--colors--greyscale-200);
     padding: 14px 20px;
     display: flex;
     justify-content: space-between;
@@ -57,7 +57,7 @@
       font-size: 14px;
       font-weight: bold;
       line-height: 20px;
-      color: var(--c--contextuals--content--semantic--neutral--primary);
+      color: var(--c--theme--colors--greyscale-800);
       margin-bottom: 0.5rem;
     }
 
@@ -124,7 +124,7 @@
       font-size: 12px;
       font-weight: bold;
       line-height: 20px;
-      color: var(--c--contextuals--content--semantic--neutral--primary);
+      color: var(--c--theme--colors--greyscale-800);
       margin-bottom: 4px;
     }
 
@@ -147,16 +147,6 @@
       align-items: center;
       justify-content: center;
       margin-right: 4px;
-    }
-  }
-
-  .cardActivitiesSection {
-    .sectionTitle {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
     }
   }
 

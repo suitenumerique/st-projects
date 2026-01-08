@@ -1,7 +1,7 @@
 @use "@gouvfr-lasuite/ui-kit/sass/fonts";
 @use "@gouvfr-lasuite/ui-kit/style";
 @use "./cunningham-tokens.css";
-@use "./cunningham-tokens.scss" as *;
+@use "./cunningham-tokens-sass" as *;
 
 .c__header__left {
   // [WORKAROUND] Make sure the application name is not weirdly centered by the library MainLayout
@@ -11,10 +11,6 @@
 .c__left-panel__mobile {
   width: 100%;
   max-width: 400px;
-}
-
-.c__main-layout__header {
-  z-index: 1;
 }
 
 .c__main-layout__content__center__children {
@@ -35,9 +31,16 @@
   }
 }
 
-
 .c__header__right {
-  gap: 1rem;
+  gap: 0.5rem;
+}
+
+.c__hero__display__captions {
+  align-items: start;
+
+  & > * {
+    text-align: left !important;
+  }
 }
 
 .projets_login .c__header {
@@ -60,11 +63,11 @@
   cursor: pointer;
 
   &:hover {
-    background-color: var(--c--contextuals--background--semantic--overlay--primary);
+    background-color: var(--c--theme--colors--greyscale-100);
   }
 
   &:focus {
-    box-shadow: 0 0 0 2px var(--c--contextuals--background--semantic--overlay--primary);
+    box-shadow: 0 0 0 2px var(--c--theme--colors--greyscale-100);
     outline: none;
   }
 }
@@ -87,5 +90,5 @@
 
 .mdxeditor-toolbar {
   border-radius: 0;
-  background-color: var(--c--contextuals--background--semantic--overlay--primary);
+  background-color: var(--c--theme--colors--greyscale-100);
 }

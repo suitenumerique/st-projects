@@ -1,132 +1,108 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-import { DropdownMenu, UserMenu, Icon } from '@gouvfr-lasuite/ui-kit';
+import { DropdownMenu, Icon, LaGaufre } from '@gouvfr-lasuite/ui-kit';
 import { Button } from '@openfun/cunningham-react';
-import LaGaufreButton from '../../ui/LaGaufreButton';
 
 import NotificationsStep from '../../steps/NotificationsStep';
-import usePopup from '../../lib/popup';
+import usePopup from '../../lib/popup/use-popup';
+
+import styles from './HeaderRight.module.scss';
 
 const HeaderRight = React.memo(
   ({
     currentUser,
     notifications,
-    onNotificationMarkAsRead,
-    reactAppLagaufreWidgetApiUrl,
-    reactAppLagaufreWidgetPath,
+    lagaufreWidgetApiUrl,
+    lagaufreWidgetPath,
+    onNotificationDelete,
+    onSettingsClick,
     onLogout,
-    onLogin,
   }) => {
-    const NotificationsPopover = usePopup(NotificationsStep);
+    const [isOpen, setIsOpen] = useState(false);
+    const { t } = useTranslation();
 
-    if (currentUser) {
-      window.posthog.identify(currentUser.id, {
-        email: currentUser.email,
-      });
-    }
+    const NotificationsPopover = usePopup(NotificationsStep);
 
     return (
       <>
         {currentUser && (
-          <NotificationsPopover
-            items={notifications}
-            onMarkAsRead={onNotificationMarkAsRead}
-            side="bottom"
-            align="end"
-          >
-            <Button color="brand" variant="tertiary">
-              <Icon type="outlined" name="notifications" />
-              {notifications?.length > 0 && <span>{notifications.length}</span>}
-            </Button>
-          </NotificationsPopover>
+          <>
+            <NotificationsPopover
+              items={notifications}
+              onDelete={onNotificationDelete}
+              side="bottom"
+              align="center"
+            >
+              <Button
+                color="primary-text"
+                icon={
+                  <>
+                    <Icon type="outlined" name="notifications" />
+                    {notifications.length > 0 && (
+                      <span className={styles.notification}>{notifications.length}</span>
+                    )}
+                  </>
+                }
+                className={styles.notificationButton}
+              />
+            </NotificationsPopover>
+
+            <DropdownMenu
+              options={[
+                {
+                  label: t('common.settings', {
+                    context: 'title',
+                  }),
+                  icon: <Icon name="manage_accounts" type="outlined" />,
+                  callback: onSettingsClick,
+                },
+                {
+                  label: t('action.logOut_title'),
+                  icon: <Icon name="logout" type="outlined" />,
+                  callback: onLogout,
+                },
+              ]}
+              isOpen={isOpen}
+              onOpenChange={setIsOpen}
+            >
+              <Button
+                className={styles.onlySm}
+                color="primary-text"
+                icon={<Icon name="person" type="outlined" />}
+                onClick={() => setIsOpen(!isOpen)}
+              />
+              <Button
+                className={styles.overSm}
+                color="primary-text"
+                onClick={() => setIsOpen(!isOpen)}
+                icon={
+                  <span className="material-icons">
+                    {isOpen ? 'arrow_drop_up' : 'arrow_drop_down'}
+                  </span>
+                }
+                iconPosition="right"
+              >
+                {t('common.myAccount')}
+              </Button>
+            </DropdownMenu>
+          </>
         )}
 
-        <LaGaufreButton
-          reactAppLagaufreWidgetApiUrl={reactAppLagaufreWidgetApiUrl}
-          reactAppLagaufreWidgetPath={reactAppLagaufreWidgetPath}
-        />
-
-        {currentUser ? (
-          <UserMenu user={{ ...currentUser, full_name: currentUser.name }} logout={onLogout} />
-        ) : (
-          <Button color="brand" variant="tertiary" onClick={onLogin}>
-            Connexion
-          </Button>
-        )}
-
-        {/* <LanguagePicker currentUser={currentUser} onLanguageUpdate={onLanguageUpdate} /> */}
+        <LaGaufre widgetPath={lagaufreWidgetPath} apiUrl={lagaufreWidgetApiUrl} />
       </>
     );
   },
 );
 
-const LanguagePicker = React.memo(({ currentUser, onLanguageUpdate }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const { i18n } = useTranslation();
-
-  const [selectedValues, setSelectedValues] = useState([
-    currentUser?.language || i18n.language.toLowerCase(),
-  ]);
-
-  const languages = [
-    { label: 'Français', value: 'fr-fr' },
-    { label: 'English', value: 'en-us' },
-  ];
-
-  useEffect(() => {
-    if (currentUser?.language) {
-      i18n.changeLanguage(currentUser.language);
-    }
-  }, [currentUser?.language, i18n]);
-
-  return (
-    <DropdownMenu
-      options={languages}
-      isOpen={isOpen}
-      onOpenChange={setIsOpen}
-      onSelectValue={(value) => {
-        setSelectedValues([value]);
-        i18n.changeLanguage(value);
-        onLanguageUpdate(value);
-      }}
-      selectedValues={selectedValues}
-    >
-      <Button
-        onClick={() => setIsOpen(!isOpen)}
-        color="brand"
-        variant="tertiary"
-        className="c__language-picker"
-        icon={
-          <span className="material-icons">{isOpen ? 'arrow_drop_up' : 'arrow_drop_down'}</span>
-        }
-        iconPosition="right"
-      >
-        <span className="material-icons">translate</span>
-        <span className="c__language-picker__label">
-          {languages.find((lang) => lang.value === selectedValues[0])?.label}
-        </span>
-      </Button>
-    </DropdownMenu>
-  );
-});
-
-LanguagePicker.propTypes = {
-  /* eslint-disable react/forbid-prop-types */
-  currentUser: PropTypes.object.isRequired,
-  onLanguageUpdate: PropTypes.func.isRequired,
-};
-
 HeaderRight.propTypes = {
-  /* eslint-disable react/forbid-prop-types */
-  currentUser: PropTypes.object.isRequired,
+  currentUser: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  notifications: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  lagaufreWidgetApiUrl: PropTypes.string.isRequired,
+  lagaufreWidgetPath: PropTypes.string.isRequired,
+  onSettingsClick: PropTypes.func.isRequired,
   onLogout: PropTypes.func.isRequired,
-  onLogin: PropTypes.func.isRequired,
-  notifications: PropTypes.array.isRequired,
-  onNotificationMarkAsRead: PropTypes.func.isRequired,
-  // onLanguageUpdate: PropTypes.func.isRequired,
-  reactAppLagaufreWidgetApiUrl: PropTypes.string.isRequired,
-  reactAppLagaufreWidgetPath: PropTypes.string.isRequired,
+  onNotificationDelete: PropTypes.func.isRequired,
 };
 
 HeaderRight.defaultProps = {};

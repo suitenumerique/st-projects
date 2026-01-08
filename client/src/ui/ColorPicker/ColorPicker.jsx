@@ -21,7 +21,6 @@ const ColorPicker = React.memo(({ current, onChange, colors, allowDeletion }) =>
             key={color}
             type="button"
             name="color"
-            variant="primary"
             value={color}
             className={classNames(
               styles.colorButton,
@@ -34,7 +33,7 @@ const ColorPicker = React.memo(({ current, onChange, colors, allowDeletion }) =>
         ))}
       </div>
       {current && allowDeletion && (
-        <Button color="brand" variant="tertiary" onClick={onChange}>
+        <Button color="secondary" onClick={onChange}>
           Retirer la couleur
         </Button>
       )}

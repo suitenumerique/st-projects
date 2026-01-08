@@ -4,13 +4,22 @@ import classNames from 'classnames';
 import { useTranslation, Trans } from 'react-i18next';
 import { Spinner } from '@gouvfr-lasuite/ui-kit';
 
+import ProjectsContainer from '../../containers/ProjectsContainer';
 import BoardContainer from '../../containers/BoardContainer';
 import BoardActionsContainer from '../../containers/BoardActionsContainer';
 
 import styles from './Static.module.scss';
 
-function Static({ cardId, currentBoard }) {
+function Static({ projectId, cardId, board }) {
   const [t] = useTranslation();
+
+  if (projectId === undefined) {
+    return (
+      <div className={styles.wrapper}>
+        <ProjectsContainer />
+      </div>
+    );
+  }
 
   if (cardId === null) {
     return (
@@ -26,7 +35,7 @@ function Static({ cardId, currentBoard }) {
     );
   }
 
-  if (currentBoard === null) {
+  if (board === null) {
     return (
       <div className={classNames(styles.wrapper)}>
         <div className={styles.message}>
@@ -40,7 +49,21 @@ function Static({ cardId, currentBoard }) {
     );
   }
 
-  if (currentBoard === undefined) {
+  if (projectId === null) {
+    return (
+      <div className={classNames(styles.wrapper)}>
+        <div className={styles.message}>
+          <h1>
+            {t('common.projectNotFound', {
+              context: 'title',
+            })}
+          </h1>
+        </div>
+      </div>
+    );
+  }
+
+  if (board === undefined) {
     return (
       <div className={classNames(styles.wrapper)}>
         <div className={styles.message}>
@@ -57,9 +80,9 @@ function Static({ cardId, currentBoard }) {
     );
   }
 
-  if (currentBoard.isFetching) {
+  if (board.isFetching) {
     return (
-      <div className={classNames(styles.wrapper)}>
+      <div className={classNames(styles.wrapper, styles.wrapperLoader, styles.wrapperProject)}>
         <div className={styles.loading}>
           <Spinner size="xl" />
         </div>
@@ -68,21 +91,23 @@ function Static({ cardId, currentBoard }) {
   }
 
   return (
-    <div className={classNames(styles.wrapper)}>
-      {currentBoard && !currentBoard.isFetching && <BoardActionsContainer />}
+    <div className={classNames(styles.wrapper, styles.wrapperLoader, styles.wrapperProject)}>
+      {board && !board.isFetching && <BoardActionsContainer />}
       <BoardContainer />
     </div>
   );
 }
 
 Static.propTypes = {
+  projectId: PropTypes.string,
   cardId: PropTypes.string,
-  currentBoard: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  board: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
 Static.defaultProps = {
+  projectId: undefined,
   cardId: undefined,
-  currentBoard: undefined,
+  board: undefined,
 };
 
 export default Static;

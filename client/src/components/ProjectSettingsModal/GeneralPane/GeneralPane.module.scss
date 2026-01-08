@@ -1,0 +1,22 @@
+:global(#app) {
+  .pane {
+    padding-top: 10px;
+  }
+
+  .permissionsSection {
+    h4 {
+      margin-bottom: 10px;
+    }
+  }
+
+  .dangerSection {
+    h4 {
+      margin-bottom: 10px;
+    }
+  }
+
+  .wrapper {
+    border: none;
+    box-shadow: none;
+  }
+}

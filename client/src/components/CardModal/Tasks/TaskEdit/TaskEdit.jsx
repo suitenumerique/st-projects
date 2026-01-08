@@ -57,13 +57,23 @@ const TaskEdit = React.forwardRef(({ children, defaultValue, onUpdate }, ref) =>
     [submit],
   );
 
-  const handleFieldBlur = useCallback(() => {
-    submit();
-  }, [submit]);
+  const handleFieldBlur = useCallback(
+    (event) => {
+      event.preventDefault();
 
-  const handleSubmit = useCallback(() => {
-    submit();
-  }, [submit]);
+      submit();
+    },
+    [submit],
+  );
+
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
+
+      submit();
+    },
+    [submit],
+  );
 
   useEffect(() => {
     if (isOpened) {
@@ -88,8 +98,7 @@ const TaskEdit = React.forwardRef(({ children, defaultValue, onUpdate }, ref) =>
       />
       <div>
         <Button
-          color="brand"
-          variant="primary"
+          color="primary"
           size="small"
           icon={<Icon name="save" type="outlined" size="small" />}
         >

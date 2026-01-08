@@ -10,8 +10,81 @@
 
 const { URL } = require('url');
 const sails = require('sails');
+const z = require('zod');
 
-const parsedBasedUrl = new URL(process.env.BASE_URL);
+const defaultTheme = require('./default-theme.json');
+
+const parsedBasedUrl = new URL(process.env.BASE_URL || 'http://localhost:3000');
+
+const ThemeLinkSchema = z.object({
+  label: z.string().min(1),
+  href: z.string().min(1),
+});
+
+const HeaderThemeSchema = z.object({
+  logo: z
+    .object({
+      src: z.string().min(1),
+      width: z.string().min(1).optional(),
+      height: z.string().min(1).optional(),
+      alt: z.string(),
+    })
+    .optional(),
+});
+
+const LocaleThemeFooterSchema = z.object({
+  externalLinks: z.array(ThemeLinkSchema).optional(),
+  legalLinks: z.array(ThemeLinkSchema).optional(),
+  license: z
+    .object({
+      label: z.string().min(1),
+      link: ThemeLinkSchema,
+    })
+    .optional(),
+  logo: z
+    .object({
+      src: z.string().min(1),
+      width: z.string().min(1).optional(),
+      height: z.string().min(1).optional(),
+      alt: z.string(),
+    })
+    .optional(),
+});
+
+const LocaleThemeFeedbackSchema = z.object({
+  items: z
+    .array(
+      z.object({
+        type: z.enum(['chat', 'survey', 'video']),
+        title: z.string().min(1),
+        description: z.string().min(1).optional(),
+        href: z.string().min(1),
+      }),
+    )
+    .optional(),
+});
+
+const ThemeSchema = z.object({
+  header: HeaderThemeSchema.optional(),
+  footer: z
+    .object({
+      default: LocaleThemeFooterSchema,
+      fr: LocaleThemeFooterSchema.optional(),
+      en: LocaleThemeFooterSchema.optional(),
+    })
+    .optional(),
+  feedback: z
+    .object({
+      default: LocaleThemeFeedbackSchema,
+      fr: LocaleThemeFeedbackSchema.optional(),
+      en: LocaleThemeFeedbackSchema.optional(),
+    })
+    .optional(),
+});
+
+const TemplateBoardsSchema = z.array(
+  z.unknown(), // TODO: implement once really used in this version (duplicate functions...)
+);
 
 module.exports.custom = {
   /**
@@ -31,14 +104,19 @@ module.exports.custom = {
   uploadsBasePath: sails.config.appPath,
 
   userAvatarsPathSegment: 'public/user-avatars',
-  attachmentsPathSegment:
-    sails.config.environment === 'production' ? '/attachments' : 'private/attachments',
+  projectBackgroundImagesPathSegment: 'public/project-background-images',
+  attachmentsPathSegment: 'private/attachments',
 
   defaultAdminEmail:
     process.env.DEFAULT_ADMIN_EMAIL && process.env.DEFAULT_ADMIN_EMAIL.toLowerCase(),
 
   showDetailedAuthErrors: process.env.SHOW_DETAILED_AUTH_ERRORS === 'true',
   allowAllToCreateProjects: process.env.ALLOW_ALL_TO_CREATE_PROJECTS === 'true',
+
+  // When set, enables org mode: users are auto-assigned as manager of the project matching
+  // the value of this OIDC claim (e.g. 'siret'). When not set, free mode is used: users
+  // can create and manage their own projects.
+  organizationIdClaim: process.env.ORGANIZATION_ID_CLAIM || null,
 
   s3Endpoint: process.env.S3_ENDPOINT,
   s3Region: process.env.S3_REGION,
@@ -63,15 +141,15 @@ module.exports.custom = {
     : ['given_name', 'usual_name'],
   oidcUsernameAttribute: process.env.OIDC_USERNAME_ATTRIBUTE || 'preferred_username',
   oidcRolesAttribute: process.env.OIDC_ROLES_ATTRIBUTE || 'groups',
-  oidcIgnoreUsername: true, // process.env.OIDC_IGNORE_USERNAME === 'true',
-  oidcIgnoreRoles: true, // process.env.OIDC_IGNORE_ROLES === 'true',
-  oidcEnforced: true, // process.env.OIDC_ENFORCED === 'true',
+  oidcIgnoreUsername: process.env.OIDC_IGNORE_USERNAME === 'true',
+  oidcIgnoreRoles: process.env.OIDC_IGNORE_ROLES === 'true',
+  oidcEnforced: process.env.OIDC_ENFORCED === 'true',
+  oidcPostLogoutRedirectUri: process.env.OIDC_POST_LOGOUT_REDIRECT_URI || process.env.BASE_URL,
 
-  oidcRedirectUri:
-    process.env.OIDC_REDIRECT_URI ||
-    `${
-      sails.config.environment === 'production' ? process.env.BASE_URL : 'http://localhost:3000'
-    }/oidc-callback`,
+  // TODO: move client base url to environment variable?
+  oidcRedirectUri: `${
+    sails.config.environment === 'production' ? process.env.BASE_URL : 'http://localhost:3000'
+  }/oidc-callback`,
 
   smtpHost: process.env.SMTP_HOST,
   smtpPort: process.env.SMTP_PORT || 587,
@@ -84,12 +162,23 @@ module.exports.custom = {
 
   webhooks: JSON.parse(process.env.WEBHOOKS || '[]'), // TODO: validate structure
 
-  templateBoards: JSON.parse(process.env.TEMPLATE_BOARDS || '[]'),
+  slackBotToken: process.env.SLACK_BOT_TOKEN,
+  slackChannelId: process.env.SLACK_CHANNEL_ID,
 
-  reactAppFeedbackWidgetApiUrl: process.env.REACT_APP_FEEDBACK_WIDGET_API_URL,
-  reactAppFeedbackWidgetPath: process.env.REACT_APP_FEEDBACK_WIDGET_PATH,
-  reactAppFeedbackWidgetChannel: process.env.REACT_APP_FEEDBACK_WIDGET_CHANNEL,
+  googleChatWebhookUrl: process.env.GOOGLE_CHAT_WEBHOOK_URL,
 
-  reactAppLagaufreWidgetApiUrl: process.env.REACT_APP_LAGAUFRE_WIDGET_API_URL,
-  reactAppLagaufreWidgetPath: process.env.REACT_APP_LAGAUFRE_WIDGET_PATH,
+  telegramBotToken: process.env.TELEGRAM_BOT_TOKEN,
+  telegramChatId: process.env.TELEGRAM_CHAT_ID,
+  telegramThreadId: process.env.TELEGRAM_THREAD_ID,
+
+  templateBoards: TemplateBoardsSchema.parse(
+    process.env.TEMPLATE_BOARDS ? JSON.parse(process.env.TEMPLATE_BOARDS) : [],
+  ),
+
+  lagaufreWidgetApiUrl:
+    process.env.LAGAUFRE_WIDGET_API_URL || 'https://lasuite.numerique.gouv.fr/api/services',
+  lagaufreWidgetPath:
+    process.env.LAGAUFRE_WIDGET_PATH || 'https://static.suite.anct.gouv.fr/widgets/lagaufre.js',
+
+  theme: ThemeSchema.parse(process.env.THEME ? JSON.parse(process.env.THEME) : defaultTheme),
 };

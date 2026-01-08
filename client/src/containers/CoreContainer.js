@@ -4,24 +4,22 @@ import selectors from '../selectors';
 import Core from '../components/Core';
 
 const mapStateToProps = (state) => {
+  const config = selectors.selectConfig(state);
   const isInitializing = selectors.selectIsInitializing(state);
   const isSocketDisconnected = selectors.selectIsSocketDisconnected(state);
   const currentUser = selectors.selectCurrentUser(state);
-
-  const config = selectors.selectConfig(state);
-  const {
-    reactAppFeedbackWidgetApiUrl,
-    reactAppFeedbackWidgetPath,
-    reactAppFeedbackWidgetChannel,
-  } = config || {};
+  const currentModal = selectors.selectCurrentModal(state);
+  const currentProject = selectors.selectCurrentProject(state);
+  const currentBoard = selectors.selectCurrentBoard(state);
 
   return {
+    theme: config ? config.theme : null,
     isInitializing,
     isSocketDisconnected,
     currentUser,
-    reactAppFeedbackWidgetApiUrl,
-    reactAppFeedbackWidgetPath,
-    reactAppFeedbackWidgetChannel,
+    currentModal,
+    currentProject,
+    currentBoard,
   };
 };
 

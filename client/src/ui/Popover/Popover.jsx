@@ -32,6 +32,7 @@ export default function Popover({
           onClick={handlePopoverClick}
           onOpenAutoFocus={handleOpenAutoFocus}
           avoidCollisions
+          collisionPadding={20}
         >
           <div className={styles.popoverContent}>{content}</div>
         </RadixPopover.Content>

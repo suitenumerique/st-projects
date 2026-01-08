@@ -1,9 +1,9 @@
 :global(#app) {
 
   .wrapper {
-    background-color: var(--c--contextuals--background--semantic--brand--tertiary);
+    background-color: var(--c--theme--colors--primary-050);
     border-radius: 4px;
-    border: 1px dashed var(--c--contextuals--border--semantic--brand--tertiary);
+    border: 1px dashed var(--c--theme--colors--primary-400);
     padding: 26px 16px;
     cursor: pointer;
     max-width: 350px;
@@ -24,7 +24,7 @@
     height: 48px;
     background-color: #FFFFFF;
     border-radius: 50%;
-    color: var(--c--contextuals--content--semantic--brand--primary);
+    color: var(--c--theme--colors--primary-800);
     font-size: 20px;
     flex-shrink: 0;
   }
@@ -38,7 +38,7 @@
     }
 
     .link {
-      color: var(--c--contextuals--content--semantic--brand--primary);
+      color: var(--c--theme--colors--primary-800);
       text-decoration: underline;
       cursor: pointer;
     }

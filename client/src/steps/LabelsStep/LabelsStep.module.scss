@@ -6,7 +6,7 @@
     gap: 8px;
     margin: -12px -12px 12px -12px;
     padding: 0 12px;
-    border-bottom: 1px solid var(--c--contextuals--border--semantic--neutral--tertiary);
+    border-bottom: 1px solid var(--c--theme--colors--greyscale-200);
 
     input {
       width: 100%;
@@ -14,10 +14,10 @@
       outline: none;
       font-size: 14px;
       height: 50px;
-      color: var(--c--contextuals--content--semantic--neutral--primary);
+      color: var(--c--theme--colors--greyscale-800);
 
       &::placeholder {
-        color: var(--c--contextuals--content--semantic--neutral--tertiary);
+        color: var(--c--theme--colors--greyscale-400);
       }
     }
   }
@@ -41,7 +41,7 @@
       padding-right: 12px;
 
       &:hover {
-        background-color: var(--c--contextuals--background--semantic--overlay--primary);
+        background-color: var(--c--theme--colors--greyscale-100);
         .itemActions {
           opacity: 1;
         }
@@ -61,7 +61,6 @@
         border: none !important;
         width: 100%;
         background-color: transparent !important;
-        box-shadow: none !important;
 
         > div {
           width: 100%;
@@ -97,7 +96,7 @@
       justify-content: center;
       width: 24px;
       height: 24px;
-      border: 1px solid var(--c--contextuals--border--semantic--neutral--primary);
+      border: 1px solid var(--c--theme--colors--greyscale-800);
       border-radius: 100%;
     }
   }

@@ -72,8 +72,7 @@ const Filters = React.memo(
           >
             <Button
               type="button"
-              color="brand"
-              variant="bordered"
+              color="secondary"
               size="small"
               icon={<Icon type="outlined" name="group" size="small" />}
               className={classNames(
@@ -82,7 +81,7 @@ const Filters = React.memo(
               )}
             >
               {filterUsers.length === 0 && !includeCardsWithoutMembers && (
-                <span className={styles.filterTitle}>Membres</span>
+                <span className={styles.filterTitle}>{t('common.members')}</span>
               )}
               {includeCardsWithoutMembers && (
                 <div className={styles.noMember}>
@@ -113,8 +112,7 @@ const Filters = React.memo(
           >
             <Button
               type="button"
-              color="brand"
-              variant="bordered"
+              color="secondary"
               size="small"
               icon={<Icon type="outlined" name="label" size="small" />}
               className={classNames(
@@ -123,7 +121,7 @@ const Filters = React.memo(
               )}
             >
               {filterLabels.length === 0 && !includeCardsWithoutLabels && (
-                <span className={styles.filterTitle}>Etiquettes</span>
+                <span className={styles.filterTitle}>{t('common.labels')}</span>
               )}
               {includeCardsWithoutLabels && (
                 <div className={styles.noLabel}>

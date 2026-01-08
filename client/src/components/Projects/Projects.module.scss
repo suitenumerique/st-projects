@@ -1,0 +1,57 @@
+:global(#app) {
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    padding-bottom: 0;
+  }
+
+  // No need of using media query to hide it on mobile, it fits perfectly since there is almost no content on the page
+  .backgroundWrapper {
+    flex: 1;
+    width: 100%;
+    background: url('../../assets/images/projects_background.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: bottom center;
+  }
+
+  .title {
+    text-align: center;
+    margin-top: 10vh;
+    margin-bottom: 30px;
+  }
+
+  .firstProjectToCreate {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .choice {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .notification {
+    background: #eb5a46;
+    color: #fff;
+    float: right;
+    font-size: 12px;
+    line-height: 20px;
+    padding: 0px 6px;
+    border: none;
+    border-radius: 3px;
+    outline: none;
+    text-align: left;
+    transition: background 0.3s ease;
+  }
+}

@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { Modal, Button, Checkbox, Tooltip } from '@openfun/cunningham-react';
+import { Modal, Button, Checkbox } from '@openfun/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 import usePopup from '../../lib/popup';
 
@@ -33,11 +33,11 @@ const CardModal = React.memo(
     dueDate,
     isDueDateCompleted,
     stopwatch,
-    isSubscribed,
+    // isSubscribed,
     isActivitiesFetching,
     isAllActivitiesFetched,
-    isActivitiesDetailsVisible,
-    isActivitiesDetailsFetching,
+    // isActivitiesDetailsVisible,
+    // isActivitiesDetailsFetching,
     listId,
     boardId,
     projectId,
@@ -51,7 +51,8 @@ const CardModal = React.memo(
     allBoardMemberships,
     allLabels,
     canEdit,
-    canEditAllComments,
+    canEditCommentActivities,
+    canEditAllCommentActivities,
     onUpdate,
     onMove,
     onTransfer,
@@ -74,7 +75,7 @@ const CardModal = React.memo(
     onAttachmentUpdate,
     onAttachmentDelete,
     onActivitiesFetch,
-    onActivitiesDetailsToggle,
+    // onActivitiesDetailsToggle,
     onCommentActivityCreate,
     onCommentActivityUpdate,
     onCommentActivityDelete,
@@ -108,11 +109,11 @@ const CardModal = React.memo(
       }, 3000);
     }, []);
 
-    const handleToggleSubscriptionClick = useCallback(() => {
-      onUpdate({
-        isSubscribed: !isSubscribed,
-      });
-    }, [isSubscribed, onUpdate]);
+    // const handleToggleSubscriptionClick = useCallback(() => {
+    //   onUpdate({
+    //     isSubscribed: !isSubscribed,
+    //   });
+    // }, [isSubscribed, onUpdate]);
 
     const handleClose = useCallback(() => {
       if (isGalleryOpened.current) {
@@ -202,7 +203,7 @@ const CardModal = React.memo(
                 onTransfer={onTransfer}
                 onBoardFetch={onBoardFetch}
               >
-                <Button size="small" variant="secondary" color="brand">
+                <Button size="small" color="tertiary">
                   {currentListName}
                   <Icon
                     name="keyboard_arrow_down"
@@ -212,7 +213,7 @@ const CardModal = React.memo(
                 </Button>
               </CardMovePopover>
             ) : (
-              <Button size="small" variant="secondary" color="brand">
+              <Button size="small" color="tertiary">
                 {currentListName}
               </Button>
             )}
@@ -220,19 +221,12 @@ const CardModal = React.memo(
           <div className={styles.cardModalHeaderRight}>
             {window.isSecureContext && (
               <button type="button" className="modal-button" onClick={handleCopyLinkClick}>
-                <Tooltip placement="bottom" content={t('action.copyLink', { context: 'title' })}>
-                  <Icon name={isLinkCopied ? 'check' : 'link'} size="medium" />
-                </Tooltip>
+                <Icon name={isLinkCopied ? 'check' : 'link'} size="medium" />
               </button>
             )}
             {canEdit && (
               <div className={styles.optionsButtonContainer}>
-                <CardModalActionsPopover
-                  onDuplicate={onDuplicate}
-                  onDelete={onDelete}
-                  onToggleSubscription={handleToggleSubscriptionClick}
-                  isSubscribed={isSubscribed}
-                >
+                <CardModalActionsPopover onDuplicate={onDuplicate} onDelete={onDelete}>
                   <button type="button" className="modal-button">
                     <Icon name="more_horiz" size="medium" />
                   </button>
@@ -272,8 +266,7 @@ const CardModal = React.memo(
                   onDelete={onLabelDelete}
                 >
                   <Button
-                    color="brand"
-                    variant="bordered"
+                    color="secondary"
                     size="small"
                     icon={<Icon size="small" type="outlined" name="new_label" />}
                   >
@@ -289,8 +282,7 @@ const CardModal = React.memo(
                   onUserDeselect={onUserRemove}
                 >
                   <Button
-                    color="brand"
-                    variant="bordered"
+                    color="secondary"
                     size="small"
                     icon={<Icon size="small" type="outlined" name="person_add" />}
                   >
@@ -299,8 +291,7 @@ const CardModal = React.memo(
                 </BoardMembershipsPopover>
                 <DueDateEditPopover defaultValue={dueDate} onUpdate={handleDueDateUpdate}>
                   <Button
-                    color="brand"
-                    variant="bordered"
+                    color="secondary"
                     size="small"
                     icon={<Icon size="small" type="outlined" name="calendar_today" />}
                   >
@@ -311,8 +302,7 @@ const CardModal = React.memo(
                 </DueDateEditPopover>
                 <StopwatchEditPopover defaultValue={stopwatch} onUpdate={handleStopwatchUpdate}>
                   <Button
-                    color="brand"
-                    variant="bordered"
+                    color="secondary"
                     size="small"
                     icon={<Icon size="small" type="outlined" name="schedule" />}
                   >
@@ -458,8 +448,7 @@ const CardModal = React.memo(
                       {canEdit && (
                         <Button
                           type="button"
-                          color="brand"
-                          variant="bordered"
+                          color="secondary"
                           size="small"
                           className={styles.detailsItemAddButton}
                           onClick={handleToggleStopwatchClick}
@@ -538,26 +527,18 @@ const CardModal = React.memo(
                 <Icon name="comment" type="outlined" size="small" />
               </div>
               <div className={styles.cardModalSectionRight}>
-                <div className={styles.sectionTitle}>
-                  Commentaires & activité
-                  <Button
-                    size="small"
-                    variant="tertiary"
-                    color="neutral"
-                    onClick={() => onActivitiesDetailsToggle(!isActivitiesDetailsVisible)}
-                  >
-                    {isActivitiesDetailsVisible ? 'Masquer' : 'Afficher'} les activités
-                  </Button>
-                </div>
+                <div className={styles.sectionTitle}>{t('common.comments')}</div>
                 <div className={styles.detailsItemContent}>
                   <Activities
                     items={activities}
                     isFetching={isActivitiesFetching}
                     isAllFetched={isAllActivitiesFetched}
-                    isDetailsFetching={isActivitiesDetailsFetching}
-                    canEdit={canEdit}
-                    canEditAllComments={canEditAllComments}
+                    isDetailsVisible={false}
+                    // isDetailsFetching={isActivitiesDetailsFetching}
+                    canEdit={canEditCommentActivities}
+                    canEditAllComments={canEditAllCommentActivities}
                     onFetch={onActivitiesFetch}
+                    // onDetailsToggle={onActivitiesDetailsToggle}
                     onCommentCreate={onCommentActivityCreate}
                     onCommentUpdate={onCommentActivityUpdate}
                     onCommentDelete={onCommentActivityDelete}
@@ -588,11 +569,11 @@ CardModal.propTypes = {
   dueDate: PropTypes.instanceOf(Date),
   isDueDateCompleted: PropTypes.bool,
   stopwatch: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  isSubscribed: PropTypes.bool.isRequired,
+  // isSubscribed: PropTypes.bool.isRequired,
   isActivitiesFetching: PropTypes.bool.isRequired,
   isAllActivitiesFetched: PropTypes.bool.isRequired,
-  isActivitiesDetailsVisible: PropTypes.bool.isRequired,
-  isActivitiesDetailsFetching: PropTypes.bool.isRequired,
+  // isActivitiesDetailsVisible: PropTypes.bool.isRequired,
+  // isActivitiesDetailsFetching: PropTypes.bool.isRequired,
   listId: PropTypes.string.isRequired,
   boardId: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
@@ -608,7 +589,8 @@ CardModal.propTypes = {
   allLabels: PropTypes.array.isRequired,
   /* eslint-enable react/forbid-prop-types */
   canEdit: PropTypes.bool.isRequired,
-  canEditAllComments: PropTypes.bool.isRequired,
+  canEditCommentActivities: PropTypes.bool.isRequired,
+  canEditAllCommentActivities: PropTypes.bool.isRequired,
   onUpdate: PropTypes.func.isRequired,
   onMove: PropTypes.func.isRequired,
   onTransfer: PropTypes.func.isRequired,
@@ -631,7 +613,7 @@ CardModal.propTypes = {
   onAttachmentUpdate: PropTypes.func.isRequired,
   onAttachmentDelete: PropTypes.func.isRequired,
   onActivitiesFetch: PropTypes.func.isRequired,
-  onActivitiesDetailsToggle: PropTypes.func.isRequired,
+  // onActivitiesDetailsToggle: PropTypes.func.isRequired,
   onCommentActivityCreate: PropTypes.func.isRequired,
   onCommentActivityUpdate: PropTypes.func.isRequired,
   onCommentActivityDelete: PropTypes.func.isRequired,

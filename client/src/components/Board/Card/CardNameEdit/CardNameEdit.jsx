@@ -128,10 +128,8 @@ const CardNameEdit = React.forwardRef(({ children, defaultValue, onUpdate }, ref
         />
         <div className={styles.buttons}>
           <Button
-            color="brand"
-            variant="primary"
+            color="primary"
             type="submit"
-            size="small"
             onMouseOver={handleControlMouseOver}
             onMouseOut={handleControlMouseOut}
             onMouseDown={handleFormMouseDown}
