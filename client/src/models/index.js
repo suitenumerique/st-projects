@@ -3,6 +3,8 @@ import Project from './Project';
 import ProjectManager from './ProjectManager';
 import Board from './Board';
 import BoardMembership from './BoardMembership';
+import Folder from './Folder';
+import UserBoardPreference from './UserBoardPreference';
 import Label from './Label';
 import List from './List';
 import Card from './Card';
@@ -17,6 +19,8 @@ export {
   ProjectManager,
   Board,
   BoardMembership,
+  Folder,
+  UserBoardPreference,
   Label,
   List,
   Card,

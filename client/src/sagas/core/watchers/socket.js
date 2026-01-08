@@ -68,6 +68,18 @@ const createSocketEventsChannel = () =>
       emit(entryActions.handleBoardDelete(item));
     };
 
+    const handleUserBoardPreferenceCreate = ({ item }) => {
+      emit(entryActions.handleUserBoardPreferenceCreate(item));
+    };
+
+    const handleUserBoardPreferenceUpdate = ({ item }) => {
+      emit(entryActions.handleUserBoardPreferenceUpdate(item));
+    };
+
+    const handleUserBoardPreferenceDelete = ({ item }) => {
+      emit(entryActions.handleUserBoardPreferenceDelete(item));
+    };
+
     const handleBoardMembershipCreate = api.makeHandleBoardMembershipCreate(({ item }) => {
       emit(entryActions.handleBoardMembershipCreate(item));
     });
@@ -201,6 +213,10 @@ const createSocketEventsChannel = () =>
     socket.on('boardDelete', handleBoardDelete);
     socket.on('boardDuplicate', handleBoardDuplicate);
 
+    socket.on('userBoardPreferenceCreate', handleUserBoardPreferenceCreate);
+    socket.on('userBoardPreferenceUpdate', handleUserBoardPreferenceUpdate);
+    socket.on('userBoardPreferenceDelete', handleUserBoardPreferenceDelete);
+
     socket.on('boardMembershipCreate', handleBoardMembershipCreate);
     socket.on('boardMembershipUpdate', handleBoardMembershipUpdate);
     socket.on('boardMembershipDelete', handleBoardMembershipDelete);
@@ -260,6 +276,10 @@ const createSocketEventsChannel = () =>
       socket.off('boardUpdate', handleBoardUpdate);
       socket.off('boardDelete', handleBoardDelete);
       socket.off('boardDuplicate', handleBoardDuplicate);
+
+      socket.off('userBoardPreferenceCreate', handleUserBoardPreferenceCreate);
+      socket.off('userBoardPreferenceUpdate', handleUserBoardPreferenceUpdate);
+      socket.off('userBoardPreferenceDelete', handleUserBoardPreferenceDelete);
 
       socket.off('boardMembershipCreate', handleBoardMembershipCreate);
       socket.off('boardMembershipUpdate', handleBoardMembershipUpdate);

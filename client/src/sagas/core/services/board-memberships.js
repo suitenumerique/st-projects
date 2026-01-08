@@ -5,6 +5,7 @@ import request from '../request';
 import requests from '../requests';
 import selectors from '../../../selectors';
 import actions from '../../../actions';
+import entryActions from '../../../entry-actions';
 import api from '../../../api';
 import { createLocalId } from '../../../utils/local-id';
 import mergeRecords from '../../../utils/merge-records';
@@ -29,6 +30,21 @@ export function* createBoardMembership(boardId, data) {
   }
 
   yield put(actions.createBoardMembership.success(localId, boardMembership));
+
+  // When adding a member to a private board, it becomes shared.
+  // The server deletes the user preference (folder assignment).
+  // We must do the same here because socket events exclude the sender.
+  const board = yield select(selectors.selectBoardById, boardId);
+
+  if (board && !board.isPublic) {
+    const allPreferences = yield select(selectors.selectUserBoardPreferencesForCurrentUser);
+    // eslint-disable-next-line eqeqeq
+    const existingPreference = allPreferences.find((p) => p.boardId == boardId);
+
+    if (existingPreference && existingPreference.folderId) {
+      yield put(entryActions.handleUserBoardPreferenceDelete(existingPreference));
+    }
+  }
 }
 
 export function* createMembershipInCurrentBoard(data) {
@@ -155,6 +171,7 @@ export function* handleBoardMembershipUpdate(boardMembership) {
 
 export function* deleteBoardMembership(id) {
   let boardMembership = yield select(selectors.selectBoardMembershipById, id);
+  const deletedBoardId = boardMembership.boardId;
 
   const currentUserId = yield select(selectors.selectCurrentUserId);
   const { boardId } = yield select(selectors.selectPath);
@@ -173,6 +190,28 @@ export function* deleteBoardMembership(id) {
   }
 
   yield put(actions.deleteBoardMembership.success(boardMembership));
+
+  // When removing a member from a shared board, if only one member remains,
+  // the board becomes private. The server deletes the user preference.
+  // We must do the same here because socket events exclude the sender.
+  const board = yield select(selectors.selectBoardById, deletedBoardId);
+
+  if (board && !board.isPublic) {
+    // Check if we're viewing the current board to count memberships
+    if (deletedBoardId === boardId) {
+      const memberships = yield select(selectors.selectMembershipsForCurrentBoard);
+
+      if (memberships && memberships.length === 1) {
+        const allPreferences = yield select(selectors.selectUserBoardPreferencesForCurrentUser);
+        // eslint-disable-next-line eqeqeq
+        const existingPreference = allPreferences.find((p) => p.boardId == deletedBoardId);
+
+        if (existingPreference && existingPreference.folderId) {
+          yield put(entryActions.handleUserBoardPreferenceDelete(existingPreference));
+        }
+      }
+    }
+  }
 }
 
 export function* handleBoardMembershipDelete(boardMembership) {

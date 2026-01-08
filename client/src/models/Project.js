@@ -108,7 +108,9 @@ export default class extends BaseModel {
   }
 
   getOrderedBoardsQuerySet() {
-    return this.boards.orderBy('position');
+    // Boards are now ordered by user preferences, not by a global position
+    // This method is kept for compatibility but ordering should be done via user preferences
+    return this.boards;
   }
 
   getOrderedBoardsModelArrayForUser(userId) {

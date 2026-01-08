@@ -21,6 +21,11 @@ module.exports = {
     isPublic: {
       type: 'boolean',
     },
+    folderId: {
+      type: 'string',
+      regex: /^[0-9]+$/,
+      allowNull: true,
+    },
   },
 
   exits: {
@@ -52,22 +57,87 @@ module.exports = {
       throw Errors.BOARD_NOT_FOUND; // Forbidden
     }
 
-    const values = _.pick(inputs, ['position', 'name', 'isPublic']);
+    const values = _.pick(inputs, ['position', 'name', 'isPublic', 'folderId']);
 
-    board = await sails.helpers.boards.updateOne.with({
-      values,
-      project,
-      record: board,
-      actorUser: currentUser,
-      request: this.req,
-    });
+    // Separate user-specific preferences from global board properties
+    const userPreferenceValues = {};
+    const boardValues = {};
+
+    if (!_.isUndefined(values.position)) {
+      userPreferenceValues.position = values.position;
+    }
+    if (!_.isUndefined(values.folderId)) {
+      userPreferenceValues.folderId = values.folderId;
+    }
+    if (!_.isUndefined(values.name)) {
+      boardValues.name = values.name;
+    }
+    if (!_.isUndefined(values.isPublic)) {
+      boardValues.isPublic = values.isPublic;
+
+      if (values.isPublic !== board.isPublic) {
+        const membershipsCount = await BoardMembership.count({
+          boardId: board.id,
+        });
+
+        if (membershipsCount === 1) {
+          const existingPreference = await UserBoardPreference.findOne({
+            userId: currentUser.id,
+            boardId: board.id,
+          });
+
+          if (existingPreference && existingPreference.folderId) {
+            await sails.helpers.userBoardPreferences.deleteOne.with({
+              userId: currentUser.id,
+              boardId: board.id,
+              actorUser: currentUser,
+              request: this.req,
+            });
+          }
+        } else if (values.isPublic && _.isUndefined(values.folderId)) {
+          userPreferenceValues.folderId = null;
+        }
+      }
+    }
+
+    // Update user board preference if position or folderId changed
+    let userBoardPreference;
+    if (Object.keys(userPreferenceValues).length > 0) {
+      userBoardPreference = await sails.helpers.userBoardPreferences.upsertOne.with({
+        userId: currentUser.id,
+        boardId: board.id,
+        values: userPreferenceValues,
+        actorUser: currentUser,
+        request: this.req,
+      });
+    }
+
+    // Update board properties if name or isPublic changed
+    if (Object.keys(boardValues).length > 0) {
+      board = await sails.helpers.boards.updateOne.with({
+        values: boardValues,
+        project,
+        record: board,
+        actorUser: currentUser,
+        request: this.req,
+      });
+    }
 
     if (!board) {
       throw Errors.BOARD_NOT_FOUND;
     }
 
-    return {
+    const result = {
       item: board,
     };
+
+    // Include the updated user board preference in the response
+    if (userBoardPreference) {
+      result.included = {
+        userBoardPreferences: [userBoardPreference],
+      };
+    }
+
+    return result;
   },
 };

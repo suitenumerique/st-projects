@@ -1,4 +1,4 @@
-.PHONY: help setup up down restart logs keycloak-wait init-db clean
+.PHONY: help setup up down restart logs keycloak-wait init-db db-migrate clean
 
 # Default values
 COMPOSE_FILE := docker-compose-dev.yml
@@ -85,6 +85,11 @@ init-db: ## Initialize the database (migrations and seeds)
 		-e DEFAULT_ADMIN_USERNAME=$(INITIAL_USER_USERNAME) \
 		server npm run db:init
 	@echo "✅ Database initialized successfully!"
+
+db-migrate: ## Run database migrations
+	@echo "🗄️  Running database migrations..."
+	docker-compose -f $(COMPOSE_FILE) run --rm server npm run db:migrate
+	@echo "✅ Database migrations completed successfully!"
 
 clean: ## Stop services and remove volumes (WARNING: deletes all data)
 	@echo "⚠️  WARNING: This will delete all data including databases!"

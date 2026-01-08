@@ -67,6 +67,28 @@ module.exports = {
 
     const values = _.pick(inputs, ['role', 'canComment']);
 
+    if (!board.isPublic) {
+      const membershipsCount = await BoardMembership.count({
+        boardId: board.id,
+      });
+
+      if (membershipsCount === 1) {
+        const userBoardPreference = await UserBoardPreference.findOne({
+          userId: currentUser.id,
+          boardId: board.id,
+        });
+
+        if (userBoardPreference && userBoardPreference.folderId) {
+          await sails.helpers.userBoardPreferences.deleteOne.with({
+            userId: currentUser.id,
+            boardId: board.id,
+            actorUser: currentUser,
+            request: this.req,
+          });
+        }
+      }
+    }
+
     const boardMembership = await sails.helpers.boardMemberships.createOne
       .with({
         project,

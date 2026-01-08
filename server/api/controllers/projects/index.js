@@ -28,11 +28,25 @@ module.exports = {
     const boards = [...membershipBoards];
     const allBoardMemberships = await sails.helpers.boards.getBoardMemberships(membershipBoardIds);
 
+    // Get folders for current user
+    const folders = await sails.helpers.folders.getMany.with({
+      criteria: {
+        userId: currentUser.id,
+      },
+    });
+
+    // Get user board preferences for current user
+    const userBoardPreferences = await sails.helpers.userBoardPreferences.getMany({
+      userId: currentUser.id,
+    });
+
     return {
       items: projects,
       included: {
         boards,
         boardMemberships: allBoardMemberships,
+        folders,
+        userBoardPreferences,
       },
     };
   },

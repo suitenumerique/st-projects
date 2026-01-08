@@ -1,0 +1,49 @@
+:global(#app) {
+
+  .tree {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 0px; // Extra scrolling space at bottom
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .folderSection {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+
+  .rootBoardSection {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .rootDropSection {
+    position: relative;
+    min-height: 4px;
+
+    .dropLine {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: #000091;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: -4px;
+        top: -3px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: inherit;
+      }
+    }
+  }
+
+}

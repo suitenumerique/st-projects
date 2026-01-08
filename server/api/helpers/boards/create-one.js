@@ -3,10 +3,6 @@ const valuesValidator = (value) => {
     return false;
   }
 
-  if (!_.isFinite(value.position)) {
-    return false;
-  }
-
   if (!_.isPlainObject(value.project)) {
     return false;
   }
@@ -54,40 +50,10 @@ module.exports = {
     const { values } = inputs;
 
     const projectManagerUserIds = await sails.helpers.projects.getManagerUserIds(values.project.id);
-    const boards = await sails.helpers.projects.getBoards(values.project.id);
 
-    const { position, repositions } = sails.helpers.utils.insertToPositionables(
-      values.position,
-      boards,
-    );
-
-    repositions.forEach(async ({ id, position: nextPosition }) => {
-      await Board.update({
-        id,
-        projectId: values.project.id,
-      }).set({
-        position: nextPosition,
-      });
-
-      // TODO: move out of loop
-      const boardMemberUserIds = await sails.helpers.boards.getMemberUserIds(id);
-      const boardRelatedUserIds = _.union(projectManagerUserIds, boardMemberUserIds);
-
-      boardRelatedUserIds.forEach((userId) => {
-        sails.sockets.broadcast(`user:${userId}`, 'boardUpdate', {
-          item: {
-            id,
-            position: nextPosition,
-          },
-        });
-
-        // TODO: send webhooks
-      });
-    });
-
+    // Create board without position (position is now user-specific)
     const board = await Board.create({
-      ...values,
-      position,
+      ..._.omit(values, 'position'),
       projectId: values.project.id,
     }).fetch();
 
@@ -100,6 +66,18 @@ module.exports = {
       userId: inputs.actorUser.id,
       role: BoardMembership.Roles.OWNER,
     }).fetch();
+
+    // Create user board preference for the actor (creator)
+    // Position will be calculated automatically by the upsert helper
+    await sails.helpers.userBoardPreferences.upsertOne.with({
+      userId: inputs.actorUser.id,
+      boardId: board.id,
+      values: {
+        position: values.position, // If provided, use it; otherwise helper will calculate
+      },
+      actorUser: inputs.actorUser,
+      request: inputs.request,
+    });
 
     projectManagerUserIds.forEach((userId) => {
       sails.sockets.broadcast(

@@ -9,6 +9,7 @@ module.exports = {
   },
 
   async fn(inputs) {
-    return Board.find(inputs.criteria).sort('position');
+    // Boards are now ordered by user preferences, not by a global position
+    return Board.find(inputs.criteria);
   },
 };

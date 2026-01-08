@@ -12,7 +12,6 @@ export default class extends BaseModel {
 
   static fields = {
     id: attr(),
-    position: attr(),
     name: attr(),
     isPublic: attr(),
     isFetching: attr({

@@ -1,0 +1,105 @@
+:global(#app) {
+
+  .itemWrapper {
+    display: flex;
+    flex-direction: column;
+    cursor: grab;
+    border: 1.5px solid rgba(0,0,0,0);
+    padding: 0.125rem 0;
+    border-radius: 4px;
+
+    &:active {
+      cursor: grabbing;
+    }
+
+    &.dragging {
+      opacity: 0.5;
+    }
+
+    &:not(.disableHover):hover {
+      background-color: var(--c--globals--colors--black-050);
+      .itemActions {
+        display: flex;
+      }
+    }
+
+    &.popoverOpened {
+      background-color: var(--c--globals--colors--black-050);
+      .itemActions {
+        display: flex;
+        background-color: var(--c--globals--colors--black-050);
+        border-radius: 4px;
+      }
+    }
+
+  }
+
+  .itemHeader {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 0.25rem;
+    height: 24px;
+    cursor: pointer;
+  }
+
+  .itemDropTarget {
+    background-color: rgba(0, 0, 145, 0.05);
+    outline: 1px solid #000091;
+  }
+
+  .itemToggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    color: var(--c--theme--colors--greyscale-600);
+
+    &:hover {
+      color: var(--c--theme--colors--greyscale-1000);
+    }
+  }
+
+  .itemIcon {
+    color: var(--c--theme--colors--greyscale-600);
+  }
+
+  .itemName {
+    flex: 1;
+    font-size: var(--c--theme--font--sizes--sm);
+    font-weight: 500;
+    color: var(--c--theme--colors--greyscale-1000);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .itemActions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 4px;
+    color: var(--c--theme--colors--primary-text);
+    display: none;
+    padding: 0;
+    border: 1px solid rgba(0,0,0,0);
+
+    > span {
+      font-size: 20px;
+    }
+
+    &:hover {
+      background-color: var(--c--globals--colors--black-050);
+      border-radius: 4px;
+    }
+  }
+
+ }

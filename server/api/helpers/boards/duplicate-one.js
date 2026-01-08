@@ -31,14 +31,9 @@ module.exports = {
     const labels = await Label.find({ boardId: board.id });
     const cardLabels = await CardLabel.find({ cardId: cards.map((card) => card.id) });
 
-    // Get the position for the new board
-    const boards = await sails.helpers.projects.getBoards(targetProject.id);
-    const { position } = sails.helpers.utils.insertToPositionables(boards.length * 65535, boards);
-
-    // Create the new board
+    // Create the new board (position is now user-specific)
     const newBoard = await Board.create({
       name: board.name,
-      position,
       projectId: targetProject.id,
     }).fetch();
 
@@ -47,6 +42,16 @@ module.exports = {
       boardId: newBoard.id,
       userId: actorUser.id,
       role: BoardMembership.Roles.OWNER,
+    });
+
+    // Create user board preference for the actor (creator)
+    // Position will be calculated automatically by the upsert helper
+    await sails.helpers.userBoardPreferences.upsertOne.with({
+      userId: actorUser.id,
+      boardId: newBoard.id,
+      values: {},
+      actorUser,
+      request: inputs.request,
     });
 
     // Create new labels

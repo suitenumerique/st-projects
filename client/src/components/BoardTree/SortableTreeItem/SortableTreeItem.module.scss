@@ -1,0 +1,51 @@
+:global(#app) {
+
+  .sortableWrapper {
+    margin: 0;
+    box-sizing: border-box;
+    touch-action: none;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nestedContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-top: 4px;
+    padding-left: 24px;
+    position: relative;
+  }
+
+  .dropLineTop,
+  .dropLineBottom {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #000091;
+    z-index: 100;
+    pointer-events: none;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: -4px;
+      top: -3px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: inherit;
+    }
+  }
+
+  .dropLineTop {
+    top: -3px;
+  }
+
+  .dropLineBottom {
+    bottom: -3px;
+  }
+
+}

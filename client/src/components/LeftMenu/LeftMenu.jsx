@@ -1,11 +1,12 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@openfun/cunningham-react';
+import { Button, useModal } from '@openfun/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 import usePopup from '../../lib/popup/use-popup';
-// import { SurveyButton as FeedbackButton } from '../../ui/FeedbackButton/index.tsx';
-import BoardListItemContainer from '../../containers/BoardListItemContainer';
+import BoardTree from '../BoardTree/BoardTree';
 import BoardCreateStep from '../../steps/BoardCreateStep';
+import FolderEditModal from './FolderEditModal';
+// import BoardListItemContainer from '../../containers/BoardListItemContainer';
 import styles from './LeftMenu.module.scss';
 import { push } from '../../lib/redux-router';
 import Paths from '../../constants/Paths';
@@ -16,18 +17,52 @@ const LeftMenu = React.memo(
     currentBoardId,
     privateBoards,
     sharedBoards,
+    privateFolders,
+    sharedFolders,
+    userBoardPreferences,
     templateBoards,
-    // reactAppFeedbackWidgetApiUrl,
-    // reactAppFeedbackWidgetPath,
-    // reactAppFeedbackWidgetChannel,
     onBoardAdd,
     onBoardDuplicate,
+    onBoardUpdate,
+    onBoardDelete,
+    onFolderAdd,
+    onFolderUpdate,
+    onFolderDelete,
+    canEdit,
   }) => {
     const BoardCreateStepPopover = usePopup(BoardCreateStep);
+    const folderEditModal = useModal();
+    const [folderEditModalData, setFolderEditModalData] = useState({
+      name: '',
+      isPrivate: true,
+    });
 
     const goToBoard = useCallback((boardId) => {
       store.dispatch(push(Paths.BOARDS.replace(':id', boardId)));
     }, []);
+
+    const onFolderEdit = useCallback(
+      (folder) => {
+        setFolderEditModalData(folder);
+        folderEditModal.open();
+      },
+      [folderEditModal],
+    );
+
+    const onFolderSubmit = useCallback(
+      (data) => {
+        if (data.id) {
+          onFolderUpdate(data.id, data);
+        } else {
+          onFolderAdd(data);
+        }
+      },
+      [onFolderAdd, onFolderUpdate],
+    );
+
+    useEffect(() => {
+      // console.log('userBoardPreferences', userBoardPreferences);
+    }, [userBoardPreferences]);
 
     return (
       <div className={styles.wrapper}>
@@ -49,51 +84,90 @@ const LeftMenu = React.memo(
         </div>
         <div className={styles.spaces}>
           <div className={styles.space}>
-            <p className={styles.spaceTitle}>Mon espace</p>
-            {privateBoards.length === 0 ? (
+            <div className={styles.spaceHeader}>
+              <p className={styles.spaceTitle}>Mon espace</p>
+              <Button
+                className={styles.addFolderButton}
+                size="nano"
+                color="primary"
+                icon={<span className="material-icons">add</span>}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setFolderEditModalData({
+                    name: '',
+                    isPrivate: true,
+                  });
+                  folderEditModal.open();
+                }}
+              />
+            </div>
+            {privateBoards.length === 0 && privateFolders.length === 0 ? (
               <p className={styles.emptySpace}>Aucun tableau</p>
             ) : (
               <div className={styles.boards}>
-                {privateBoards.map((board) => (
-                  <BoardListItemContainer
-                    key={board.id}
-                    id={board.id}
-                    showDescription={false}
-                    editable
-                    isActive={board.id === currentBoardId}
-                    handleClick={() => goToBoard(board.id)}
-                  />
-                ))}
+                <BoardTree
+                  boards={privateBoards}
+                  folders={privateFolders || []}
+                  userBoardPreferences={userBoardPreferences || []}
+                  currentBoardId={currentBoardId}
+                  onBoardClick={goToBoard}
+                  onBoardUpdate={onBoardUpdate}
+                  onBoardDelete={onBoardDelete}
+                  onFolderEdit={onFolderEdit}
+                  onFolderUpdate={onFolderUpdate}
+                  onFolderDelete={onFolderDelete}
+                  canEdit={canEdit}
+                />
               </div>
             )}
           </div>
           <div className={styles.space}>
-            <p className={styles.spaceTitle}>Espace partagé</p>
-            {sharedBoards.length === 0 ? (
+            <div className={styles.spaceHeader}>
+              <p className={styles.spaceTitle}>Espace partagé</p>
+              <Button
+                className={styles.addFolderButton}
+                size="nano"
+                color="primary"
+                icon={<span className="material-icons">add</span>}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setFolderEditModalData({
+                    name: '',
+                    isPrivate: false,
+                  });
+                  folderEditModal.open();
+                }}
+              />
+            </div>
+            {sharedBoards.length === 0 && sharedFolders.length === 0 ? (
               <p className={styles.emptySpace}>Aucun tableau</p>
             ) : (
               <div className={styles.boards}>
-                {sharedBoards.map((board) => (
-                  <BoardListItemContainer
-                    key={board.id}
-                    id={board.id}
-                    showDescription={false}
-                    editable
-                    isActive={board.id === currentBoardId}
-                    handleClick={() => goToBoard(board.id)}
-                  />
-                ))}
+                <BoardTree
+                  boards={sharedBoards}
+                  folders={sharedFolders || []}
+                  userBoardPreferences={userBoardPreferences || []}
+                  currentBoardId={currentBoardId}
+                  onBoardClick={goToBoard}
+                  onBoardUpdate={onBoardUpdate}
+                  onBoardDelete={onBoardDelete}
+                  onFolderEdit={onFolderEdit}
+                  onFolderUpdate={onFolderUpdate}
+                  onFolderDelete={onFolderDelete}
+                  canEdit={canEdit}
+                />
               </div>
             )}
           </div>
         </div>
-        {/* <div className={styles.bottomBar}>
-          <FeedbackButton
-            apiUrl={reactAppFeedbackWidgetApiUrl}
-            widgetPath={reactAppFeedbackWidgetPath}
-            channel={reactAppFeedbackWidgetChannel}
+        {folderEditModal.isOpen && (
+          <FolderEditModal
+            initialData={folderEditModalData}
+            isOpen={folderEditModal.isOpen}
+            onClose={folderEditModal.close}
+            onSubmit={onFolderSubmit}
           />
-        </div> */}
+        )}
       </div>
     );
   },
@@ -103,18 +177,27 @@ LeftMenu.propTypes = {
   currentBoardId: PropTypes.string,
   privateBoards: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   sharedBoards: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  privateFolders: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  sharedFolders: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  userBoardPreferences: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   templateBoards: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  // reactAppFeedbackWidgetApiUrl: PropTypes.string.isRequired,
-  // reactAppFeedbackWidgetPath: PropTypes.string.isRequired,
-  // reactAppFeedbackWidgetChannel: PropTypes.string.isRequired,
   onBoardAdd: PropTypes.func.isRequired,
   onBoardDuplicate: PropTypes.func.isRequired,
+  onBoardUpdate: PropTypes.func.isRequired,
+  onBoardDelete: PropTypes.func.isRequired,
+  onFolderAdd: PropTypes.func.isRequired,
+  onFolderUpdate: PropTypes.func.isRequired,
+  onFolderDelete: PropTypes.func.isRequired,
+  canEdit: PropTypes.bool.isRequired,
 };
 
 LeftMenu.defaultProps = {
   privateBoards: [],
   sharedBoards: [],
+  privateFolders: [],
+  sharedFolders: [],
   currentBoardId: undefined,
+  userBoardPreferences: [],
 };
 
 export default LeftMenu;
