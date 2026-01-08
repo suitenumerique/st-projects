@@ -30,6 +30,7 @@ export default {
       areYouSureYouWantToDeleteThisAttachment:
         'Êtes-vous sûr de vouloir supprimer cette pièce jointe ?',
       areYouSureYouWantToDeleteThisBoard: 'Êtes-vous sûr de vouloir supprimer ce tableau ?',
+      areYouSureYouWantToDeleteThisFolder: 'Êtes-vous sûr de vouloir supprimer ce dossier ?',
       areYouSureYouWantToDeleteThisCard: 'Êtes-vous sûr de vouloir supprimer cette carte ?',
       areYouSureYouWantToDeleteThisComment: 'Êtes-vous sûr de vouloir supprimer ce commentaire ?',
       areYouSureYouWantToDeleteThisLabel: 'Êtes-vous sûr de vouloir supprimer cette étiquette ?',
@@ -69,6 +70,7 @@ export default {
       dueDate_title: "Date d'échéance",
       deleteAttachment_title: 'Supprimer la pièce jointe',
       deleteBoard_title: 'Supprimer le tableau',
+      deleteFolder_title: 'Supprimer le dossier',
       deleteCard_title: 'Supprimer la carte',
       deleteComment_title: 'Supprimer le commentaire',
       deleteLabel_title: "Supprimer l'étiquette",
@@ -201,6 +203,7 @@ export default {
       deleteAttachment: 'Supprimer la pièce jointe',
       deleteAvatar: "Supprimer l'avatar",
       deleteBoard: 'Supprimer le tableau',
+      deleteFolder: 'Supprimer le dossier',
       deleteCard: 'Supprimer la carte',
       deleteCard_title: 'Supprimer la carte',
       deleteComment: 'Supprimer le commentaire',

@@ -194,6 +194,27 @@ export function* updateBoard(id, data) {
       ),
     );
   }
+
+  // When setting a board public status changes, if only 1 member remains,
+  // the server deletes the user preference (folder assignment).
+  // We must do the same here because socket events exclude the sender.
+  if (typeof data.isPublic === 'boolean') {
+    const { boardId } = yield select(selectors.selectPath);
+
+    if (id === boardId) {
+      const memberships = yield select(selectors.selectMembershipsForCurrentBoard);
+
+      if (memberships && memberships.length === 1) {
+        const allPreferences = yield select(selectors.selectUserBoardPreferencesForCurrentUser);
+        // eslint-disable-next-line eqeqeq
+        const existingPreference = allPreferences.find((p) => p.boardId == id);
+
+        if (existingPreference && existingPreference.folderId) {
+          yield put(entryActions.handleUserBoardPreferenceDelete(existingPreference));
+        }
+      }
+    }
+  }
 }
 
 export function* handleBoardUpdate(board) {

@@ -15,26 +15,28 @@ module.exports = {
 
   async fn(inputs) {
     // Move all boards in this folder to the parent folder or root
-    const boards = await Board.find({
+    const userBoardPreferences = await UserBoardPreference.find({
       folderId: inputs.record.id,
     });
 
-    boards.forEach(async (board) => {
-      await Board.updateOne(board.id).set({
-        folderId: inputs.record.parentFolderId || null,
-      });
-    });
+    await Promise.all(
+      userBoardPreferences.map(async (preference) => {
+        const updatedPreference = await UserBoardPreference.updateOne(preference.id).set({
+          folderId: null,
+        });
 
-    // Move all subfolders to the parent folder or root
-    const subfolders = await Folder.find({
-      parentFolderId: inputs.record.id,
-    });
-
-    subfolders.forEach(async (subfolder) => {
-      await Folder.updateOne(subfolder.id).set({
-        parentFolderId: inputs.record.parentFolderId || null,
-      });
-    });
+        if (updatedPreference) {
+          sails.sockets.broadcast(
+            `user:${updatedPreference.userId}`,
+            'userBoardPreferenceUpdate',
+            {
+              item: updatedPreference,
+            },
+            inputs.request,
+          );
+        }
+      }),
+    );
 
     const folder = await Folder.destroyOne(inputs.record.id);
 

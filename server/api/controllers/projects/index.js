@@ -29,8 +29,10 @@ module.exports = {
     const allBoardMemberships = await sails.helpers.boards.getBoardMemberships(membershipBoardIds);
 
     // Get folders for current user
-    const folders = await sails.helpers.folders.getMany({
-      userId: currentUser.id,
+    const folders = await sails.helpers.folders.getMany.with({
+      criteria: {
+        userId: currentUser.id,
+      },
     });
 
     // Get user board preferences for current user

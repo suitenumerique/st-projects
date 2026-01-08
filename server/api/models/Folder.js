@@ -19,6 +19,11 @@ module.exports = {
       type: 'string',
       required: true,
     },
+    isPrivate: {
+      type: 'boolean',
+      defaultsTo: true,
+      columnName: 'is_private',
+    },
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗

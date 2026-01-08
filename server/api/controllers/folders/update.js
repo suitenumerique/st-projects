@@ -18,6 +18,9 @@ module.exports = {
       type: 'string',
       isNotEmptyString: true,
     },
+    isPrivate: {
+      type: 'boolean',
+    },
     parentFolderId: {
       type: 'string',
       regex: /^[0-9]+$/,
@@ -47,7 +50,7 @@ module.exports = {
 
     // Prevent nested folders - always set parentFolderId to null
     const values = {
-      ..._.pick(inputs, ['position', 'name']),
+      ..._.pick(inputs, ['position', 'name', 'isPrivate']),
       parentFolderId: null,
     };
 

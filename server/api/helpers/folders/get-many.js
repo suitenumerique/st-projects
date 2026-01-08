@@ -9,6 +9,12 @@ module.exports = {
   },
 
   async fn(inputs) {
-    return Folder.find(inputs.criteria || {}).sort('position ASC');
+    const { criteria } = inputs;
+
+    if (_.isPlainObject(criteria) && criteria.criteria) {
+      return Folder.find(criteria.criteria).sort('position ASC');
+    }
+
+    return Folder.find(criteria || {}).sort('position ASC');
   },
 };

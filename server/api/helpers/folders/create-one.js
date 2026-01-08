@@ -33,7 +33,7 @@ module.exports = {
   async fn(inputs) {
     const { values } = inputs;
 
-    const folders = await sails.helpers.folders.getMany({
+    const folders = await sails.helpers.folders.getMany.with({
       criteria: {
         userId: inputs.actorUser.id,
         parentFolderId: values.parentFolderId || null,

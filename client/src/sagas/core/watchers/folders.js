@@ -5,8 +5,8 @@ import EntryActionTypes from '../../../constants/EntryActionTypes';
 
 export default function* foldersWatchers() {
   yield all([
-    takeEvery(EntryActionTypes.FOLDER_IN_CURRENT_PROJECT_CREATE, ({ payload: { data } }) =>
-      services.createFolderInCurrentProject(data),
+    takeEvery(EntryActionTypes.FOLDER_CREATE, ({ payload: { data } }) =>
+      services.createFolder(data),
     ),
     takeEvery(EntryActionTypes.FOLDER_CREATE_HANDLE, ({ payload: { folder, requestId } }) =>
       services.handleFolderCreate(folder, requestId),

@@ -61,6 +61,30 @@ module.exports = {
       throw Errors.BOARD_MEMBERSHIP_NOT_FOUND;
     }
 
+    if (!board.isPublic) {
+      const memberships = await BoardMembership.find({
+        boardId: board.id,
+      });
+
+      if (memberships.length === 1) {
+        const remainingUserId = memberships[0].userId;
+
+        const existingPreference = await UserBoardPreference.findOne({
+          userId: remainingUserId,
+          boardId: board.id,
+        });
+
+        if (existingPreference && existingPreference.folderId) {
+          await sails.helpers.userBoardPreferences.deleteOne.with({
+            userId: remainingUserId,
+            boardId: board.id,
+            actorUser: currentUser,
+            request: this.req,
+          });
+        }
+      }
+    }
+
     return {
       item: boardMembership,
     };

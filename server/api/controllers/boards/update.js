@@ -74,6 +74,30 @@ module.exports = {
     }
     if (!_.isUndefined(values.isPublic)) {
       boardValues.isPublic = values.isPublic;
+
+      if (values.isPublic !== board.isPublic) {
+        const membershipsCount = await BoardMembership.count({
+          boardId: board.id,
+        });
+
+        if (membershipsCount === 1) {
+          const existingPreference = await UserBoardPreference.findOne({
+            userId: currentUser.id,
+            boardId: board.id,
+          });
+
+          if (existingPreference && existingPreference.folderId) {
+            await sails.helpers.userBoardPreferences.deleteOne.with({
+              userId: currentUser.id,
+              boardId: board.id,
+              actorUser: currentUser,
+              request: this.req,
+            });
+          }
+        } else if (values.isPublic && _.isUndefined(values.folderId)) {
+          userPreferenceValues.folderId = null;
+        }
+      }
     }
 
     // Update user board preference if position or folderId changed

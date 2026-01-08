@@ -10,6 +10,8 @@ const mapStateToProps = (state) => {
   const privateBoards = selectors.selectPrivateBoardsForCurrentUser(state);
   const sharedBoards = selectors.selectSharedBoardsForCurrentUser(state);
   const folders = selectors.selectFoldersForCurrentUser(state);
+  const privateFolders = folders.filter((folder) => folder.isPrivate);
+  const sharedFolders = folders.filter((folder) => !folder.isPrivate);
   const userBoardPreferences = selectors.selectUserBoardPreferencesForCurrentUser(state);
   const canEdit = true; // TODO: determine based on permissions
 
@@ -21,7 +23,8 @@ const mapStateToProps = (state) => {
     currentBoardId: boardId,
     privateBoards,
     sharedBoards,
-    folders,
+    privateFolders,
+    sharedFolders,
     userBoardPreferences,
     canEdit,
     templateBoards,
@@ -33,10 +36,11 @@ const mapDispatchToProps = (dispatch) =>
     {
       onBoardAdd: entryActions.createBoardInCurrentProject,
       onBoardDuplicate: entryActions.duplicateBoard,
-      onBoardUpdate: (id, data) => dispatch(entryActions.updateBoard(id, data)),
-      onBoardDelete: (id) => dispatch(entryActions.deleteBoard(id)),
-      onFolderUpdate: (id, data) => dispatch(entryActions.updateFolder(id, data)),
-      onFolderDelete: (id) => dispatch(entryActions.deleteFolder(id)),
+      onBoardUpdate: entryActions.updateBoard,
+      onBoardDelete: entryActions.deleteBoard,
+      onFolderAdd: entryActions.createFolder,
+      onFolderUpdate: entryActions.updateFolder,
+      onFolderDelete: entryActions.deleteFolder,
     },
     dispatch,
   );

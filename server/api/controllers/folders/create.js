@@ -14,6 +14,10 @@ module.exports = {
       type: 'string',
       required: true,
     },
+    isPrivate: {
+      type: 'boolean',
+      defaultsTo: true,
+    },
     requestId: {
       type: 'string',
       isNotEmptyString: true,
@@ -25,7 +29,7 @@ module.exports = {
 
     // Force parentFolderId to null to prevent nested folders
     const values = {
-      ..._.pick(inputs, ['position', 'name']),
+      ..._.pick(inputs, ['position', 'name', 'isPrivate']),
       parentFolderId: null,
     };
 

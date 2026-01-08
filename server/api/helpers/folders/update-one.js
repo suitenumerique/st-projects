@@ -34,11 +34,13 @@ module.exports = {
     const { values } = inputs;
 
     if (!_.isUndefined(values.position)) {
-      const folders = await sails.helpers.folders.getMany({
-        userId: inputs.record.userId,
-        parentFolderId: inputs.record.parentFolderId || null,
-        id: {
-          '!=': inputs.record.id,
+      const folders = await sails.helpers.folders.getMany.with({
+        criteria: {
+          userId: inputs.record.userId,
+          parentFolderId: inputs.record.parentFolderId || null,
+          id: {
+            '!=': inputs.record.id,
+          },
         },
       });
 

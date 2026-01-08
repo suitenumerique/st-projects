@@ -10,6 +10,7 @@ export default class extends BaseModel {
     id: attr(),
     position: attr(),
     name: attr(),
+    isPrivate: attr(),
     userId: fk({
       to: 'User',
       as: 'user',
@@ -46,16 +47,34 @@ export default class extends BaseModel {
       case ActionTypes.FOLDER_UPDATE_HANDLE:
         Folder.upsert(payload.folder);
         break;
-      case ActionTypes.FOLDER_CREATE__SUCCESS:
-        Folder.withId(payload.localId).delete();
+      case ActionTypes.FOLDER_CREATE__SUCCESS: {
+        const folderModel = Folder.withId(payload.localId);
+
+        if (folderModel) {
+          folderModel.delete();
+        }
+
         Folder.upsert(payload.folder);
         break;
-      case ActionTypes.FOLDER_UPDATE:
-        Folder.withId(payload.id).update(payload.data);
+      }
+      case ActionTypes.FOLDER_UPDATE: {
+        const folderModel = Folder.withId(payload.id);
+
+        if (folderModel) {
+          folderModel.update(payload.data);
+        }
+
         break;
-      case ActionTypes.FOLDER_DELETE:
-        Folder.withId(payload.id).deleteWithRelated();
+      }
+      case ActionTypes.FOLDER_DELETE: {
+        const folderModel = Folder.withId(payload.id);
+
+        if (folderModel) {
+          folderModel.deleteWithRelated();
+        }
+
         break;
+      }
       case ActionTypes.FOLDER_DELETE__SUCCESS:
       case ActionTypes.FOLDER_DELETE_HANDLE: {
         const folderModel = Folder.withId(payload.folder.id);

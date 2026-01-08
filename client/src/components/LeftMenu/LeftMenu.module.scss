@@ -38,6 +38,13 @@
         border-bottom: 1px solid var(--c--theme--colors--greyscale-200);
       }
 
+      .spaceHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+
       .spaceTitle {
         font-size: var(--c--theme--font--sizes--sm);
         font-weight: 700;
@@ -48,6 +55,21 @@
         align-items: center;
         justify-content: flex-start;
       }
+
+      .addFolderButton {
+        opacity: 0;
+        width: 18px !important;
+        height: 18px !important;
+        padding: 0;
+        border-radius: 2px;
+      }
+
+      &:hover {
+        .addFolderButton {
+          opacity: 1;
+        }
+      }
+
     }
   }
 

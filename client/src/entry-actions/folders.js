@@ -1,7 +1,7 @@
 import EntryActionTypes from '../constants/EntryActionTypes';
 
-const createFolderInCurrentProject = (data) => ({
-  type: EntryActionTypes.FOLDER_IN_CURRENT_PROJECT_CREATE,
+const createFolder = (data) => ({
+  type: EntryActionTypes.FOLDER_CREATE,
   payload: {
     data,
   },
@@ -45,7 +45,7 @@ const handleFolderDelete = (folder) => ({
 });
 
 export default {
-  createFolderInCurrentProject,
+  createFolder,
   handleFolderCreate,
   updateFolder,
   handleFolderUpdate,

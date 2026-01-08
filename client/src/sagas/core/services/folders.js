@@ -38,10 +38,6 @@ export function* createFolder(data) {
   yield put(actions.createFolder.success(localId, folder));
 }
 
-export function* createFolderInCurrentProject(data) {
-  yield call(createFolder, data);
-}
-
 export function* handleFolderCreate(folder) {
   yield put(actions.handleFolderCreate(folder));
 }
@@ -86,7 +82,6 @@ export function* handleFolderDelete(folder) {
 
 export default {
   createFolder,
-  createFolderInCurrentProject,
   handleFolderCreate,
   updateFolder,
   handleFolderUpdate,
