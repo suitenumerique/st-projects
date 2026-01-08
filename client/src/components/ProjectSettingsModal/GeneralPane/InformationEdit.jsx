@@ -1,9 +1,8 @@
-import { dequal } from 'dequal';
 import pickBy from 'lodash/pickBy';
 import React, { useCallback, useMemo, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button, Form, Input } from 'semantic-ui-react';
+import { Button, Input } from '@openfun/cunningham-react';
 
 import { useForm } from '../../../hooks';
 
@@ -27,28 +26,34 @@ const InformationEdit = React.memo(({ defaultData, onUpdate }) => {
 
   const nameField = useRef(null);
 
-  const handleSubmit = useCallback(() => {
-    if (!cleanData.name) {
-      nameField.current.select();
-      return;
-    }
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
 
-    onUpdate(cleanData);
-  }, [onUpdate, cleanData]);
+      if (!cleanData.name) {
+        nameField.current.select();
+        return;
+      }
+
+      onUpdate(cleanData);
+    },
+    [onUpdate, cleanData],
+  );
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <div className={styles.text}>{t('common.title')}</div>
+    <form onSubmit={handleSubmit}>
       <Input
-        fluid
         ref={nameField}
         name="name"
         value={data.name}
+        label={t('common.projectTitle')}
         className={styles.field}
         onChange={handleFieldChange}
       />
-      <Button positive disabled={dequal(cleanData, defaultData)} content={t('action.save')} />
-    </Form>
+      <div>
+        <Button>{t('action.save')}</Button>
+      </div>
+    </form>
   );
 });
 

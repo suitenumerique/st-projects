@@ -5,7 +5,7 @@ module.exports = {
     const managerProjectIds = await sails.helpers.users.getManagerProjectIds(currentUser.id);
     const managerProjects = await sails.helpers.projects.getMany(managerProjectIds);
 
-    let boardMemberships = await sails.helpers.users.getBoardMemberships(currentUser.id);
+    const boardMemberships = await sails.helpers.users.getBoardMemberships(currentUser.id);
     const membershipBoardIds = sails.helpers.utils.mapRecords(boardMemberships, 'boardId');
 
     let membershipBoards = await sails.helpers.boards.getMany({
@@ -37,9 +37,10 @@ module.exports = {
     const boards = [...managerBoards, ...membershipBoards];
     const boardIds = sails.helpers.utils.mapRecords(boards);
 
-    boardMemberships = boardMemberships.filter((boardMembership) =>
-      boardIds.includes(boardMembership.boardId),
-    );
+    // Get all board memberships for these boards (not just current user's), it will help adjusting UI depending on if it's shared or not
+    const allBoardMemberships = await sails.helpers.boardMemberships.getMany({
+      boardId: boardIds,
+    });
 
     return {
       items: projects,
@@ -47,7 +48,7 @@ module.exports = {
         users,
         projectManagers,
         boards,
-        boardMemberships,
+        boardMemberships: allBoardMemberships,
       },
     };
   },

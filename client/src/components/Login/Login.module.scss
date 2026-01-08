@@ -1,67 +1,54 @@
 :global(#app) {
-  .cover {
-    background: url("../../assets/images/cover.jpg") center / cover;
+  .logoGouv {
+    margin-right: 2rem;
+    height: 60px;
   }
 
-  .descriptionSubtitle {
-    font-size: 24px;
-    font-weight: normal;
-    margin-top: 8px;
+  .logoLink {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
   }
 
-  .descriptionTitle {
-    font-size: 52px;
-    margin-bottom: 8px;
-  }
-
-  .descriptionWrapper {
-    padding: 60px 0 0 80px;
-    position: relative;
-  }
-
-  .descriptionWrapperOverlay {
-    background: rgba(33, 33, 33, 0.5);
-    bottom: 0;
+  .logoWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 100%;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 100%;
+
+    & > span {
+      font-weight: bold;
+      font-size: 11px;
+      color: rgb(89, 88, 211);
+      display: flex;
+      flex-direction: column;
+      background: rgb(236, 236, 255);
+      color: rgb(89, 88, 211);
+      height: 16px;
+      padding: 4px 6px;
+      border-radius: 12px;
+      line-height: 9px;
+    }
   }
 
-  .formTitle {
-    font-size: 36px;
-    font-weight: normal;
-    margin-bottom: 32px;
+  .feedbackButton {
+    color: var(--c--theme--colors--info-600);
+    background-color: var(--c--theme--colors--info-100);
+    margin-left: 2rem;
+    &:hover {
+      background-color: var(--c--theme--colors--info-200);
+    }
   }
 
-  .fullHeight {
-    height: 100%;
+  .overSm {
+    @media (max-width: 575px) {
+      display: none !important;
+    }
   }
 
-  .fullHeightPaddingFix {
-    height: calc(100% + 1rem);
-  }
-
-  .inputLabel {
-    font-size: 16px;
-    font-weight: bold;
-    line-height: 20px;
-    margin-bottom: 4px;
-  }
-
-  .inputWrapper {
-    margin-bottom: 16px;
-  }
-
-  .loginWrapper {
-    margin: 0 auto;
-    max-width: 440px;
-    padding: 0 20px;
-  }
-
-  .wrapper {
-    background: #fff;
+  .onlySm {
+    @media (min-width: 576px) {
+      display: none !important;
+    }
   }
 }

@@ -1,0 +1,16 @@
+:global(#app) {
+  .selectorContainer {
+    margin-bottom: 12px;
+  }
+
+  .text {
+    font-size: 12px;
+    font-weight: bold;
+    padding-bottom: 6px;
+  }
+
+  .selector {
+    display: flex;
+    justify-content: flex-start;
+  }
+}

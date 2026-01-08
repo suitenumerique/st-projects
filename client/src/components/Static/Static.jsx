@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation, Trans } from 'react-i18next';
-import { Icon, Loader } from 'semantic-ui-react';
+import { Spinner } from '@gouvfr-lasuite/ui-kit';
 
 import ProjectsContainer from '../../containers/ProjectsContainer';
 import BoardContainer from '../../containers/BoardContainer';
+import BoardActionsContainer from '../../containers/BoardActionsContainer';
 
 import styles from './Static.module.scss';
 
@@ -22,7 +23,7 @@ function Static({ projectId, cardId, board }) {
 
   if (cardId === null) {
     return (
-      <div className={classNames(styles.wrapper, styles.wrapperFlex)}>
+      <div className={classNames(styles.wrapper)}>
         <div className={styles.message}>
           <h1>
             {t('common.cardNotFound', {
@@ -36,7 +37,7 @@ function Static({ projectId, cardId, board }) {
 
   if (board === null) {
     return (
-      <div className={classNames(styles.wrapper, styles.wrapperFlex)}>
+      <div className={classNames(styles.wrapper)}>
         <div className={styles.message}>
           <h1>
             {t('common.boardNotFound', {
@@ -50,7 +51,7 @@ function Static({ projectId, cardId, board }) {
 
   if (projectId === null) {
     return (
-      <div className={classNames(styles.wrapper, styles.wrapperFlex)}>
+      <div className={classNames(styles.wrapper)}>
         <div className={styles.message}>
           <h1>
             {t('common.projectNotFound', {
@@ -64,9 +65,8 @@ function Static({ projectId, cardId, board }) {
 
   if (board === undefined) {
     return (
-      <div className={classNames(styles.wrapper, styles.wrapperFlex, styles.wrapperProject)}>
+      <div className={classNames(styles.wrapper)}>
         <div className={styles.message}>
-          <Icon inverted name="hand point up outline" size="huge" className={styles.messageIcon} />
           <h1 className={styles.messageTitle}>
             {t('common.openBoard', {
               context: 'title',
@@ -83,13 +83,16 @@ function Static({ projectId, cardId, board }) {
   if (board.isFetching) {
     return (
       <div className={classNames(styles.wrapper, styles.wrapperLoader, styles.wrapperProject)}>
-        <Loader active size="big" />
+        <div className={styles.loading}>
+          <Spinner size="xl" />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className={classNames(styles.wrapper, styles.wrapperFlex, styles.wrapperBoard)}>
+    <div className={classNames(styles.wrapper, styles.wrapperLoader, styles.wrapperProject)}>
+      {board && !board.isFetching && <BoardActionsContainer />}
       <BoardContainer />
     </div>
   );

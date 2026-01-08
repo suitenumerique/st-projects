@@ -1,6 +1,9 @@
 const rimraf = require('rimraf');
 
 const Errors = {
+  FILE_UPLOAD_DISABLED: {
+    fileUploadDisabled: 'File upload is disabled',
+  },
   PROJECT_NOT_FOUND: {
     projectNotFound: 'Project not found',
   },
@@ -37,6 +40,9 @@ module.exports = {
   },
 
   async fn(inputs, exits) {
+    throw Errors.FILE_UPLOAD_DISABLED;
+
+    /* eslint-disable no-unreachable */
     const { currentUser } = this.req;
 
     let project = await Project.findOne(inputs.id);
@@ -92,5 +98,6 @@ module.exports = {
     return exits.success({
       item: project,
     });
+    /* eslint-enable no-unreachable */
   },
 };

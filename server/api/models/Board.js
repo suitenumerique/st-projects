@@ -25,6 +25,11 @@ module.exports = {
       type: 'string',
       required: true,
     },
+    isPublic: {
+      type: 'boolean',
+      defaultsTo: false,
+      columnName: 'is_public',
+    },
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗

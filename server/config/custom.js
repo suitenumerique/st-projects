@@ -10,8 +10,81 @@
 
 const { URL } = require('url');
 const sails = require('sails');
+const z = require('zod');
+
+const defaultTheme = require('./default-theme.json');
 
 const parsedBasedUrl = new URL(process.env.BASE_URL);
+
+const ThemeLinkSchema = z.object({
+  label: z.string().min(1),
+  href: z.string().min(1),
+});
+
+const HeaderThemeSchema = z.object({
+  logo: z
+    .object({
+      src: z.string().min(1),
+      width: z.string().min(1).optional(),
+      height: z.string().min(1).optional(),
+      alt: z.string(),
+    })
+    .optional(),
+});
+
+const LocaleThemeFooterSchema = z.object({
+  externalLinks: z.array(ThemeLinkSchema).optional(),
+  legalLinks: z.array(ThemeLinkSchema).optional(),
+  license: z
+    .object({
+      label: z.string().min(1),
+      link: ThemeLinkSchema,
+    })
+    .optional(),
+  logo: z
+    .object({
+      src: z.string().min(1),
+      width: z.string().min(1).optional(),
+      height: z.string().min(1).optional(),
+      alt: z.string(),
+    })
+    .optional(),
+});
+
+const LocaleThemeFeedbackSchema = z.object({
+  items: z
+    .array(
+      z.object({
+        type: z.enum(['chat', 'survey', 'video']),
+        title: z.string().min(1),
+        description: z.string().min(1).optional(),
+        href: z.string().min(1),
+      }),
+    )
+    .optional(),
+});
+
+const ThemeSchema = z.object({
+  header: HeaderThemeSchema.optional(),
+  footer: z
+    .object({
+      default: LocaleThemeFooterSchema,
+      fr: LocaleThemeFooterSchema.optional(),
+      en: LocaleThemeFooterSchema.optional(),
+    })
+    .optional(),
+  feedback: z
+    .object({
+      default: LocaleThemeFeedbackSchema,
+      fr: LocaleThemeFeedbackSchema.optional(),
+      en: LocaleThemeFeedbackSchema.optional(),
+    })
+    .optional(),
+});
+
+const TemplateBoardsSchema = z.array(
+  z.unknown(), // TODO: implement once really used in this version (duplicate functions...)
+);
 
 module.exports.custom = {
   /**
@@ -89,4 +162,15 @@ module.exports.custom = {
   telegramBotToken: process.env.TELEGRAM_BOT_TOKEN,
   telegramChatId: process.env.TELEGRAM_CHAT_ID,
   telegramThreadId: process.env.TELEGRAM_THREAD_ID,
+
+  templateBoards: TemplateBoardsSchema.parse(
+    process.env.TEMPLATE_BOARDS ? JSON.parse(process.env.TEMPLATE_BOARDS) : [],
+  ),
+
+  lagaufreWidgetApiUrl:
+    process.env.LAGAUFRE_WIDGET_API_URL || 'https://lasuite.numerique.gouv.fr/api/services',
+  lagaufreWidgetPath:
+    process.env.LAGAUFRE_WIDGET_PATH || 'https://static.suite.anct.gouv.fr/widgets/lagaufre.js',
+
+  theme: ThemeSchema.parse(process.env.THEME ? JSON.parse(process.env.THEME) : defaultTheme),
 };

@@ -16,10 +16,10 @@ module.exports = {
     isAdmin: {
       type: 'boolean',
     },
-    name: {
-      type: 'string',
-      isNotEmptyString: true,
-    },
+    // name: {
+    //   type: 'string',
+    //   isNotEmptyString: true,
+    // },
     avatarUrl: {
       type: 'json',
       custom: avatarUrlValidator,
@@ -29,11 +29,11 @@ module.exports = {
       isNotEmptyString: true,
       allowNull: true,
     },
-    organization: {
-      type: 'string',
-      isNotEmptyString: true,
-      allowNull: true,
-    },
+    // organization: {
+    //   type: 'string',
+    //   isNotEmptyString: true,
+    //   allowNull: true,
+    // },
     language: {
       type: 'string',
       isIn: User.LANGUAGES,
@@ -70,24 +70,25 @@ module.exports = {
     if (user.email === sails.config.custom.defaultAdminEmail) {
       /* eslint-disable no-param-reassign */
       delete inputs.isAdmin;
-      delete inputs.name;
+      // delete inputs.name;
       /* eslint-enable no-param-reassign */
     } else if (user.isSso) {
       if (!sails.config.custom.oidcIgnoreRoles) {
         delete inputs.isAdmin; // eslint-disable-line no-param-reassign
       }
 
-      delete inputs.name; // eslint-disable-line no-param-reassign
+      // delete inputs.name; // eslint-disable-line no-param-reassign
     }
 
     const values = {
       ..._.pick(inputs, [
         'isAdmin',
-        'name',
         'phone',
-        'organization',
         'language',
         'subscribeToOwnCards',
+        // // Since forcing OIDC we want to avoid the possibility of stealing identity
+        // 'name',
+        // 'organization',
       ]),
       avatar: inputs.avatarUrl,
     };

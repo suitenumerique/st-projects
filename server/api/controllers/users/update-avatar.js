@@ -1,6 +1,9 @@
 const rimraf = require('rimraf');
 
 const Errors = {
+  AVATAR_UPDATE_DISABLED: {
+    avatarUpdateDisabled: 'Avatar update disabled',
+  },
   USER_NOT_FOUND: {
     userNotFound: 'User not found',
   },
@@ -37,6 +40,11 @@ module.exports = {
   },
 
   async fn(inputs, exits) {
+    // If any avatar we would want to rely of the one provided by OIDC, so for now the generated 2 letters avatar
+    // is fine. In the future if namesakes are too much colliding we would add colors (or try to infer the organization from the email)
+    throw Errors.AVATAR_UPDATE_DISABLED;
+
+    /* eslint-disable no-unreachable */
     const { currentUser } = this.req;
 
     let user;
@@ -93,5 +101,6 @@ module.exports = {
     return exits.success({
       item: user,
     });
+    /* eslint-enable no-unreachable */
   },
 };

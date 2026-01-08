@@ -1,0 +1,7 @@
+# The project was mainly configured for JS, do not consider our tiny TS code
+*.ts
+*.tsx
+
+# Improve performance
+build/
+node_modules/

@@ -24,4 +24,5 @@ module.exports.policies = {
   'show-config': true,
   'access-tokens/create': true,
   'access-tokens/exchange-using-oidc': true,
+  'boards/show': 'allow-public-board-access',
 };

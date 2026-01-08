@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import User from '../../User';
+import User from '../../../ui/User';
 
 import styles from './UserItem.module.scss';
 

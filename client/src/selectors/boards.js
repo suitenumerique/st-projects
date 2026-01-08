@@ -91,6 +91,32 @@ export const selectCurrentUserMembershipForCurrentBoard = createSelector(
   },
 );
 
+export const makeSelectCurrentUserMembershipForBoardById = () =>
+  createSelector(
+    orm,
+    (_, boardId) => boardId,
+    (state) => selectCurrentUserId(state),
+    ({ Board }, boardId, currentUserId) => {
+      if (!boardId) {
+        return boardId;
+      }
+
+      const boardModel = Board.withId(boardId);
+
+      if (!boardModel) {
+        return boardModel;
+      }
+
+      const boardMembershipModel = boardModel.getMembershipModelForUser(currentUserId);
+
+      if (!boardMembershipModel) {
+        return boardMembershipModel;
+      }
+
+      return boardMembershipModel.ref;
+    },
+  );
+
 export const selectLabelsForCurrentBoard = createSelector(
   orm,
   (state) => selectPath(state).boardId,
@@ -136,6 +162,108 @@ export const selectListIdsForCurrentBoard = createSelector(
   },
 );
 
+export const selectListsForCurrentBoard = createSelector(
+  orm,
+  (state) => selectPath(state).boardId,
+  ({ Board }, id) => {
+    if (!id) {
+      return id;
+    }
+
+    const boardModel = Board.withId(id);
+
+    if (!boardModel) {
+      return boardModel;
+    }
+
+    return boardModel
+      .getOrderedListsQuerySet()
+      .toRefArray()
+      .map((list) => ({
+        ...list,
+        isPersisted: !isLocalId(list.id),
+      }));
+  },
+);
+
+export const selectCardsForCurrentBoard = createSelector(
+  orm,
+  (state) => selectPath(state).boardId,
+  ({ Board }, id) => {
+    if (!id) {
+      return id;
+    }
+
+    const boardModel = Board.withId(id);
+
+    if (!boardModel) {
+      return boardModel;
+    }
+
+    return boardModel
+      .getOrderedCardsQuerySet()
+      .toRefArray()
+      .map((card) => ({
+        ...card,
+        isPersisted: !isLocalId(card.id),
+      }));
+  },
+);
+
+// Enhanced selector that includes related data - use with caution as it may impact performance
+export const selectCardsWithDetailsForCurrentBoard = createSelector(
+  orm,
+  (state) => selectPath(state).boardId,
+  ({ Board }, id) => {
+    if (!id) {
+      return id;
+    }
+
+    const boardModel = Board.withId(id);
+
+    if (!boardModel) {
+      return boardModel;
+    }
+
+    // Get filtered cards from each list instead of all cards from board
+    const filteredCards = [];
+    const lists = boardModel.lists.toModelArray();
+
+    lists.forEach((listModel) => {
+      const listFilteredCards = listModel.getFilteredOrderedCardsModelArray();
+      listFilteredCards.forEach((cardModel) => {
+        filteredCards.push({
+          ...cardModel.ref,
+          isPersisted: !isLocalId(cardModel.id),
+          coverUrl: cardModel.coverAttachment && cardModel.coverAttachment.coverUrl,
+          users: cardModel.users.toRefArray(),
+          labels: cardModel.labels.toRefArray(),
+          tasks: cardModel
+            .getOrderedTasksQuerySet()
+            .toRefArray()
+            .map((task) => ({
+              ...task,
+              isPersisted: !isLocalId(task.id),
+            })),
+          attachments: cardModel
+            .getOrderedAttachmentsQuerySet()
+            .toRefArray()
+            .map((attachment) => ({
+              ...attachment,
+              isCover: attachment.id === cardModel.coverAttachmentId,
+              isPersisted: !isLocalId(attachment.id),
+            })),
+          attachmentsTotal: cardModel.attachments.count(),
+          notificationsTotal: cardModel.getUnreadNotificationsQuerySet().count(),
+          lastActivityId: cardModel.getFilteredOrderedInCardActivitiesQuerySet().last()?.id,
+        });
+      });
+    });
+
+    return filteredCards;
+  },
+);
+
 export const selectFilterUsersForCurrentBoard = createSelector(
   orm,
   (state) => selectPath(state).boardId,
@@ -151,6 +279,42 @@ export const selectFilterUsersForCurrentBoard = createSelector(
     }
 
     return boardModel.filterUsers.toRefArray();
+  },
+);
+
+export const selectIncludeCardsWithoutMembersForCurrentBoard = createSelector(
+  orm,
+  (state) => selectPath(state).boardId,
+  ({ Board }, id) => {
+    if (!id) {
+      return false;
+    }
+
+    const boardModel = Board.withId(id);
+
+    if (!boardModel) {
+      return false;
+    }
+
+    return boardModel.includeCardsWithoutMembers || false;
+  },
+);
+
+export const selectIncludeCardsWithoutLabelsForCurrentBoard = createSelector(
+  orm,
+  (state) => selectPath(state).boardId,
+  ({ Board }, id) => {
+    if (!id) {
+      return false;
+    }
+
+    const boardModel = Board.withId(id);
+
+    if (!boardModel) {
+      return false;
+    }
+
+    return boardModel.includeCardsWithoutLabels || false;
   },
 );
 
@@ -202,9 +366,14 @@ export default {
   selectCurrentBoard,
   selectMembershipsForCurrentBoard,
   selectCurrentUserMembershipForCurrentBoard,
+  makeSelectCurrentUserMembershipForBoardById,
   selectLabelsForCurrentBoard,
   selectListIdsForCurrentBoard,
+  selectListsForCurrentBoard,
+  selectCardsWithDetailsForCurrentBoard,
   selectFilterUsersForCurrentBoard,
+  selectIncludeCardsWithoutMembersForCurrentBoard,
+  selectIncludeCardsWithoutLabelsForCurrentBoard,
   selectFilterLabelsForCurrentBoard,
   selectFilterTextForCurrentBoard,
   selectIsBoardWithIdExists,

@@ -1,0 +1,25 @@
+:global(#app) {
+  .colorButtons {
+    margin: -4px;
+    padding-bottom: 16px;
+
+    &:after {
+      content: '';
+      display: table;
+      clear: both;
+    }
+  }
+
+  .colorButton {
+    float: left;
+    height: 40px;
+    margin: 4px;
+    padding: 0;
+    position: relative;
+    width: 49.6px;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+}

@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'semantic-ui-react';
-import { usePopup } from '../../lib/popup';
+import { Button } from '@openfun/cunningham-react';
+import usePopup from '../../lib/popup/use-popup';
 
 import AddStep from './AddStep';
 import ActionsStep from './ActionsStep';
 import MembershipsStep from './MembershipsStep';
-import User from '../User';
+import User from '../../ui/User';
 
 import styles from './Memberships.module.scss';
 

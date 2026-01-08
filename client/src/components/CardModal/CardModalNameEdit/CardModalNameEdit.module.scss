@@ -1,0 +1,24 @@
+:global(#app) {
+  .field {
+    width: 100%;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    box-shadow: none;
+    font-size: 22px;
+    font-weight: 600;
+    margin: -4px -8px;
+    line-height: 28px;
+    overflow: hidden;
+    padding: 4px 8px;
+    resize: none;
+    width: 100%;
+    min-height: auto;
+
+    &:focus {
+      background: #fff;
+      border-color: var(--c--theme--colors--primary-800);
+      outline: 0;
+    }
+  }
+}

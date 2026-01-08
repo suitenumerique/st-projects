@@ -18,6 +18,9 @@ module.exports = {
       type: 'string',
       isNotEmptyString: true,
     },
+    isPublic: {
+      type: 'boolean',
+    },
   },
 
   exits: {
@@ -46,7 +49,7 @@ module.exports = {
       throw Errors.BOARD_NOT_FOUND; // Forbidden
     }
 
-    const values = _.pick(inputs, ['position', 'name']);
+    const values = _.pick(inputs, ['position', 'name', 'isPublic']);
 
     board = await sails.helpers.boards.updateOne.with({
       values,

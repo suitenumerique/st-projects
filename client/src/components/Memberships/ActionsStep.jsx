@@ -2,12 +2,12 @@ import pick from 'lodash/pick';
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button } from 'semantic-ui-react';
-import { Popup } from '../../lib/custom-ui';
+import { Button } from '@openfun/cunningham-react';
+import PopoverHeader from '../../ui/Popover/PopoverHeader';
 
 import { useSteps } from '../../hooks';
-import User from '../User';
-import DeleteStep from '../DeleteStep';
+import User from '../../ui/User';
+import DeleteStep from '../../steps/DeleteStep';
 
 import styles from './ActionsStep.module.scss';
 
@@ -107,41 +107,33 @@ const ActionsStep = React.memo(
           <div className={styles.email}>{membership.user.email}</div>
         </span>
         {permissionsSelectStep && canEdit && (
-          <Button
-            fluid
-            content={t('action.editPermissions')}
-            className={styles.button}
-            onClick={handleEditPermissionsClick}
-          />
+          <Button className={styles.button} onClick={handleEditPermissionsClick}>
+            {t('action.editPermissions')}
+          </Button>
         )}
         {membership.user.isCurrent
           ? canLeave && (
-              <Button
-                fluid
-                content={t(leaveButtonContent)}
-                className={styles.button}
-                onClick={handleDeleteClick}
-              />
+              <Button className={styles.button} onClick={handleDeleteClick}>
+                {t(leaveButtonContent)}
+              </Button>
             )
           : canEdit && (
-              <Button
-                fluid
-                content={t(deleteButtonContent)}
-                className={styles.button}
-                onClick={handleDeleteClick}
-              />
+              <Button className={styles.button} onClick={handleDeleteClick}>
+                {t(deleteButtonContent)}
+              </Button>
             )}
       </>
     );
 
     return onBack ? (
       <>
-        <Popup.Header onBack={onBack}>
-          {t(title, {
+        <PopoverHeader
+          onBack={onBack}
+          title={t(title, {
             context: 'title',
           })}
-        </Popup.Header>
-        <Popup.Content>{contentNode}</Popup.Content>
+        />
+        {contentNode}
       </>
     ) : (
       contentNode

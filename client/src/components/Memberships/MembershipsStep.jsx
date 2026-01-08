@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { useSteps } from '../../hooks';
 import ActionsStep from './ActionsStep';
-import BoardMembershipsStep from '../BoardMembershipsStep';
+import BoardMembershipsStep from '../../steps/BoardMembershipsStep';
 
 const StepTypes = {
   EDIT: 'EDIT',

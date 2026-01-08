@@ -1,76 +1,94 @@
-import upperFirst from 'lodash/upperFirst';
-import camelCase from 'lodash/camelCase';
+import { Button, Select } from '@openfun/cunningham-react';
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
-import { Container, Grid } from 'semantic-ui-react';
+import { useTranslation, Trans } from 'react-i18next';
 
 import Paths from '../../constants/Paths';
-import { ProjectBackgroundTypes } from '../../constants/Enums';
-import { ReactComponent as PlusIcon } from '../../assets/images/plus-icon.svg';
+import { push } from '../../lib/redux-router';
+import store from '../../store';
 
 import styles from './Projects.module.scss';
-import globalStyles from '../../styles.module.scss';
 
-const Projects = React.memo(({ items, canAdd, onAdd }) => {
+const Projects = React.memo(({ currentUser, items, canAdd, onAdd }) => {
   const [t] = useTranslation();
 
   return (
-    <Container className={styles.cardsWrapper}>
-      <Grid className={styles.gridFix}>
-        {items.map((item) => (
-          <Grid.Column key={item.id} mobile={8} computer={4}>
-            <Link
-              to={
-                item.firstBoardId
-                  ? Paths.BOARDS.replace(':id', item.firstBoardId)
-                  : Paths.PROJECTS.replace(':id', item.id)
-              }
-            >
-              <div
-                className={classNames(
-                  styles.card,
-                  styles.open,
-                  item.background &&
-                    item.background.type === ProjectBackgroundTypes.GRADIENT &&
-                    globalStyles[`background${upperFirst(camelCase(item.background.name))}`],
-                )}
-                style={{
-                  background:
-                    item.background &&
-                    item.background.type === 'image' &&
-                    `url("${item.backgroundImage.coverUrl}") center / cover`,
-                }}
-              >
-                {item.notificationsTotal > 0 && (
-                  <span className={styles.notification}>{item.notificationsTotal}</span>
-                )}
-                <div className={styles.cardOverlay} />
-                <div className={styles.openTitle}>{item.name}</div>
-              </div>
-            </Link>
-          </Grid.Column>
-        ))}
-        {canAdd && (
-          <Grid.Column mobile={8} computer={4}>
-            <button type="button" className={classNames(styles.card, styles.add)} onClick={onAdd}>
-              <div className={styles.addTitleWrapper}>
-                <div className={styles.addTitle}>
-                  <PlusIcon className={styles.addGridIcon} />
-                  {t('action.createProject')}
-                </div>
-              </div>
-            </button>
-          </Grid.Column>
-        )}
-      </Grid>
-    </Container>
+    <div className={styles.wrapper}>
+      {items.length > 0 ? (
+        <>
+          <h1 className={styles.title}>
+            {t('common.welcomeBack', {
+              userName: currentUser.name,
+            })}
+          </h1>
+          <div className={styles.choice}>
+            <Select
+              label={t('action.selectProject')}
+              options={items.map((item) => {
+                return {
+                  value: item.id,
+                  label: `${item.name}${
+                    item.notificationsTotal > 0
+                      ? // Unfortunately the select cannot a accept elements for now, so having the fallback version (maybe not useful if notifications panel in the header?)
+                        ` (${item.notificationsTotal})`
+                      : // <>
+                        //   {' '}
+                        //   <span className={styles.notification}>{item.notificationsTotal}</span>
+                        // </>
+                        ''
+                  }`,
+                };
+              })}
+              defaultValue={undefined}
+              clearable={false}
+              onChange={(event) => {
+                const selectedItem = items.find((item) => {
+                  return item.id === event.target.value;
+                });
+
+                if (selectedItem) {
+                  const to = selectedItem.firstBoardId
+                    ? Paths.BOARDS.replace(':id', selectedItem.firstBoardId)
+                    : Paths.PROJECTS.replace(':id', selectedItem.id);
+
+                  store.dispatch(push(to));
+                }
+              }}
+            />
+            {canAdd && (
+              <>
+                ou <Button onClick={onAdd}>{t('action.createProject')}</Button>
+              </>
+            )}
+          </div>
+        </>
+      ) : (
+        <>
+          <h1 className={styles.title}>
+            {t('common.setupReady', {
+              userName: currentUser.name,
+            })}
+          </h1>
+          {/* A new user should always have this right */}
+          {canAdd && (
+            <div className={styles.firstProjectToCreate}>
+              <Trans i18nKey="common.startByCreatingProject">
+                {'you can now '}
+                <Button onClick={onAdd} style={{ display: 'inline-block' }}>
+                  create project
+                </Button>
+              </Trans>
+            </div>
+          )}
+        </>
+      )}
+      <div className={styles.backgroundWrapper} />
+    </div>
   );
 });
 
 Projects.propTypes = {
+  currentUser: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   items: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   canAdd: PropTypes.bool.isRequired,
   onAdd: PropTypes.func.isRequired,

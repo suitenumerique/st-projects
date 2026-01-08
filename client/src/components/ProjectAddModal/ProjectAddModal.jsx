@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button, Form, Header, Modal } from 'semantic-ui-react';
-import { Input } from '../../lib/custom-ui';
+import { Button, Input, Modal } from '@openfun/cunningham-react';
 
 import { useForm } from '../../hooks';
 
@@ -18,55 +17,60 @@ const ProjectAddModal = React.memo(({ defaultData, isSubmitting, onCreate, onClo
 
   const nameField = useRef(null);
 
-  const handleSubmit = useCallback(() => {
-    const cleanData = {
-      ...data,
-      name: data.name.trim(),
-    };
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
 
-    if (!cleanData.name) {
-      nameField.current.select();
-      return;
+      const cleanData = {
+        ...data,
+        name: data.name.trim(),
+      };
+
+      if (!cleanData.name) {
+        nameField.current.select();
+        return;
+      }
+
+      onCreate(cleanData);
+    },
+    [onCreate, data],
+  );
+
+  const setNameFieldRef = useCallback((node) => {
+    // Using a function for the ref to set the focus when the element is available
+    if (node) {
+      nameField.current = node;
+      node.focus();
     }
-
-    onCreate(cleanData);
-  }, [onCreate, data]);
-
-  useEffect(() => {
-    nameField.current.focus();
   }, []);
 
   return (
-    <Modal open basic closeIcon size="tiny" onClose={onClose}>
-      <Modal.Content>
-        <Header inverted size="huge">
-          {t('common.createProject', {
-            context: 'title',
-          })}
-        </Header>
-        <p>{t('common.enterProjectTitle')}</p>
-        <Form onSubmit={handleSubmit}>
-          <Input
-            fluid
-            inverted
-            ref={nameField}
-            name="name"
-            value={data.name}
-            readOnly={isSubmitting}
-            className={styles.field}
-            onChange={handleFieldChange}
-          />
-          <Button
-            inverted
-            color="green"
-            icon="checkmark"
-            content={t('action.createProject')}
-            floated="right"
-            loading={isSubmitting}
-            disabled={isSubmitting}
-          />
-        </Form>
-      </Modal.Content>
+    <Modal
+      isOpen
+      title={t('common.createProject', { context: 'title' })}
+      closeIcon
+      onClose={onClose}
+      hideCloseButton
+      closeOnClickOutside
+    >
+      <form onSubmit={handleSubmit}>
+        <Input
+          ref={setNameFieldRef}
+          name="name"
+          value={data.name}
+          label={t('common.projectTitle')}
+          readOnly={isSubmitting}
+          className={styles.field}
+          onChange={(event) =>
+            handleFieldChange(event, { name: 'name', value: event.target.value })
+          }
+        />
+        <div>
+          <Button loading={isSubmitting.toString()} disabled={isSubmitting}>
+            {t('action.createProject')}
+          </Button>
+        </div>
+      </form>
     </Modal>
   );
 });

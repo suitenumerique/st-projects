@@ -32,7 +32,7 @@ services:
       # - DEFAULT_ADMIN_USERNAME=demo
 
       # - SHOW_DETAILED_AUTH_ERRORS=false # Set to true to show more detailed authentication error messages. It should not be enabled without a rate limiter for security reasons.
-      # - ALLOW_ALL_TO_CREATE_PROJECTS=true
+      - ALLOW_ALL_TO_CREATE_PROJECTS=true
 
       # - S3_ENDPOINT=
       # - S3_REGION=
@@ -57,7 +57,7 @@ services:
       # - OIDC_ROLES_ATTRIBUTE=groups
       # - OIDC_IGNORE_USERNAME=true
       # - OIDC_IGNORE_ROLES=true
-      # - OIDC_ENFORCED=true
+      - OIDC_ENFORCED=true
 
       # Email Notifications (https://nodemailer.com/smtp/)
       # - SMTP_HOST=

@@ -31,7 +31,8 @@ module.exports = {
 
     const isBoardMember = await sails.helpers.users.isBoardMember(currentUser.id, board.id);
 
-    if (!isBoardMember) {
+    // Check if user is authenticated
+    if (!isBoardMember && !board.isPublic) {
       const isProjectManager = await sails.helpers.users.isProjectManager(
         currentUser.id,
         project.id,
@@ -40,6 +41,11 @@ module.exports = {
       if (!isProjectManager) {
         throw Errors.BOARD_NOT_FOUND; // Forbidden
       }
+    }
+
+    // For unauthenticated users, only allow access to public boards
+    if (!currentUser && !board.isPublic) {
+      throw Errors.BOARD_NOT_FOUND; // Forbidden
     }
 
     const boardMemberships = await sails.helpers.boards.getBoardMemberships(board.id);

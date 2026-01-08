@@ -4,35 +4,35 @@ const Errors = {
   },
 };
 
-const backgroundValidator = (value) => {
-  if (_.isNull(value)) {
-    return true;
-  }
+// const backgroundValidator = (value) => {
+//   if (_.isNull(value)) {
+//     return true;
+//   }
 
-  if (!_.isPlainObject(value)) {
-    return false;
-  }
+//   if (!_.isPlainObject(value)) {
+//     return false;
+//   }
 
-  if (!Object.values(Project.BackgroundTypes).includes(value.type)) {
-    return false;
-  }
+//   if (!Object.values(Project.BackgroundTypes).includes(value.type)) {
+//     return false;
+//   }
 
-  if (
-    value.type === Project.BackgroundTypes.GRADIENT &&
-    _.size(value) === 2 &&
-    Project.BACKGROUND_GRADIENTS.includes(value.name)
-  ) {
-    return true;
-  }
+//   if (
+//     value.type === Project.BackgroundTypes.GRADIENT &&
+//     _.size(value) === 2 &&
+//     Project.BACKGROUND_GRADIENTS.includes(value.name)
+//   ) {
+//     return true;
+//   }
 
-  if (value.type === Project.BackgroundTypes.IMAGE && _.size(value) === 1) {
-    return true;
-  }
+//   if (value.type === Project.BackgroundTypes.IMAGE && _.size(value) === 1) {
+//     return true;
+//   }
 
-  return false;
-};
+//   return false;
+// };
 
-const backgroundImageValidator = (value) => _.isNull(value);
+// const backgroundImageValidator = (value) => _.isNull(value);
 
 module.exports = {
   inputs: {
@@ -45,14 +45,14 @@ module.exports = {
       type: 'string',
       isNotEmptyString: true,
     },
-    background: {
-      type: 'json',
-      custom: backgroundValidator,
-    },
-    backgroundImage: {
-      type: 'json',
-      custom: backgroundImageValidator,
-    },
+    // background: {
+    //   type: 'json',
+    //   custom: backgroundValidator,
+    // },
+    // backgroundImage: {
+    //   type: 'json',
+    //   custom: backgroundImageValidator,
+    // },
   },
 
   exits: {
@@ -76,7 +76,11 @@ module.exports = {
       throw Errors.PROJECT_NOT_FOUND; // Forbidden
     }
 
-    const values = _.pick(inputs, ['name', 'background', 'backgroundImage']);
+    const values = _.pick(inputs, [
+      'name',
+      // 'background',
+      // 'backgroundImage'
+    ]);
 
     project = await sails.helpers.projects.updateOne.with({
       values,

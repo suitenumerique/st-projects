@@ -7,12 +7,13 @@ import Projects from '../components/Projects';
 
 const mapStateToProps = (state) => {
   const { allowAllToCreateProjects } = selectors.selectConfig(state);
-  const { isAdmin } = selectors.selectCurrentUser(state);
+  const currentUser = selectors.selectCurrentUser(state);
   const projects = selectors.selectProjectsForCurrentUser(state);
 
   return {
+    currentUser,
     items: projects,
-    canAdd: allowAllToCreateProjects || isAdmin,
+    canAdd: allowAllToCreateProjects || currentUser.isAdmin,
   };
 };
 

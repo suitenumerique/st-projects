@@ -1,0 +1,47 @@
+:global(#app) {
+
+  .popoverHeader {
+    height: 40px;
+    position: relative;
+    font-size: 14px;
+    border-bottom: 1px solid var(--c--theme--colors--greyscale-200);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: -12px -12px 12px -12px;
+    padding: 0 12px;
+    font-weight: 500;
+
+    .popoverLeft, .popoverRight {
+      width: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .popoverClose, .popoverBack {
+      font-family: inherit;
+      border-radius: 10px;
+      height: 25px;
+      width: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+
+      &:hover {
+        background-color: var(--c--theme--colors--greyscale-200);
+      }
+
+      &:focus {
+        box-shadow: 0 0 0 2px var(--c--theme--colors--greyscale-200);
+        outline: none;
+      }
+    }
+
+  }
+
+}

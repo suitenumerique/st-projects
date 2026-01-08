@@ -14,6 +14,7 @@ export default class extends BaseModel {
     id: attr(),
     position: attr(),
     name: attr(),
+    isPublic: attr(),
     isFetching: attr({
       getDefault: () => null,
     }),
@@ -250,6 +251,11 @@ export default class extends BaseModel {
   }
 
   isAvailableForUser(userId) {
+    // Public boards are available to all users (including unauthenticated users)
+    if (this.isPublic) {
+      return true;
+    }
+
     return (
       this.project && (this.project.hasManagerForUser(userId) || this.hasMembershipForUser(userId))
     );

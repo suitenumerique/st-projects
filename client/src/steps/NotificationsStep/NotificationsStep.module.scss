@@ -1,0 +1,72 @@
+:global(#app) {
+  .itemWrapper {
+    padding-bottom: 0.5rem;
+    background-clip: content-box !important;
+
+    &:hover {
+      background: var(--c--globals--colors--gray-025);
+    }
+
+    &:not(:last-child) {
+      border-bottom: 1px solid var(--c--theme--colors--greyscale-200);
+    }
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 12px;
+  }
+
+  .itemContent {
+    display: inline-block;
+    flex: 1;
+    font-size: 12px;
+    word-break: break-word;
+  }
+
+  .itemDeleted {
+    display: inline-block;
+    font-size: var(--c--theme--font--sizes--sm);
+  }
+
+  .noUnreadNotifications {
+    display: inline-block;
+    font-size: var(--c--theme--font--sizes--sm);
+  }
+
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    max-height: 60vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 3px;
+    }
+  }
+
+  .deleteAllButtonWrapper {
+    display: flex;
+    justify-content: end;
+    border-bottom: 1px solid var(--c--theme--colors--greyscale-200);
+  }
+
+  .deleteAllButton {
+    margin-bottom: 10px;
+  }
+}

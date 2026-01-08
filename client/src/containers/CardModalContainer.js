@@ -11,11 +11,10 @@ import CardModal from '../components/CardModal';
 
 const mapStateToProps = (state) => {
   const { projectId } = selectors.selectPath(state);
-  const allProjectsToLists = selectors.selectProjectsToListsForCurrentUser(state);
-  const isCurrentUserManager = selectors.selectIsCurrentUserManagerForCurrentProject(state);
   const allBoardMemberships = selectors.selectMembershipsForCurrentBoard(state);
   const allLabels = selectors.selectLabelsForCurrentBoard(state);
   const currentUserMembership = selectors.selectCurrentUserMembershipForCurrentBoard(state);
+  const isCurrentUserManager = selectors.selectIsCurrentUserManagerForCurrentProject(state);
 
   const {
     name,
@@ -26,17 +25,19 @@ const mapStateToProps = (state) => {
     isSubscribed,
     isActivitiesFetching,
     isAllActivitiesFetched,
-    isActivitiesDetailsVisible,
-    isActivitiesDetailsFetching,
+    // isActivitiesDetailsVisible,
+    // isActivitiesDetailsFetching,
     boardId,
     listId,
   } = selectors.selectCurrentCard(state);
 
+  const editableBoards = selectors.selectEditableBoardsForCurrentUser(state);
   const users = selectors.selectUsersForCurrentCard(state);
   const labels = selectors.selectLabelsForCurrentCard(state);
   const tasks = selectors.selectTasksForCurrentCard(state);
   const attachments = selectors.selectAttachmentsForCurrentCard(state);
   const activities = selectors.selectActivitiesForCurrentCard(state);
+  const lists = selectors.selectListsForCurrentBoard(state);
 
   let isCurrentUserEditor = false;
   let isCurrentUserEditorOrCanComment = false;
@@ -55,17 +56,18 @@ const mapStateToProps = (state) => {
     isSubscribed,
     isActivitiesFetching,
     isAllActivitiesFetched,
-    isActivitiesDetailsVisible,
-    isActivitiesDetailsFetching,
+    // isActivitiesDetailsVisible,
+    // isActivitiesDetailsFetching,
     listId,
     boardId,
     projectId,
+    boards: editableBoards,
+    lists,
     users,
     labels,
     tasks,
     attachments,
     activities,
-    allProjectsToLists,
     allBoardMemberships,
     allLabels,
     canEdit: isCurrentUserEditor,

@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Input, Popup } from '../../../lib/custom-ui';
+import { Input } from '@openfun/cunningham-react';
+import PopoverHeader from '../../../ui/Popover/PopoverHeader';
 
 import { useField, useSteps } from '../../../hooks';
 import UserItem from './UserItem';
@@ -93,34 +94,31 @@ const AddStep = React.memo(
 
     return (
       <>
-        <Popup.Header>
-          {t(title, {
+        <PopoverHeader
+          title={t(title, {
             context: 'title',
           })}
-        </Popup.Header>
-        <Popup.Content>
-          <Input
-            fluid
-            ref={searchField}
-            value={search}
-            placeholder={t('common.searchUsers')}
-            icon="search"
-            onChange={handleSearchChange}
-          />
-          {filteredUsers.length > 0 && (
-            <div className={styles.users}>
-              {filteredUsers.map((user) => (
-                <UserItem
-                  key={user.id}
-                  name={user.name}
-                  avatarUrl={user.avatarUrl}
-                  isActive={currentUserIds.includes(user.id)}
-                  onSelect={() => handleUserSelect(user.id)}
-                />
-              ))}
-            </div>
-          )}
-        </Popup.Content>
+        />
+        <Input
+          ref={searchField}
+          value={search}
+          placeholder={t('common.searchUsers')}
+          icon="search"
+          onChange={handleSearchChange}
+        />
+        {filteredUsers.length > 0 && (
+          <div className={styles.users}>
+            {filteredUsers.map((user) => (
+              <UserItem
+                key={user.id}
+                name={user.name}
+                avatarUrl={user.avatarUrl}
+                isActive={currentUserIds.includes(user.id)}
+                onSelect={() => handleUserSelect(user.id)}
+              />
+            ))}
+          </div>
+        )}
       </>
     );
   },

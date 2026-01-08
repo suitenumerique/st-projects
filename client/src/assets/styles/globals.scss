@@ -1,0 +1,94 @@
+@use "@gouvfr-lasuite/ui-kit/sass/fonts";
+@use "@gouvfr-lasuite/ui-kit/style";
+@use "./cunningham-tokens.css";
+@use "./cunningham-tokens-sass" as *;
+
+.c__header__left {
+  // [WORKAROUND] Make sure the application name is not weirdly centered by the library MainLayout
+  margin-right: auto;
+}
+
+.c__left-panel__mobile {
+  width: 100%;
+  max-width: 400px;
+}
+
+.c__main-layout__content__center__children {
+  position: relative;
+}
+
+*[id^="c__modals-portal-"] {
+  // To display modals over the left menu if this one triggers them
+  position: relative;
+  z-index: 1000;
+
+  .c__modal {
+    // On mobile the modal is squeezed, and setting min-width won't help on the wrapper we have access to in our own code
+    // That's probably an issue with the design system
+    @media (max-width: 575px) {
+      min-width: 90%;
+    }
+  }
+}
+
+.c__header__right {
+  gap: 0.5rem;
+}
+
+.c__hero__display__captions {
+  align-items: start;
+
+  & > * {
+    text-align: left !important;
+  }
+}
+
+.projets_login .c__header {
+  height: 91px;
+  min-height: 91px;
+  max-height: 91px;
+  border: none;
+}
+
+.modal-button {
+  font-family: inherit;
+  border-radius: 10px;
+  height: 30px;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--c--theme--colors--greyscale-100);
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 2px var(--c--theme--colors--greyscale-100);
+    outline: none;
+  }
+}
+
+.bare-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+
+  &:hover {
+    background-color: none;
+  }
+
+  &:focus {
+    box-shadow: none;
+    outline: none;
+  }
+}
+
+.mdxeditor-toolbar {
+  border-radius: 0;
+  background-color: var(--c--theme--colors--greyscale-100);
+}

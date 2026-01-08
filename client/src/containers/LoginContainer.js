@@ -7,6 +7,7 @@ import Login from '../components/Login';
 
 const mapStateToProps = (state) => {
   const oidcConfig = selectors.selectOidcConfig(state);
+  const config = selectors.selectConfig(state);
 
   const {
     ui: {
@@ -21,6 +22,7 @@ const mapStateToProps = (state) => {
     error,
     withOidc: !!oidcConfig,
     isOidcEnforced: !!oidcConfig && oidcConfig.isEnforced,
+    theme: config.theme,
   };
 };
 

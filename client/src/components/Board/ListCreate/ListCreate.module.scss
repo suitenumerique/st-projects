@@ -1,0 +1,19 @@
+:global(#app) {
+
+  .wrapper {
+    width: 272px;
+    padding: 8px;
+  }
+
+  .input {
+    margin-bottom: 0.5rem;
+    width: 100%;
+    margin-top: 1px;
+  }
+
+  .controls {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+}
