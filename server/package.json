@@ -10,7 +10,7 @@
     "lint": "eslint . --max-warnings=0 --report-unused-disable-directives && echo '✔  Your .js files look good.'",
     "start": "nodemon",
     "start:prod": "node app.js --prod",
-    "test": "mocha test/lifecycle.test.js test/integration/**/*.test.js test/utils/**/*.test.js"
+    "test": "mocha --exit test/lifecycle.test.js test/integration/**/*.test.js test/utils/**/*.test.js"
   },
   "eslintConfig": {
     "root": true,

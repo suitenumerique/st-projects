@@ -14,7 +14,7 @@ const z = require('zod');
 
 const defaultTheme = require('./default-theme.json');
 
-const parsedBasedUrl = new URL(process.env.BASE_URL);
+const parsedBasedUrl = new URL(process.env.BASE_URL || 'http://localhost:3000');
 
 const ThemeLinkSchema = z.object({
   label: z.string().min(1),

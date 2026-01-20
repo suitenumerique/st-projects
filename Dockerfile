@@ -1,4 +1,6 @@
-FROM node:22.21.1-alpine AS server-dependencies
+ARG NODE_VERSION=22.21.1
+
+FROM node:${NODE_VERSION}-alpine AS server-dependencies
 
 RUN apk -U upgrade \
   && apk add build-base python3 --no-cache
@@ -12,7 +14,7 @@ RUN npm install npm --global \
   && pnpm import \
   && pnpm install --prod
 
-FROM node:lts AS client
+FROM node:${NODE_VERSION} AS client
 
 WORKDIR /app
 
@@ -25,7 +27,7 @@ RUN npm install npm --global \
 
 RUN DISABLE_ESLINT_PLUGIN=true npm run build
 
-FROM node:22.21.1-alpine
+FROM node:${NODE_VERSION}-alpine
 
 RUN apk -U upgrade \
   && apk add bash --no-cache
