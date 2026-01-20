@@ -1,0 +1,104 @@
+name: Continuous Integration
+on:
+  push:
+    branches:
+      - main-dinum
+    tags:
+      - 'v*'
+  pull_request:
+env:
+  APP_NAME: projects
+  CONTAINER_REGISTRY: docker.io
+  CONTAINER_IMAGE: lasuite/projects
+  NODE_OPTIONS: --max_old_space_size=4096
+  NODE_VERSION: 22.21.1
+concurrency:
+  # Prevent parallel builds of the same branch
+  group: cicd-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  requirements:
+    name: Continuous Integration
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Export npm store directory as an environment variable
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(npm config get cache)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        name: Setup npm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-npm-store-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-store-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test unit
+        run: npm run test
+
+      # Consider building without Docker to ensure it works in case it has not to be published (pull requests...)
+      - name: Build
+        if: ${{ github.event.act || (github.ref_name != 'main-dinum' && github.ref_type != 'tag') }}
+        run: npm run build
+
+      # Otherwise make a build to be published
+      - name: Set up Docker buildx
+        if: ${{ !github.event.act && (github.ref_name == 'main-dinum' || github.ref_type == 'tag') }}
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to the Container registry
+        if: ${{ !github.event.act && (github.ref_name == 'main-dinum' || github.ref_type == 'tag') }}
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.CONTAINER_REGISTRY }}
+          username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+          password: ${{ secrets.CONTAINER_REGISTRY_TOKEN }}
+
+      - name: Compute Docker image tag
+        if: ${{ !github.event.act && (github.ref_name == 'main-dinum' || github.ref_type == 'tag') }}
+        id: docker-meta
+        run: |
+          if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
+            VERSION="${GITHUB_REF_NAME#v}"
+            TAGS="${CONTAINER_IMAGE}:${VERSION},${CONTAINER_IMAGE}:latest"
+          else
+            TAGS="${CONTAINER_IMAGE}:main"
+          fi
+
+          echo "tags=${TAGS}" >> $GITHUB_OUTPUT
+
+      - name: Build and push the application Docker image
+        if: ${{ !github.event.act && (github.ref_name == 'main-dinum' || github.ref_type == 'tag') }}
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.docker-meta.outputs.tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      #
+      # Deployment must be handled outside this repository, either by using GitHub hooks, regular checks, or by manually deploying
+      #
