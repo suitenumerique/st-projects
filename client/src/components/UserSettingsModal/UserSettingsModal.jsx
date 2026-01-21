@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import { Modal } from '@openfun/cunningham-react';
 
 import AccountPane from './AccountPane';
@@ -20,13 +21,15 @@ const UserSettingsModal = React.memo(
     onLanguageUpdate,
     onClose,
   }) => {
+    const [t] = useTranslation();
+
     return (
       <Modal
         isOpen
         title={
           <div className={styles.modalTitle}>
             <User name={name} avatarUrl={avatarUrl} size="medium" />
-            <span>Profil utilisateur</span>
+            <span>{t('common.userProfile')}</span>
           </div>
         }
         closeIcon

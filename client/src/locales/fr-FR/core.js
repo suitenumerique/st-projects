@@ -194,6 +194,7 @@ export default {
         '<0> {{user}} </0> <1> a déplacé cette carte de {{fromList}} vers {{toList}} </1>',
       username: "Nom d'utilisateur",
       usernameAlreadyInUse: "Nom d'utilisateur déjà utilisé",
+      userProfile: 'Profil utilisateur',
       users: 'Utilisateurs',
       version: 'Version',
       viewer: 'Lecteur',
