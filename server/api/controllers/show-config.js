@@ -32,7 +32,11 @@ module.exports = {
 
       oidc = {
         authorizationUrl: oidcClient.authorizationUrl(authorizationUrlParams),
-        endSessionUrl: oidcClient.issuer.end_session_endpoint ? oidcClient.endSessionUrl({}) : null,
+        endSessionUrl: oidcClient.issuer.end_session_endpoint
+          ? oidcClient.endSessionUrl({
+              post_logout_redirect_uri: sails.config.custom.oidcPostLogoutRedirectUri,
+            })
+          : null,
         isEnforced: sails.config.custom.oidcEnforced,
       };
     }

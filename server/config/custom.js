@@ -139,6 +139,7 @@ module.exports.custom = {
   oidcIgnoreUsername: process.env.OIDC_IGNORE_USERNAME === 'true',
   oidcIgnoreRoles: process.env.OIDC_IGNORE_ROLES === 'true',
   oidcEnforced: process.env.OIDC_ENFORCED === 'true',
+  oidcPostLogoutRedirectUri: process.env.OIDC_POST_LOGOUT_REDIRECT_URI || process.env.BASE_URL,
 
   // TODO: move client base url to environment variable?
   oidcRedirectUri: `${
