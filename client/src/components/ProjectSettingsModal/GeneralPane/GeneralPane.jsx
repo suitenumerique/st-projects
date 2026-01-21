@@ -110,7 +110,7 @@ const GeneralPane = React.memo(
         <ShareModal
           isOpen={isShareModalOpen}
           onClose={handleShareModalClose}
-          modalTitle={t('common.managers_title')}
+          modalTitle={t('common.managers_title')} // For whatever reason `{ context: 'title' }` is not working here, so using directly the suffix (missing context since modal?)
           canView
           canUpdate
           accesses={modalMembers}
