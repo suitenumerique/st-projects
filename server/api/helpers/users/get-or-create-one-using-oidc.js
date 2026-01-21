@@ -67,9 +67,15 @@ module.exports = {
       }
     }
 
+    if (!claims[sails.config.custom.oidcEmailAttribute]) {
+      throw 'missingValues';
+    }
+
+    // Validate that all fullname attributes exist
     if (
-      !claims[sails.config.custom.oidcEmailAttribute] ||
-      !claims[sails.config.custom.oidcNameAttribute]
+      !Array.isArray(sails.config.custom.oidcFullnameAttributes) ||
+      sails.config.custom.oidcFullnameAttributes.length === 0 ||
+      !sails.config.custom.oidcFullnameAttributes.every((attr) => claims[attr])
     ) {
       throw 'missingValues';
     }
@@ -86,11 +92,14 @@ module.exports = {
       }
     }
 
+    // Build name from array of attributes
+    const name = sails.config.custom.oidcFullnameAttributes.map((attr) => claims[attr]).join(' ');
+
     const values = {
       isAdmin,
       email: claims[sails.config.custom.oidcEmailAttribute],
       isSso: true,
-      name: claims[sails.config.custom.oidcNameAttribute],
+      name,
       subscribeToOwnCards: false,
     };
     if (!sails.config.custom.oidcIgnoreUsername) {
