@@ -1,5 +1,5 @@
 {
-  "name": "planka-server",
+  "name": "projects-server",
   "private": true,
   "main": "app.js",
   "scripts": {

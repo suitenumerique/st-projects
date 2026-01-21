@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-  planka:
-    image: ghcr.io/plankanban/planka:latest
+  projects:
+    image: lasuite/projects:latest
     restart: on-failure
     volumes:
       - user-avatars:/app/public/user-avatars
@@ -11,9 +11,9 @@ services:
     ports:
       - 3000:1337
     environment:
-      - BASE_URL=http://localhost:3000
-      - DATABASE_URL=postgresql://postgres@postgres/planka
-      - SECRET_KEY=notsecretkey
+      - BASE_URL=http://yourdomain.com
+      - DATABASE_URL=postgresql://postgres@postgres/projects
+      - SECRET_KEY=generate-key
 
       # - TRUST_PROXY=0
       # - TOKEN_EXPIRES_IN=365 # In days
@@ -41,22 +41,22 @@ services:
       # - S3_BUCKET=
       # - S3_FORCE_PATH_STYLE=true
 
-      # - OIDC_ISSUER=
-      # - OIDC_CLIENT_ID=
-      # - OIDC_CLIENT_SECRET=
+      - OIDC_ISSUER=
+      - OIDC_CLIENT_ID=
+      - OIDC_CLIENT_SECRET=
+      - OIDC_SCOPES=openid email profile
       # - OIDC_ID_TOKEN_SIGNED_RESPONSE_ALG=
       # - OIDC_USERINFO_SIGNED_RESPONSE_ALG=
-      # - OIDC_SCOPES=openid email profile
       # - OIDC_RESPONSE_MODE=fragment
-      # - OIDC_USE_DEFAULT_RESPONSE_MODE=true
+      - OIDC_USE_DEFAULT_RESPONSE_MODE=true
       # - OIDC_ADMIN_ROLES=admin
       # - OIDC_CLAIMS_SOURCE=userinfo
       # - OIDC_EMAIL_ATTRIBUTE=email
-      # - OIDC_FULLNAME_ATTRIBUTES=name
+      - OIDC_FULLNAME_ATTRIBUTES=name
       # - OIDC_USERNAME_ATTRIBUTE=preferred_username
       # - OIDC_ROLES_ATTRIBUTE=groups
-      # - OIDC_IGNORE_USERNAME=true
-      # - OIDC_IGNORE_ROLES=true
+      - OIDC_IGNORE_USERNAME=true
+      - OIDC_IGNORE_ROLES=true
       - OIDC_ENFORCED=true
       # - OIDC_POST_LOGOUT_REDIRECT_URI=http://localhost:3000/custom-logout-page
 
@@ -97,10 +97,10 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=planka
+      - POSTGRES_DB=projects
       - POSTGRES_HOST_AUTH_METHOD=trust
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d planka"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d projects"]
       interval: 10s
       timeout: 5s
       retries: 5

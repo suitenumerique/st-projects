@@ -9,7 +9,7 @@ services:
     environment:
       - BASE_URL=http://localhost:3000
       - NODE_ENV=development
-      - DATABASE_URL=postgresql://user:password@postgres:5432/planka_db
+      - DATABASE_URL=postgresql://user:password@postgres:5432/projects_db
       - SECRET_KEY=notsecretkey
 
       # - TRUST_PROXY=0
@@ -33,13 +33,10 @@ services:
       # - S3_BUCKET=
       # - S3_FORCE_PATH_STYLE=true
 
-      - OIDC_ISSUER=http://auth.local:8080/realms/planka
-      - OIDC_CLIENT_ID=planka-client
+      - OIDC_ISSUER=http://auth.local:8080/realms/projects
+      - OIDC_CLIENT_ID=projects-client
       - OIDC_CLIENT_SECRET=a-not-so-secret-secret
       - OIDC_SCOPES=openid profile email organization
-      # - OIDC_USERNAME_ATTRIBUTE=preferred_username
-      # - OIDC_EMAIL_ATTRIBUTE=email
-      # - OIDC_ROLES_ATTRIBUTE=groups
       # - OIDC_ID_TOKEN_SIGNED_RESPONSE_ALG=RS256
       # - OIDC_USERINFO_SIGNED_RESPONSE_ALG=RS256
       # - OIDC_RESPONSE_MODE=fragment
@@ -113,7 +110,7 @@ services:
       context: ./server
       dockerfile: ../config/development/Dockerfile.server
     environment:
-      - DATABASE_URL=postgresql://user:password@postgres:5432/planka_db
+      - DATABASE_URL=postgresql://user:password@postgres:5432/projects_db
 
       - DEFAULT_ADMIN_EMAIL=user.test@numerique.gouv.fr
       - DEFAULT_ADMIN_PASSWORD=password
@@ -133,14 +130,14 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: planka_db
+      POSTGRES_DB: projects_db
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
     ports:
       - "5432:5432"
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U user -d planka_db"]
+      test: ["CMD-SHELL", "pg_isready -U user -d projects_db"]
       interval: 10s
       timeout: 5s
       retries: 5

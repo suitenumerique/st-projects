@@ -1,5 +1,5 @@
 {
-  "realm": "planka",
+  "realm": "projects",
   "enabled": true,
   "sslRequired": "external",
   "registrationAllowed": false,
@@ -23,9 +23,9 @@
   "adminEventsDetailsEnabled": false,
   "clients": [
     {
-      "clientId": "planka-client",
-      "name": "Planka Client",
-      "description": "Client for Planka",
+      "clientId": "projects-client",
+      "name": "Projects Client",
+      "description": "Client for Projects",
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
       "standardFlowEnabled": true,
