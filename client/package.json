@@ -2,12 +2,14 @@
   "name": "planka",
   "private": true,
   "scripts": {
+    "postinstall": "patch-package",
     "build": "react-app-rewired build",
     "lint": "eslint --ext js,jsx src config-overrides.js",
     "start": "react-app-rewired start",
     "test": "react-app-rewired test",
     "test:acceptance": "cucumber-js --require tests/acceptance/cucumber.conf.js --require tests/acceptance/stepDefinitions/**/*.js --format @cucumber/pretty-formatter",
-    "cunningham:generate": "cunningham -g css,scss,ts -o src"
+    "cunningham:generate": "cunningham -g css,scss,ts -o src",
+    "patch-package": "patch-package"
   },
   "engines": {
     "node": "22"
@@ -89,6 +91,7 @@
     "jwt-decode": "^4.0.0",
     "lodash": "^4.17.21",
     "nanoid": "^5.0.9",
+    "patch-package": "^8.0.1",
     "photoswipe": "^5.4.4",
     "prop-types": "^15.8.1",
     "react": "19.1.0",
