@@ -29,7 +29,6 @@ module.exports = {
     }
 
     let tokenSet;
-
     try {
       tokenSet = await client.callback(
         sails.config.custom.oidcRedirectUri,
@@ -42,18 +41,7 @@ module.exports = {
         },
       );
     } catch (error) {
-      sails.log.warn(`ErWhyror while exchanging OIDC code: ${error.message || error}`);
-      sails.log.warn(`Error details:`, {
-        errorName: error.name,
-        errorMessage: error.message,
-        errorStack: error.stack,
-        redirectUri: sails.config.custom.oidcRedirectUri,
-        issuer: sails.config.custom.oidcIssuer,
-        hasCode: !!inputs.code,
-        hasNonce: !!inputs.nonce,
-        codeLength: inputs.code ? inputs.code.length : 0,
-        nonceLength: inputs.nonce ? inputs.nonce.length : 0,
-      });
+      sails.log.warn(`Error while exchanging OIDC code: ${error}`);
       throw 'invalidCodeOrNonce';
     }
 
@@ -82,6 +70,7 @@ module.exports = {
     if (!claims[sails.config.custom.oidcEmailAttribute]) {
       throw 'missingValues';
     }
+
     // Validate that all fullname attributes exist
     if (
       !Array.isArray(sails.config.custom.oidcFullnameAttributes) ||
@@ -115,9 +104,6 @@ module.exports = {
     };
     if (!sails.config.custom.oidcIgnoreUsername) {
       values.username = claims[sails.config.custom.oidcUsernameAttribute];
-    }
-    if (claims.siret) {
-      values.siret = claims.siret;
     }
 
     let user;
@@ -155,7 +141,7 @@ module.exports = {
       });
     }
 
-    const updateFieldKeys = ['email', 'isSso', 'name', 'siret'];
+    const updateFieldKeys = ['email', 'isSso', 'name'];
     if (!sails.config.custom.oidcIgnoreUsername) {
       updateFieldKeys.push('username');
     }
@@ -178,30 +164,6 @@ module.exports = {
         })
         .intercept('emailAlreadyInUse', 'emailAlreadyInUse')
         .intercept('usernameAlreadyInUse', 'usernameAlreadyInUse');
-    }
-
-    if (user.siret) {
-      let project = await Project.findOne({ siret: user.siret });
-      if (!project) {
-        const projectName = await sails.helpers.utils.getNameFromSiren.with({
-          siren: user.siret,
-        });
-        project = await Project.create({
-          siret: user.siret,
-          name: projectName,
-        }).fetch();
-      }
-
-      const existingProjectManager = await ProjectManager.findOne({
-        projectId: project.id,
-        userId: user.id,
-      });
-      if (!existingProjectManager) {
-        await ProjectManager.create({
-          projectId: project.id,
-          userId: user.id,
-        });
-      }
     }
 
     return user;
