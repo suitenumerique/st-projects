@@ -5,7 +5,6 @@ export default {
       invalidEmailOrUsername: 'Neispravna e-pošta ili korisničko ime',
       invalidCredentials: 'Neispravni akreditivi',
       invalidPassword: 'Neispravna lozinka',
-      logInToPlanka: 'Prijavite se u Planka',
       noInternetConnection: 'Nema konekcije sa internetom',
       pageNotFound_title: 'Stranica nije pronađena',
       password: 'Lozinka',

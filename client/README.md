@@ -1,1 +1,1 @@
-# Planka client
+# Projects client

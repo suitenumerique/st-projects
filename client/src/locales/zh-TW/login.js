@@ -4,7 +4,6 @@ export default {
       emailOrUsername: '郵箱或使用者名稱',
       invalidEmailOrUsername: '無效的郵箱或使用者名稱',
       invalidPassword: '密碼錯誤',
-      logInToPlanka: '登入至 Planka',
       noInternetConnection: '沒有網路連接',
       pageNotFound_title: '找不到頁面',
       password: '密碼',

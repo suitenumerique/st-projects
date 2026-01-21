@@ -15,7 +15,6 @@ export default {
 
   translation: {
     common: {
-      aboutPlanka: 'Tentang Planka',
       account: 'Akun',
       actions: 'Tindakan',
       addAttachment_title: 'Tambah Lampiran',

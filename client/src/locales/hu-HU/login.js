@@ -4,7 +4,6 @@ export default {
       emailOrUsername: 'E-mail vagy felhasználó',
       invalidEmailOrUsername: 'Érvénytelen e-mail vagy felhasználó',
       invalidPassword: 'Érvénytelen jelszó',
-      logInToPlanka: 'Plankába belépés',
       noInternetConnection: 'Nincs internet kapcsolat',
       pageNotFound_title: 'Az oldal nem található',
       password: 'Jelszó',

@@ -1,5 +1,5 @@
 {
-  "name": "planka",
+  "name": "projects",
   "private": true,
   "scripts": {
     "postinstall": "patch-package",

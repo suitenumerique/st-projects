@@ -15,7 +15,6 @@ export default {
 
   translation: {
     common: {
-      aboutPlanka: 'О проекте Planka',
       account: 'Учетная запись',
       actions: 'Действия',
       addAttachment: 'Добавление вложения',

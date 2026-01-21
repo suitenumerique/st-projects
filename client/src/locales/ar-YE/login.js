@@ -5,7 +5,6 @@ export default {
       invalidEmailOrUsername: 'البريد الإلكتروني أو اسم المستخدم غير صالح',
       invalidCredentials: 'بيانات الاعتماد غير صالحة',
       invalidPassword: 'كلمة المرور غير صالحة',
-      logInToPlanka: 'تسجيل الدخول إلى Planka',
       noInternetConnection: 'لا يوجد اتصال بالإنترنت',
       pageNotFound_title: 'الصفحة غير موجودة',
       password: 'كلمة المرور',

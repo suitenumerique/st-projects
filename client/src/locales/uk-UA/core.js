@@ -15,7 +15,6 @@ export default {
 
   translation: {
     common: {
-      aboutPlanka: 'Про Planka',
       account: 'Обліковий запис',
       actions: 'Дії',
       addAttachment_title: 'Додати Вкладення',

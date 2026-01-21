@@ -4,7 +4,6 @@ export default {
       emailOrUsername: 'E-mail atau username',
       invalidEmailOrUsername: 'E-mail atau username salah',
       invalidPassword: 'Kata sandi salah',
-      logInToPlanka: 'Masuk ke Planka',
       noInternetConnection: 'Tidak ada koneksi internet',
       pageNotFound_title: 'Halaman Tidak Ditemukan',
       password: 'Kata sandi',

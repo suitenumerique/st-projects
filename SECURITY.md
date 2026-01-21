@@ -1,13 +1,23 @@
 # Security Policy
 
-## Supported Versions
-
-Most recent release.
-
 ## Reporting a Vulnerability
 
-Please report any security issues you discovered to security@planka.cloud. If the issue is confirmed, we will release a patch as soon as possible depending on complexity.
+Security is very important to us.
 
-**Do NOT create public issues on GitHub for security vulnerabilities.**
+If you have any issue regarding security, please disclose the information responsibly submitting [this form](https://vdp.numerique.gouv.fr/p/Send-a-report?lang=en) and not by creating an issue on the repository. You can also email us at [lasuite@numerique.gouv.fr](mailto:lasuite@numerique.gouv.fr)
 
-Thank you for your contribution!
+We appreciate your effort to make Docs more secure.
+
+## Vulnerability disclosure policy
+
+Working with security issues in an open source project can be challenging, as we are required to disclose potential problems that could be exploited by attackers. With this in mind, our security fix policy is as follows:
+
+1. The Maintainers team will handle the fix as usual (Pull Request,
+   release).
+2. In the release notes, we will include the identification numbers from the
+   GitHub Advisory Database (GHSA) and, if applicable, the Common Vulnerabilities
+   and Exposures (CVE) identifier for the vulnerability.
+3. Once this grace period has passed, we will publish the vulnerability.
+
+By adhering to this security policy, we aim to address security concerns
+effectively and responsibly in our open source software project.

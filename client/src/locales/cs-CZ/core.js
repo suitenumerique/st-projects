@@ -15,7 +15,6 @@ export default {
 
   translation: {
     common: {
-      aboutPlanka: 'O aplikaci Planka',
       account: 'Účet',
       actions: 'Akce',
       addAttachment_title: 'Přidat přílohu',

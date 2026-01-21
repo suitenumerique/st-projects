@@ -4,7 +4,6 @@ export default {
       emailOrUsername: "Електронна пошта або ім'я користувача",
       invalidEmailOrUsername: "Неправильна електронна пошта або ім'я користувача",
       invalidPassword: 'Неправильний пароль',
-      logInToPlanka: 'Увійти в Planka',
       noInternetConnection: 'Відсутнє підключення до Інтернету',
       pageNotFound_title: 'Сторінку не знайдено',
       password: 'Пароль',

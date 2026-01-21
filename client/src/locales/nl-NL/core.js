@@ -15,7 +15,6 @@ export default {
 
   translation: {
     common: {
-      aboutPlanka: 'Over Planka',
       account: 'Account',
       actions: 'Acties',
       addAttachment_title: 'Bijlage toevoegen',

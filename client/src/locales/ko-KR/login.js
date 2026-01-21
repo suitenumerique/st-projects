@@ -5,7 +5,6 @@ export default {
       invalidEmailOrUsername: '잘못된 이메일 또는 사용자 이름',
       invalidCredentials: '잘못된 자격 증명',
       invalidPassword: '잘못된 비밀번호',
-      logInToPlanka: 'Planka에 로그인',
       noInternetConnection: '인터넷 연결 없음',
       pageNotFound_title: '페이지를 찾을 수 없음',
       password: '비밀번호',

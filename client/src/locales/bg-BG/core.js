@@ -15,7 +15,6 @@ export default {
 
   translation: {
     common: {
-      aboutPlanka: 'За Planka',
       account: 'Акаунт',
       actions: 'Действия',
       addAttachment_title: 'Добавяне на прикачен файл',

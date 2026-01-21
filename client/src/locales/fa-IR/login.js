@@ -4,7 +4,6 @@ export default {
       emailOrUsername: 'ایمیل یا نام کاربری',
       invalidEmailOrUsername: 'ایمیل یا نام کاربری نامعتبر است',
       invalidPassword: 'رمز عبور نامعتبر است',
-      logInToPlanka: 'ورود به Planka',
       noInternetConnection: 'بدون اتصال به اینترنت',
       pageNotFound_title: 'صفحه یافت نشد',
       password: 'رمز عبور',

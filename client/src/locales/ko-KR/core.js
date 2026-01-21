@@ -15,7 +15,6 @@ export default {
 
   translation: {
     common: {
-      aboutPlanka: 'Planka 소개',
       account: '계정',
       actions: '작업',
       addAttachment_title: '첨부 파일 추가',

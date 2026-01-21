@@ -15,7 +15,6 @@ export default {
 
   translation: {
     common: {
-      aboutPlanka: '關於 Planka',
       account: '帳號',
       actions: '操作',
       addAttachment_title: '添加附件',

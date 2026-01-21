@@ -1,49 +1,64 @@
-# Contributing to Planka
+# Contributing to the Project
 
-First off, thanks for taking the time to contribute!
+Thank you for taking the time to contribute! Please follow these guidelines to ensure a smooth and productive workflow. 🚀🚀🚀
 
-## Code of Conduct
+To get started with the project, please refer to the [README.md](https://github.com/suitenumerique/st-projects/blob/main/README.md) for detailed instructions on how to run Projets locally.
 
-This project and everyone participating in it is governed by the [Planka Code of Conduct](https://github.com/plankanban/planka/blob/master/CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
+Contributors are required to sign off their commits with `git commit --signoff`: this confirms that they have read and accepted the [Developer's Certificate of Origin 1.1](https://developercertificate.org/). For security reasons we also require [signing your commits with your SSH or GPG key](https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification) with `git commit -S`.
 
-## How Can I Contribute?
+Please also check out our [dev handbook](https://suitenumerique.gitbook.io/handbook) to learn our best practices.
 
-### Reporting Bugs
+## Creating an Issue
 
-Feel free to create a bug report as a new issue on GitHub. Before creating, please check if there is already existing one. When creating a bug report, please include as many details as possible.
+When creating an issue, please provide the following details:
 
-### Suggesting Enhancements
+1.  **Title**: A concise and descriptive title for the issue.
+2.  **Description**: A detailed explanation of the issue, including relevant context or screenshots if applicable.
+3.  **Steps to Reproduce**: If the issue is a bug, include the steps needed to reproduce the problem.
+4.  **Expected vs. Actual Behavior**: Describe what you expected to happen and what actually happened.
+5.  **Labels**: Add appropriate labels to categorize the issue (e.g., bug, feature request, documentation).
 
-Feel free to create an enhancement suggestion as a new issue on GitHub. Before creating, please check if there is already existing one. When creating an enhancement suggestion, please include as many details as possible.
+## Commit Message Format
 
-### Pull Requests
+All commit messages must adhere to the following format:
 
-Before submitting a pull request please discuss with the core team by creating or commenting in an issue on GitHub – we'd also love to hear from you in the discussions. This way we can ensure that an approach is agreed on before code is written. This will result in a much higher liklihood of your code being accepted.
+`<gitmoji>(type) title description`
 
-If you’re looking for ways to get started, here's a list of ways to help us improve Planka:
+- <**gitmoji**>: Use a gitmoji to represent the purpose of the commit. For example, ✨ for adding a new feature or 🔥 for removing something, see the list [here](https://gitmoji.dev/).
+- **(type)**: Describe the type of change. Common types include `backend`, `frontend`, `CI`, `docker` etc...
+- **title**: A short, descriptive title for the change (\*)
+- \*\*blank line after the commit title
+- **description**: Include additional details on why you made the changes (\*\*).
 
-- [Translation](https://github.com/plankanban/planka/issues/66) into other languages
-- Issues with [`good first issue`](https://github.com/plankanban/planka/labels/good%20first%20issue) label
-- Performance improvements, both on client and server
-- Developer happiness and documentation
-- Bugs and other issues listed on GitHub
+  (\*) ⚠️ **Make sure you add no space between the emoji and the (type) but add a space after the closing parenthesis of the type and use no caps!**
+  (**) ⚠️ **Commit description message is mandatory and shouldn't be too long\*\*
 
-## Styleguides
+### Example Commit Message
 
-### Git Commit Messages
+```
+✨(frontend) add user authentication logic
 
-Commit messages should follow the [commit message convention](https://conventionalcommits.org), so changelogs could be generated automatically by that.
+Implemented login and signup features, and integrated OAuth2 for social login.
+```
 
-Additional rules:
+## Pull Requests
 
-- Separate subject from body with a blank line
-- Limit the subject line to 70 characters
-- Capitalize the subject line
-- Do not end the subject line with a period
-- Use the imperative mood in the subject line
-- Use the body to explain what and why vs. how
-- Each commit should be a single, stable change
+It is nice to add information about the purpose of the pull request to help reviewers understand the context and intent of the changes. If you can, add some pictures or a small video to show the changes.
 
-### JavaScript
+### Don't forget to:
 
-All JavaScript code should follow this [JavaScript style guide](https://github.com/airbnb/javascript). The pre-commit hook will help you find linting errors before committing.
+- signoff your commits
+- sign your commits with your key (SSH, GPG etc.)
+- check your commits (see warnings above)
+
+The pre-commit hook will help you find linting errors before committing.
+
+## Code Style
+
+Please maintain consistency in code style. Run any linting tools available to make sure the code is clean and follows the project's conventions.
+
+## Asking for Help
+
+If you need any help while contributing, feel free to open a discussion or ask for guidance in the issue tracker. We are more than happy to assist!
+
+Thank you for your contributions! 👍

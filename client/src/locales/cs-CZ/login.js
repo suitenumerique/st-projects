@@ -5,7 +5,6 @@ export default {
       invalidEmailOrUsername: 'Nesprávný e-mail nebo uživatelské jméno',
       invalidCredentials: 'Neplatné přihlašovací údaje',
       invalidPassword: 'Nesprávné heslo',
-      logInToPlanka: 'Přihlásit se do Planka',
       noInternetConnection: 'Bez připojení k internetu',
       pageNotFound_title: 'Stránka nenalezena',
       password: 'Heslo',

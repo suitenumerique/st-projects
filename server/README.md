@@ -1,1 +1,1 @@
-# Planka server
+# Projects server

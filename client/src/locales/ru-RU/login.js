@@ -5,7 +5,6 @@ export default {
       invalidEmailOrUsername: 'Неверный e-mail или имя пользователя',
       invalidCredentials: 'Недействительные учетные данные',
       invalidPassword: 'Неверный пароль',
-      logInToPlanka: 'Вход в Planka',
       noInternetConnection: 'Нет соединения',
       pageNotFound_title: 'Страница не найдена',
       password: 'Пароль',

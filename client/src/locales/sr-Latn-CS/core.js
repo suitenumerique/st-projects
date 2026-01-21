@@ -15,7 +15,6 @@ export default {
 
   translation: {
     common: {
-      aboutPlanka: 'O Planka',
       account: 'Nalog',
       actions: 'Radnje',
       addAttachment_title: 'Dodaj prilog',
