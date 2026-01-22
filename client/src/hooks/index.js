@@ -4,5 +4,6 @@ import useForm from './use-form';
 import useSteps from './use-steps';
 import useModal from './use-modal';
 import useClosableForm from './use-closable-form';
+import useUsersSearch from './use-users-search';
 
-export { useNestedRef, useField, useForm, useSteps, useModal, useClosableForm };
+export { useNestedRef, useField, useForm, useSteps, useModal, useClosableForm, useUsersSearch };

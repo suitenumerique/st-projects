@@ -286,6 +286,32 @@ const removeUserFromBoardFilter = (id, boardId) => ({
   },
 });
 
+const searchUsers = (query, excludeUserIds = []) => ({
+  type: ActionTypes.USER_SEARCH,
+  payload: {
+    query,
+    excludeUserIds,
+  },
+});
+
+searchUsers.success = (users) => ({
+  type: ActionTypes.USER_SEARCH__SUCCESS,
+  payload: {
+    users,
+  },
+});
+
+searchUsers.failure = (error) => ({
+  type: ActionTypes.USER_SEARCH__FAILURE,
+  payload: {
+    error,
+  },
+});
+
+export const clearUserSearch = () => ({
+  type: ActionTypes.USER_SEARCH_CLEAR,
+});
+
 export default {
   createUser,
   handleUserCreate,
@@ -307,4 +333,6 @@ export default {
   handleUserFromCardRemove,
   addUserToBoardFilter,
   removeUserFromBoardFilter,
+  searchUsers,
+  clearUserSearch,
 };

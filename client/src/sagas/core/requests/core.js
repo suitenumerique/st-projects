@@ -7,11 +7,11 @@ import mergeRecords from '../../../utils/merge-records';
 
 export function* fetchCore() {
   const { item: user } = yield call(request, api.getCurrentUser, true);
-  const { items: users1 } = yield call(request, api.getUsers);
 
   const {
     items: projects1,
     included: {
+      users: users1,
       projectManagers,
       boards,
       boardMemberships: boardMemberships1,

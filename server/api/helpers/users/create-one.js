@@ -74,20 +74,9 @@ module.exports = {
 
     // const userIds = await sails.helpers.users.getAdminIds();
 
-    const users = await sails.helpers.users.getMany();
-    const userIds = sails.helpers.utils.mapRecords(users);
-
-    userIds.forEach((userId) => {
-      sails.sockets.broadcast(
-        `user:${userId}`,
-        'userCreate',
-        {
-          item: user,
-        },
-        inputs.request,
-      );
-    });
-
+    // Note: before any user creation was brodcasted to all users but since we want the discovery of users
+    // to only apply if you have a link with them, we removed it. It should be fine because once the user
+    // will be added to a board of a project, the endpoint about those entities will fetch linked users including the new one
     sails.helpers.utils.sendWebhooks.with({
       event: 'userCreate',
       data: {

@@ -2,6 +2,7 @@ import { all, takeEvery } from 'redux-saga/effects';
 
 import services from '../services';
 import EntryActionTypes from '../../../constants/EntryActionTypes';
+import ActionTypes from '../../../constants/ActionTypes';
 
 export default function* usersWatchers() {
   yield all([
@@ -88,6 +89,9 @@ export default function* usersWatchers() {
     ),
     takeEvery(EntryActionTypes.USER_FROM_FILTER_IN_CURRENT_BOARD_REMOVE, ({ payload: { id } }) =>
       services.removeUserFromFilterInCurrentBoard(id),
+    ),
+    takeEvery(ActionTypes.USER_SEARCH, ({ payload: { query, excludeUserIds } }) =>
+      services.searchUsers(query, excludeUserIds),
     ),
   ]);
 }

@@ -2,6 +2,9 @@ import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { ShareModal, ShareModalCopyLinkFooter, Icon } from '@gouvfr-lasuite/ui-kit';
 import { Button } from '@openfun/cunningham-react';
+
+import { useUsersSearch } from '../../hooks';
+import { BoardMembershipRoles } from '../../constants/Enums';
 import Badge from '../../ui/Badge';
 import Filters from './Filters';
 import styles from './BoardActions.module.scss';
@@ -11,7 +14,6 @@ const BoardActions = React.memo(
     currentBoardId,
     currentBoardName,
     filterText,
-    allUsers,
     filterUsers,
     includeCardsWithoutMembers,
     boardLabels,
@@ -21,6 +23,8 @@ const BoardActions = React.memo(
     isCurrentUserMember,
     canEdit,
     isBoardPublic,
+    searchedUsers,
+    isSearchingUsers,
     onTextFilterUpdate,
     onUserToFilterAdd,
     onUserFromFilterRemove,
@@ -34,9 +38,10 @@ const BoardActions = React.memo(
     onMembershipUpdate,
     onMembershipDelete,
     onBoardUpdate,
+    onSearchUsers,
+    onClearUserSearch,
   }) => {
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-    const [searchedUsers, setSearchedUsers] = useState([]);
 
     const handleUpdate = useCallback(
       (data) => {
@@ -51,20 +56,25 @@ const BoardActions = React.memo(
 
     const handleShareModalClose = useCallback(() => {
       setIsShareModalOpen(false);
-    }, []);
 
-    const onSearchUsers = useCallback(
-      (search) => {
-        const filteredUsers = allUsers.filter((user) => {
-          return (
-            (user.email.includes(search) || user.name.includes(search)) &&
-            !boardMemberships.some((membership) => membership.user.id === user.id)
-          );
-        });
-        setSearchedUsers(filteredUsers);
-      },
-      [allUsers, boardMemberships],
+      onClearUserSearch(); // Empty the search for a proper next modal opening
+    }, [onClearUserSearch]);
+
+    const userIdsToExclude = useMemo(
+      () => boardMemberships.map((membership) => membership.userId),
+      [boardMemberships],
     );
+    const [debouncedHandleUsersQuery] = useUsersSearch(userIdsToExclude, onSearchUsers);
+
+    const formattedSearchedUsers = useMemo(() => {
+      return searchedUsers.map((user) => {
+        return {
+          id: user.id,
+          full_name: user.name,
+          email: user.email,
+        };
+      });
+    }, [searchedUsers]);
 
     const modalMembers = useMemo(() => {
       return boardMemberships.map((membership) => {
@@ -135,6 +145,9 @@ const BoardActions = React.memo(
         </div>
 
         <ShareModal
+          key={isShareModalOpen ? 'open' : 'closed'} // [WORKAROUND] To avoid previous search input to appear again after opening the modal
+          // TODO: should be adjusted to avoid letting inviting random email since it has no reality then (ref: https://github.com/suitenumerique/ui-kit/issues/151)
+          // for now we are using `patch-package` to fix this
           isOpen={isShareModalOpen}
           onClose={handleShareModalClose}
           modalTitle="Partager le tableau"
@@ -163,11 +176,12 @@ const BoardActions = React.memo(
           onUpdateAccess={(e, role) => {
             onMembershipUpdate(e.id, { role });
           }}
-          onSearchUsers={onSearchUsers}
+          onSearchUsers={debouncedHandleUsersQuery}
+          loading={isSearchingUsers}
           hasNextMembers={false}
           hasNextInvitations={false}
-          searchUsersResult={searchedUsers || []}
-          onInviteUser={(users) => {
+          searchUsersResult={formattedSearchedUsers}
+          onInviteUser={(users, role) => {
             users.forEach((user) => {
               onMembershipCreate({ userId: user.id, role: 'editor' });
             });
@@ -206,13 +220,14 @@ BoardActions.propTypes = {
   currentBoardName: PropTypes.string.isRequired,
   filterText: PropTypes.string.isRequired,
   /* eslint-disable react/forbid-prop-types */
-  allUsers: PropTypes.array.isRequired,
   filterUsers: PropTypes.array.isRequired,
   includeCardsWithoutMembers: PropTypes.bool.isRequired,
   boardLabels: PropTypes.array.isRequired,
   filterLabels: PropTypes.array.isRequired,
   includeCardsWithoutLabels: PropTypes.bool.isRequired,
   boardMemberships: PropTypes.array.isRequired,
+  searchedUsers: PropTypes.array.isRequired,
+  isSearchingUsers: PropTypes.bool.isRequired,
   /* eslint-enable react/forbid-prop-types */
   canEdit: PropTypes.bool.isRequired,
   isCurrentUserMember: PropTypes.bool.isRequired,
@@ -230,6 +245,8 @@ BoardActions.propTypes = {
   onMembershipUpdate: PropTypes.func.isRequired,
   onMembershipDelete: PropTypes.func.isRequired,
   onBoardUpdate: PropTypes.func.isRequired,
+  onSearchUsers: PropTypes.func.isRequired,
+  onClearUserSearch: PropTypes.func.isRequired,
 };
 
 export default BoardActions;

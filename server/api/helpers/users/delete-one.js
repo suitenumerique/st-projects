@@ -42,20 +42,9 @@ module.exports = {
     });
 
     if (user) {
-      const users = await sails.helpers.users.getMany();
-      const userIds = [inputs.record.id, ...sails.helpers.utils.mapRecords(users)];
-
-      userIds.forEach((userId) => {
-        sails.sockets.broadcast(
-          `user:${userId}`,
-          'userDelete',
-          {
-            item: user,
-          },
-          inputs.request,
-        );
-      });
-
+      // Note: before any user removal was brodcasted to all users but since we want the discovery of users
+      // to only apply if you have a link with them, we removed it. In case of user deletion it's fine to
+      // admit it will remain in local stores where fetched until a full page reload (should have no impact)
       sails.helpers.utils.sendWebhooks.with({
         event: 'userDelete',
         data: {

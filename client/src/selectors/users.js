@@ -213,6 +213,9 @@ export const selectEditableBoardsForCurrentUser = createSelector(
   },
 );
 
+export const selectSearchedUsers = (state) => state.core.searchedUsers;
+export const selectIsSearchingUsers = (state) => state.core.isSearchingUsers;
+
 export default {
   selectCurrentUserId,
   selectUsers,
@@ -225,4 +228,6 @@ export default {
   selectPrivateBoardsForCurrentUser,
   selectSharedBoardsForCurrentUser,
   selectEditableBoardsForCurrentUser,
+  selectSearchedUsers,
+  selectIsSearchingUsers,
 };
