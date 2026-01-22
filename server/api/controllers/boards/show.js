@@ -48,7 +48,17 @@ module.exports = {
     const boardMemberships = await sails.helpers.boards.getBoardMemberships(board.id);
 
     const userIds = sails.helpers.utils.mapRecords(boardMemberships, 'userId');
-    const users = await sails.helpers.users.getMany(userIds);
+    let users = await sails.helpers.users.getMany(userIds);
+
+    // For public links while not being logged in, at least mask the email of users
+    if (board.isPublic && !currentUser) {
+      users = users.map((user) => {
+        return {
+          ...user.toJSON(), // Do not spread directly to keep private properties omitted
+          email: '**masked**',
+        };
+      });
+    }
 
     const labels = await sails.helpers.boards.getLabels(board.id);
     const lists = await sails.helpers.boards.getLists(board.id);
