@@ -55,7 +55,8 @@ export function* handleUserUpdate(user) {
 
   let users;
   if (isCurrent && !currentUser.isAdmin && user.isAdmin) {
-    ({ items: users } = yield call(request, api.getUsers));
+    // No longer needed to fetch all users when becoming an admin since we removed the users list components and endpoint
+    users = [];
   }
 
   yield put(actions.handleUserUpdate(user, users, isCurrent));
@@ -296,6 +297,18 @@ export function* removeUserFromFilterInCurrentBoard(id) {
   yield call(removeUserFromBoardFilter, id, boardId);
 }
 
+export function* searchUsers(query, excludeUserIds = []) {
+  let users;
+  try {
+    ({ items: users } = yield call(request, api.searchUsers, query, excludeUserIds));
+  } catch (error) {
+    yield put(actions.searchUsers.failure(error));
+    return;
+  }
+
+  yield put(actions.searchUsers.success(users));
+}
+
 export default {
   createUser,
   handleUserCreate,
@@ -331,4 +344,5 @@ export default {
   addUserToFilterInCurrentBoard,
   removeUserFromBoardFilter,
   removeUserFromFilterInCurrentBoard,
+  searchUsers,
 };

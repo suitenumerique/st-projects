@@ -3,15 +3,17 @@ import { connect } from 'react-redux';
 
 import selectors from '../selectors';
 import entryActions from '../entry-actions';
+import actions from '../actions';
 import ProjectSettingsModal from '../components/ProjectSettingsModal';
 
 const mapStateToProps = (state) => {
-  const users = selectors.selectUsers(state);
-
   const { name, background, backgroundImage, isBackgroundImageUpdating } =
     selectors.selectCurrentProject(state);
 
   const managers = selectors.selectManagersForCurrentProject(state);
+
+  const searchedUsers = selectors.selectSearchedUsers(state);
+  const isSearchingUsers = selectors.selectIsSearchingUsers(state);
 
   return {
     name,
@@ -19,7 +21,8 @@ const mapStateToProps = (state) => {
     backgroundImage,
     isBackgroundImageUpdating,
     managers,
-    allUsers: users,
+    searchedUsers,
+    isSearchingUsers,
   };
 };
 
@@ -32,6 +35,8 @@ const mapDispatchToProps = (dispatch) =>
       onManagerCreate: entryActions.createManagerInCurrentProject,
       onManagerDelete: entryActions.deleteProjectManager,
       onClose: entryActions.closeModal,
+      onSearchUsers: actions.searchUsers,
+      onClearUserSearch: actions.clearUserSearch,
     },
     dispatch,
   );

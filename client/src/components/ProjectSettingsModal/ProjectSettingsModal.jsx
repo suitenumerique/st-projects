@@ -6,7 +6,19 @@ import { Modal } from '@openfun/cunningham-react';
 import GeneralPane from './GeneralPane';
 
 const ProjectSettingsModal = React.memo(
-  ({ name, managers, allUsers, onUpdate, onDelete, onManagerCreate, onManagerDelete, onClose }) => {
+  ({
+    name,
+    managers,
+    searchedUsers,
+    isSearchingUsers,
+    onUpdate,
+    onDelete,
+    onManagerCreate,
+    onManagerDelete,
+    onClose,
+    onSearchUsers,
+    onClearUserSearch,
+  }) => {
     const [t] = useTranslation();
 
     return (
@@ -20,11 +32,14 @@ const ProjectSettingsModal = React.memo(
         <GeneralPane
           name={name}
           managers={managers}
-          allUsers={allUsers}
+          searchedUsers={searchedUsers}
+          isSearchingUsers={isSearchingUsers}
           onUpdate={onUpdate}
           onDelete={onDelete}
           onManagerCreate={onManagerCreate}
           onManagerDelete={onManagerDelete}
+          onSearchUsers={onSearchUsers}
+          onClearUserSearch={onClearUserSearch}
         />
       </Modal>
     );
@@ -35,13 +50,16 @@ ProjectSettingsModal.propTypes = {
   name: PropTypes.string.isRequired,
   /* eslint-disable react/forbid-prop-types */
   managers: PropTypes.array.isRequired,
-  allUsers: PropTypes.array.isRequired,
+  searchedUsers: PropTypes.array.isRequired,
+  isSearchingUsers: PropTypes.bool.isRequired,
   /* eslint-enable react/forbid-prop-types */
   onUpdate: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   onManagerCreate: PropTypes.func.isRequired,
   onManagerDelete: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
+  onSearchUsers: PropTypes.func.isRequired,
+  onClearUserSearch: PropTypes.func.isRequired,
 };
 
 ProjectSettingsModal.defaultProps = {};

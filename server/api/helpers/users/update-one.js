@@ -142,20 +142,9 @@ module.exports = {
           await sails.helpers.projects.getManagerAndBoardMemberUserIds(projectIds),
         ); */
 
-        const users = await sails.helpers.users.getMany();
-        const userIds = sails.helpers.utils.mapRecords(users);
-
-        userIds.forEach((userId) => {
-          sails.sockets.broadcast(
-            `user:${userId}`,
-            'userUpdate',
-            {
-              item: user,
-            },
-            inputs.request,
-          );
-        });
-
+        // Note: before any user change was brodcasted to all users but since we want the discovery of users
+        // to only apply if you have a link with them, we removed it. Something like the user name update is not
+        // allowed from now, and even if it was, it's not that sensitive and waiting for the next full reload is fine
         sails.helpers.utils.sendWebhooks.with({
           event: 'userUpdate',
           data: {

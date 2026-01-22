@@ -10,11 +10,19 @@ export const transformUser = (user) => ({
 
 /* Actions */
 
-const getUsers = (headers) =>
-  socket.get('/users', undefined, headers).then((body) => ({
+const searchUsers = (query, excludeUserIds, headers) => {
+  const params = new URLSearchParams();
+  params.append('query', query);
+
+  if (excludeUserIds && excludeUserIds.length > 0) {
+    excludeUserIds.forEach((id) => params.append('excludeUserIds[]', id));
+  }
+
+  return socket.get(`/users/search?${params.toString()}`, undefined, headers).then((body) => ({
     ...body,
     items: body.items.map(transformUser),
   }));
+};
 
 const createUser = (data, headers) =>
   socket.post('/users', data, headers).then((body) => ({
@@ -84,7 +92,7 @@ const makeHandleUserUpdate = makeHandleUserCreate;
 const makeHandleUserDelete = makeHandleUserCreate;
 
 export default {
-  getUsers,
+  searchUsers,
   createUser,
   getUser,
   getCurrentUser,

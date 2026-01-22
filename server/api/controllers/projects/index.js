@@ -25,8 +25,7 @@ module.exports = {
 
     const projectManagers = await sails.helpers.projects.getProjectManagers(projectIds);
 
-    const userIds = sails.helpers.utils.mapRecords(projectManagers, 'userId', true);
-    const users = await sails.helpers.users.getMany(userIds);
+    const managerUserIds = sails.helpers.utils.mapRecords(projectManagers, 'userId', true);
 
     const managerBoards = await sails.helpers.projects.getBoards(managerProjectIds);
 
@@ -41,6 +40,11 @@ module.exports = {
     const allBoardMemberships = await sails.helpers.boardMemberships.getMany({
       boardId: boardIds,
     });
+
+    const memberUserIds = sails.helpers.utils.mapRecords(allBoardMemberships, 'userId', true);
+
+    const uniqueUserIds = [...new Set([...managerUserIds, ...memberUserIds])];
+    const users = await sails.helpers.users.getMany(uniqueUserIds);
 
     return {
       items: projects,

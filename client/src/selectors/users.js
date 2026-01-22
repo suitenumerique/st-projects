@@ -122,6 +122,9 @@ export const selectNotificationsForCurrentUser = createSelector(
   },
 );
 
+export const selectSearchedUsers = (state) => state.core.searchedUsers;
+export const selectIsSearchingUsers = (state) => state.core.isSearchingUsers;
+
 export default {
   selectCurrentUserId,
   selectUsers,
@@ -130,4 +133,6 @@ export default {
   selectProjectsForCurrentUser,
   selectProjectsToListsForCurrentUser,
   selectNotificationsForCurrentUser,
+  selectSearchedUsers,
+  selectIsSearchingUsers,
 };
