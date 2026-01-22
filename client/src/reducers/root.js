@@ -30,6 +30,11 @@ export default (state = initialState, { type, payload }) => {
         ...state,
         config: payload.config,
       };
+    case 'SET_INITIALIZING_FALSE':
+      return {
+        ...state,
+        isInitializing: false,
+      };
     default:
       return state;
   }

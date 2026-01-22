@@ -48,7 +48,8 @@ export default class extends BaseModel {
         break;
       case ActionTypes.LOCATION_CHANGE_HANDLE__BOARD_FETCH:
       case ActionTypes.BOARD_FETCH:
-        Board.withId(payload.id).update({
+        Board.upsert({
+          id: payload.id,
           isFetching: true,
         });
 
