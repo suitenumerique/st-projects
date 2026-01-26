@@ -7,6 +7,12 @@ WORKDIR /app/client
 
 COPY package.json package-lock.json .
 
+# Some dependencies need to be patched, we do it from here since with the anonymous volume for `node_modules`
+# even if we attach the container, run `npm install` we do see patches in files but they won't be taken into account
+# after a restart (needed to reload the program), only modifications from the original image here will help
+# Note: that's why adding a dependency needs something like `docker compose -f docker-compose-dev.yml up --build --renew-anon-volumes`
+COPY patches ./patches
+
 RUN npm install --legacy-peer-deps
 
 WORKDIR /app
