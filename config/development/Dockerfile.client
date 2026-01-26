@@ -7,14 +7,10 @@ WORKDIR /app/client
 
 COPY package.json package-lock.json .
 
-RUN npm install npm --global \
-  && npm install pnpm@9 --global \
-  && pnpm import \
-  && pnpm install --frozen-lockfile
+RUN npm install --legacy-peer-deps
 
 WORKDIR /app
 
 COPY ../../package.json ../../package-lock.json .
 
-RUN pnpm import \
-  && pnpm install --frozen-lockfile
+RUN npm install --legacy-peer-deps

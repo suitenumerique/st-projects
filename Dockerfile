@@ -7,10 +7,7 @@ WORKDIR /app
 
 COPY server/package.json server/package-lock.json ./
 
-RUN npm install npm --global \
-  && npm install pnpm@9 --global \
-  && pnpm import \
-  && pnpm install --prod
+RUN npm install --omit=dev
 
 FROM node:lts AS client
 
@@ -18,10 +15,7 @@ WORKDIR /app
 
 COPY client .
 
-RUN npm install npm --global \
-  && npm install pnpm@9 --global \
-  && pnpm import \
-  && pnpm install --prod
+RUN npm install --omit=dev
 
 RUN DISABLE_ESLINT_PLUGIN=true npm run build
 

@@ -7,7 +7,4 @@ WORKDIR /app
 
 COPY package.json package-lock.json .
 
-RUN npm install npm --global \
-  && npm install pnpm@9 --global \
-  && pnpm import \
-  && pnpm install
+RUN npm install
