@@ -291,6 +291,13 @@ export default class extends BaseModel {
         });
 
         break;
+      case ActionTypes.USER_SEARCH__SUCCESS:
+        // Make sure entities exist locally in case some of them are promoted (memberships, admin...)
+        payload.users.forEach((user) => {
+          User.upsert(user);
+        });
+
+        break;
       default:
     }
   }
