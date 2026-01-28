@@ -58,7 +58,9 @@ const AttachmentEditStep = React.memo(({ defaultData, onUpdate, onClose }) => {
           onChange={handleFieldChange}
         />
         <div className={styles.buttons}>
-          <Button type="submit">{t('action.save')}</Button>
+          <Button color="brand" variant="primary" type="submit">
+            {t('action.save')}
+          </Button>
         </div>
       </form>
     </>
