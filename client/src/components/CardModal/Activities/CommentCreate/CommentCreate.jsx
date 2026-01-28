@@ -89,7 +89,8 @@ const CommentCreate = React.memo(({ onCreate }) => {
         <div className={styles.controls}>
           <Button
             type="submit"
-            color="tertiary"
+            color="brand"
+            variant="secondary"
             size="small"
             icon={<Icon name="add" type="outlined" size="small" />}
             onMouseOver={handleControlMouseOver}

@@ -14,12 +14,12 @@
   }
 
   .templatesWrapper {
-    border-top: 1px solid var(--c--theme--colors--greyscale-200);
+    border-top: 1px solid var(--c--contextuals--border--semantic--neutral--tertiary);
     margin-top: 10px;
     padding-top: 10px;
     > p {
       font-size: 14px;
-      color: var(--c--theme--colors--greyscale-600);
+      color: var(--c--contextuals--content--semantic--neutral--secondary);
       margin-bottom: 6px;
     }
   }

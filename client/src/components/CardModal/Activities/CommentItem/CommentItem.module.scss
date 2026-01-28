@@ -17,7 +17,7 @@
 
     &.popoverOpened .commentActionsButton {
       opacity: 1;
-      background-color: var(--c--theme--colors--greyscale-100);
+      background-color: var(--c--contextuals--background--semantic--overlay--primary);
     }
   }
 
@@ -26,7 +26,7 @@
   }
 
   .content {
-    border-bottom: 1px solid var(--c--theme--colors--greyscale-200);
+    border-bottom: 1px solid var(--c--contextuals--border--semantic--neutral--tertiary);
     padding-bottom: 0.5rem;
     flex: 1;
   }
@@ -53,7 +53,7 @@
   }
 
   .date {
-    color: var(--c--theme--colors--greyscale-600);
+    color: var(--c--contextuals--content--semantic--neutral--secondary);
     font-size: 12px;
     line-height: 20px;
   }

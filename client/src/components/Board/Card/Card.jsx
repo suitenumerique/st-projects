@@ -229,7 +229,8 @@ function Card({
                 >
                   <Button
                     className={classNames(styles.cardActionsButton)}
-                    color="tertiary-text"
+                    color="neutral"
+                    variant="tertiary"
                     icon={<Icon name="edit" type="outlined" />}
                     size="small"
                   />

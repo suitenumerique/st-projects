@@ -49,7 +49,12 @@ function SortableLabelItem({ label, currentIds, canEdit, onSelect, onDeselect, o
         />
         {canEdit && (
           <div className={styles.itemActions}>
-            <Button size="small" color="tertiary-text" onClick={() => onEdit(label.id)}>
+            <Button
+              size="small"
+              color="neutral"
+              variant="tertiary"
+              onClick={() => onEdit(label.id)}
+            >
               <Icon size="small" name="edit" type="outlined" aria-hidden="true" />
             </Button>
           </div>

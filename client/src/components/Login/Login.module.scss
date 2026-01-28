@@ -27,11 +27,11 @@
   }
 
   .feedbackButton {
-    color: var(--c--theme--colors--info-600);
-    background-color: var(--c--theme--colors--info-100);
+    color: var(--c--contextuals--content--semantic--info--primary);
+    background-color: var(--c--contextuals--background--semantic--info--primary);
     margin-left: 2rem;
     &:hover {
-      background-color: var(--c--theme--colors--info-200);
+      background-color: var(--c--contextuals--background--semantic--info--primary-hover);
     }
   }
 

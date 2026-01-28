@@ -59,7 +59,8 @@ const LabelCreateStep = React.memo(({ defaultData, onCreate, onBack }) => {
         <div className={styles.controls}>
           <Button
             type="submit"
-            color="primary"
+            color="brand"
+            variant="primary"
             content={t('action.createLabel')}
             className={styles.submitButton}
           >

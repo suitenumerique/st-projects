@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Button, useModal } from '@openfun/cunningham-react';
+import { Button } from '@openfun/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 import usePopup from '../../lib/popup/use-popup';
 import BoardTree from '../BoardTree/BoardTree';
@@ -31,7 +31,7 @@ const LeftMenu = React.memo(
     canEdit,
   }) => {
     const BoardCreateStepPopover = usePopup(BoardCreateStep);
-    const folderEditModal = useModal();
+    const [isFolderEditModalOpen, setIsFolderEditModalOpen] = useState(false);
     const [folderEditModalData, setFolderEditModalData] = useState({
       name: '',
       isPrivate: true,
@@ -41,13 +41,10 @@ const LeftMenu = React.memo(
       store.dispatch(push(Paths.BOARDS.replace(':id', boardId)));
     }, []);
 
-    const onFolderEdit = useCallback(
-      (folder) => {
-        setFolderEditModalData(folder);
-        folderEditModal.open();
-      },
-      [folderEditModal],
-    );
+    const onFolderEdit = useCallback((folder) => {
+      setFolderEditModalData(folder);
+      setIsFolderEditModalOpen(true);
+    }, []);
 
     const onFolderSubmit = useCallback(
       (data) => {
@@ -74,6 +71,8 @@ const LeftMenu = React.memo(
             hideCloseButton
           >
             <Button
+              color="brand"
+              variant="primary"
               className={styles.addBoardButton}
               icon={<Icon name="add" type="outlined" />}
               size="medium"
@@ -89,7 +88,8 @@ const LeftMenu = React.memo(
               <Button
                 className={styles.addFolderButton}
                 size="nano"
-                color="primary"
+                color="brand"
+                variant="primary"
                 icon={<span className="material-icons">add</span>}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -97,7 +97,7 @@ const LeftMenu = React.memo(
                     name: '',
                     isPrivate: true,
                   });
-                  folderEditModal.open();
+                  setIsFolderEditModalOpen(true);
                 }}
               />
             </div>
@@ -127,7 +127,8 @@ const LeftMenu = React.memo(
               <Button
                 className={styles.addFolderButton}
                 size="nano"
-                color="primary"
+                color="brand"
+                variant="primary"
                 icon={<span className="material-icons">add</span>}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -135,7 +136,7 @@ const LeftMenu = React.memo(
                     name: '',
                     isPrivate: false,
                   });
-                  folderEditModal.open();
+                  setIsFolderEditModalOpen(true);
                 }}
               />
             </div>
@@ -160,11 +161,11 @@ const LeftMenu = React.memo(
             )}
           </div>
         </div>
-        {folderEditModal.isOpen && (
+        {isFolderEditModalOpen && (
           <FolderEditModal
             initialData={folderEditModalData}
-            isOpen={folderEditModal.isOpen}
-            onClose={folderEditModal.close}
+            isOpen={isFolderEditModalOpen}
+            onClose={() => setIsFolderEditModalOpen(false)}
             onSubmit={onFolderSubmit}
           />
         )}

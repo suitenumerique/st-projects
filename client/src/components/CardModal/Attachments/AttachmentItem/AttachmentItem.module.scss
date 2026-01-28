@@ -17,7 +17,7 @@
 
     &:hover,
     &.popoverOpened {
-      background: var(--c--theme--colors--greyscale-100);
+      background: var(--c--contextuals--background--semantic--overlay--primary);
 
       .attachmentActionsButton {
         opacity: 1;
@@ -26,12 +26,12 @@
   }
 
   .wrapperSubmitting {
-    background: var(--c--theme--colors--greyscale-100);
+    background: var(--c--contextuals--background--semantic--overlay--primary);
   }
 
   .thumbnail {
     border-radius: 4px;
-    background: var(--c--theme--colors--greyscale-100);
+    background: var(--c--contextuals--background--semantic--overlay--primary);
     height: 80px;
     text-align: center;
     text-decoration: none;
@@ -39,7 +39,7 @@
   }
 
   .extension {
-    color: var(--c--theme--colors--greyscale-600);
+    color: var(--c--contextuals--content--semantic--neutral--secondary);
     display: block;
     font-size: 18px;
     font-weight: bold;
@@ -74,13 +74,13 @@
 
   .date {
     display: block;
-    color: var(--c--theme--colors--greyscale-600);
+    color: var(--c--contextuals--content--semantic--neutral--secondary);
     line-height: 20px;
   }
 
   .options {
     display: block;
-    color: var(--c--theme--colors--greyscale-600);
+    color: var(--c--contextuals--content--semantic--neutral--secondary);
     line-height: 20px;
   }
 
@@ -88,13 +88,13 @@
   .option {
     background: none;
     border: none;
-    color: var(--c--theme--colors--greyscale-600);
+    color: var(--c--contextuals--content--semantic--neutral--secondary);
     cursor: pointer;
     outline: none;
     padding: 0;
 
     &:hover {
-      color: var(--c--theme--colors--greyscale-800);
+      color: var(--c--contextuals--content--semantic--neutral--primary);
     }
   }
 

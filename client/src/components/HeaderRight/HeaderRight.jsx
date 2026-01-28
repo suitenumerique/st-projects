@@ -27,7 +27,7 @@ const HeaderRight = React.memo(
     return (
       <>
         {/* <NotificationsPopover items={notifications} onDelete={onNotificationDelete}>
-          <Button color="primary-text" className={styles.notificationButton}>
+          <Button color="brand" variant="tertiary" className={styles.notificationButton}>
             <Icon type="outlined" name="notifications" />
             {/* {notifications.length >= 0 && (
             <span className={styles.notification}>{notifications.length}</span>
@@ -48,7 +48,8 @@ const HeaderRight = React.memo(
             onOpenChange={setIsOpen}
           >
             <Button
-              color="primary-text"
+              color="brand"
+              variant="tertiary"
               onClick={() => setIsOpen(!isOpen)}
               icon={
                 <span className="material-icons">
@@ -104,7 +105,8 @@ const LanguagePicker = React.memo(({ currentUser, onLanguageUpdate }) => {
     >
       <Button
         onClick={() => setIsOpen(!isOpen)}
-        color="primary-text"
+        color="brand"
+        variant="tertiary"
         className="c__language-picker"
         icon={
           <span className="material-icons">{isOpen ? 'arrow_drop_up' : 'arrow_drop_down'}</span>

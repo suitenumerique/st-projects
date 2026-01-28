@@ -170,7 +170,7 @@ function List({
             onColorEdit={handleColorEdit}
             onOpenChange={setIsListActionsPopoverOpen}
           >
-            <Button className={styles.listHeaderButton}>
+            <Button className={styles.listHeaderButton} color="brand" variant="tertiary">
               <Icon outlined name="more_horiz" />
             </Button>
           </ListActionsPopover>
@@ -230,7 +230,8 @@ function List({
         {!isAddCardOpened && canEdit && (
           <div className={styles.addCardButton}>
             <Button
-              color="tertiary-text"
+              color="brand"
+              variant="tertiary"
               size="small"
               onClick={() => {
                 handleAddCardClick();

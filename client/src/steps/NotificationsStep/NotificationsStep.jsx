@@ -94,6 +94,8 @@ const NotificationsStep = React.memo(({ items, onDelete, onClose }) => {
             {items.length > 1 && (
               <Button
                 type="button"
+                color="error"
+                variant="primary"
                 icon="trash alternate outline"
                 content={t('action.deleteNotifications')}
                 onClick={handleDeleteAll}
@@ -116,6 +118,8 @@ const NotificationsStep = React.memo(({ items, onDelete, onClose }) => {
                 )}
                 <Button
                   type="button"
+                  color="error"
+                  variant="primary"
                   icon="trash alternate outline"
                   className={styles.itemButton}
                   onClick={() => handleDelete(item.id)}
