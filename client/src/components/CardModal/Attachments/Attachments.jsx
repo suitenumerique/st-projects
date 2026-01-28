@@ -126,51 +126,6 @@ const Attachments = React.memo(
       );
     });
 
-    const openPopup = (file) => {
-      const baseUrl = window.location.origin + (process.env.PUBLIC_URL || '');
-      const newWindow = window.open(
-        '',
-        'ImagePopup',
-        'width=600,height=400,resizable=yes,scrollbars=yes',
-      );
-
-      if (newWindow) {
-        newWindow.document.write(`
-          <html>
-            <head>
-              <title>Fichiers</title>
-              <base href="${baseUrl}/">
-            </head>
-            <body style="margin: 0; padding: 0; background: #f0f0f0;">
-              <img id="popup-image"
-                   src="temp-screen-1.png"
-                   style="width: 100%; height: auto; cursor: pointer; display: block;"
-                   alt="Popup Image" />
-              <script>
-                let clickCount = 0;
-                document.getElementById('popup-image').addEventListener('click', function() {
-                  clickCount++;
-                  if (clickCount === 1) {
-                    this.src = 'temp-screen-2.png';
-                  } else {
-                    window.close();
-                  }
-                });
-              </script>
-            </body>
-          </html>
-        `);
-        newWindow.document.close();
-
-        const checkClosed = setInterval(() => {
-          if (newWindow.closed) {
-            clearInterval(checkClosed);
-            onCreate({ file });
-          }
-        }, 100);
-      }
-    };
-
     return (
       <>
         <div className={galleryItemsNode.length > 0 && styles.attachmentsGallery}>
@@ -202,8 +157,7 @@ const Attachments = React.memo(
         </div>
         {canEdit && (
           <div>
-            <FilePicker multiple onSelect={(file) => openPopup(file)}>
-              {/* //  onCreate({ file })> */}
+            <FilePicker multiple onSelect={(file) => onCreate({ file })}>
               <NewAttachmentInput />
             </FilePicker>
           </div>
