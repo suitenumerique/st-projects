@@ -27,12 +27,7 @@ const Core = React.memo(
             enableResize
             rightHeaderContent={<HeaderRightContainer />}
             leftPanelContent={currentUser && <LeftMenuContainer />}
-            icon={
-              <div className={styles.logoWrapper}>
-                <img src={logo} alt="logo" />
-                <span>BETA</span>
-              </div>
-            }
+            icon={<img src={logo} alt="logo" />}
           >
             <StaticContainer />
             <FeedbackWidget
@@ -46,15 +41,7 @@ const Core = React.memo(
       return (
         <div className={styles.noAuthWrapper}>
           <div className={styles.noAuthHeader}>
-            <Header
-              leftIcon={
-                <div className={styles.logoWrapper}>
-                  <img src={logo} alt="logo" />
-                  <span>BETA</span>
-                </div>
-              }
-              rightIcon={<HeaderRightContainer />}
-            />
+            <Header leftIcon={<img src={logo} alt="logo" />} rightIcon={<HeaderRightContainer />} />
           </div>
           <div className={styles.noAuthContent}>
             <StaticContainer />
