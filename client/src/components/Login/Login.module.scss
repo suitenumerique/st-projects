@@ -5,34 +5,4 @@
     height: 60px;
   }
 
-  .logoWrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    span {
-      font-weight: bold;
-      font-size: 11px;
-      color: rgb(89, 88, 211);
-      display: flex;
-      flex-direction: column;
-      background: rgb(236, 236, 255);
-      color: rgb(89, 88, 211);
-      height: 16px;
-      padding: 4px 6px;
-      border-radius: 12px;
-      width: 43px;
-      line-height: 9px;
-    }
-  }
-
-  .feedbackButton {
-    color: var(--c--contextuals--content--semantic--info--primary);
-    background-color: var(--c--contextuals--background--semantic--info--primary);
-    margin-left: 2rem;
-    &:hover {
-      background-color: var(--c--contextuals--background--semantic--info--primary-hover);
-    }
-  }
-
 }

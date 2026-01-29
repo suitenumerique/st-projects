@@ -25,6 +25,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       // onLanguageUpdate: entryActions.updateCurrentUserLanguage,
       // onNotificationDelete: entryActions.deleteNotification,
+      onLogin: entryActions.authenticateUsingOidc,
       onLogout: entryActions.logout,
     },
     dispatch,
