@@ -6,7 +6,7 @@
   }
 
   .cardModalHeader {
-    border-bottom: 1px solid var(--c--theme--colors--greyscale-200);
+    border-bottom: 1px solid var(--c--contextuals--border--semantic--neutral--tertiary);
     padding: 14px 20px;
     display: flex;
     justify-content: space-between;
@@ -57,7 +57,7 @@
       font-size: 14px;
       font-weight: bold;
       line-height: 20px;
-      color: var(--c--theme--colors--greyscale-800);
+      color: var(--c--contextuals--content--semantic--neutral--primary);
       margin-bottom: 0.5rem;
     }
 
@@ -124,7 +124,7 @@
       font-size: 12px;
       font-weight: bold;
       line-height: 20px;
-      color: var(--c--theme--colors--greyscale-800);
+      color: var(--c--contextuals--content--semantic--neutral--primary);
       margin-bottom: 4px;
     }
 

@@ -358,7 +358,8 @@ function Board({
                   <ListCreate onCreate={onListCreate} onClose={handleAddListClose} />
                 ) : (
                   <Button
-                    color="tertiary-text"
+                    color="brand"
+                    variant="tertiary"
                     size="small"
                     onClick={handleAddListClick}
                     className={styles.addListButton}

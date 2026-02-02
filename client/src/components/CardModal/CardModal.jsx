@@ -202,7 +202,7 @@ const CardModal = React.memo(
                 onTransfer={onTransfer}
                 onBoardFetch={onBoardFetch}
               >
-                <Button size="small" color="tertiary">
+                <Button size="small" variant="secondary" color="brand">
                   {currentListName}
                   <Icon
                     name="keyboard_arrow_down"
@@ -212,7 +212,7 @@ const CardModal = React.memo(
                 </Button>
               </CardMovePopover>
             ) : (
-              <Button size="small" color="tertiary">
+              <Button size="small" variant="secondary" color="brand">
                 {currentListName}
               </Button>
             )}
@@ -265,7 +265,8 @@ const CardModal = React.memo(
                   onDelete={onLabelDelete}
                 >
                   <Button
-                    color="secondary"
+                    color="brand"
+                    variant="bordered"
                     size="small"
                     icon={<Icon size="small" type="outlined" name="new_label" />}
                   >
@@ -281,7 +282,8 @@ const CardModal = React.memo(
                   onUserDeselect={onUserRemove}
                 >
                   <Button
-                    color="secondary"
+                    color="brand"
+                    variant="bordered"
                     size="small"
                     icon={<Icon size="small" type="outlined" name="person_add" />}
                   >
@@ -290,7 +292,8 @@ const CardModal = React.memo(
                 </BoardMembershipsPopover>
                 <DueDateEditPopover defaultValue={dueDate} onUpdate={handleDueDateUpdate}>
                   <Button
-                    color="secondary"
+                    color="brand"
+                    variant="bordered"
                     size="small"
                     icon={<Icon size="small" type="outlined" name="calendar_today" />}
                   >
@@ -301,7 +304,8 @@ const CardModal = React.memo(
                 </DueDateEditPopover>
                 <StopwatchEditPopover defaultValue={stopwatch} onUpdate={handleStopwatchUpdate}>
                   <Button
-                    color="secondary"
+                    color="brand"
+                    variant="bordered"
                     size="small"
                     icon={<Icon size="small" type="outlined" name="schedule" />}
                   >
@@ -447,7 +451,8 @@ const CardModal = React.memo(
                       {canEdit && (
                         <Button
                           type="button"
-                          color="secondary"
+                          color="brand"
+                          variant="bordered"
                           size="small"
                           className={styles.detailsItemAddButton}
                           onClick={handleToggleStopwatchClick}

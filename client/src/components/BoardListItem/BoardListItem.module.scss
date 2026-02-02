@@ -5,7 +5,7 @@
   padding: 0.125rem 0;
   cursor: pointer;
   background-image: none;
-  color: var(--c--theme--colors--greyscale-1000);
+  color: var(--c--contextuals--content--semantic--neutral--primary);
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -18,7 +18,7 @@
   }
 
   &:not(.disableHover):hover {
-    background-color: var(--c--globals--colors--black-050);
+    background-color: var(--c--contextuals--background--semantic--overlay--primary);
     .itemEdit {
       display: flex;
     }
@@ -29,11 +29,11 @@
   }
 
   &:focus {
-    background-color: var(--c--globals--colors--black-050);
+    background-color: var(--c--contextuals--background--semantic--overlay--primary);
   }
 
   &.popoverOpened {
-    background-color: var(--c--globals--colors--black-050);
+    background-color: var(--c--contextuals--background--semantic--overlay--primary);
 
     .itemEdit {
       display: flex;
@@ -53,11 +53,11 @@
 }
 
 .itemWrapperActive {
-  background-color: var(--c--globals--colors--black-050);
+  background-color: var(--c--contextuals--background--semantic--overlay--primary);
 }
 
 .itemIcon {
-  background-color: var(--c--theme--colors--primary-500);
+  background-color: var(--c--contextuals--background--semantic--brand--primary);
   border: 1px solid hsla(0,0%,100%,.2);
   height: 1.1rem;
   width: 1.1rem;
@@ -88,7 +88,7 @@
 
 .itemProjectName {
   font-size: 12px;
-  color: var(--c--theme--colors--greyscale-600);
+  color: var(--c--contextuals--content--semantic--neutral--secondary);
   line-height: 1.4;
 }
 
@@ -100,12 +100,12 @@
   border: 1px solid rgba(0,0,0,0);
 
   &:hover {
-    background-color: var(--c--globals--colors--black-050);
+    background-color: var(--c--contextuals--background--semantic--overlay--primary);
   }
 
   span {
     font-size: 20px;
-    color: var(--c--theme--colors--primary-text);
+    color: var(--c--contextuals--content--semantic--neutral--primary);
   }
 }
 

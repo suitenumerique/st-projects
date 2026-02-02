@@ -146,9 +146,12 @@ const DueDateEditStep = React.memo(({ defaultValue, onUpdate, onBack, onClose })
           onChange={handleDatePickerChange}
         />
         <div className={styles.buttonsWrapper}>
-          <Button type="submit">{t('action.save')}</Button>
+          <Button type="submit" color="brand" variant="primary">
+            {t('action.save')}
+          </Button>
           <Button
-            color="danger"
+            color="error"
+            variant="bordered"
             icon={<Icon type="outlined" name="delete" />}
             onClick={handleClearClick}
           />

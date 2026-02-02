@@ -146,7 +146,12 @@ const Attachments = React.memo(
             {galleryItemsNode}
           </Gallery>
           {items.length > INITIALLY_VISIBLE && (
-            <Button color="secondary" size="small" onClick={handleToggleAllVisibleClick}>
+            <Button
+              color="neutral"
+              variant="bordered"
+              size="small"
+              onClick={handleToggleAllVisibleClick}
+            >
               {isAllVisible
                 ? t('action.showFewerAttachments')
                 : t('action.showAllAttachments', {

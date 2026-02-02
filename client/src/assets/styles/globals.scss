@@ -1,7 +1,7 @@
 @use "@gouvfr-lasuite/ui-kit/sass/fonts";
 @use "@gouvfr-lasuite/ui-kit/style";
 @use "./cunningham-tokens.css";
-@use "./cunningham-tokens-sass" as *;
+@use "./cunningham-tokens.scss" as *;
 
 .c__header__right {
   gap: 1rem;
@@ -27,11 +27,11 @@
   cursor: pointer;
 
   &:hover {
-    background-color: var(--c--theme--colors--greyscale-100);
+    background-color: var(--c--contextuals--background--semantic--overlay--primary);
   }
 
   &:focus {
-    box-shadow: 0 0 0 2px var(--c--theme--colors--greyscale-100);
+    box-shadow: 0 0 0 2px var(--c--contextuals--background--semantic--overlay--primary);
     outline: none;
   }
 }
@@ -54,5 +54,5 @@
 
 .mdxeditor-toolbar {
   border-radius: 0;
-  background-color: var(--c--theme--colors--greyscale-100);
+  background-color: var(--c--contextuals--background--semantic--overlay--primary);
 }

@@ -110,7 +110,8 @@ const CardAdd = React.memo(({ isOpened, onCreate, onClose }) => {
         {/* eslint-disable-next-line jsx-a11y/mouse-events-have-key-events */}
         <Button
           type="submit"
-          color="primary"
+          color="brand"
+          variant="primary"
           size="small"
           className={styles.submitButton}
           onMouseOver={handleControlMouseOver}

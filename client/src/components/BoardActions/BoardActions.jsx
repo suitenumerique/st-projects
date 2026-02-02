@@ -131,7 +131,12 @@ const BoardActions = React.memo(
           {isCurrentUserMember && (
             <div className={styles.action}>
               {boardMemberships.length === 1 && canEdit ? (
-                <Button onClick={handleShareClick} title="Share board" color="tertiary-text">
+                <Button
+                  onClick={handleShareClick}
+                  title="Share board"
+                  color="neutral"
+                  variant="tertiary"
+                >
                   Partager
                 </Button>
               ) : (

@@ -103,7 +103,9 @@ const CommentEdit = React.forwardRef(({ defaultData, onUpdate, text, actions }, 
         onBlur={handleFieldBlur}
       />
       <div className={styles.controls}>
-        <Button color="primary">{t('action.save')}</Button>
+        <Button color="brand" variant="primary" type="submit">
+          {t('action.save')}
+        </Button>
       </div>
     </form>
   );

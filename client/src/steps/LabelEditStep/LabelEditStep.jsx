@@ -83,8 +83,15 @@ const LabelEditStep = React.memo(({ defaultData, onUpdate, onDelete, onBack }) =
         <div className={styles.fieldLabel}>{t('common.color')}</div>
         <ColorPicker colors={LabelColors} current={data.color} onChange={handleFieldChange} />
         <div className={styles.controls}>
-          <Button type="submit">{t('action.save')}</Button>
-          <Button color="secondary" className={styles.deleteButton} onClick={handleDeleteClick}>
+          <Button color="brand" variant="primary" type="submit">
+            {t('action.save')}
+          </Button>
+          <Button
+            color="error"
+            variant="bordered"
+            className={styles.deleteButton}
+            onClick={handleDeleteClick}
+          >
             {t('action.delete')}
           </Button>
         </div>

@@ -72,7 +72,8 @@ const Filters = React.memo(
           >
             <Button
               type="button"
-              color="secondary"
+              color="brand"
+              variant="bordered"
               size="small"
               icon={<Icon type="outlined" name="group" size="small" />}
               className={classNames(
@@ -112,7 +113,8 @@ const Filters = React.memo(
           >
             <Button
               type="button"
-              color="secondary"
+              color="brand"
+              variant="bordered"
               size="small"
               icon={<Icon type="outlined" name="label" size="small" />}
               className={classNames(
