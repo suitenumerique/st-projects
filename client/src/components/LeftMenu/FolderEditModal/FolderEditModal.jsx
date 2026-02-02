@@ -35,10 +35,10 @@ function FolderEditModal({ initialData, isOpen, onClose, onSubmit }) {
       closeOnClickOutside
       rightActions={
         <>
-          <Button color="secondary" onClick={onClose}>
+          <Button color="brand" variant="tertiary" onClick={onClose}>
             Annuler
           </Button>
-          <Button color="primary" type="submit" form="folder-create-modal-form">
+          <Button color="brand" variant="primary" type="submit" form="folder-create-modal-form">
             {data.id ? 'Renommer' : 'Créer'}
           </Button>
         </>

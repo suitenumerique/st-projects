@@ -4,7 +4,7 @@
     height: 40px;
     position: relative;
     font-size: 14px;
-    border-bottom: 1px solid var(--c--theme--colors--greyscale-200);
+    border-bottom: 1px solid var(--c--contextuals--border--semantic--neutral--tertiary);
     text-align: center;
     display: flex;
     align-items: center;
@@ -33,11 +33,11 @@
       cursor: pointer;
 
       &:hover {
-        background-color: var(--c--theme--colors--greyscale-200);
+        background-color: var(--c--contextuals--background--semantic--overlay--primary);
       }
 
       &:focus {
-        box-shadow: 0 0 0 2px var(--c--theme--colors--greyscale-200);
+        box-shadow: 0 0 0 2px var(--c--contextuals--border--semantic--neutral--tertiary);
         outline: none;
       }
     }

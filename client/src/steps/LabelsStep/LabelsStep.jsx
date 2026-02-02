@@ -247,7 +247,8 @@ const LabelsStep = React.memo(
         {canEdit && (
           <Button
             size="small"
-            color="tertiary"
+            color="brand"
+            variant="tertiary"
             onClick={handleAddClick}
             className={styles.addButton}
             icon={<Icon size="small" name="add" type="outlined" aria-hidden="true" />}

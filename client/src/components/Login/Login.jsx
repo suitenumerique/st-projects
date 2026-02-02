@@ -87,10 +87,7 @@ const Login = React.memo(
           icon={
             <>
               <img src={logoGouv} alt="" className={styles.logoGouv} />
-              <div className={styles.logoWrapper}>
-                <img src={logo} alt="logo" />
-                <span>BETA</span>
-              </div>
+              <img src={logo} alt="logo" />
             </>
           }
           rightHeaderContent={<HeaderRightContainer />}

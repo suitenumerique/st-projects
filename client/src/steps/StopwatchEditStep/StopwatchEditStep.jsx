@@ -150,27 +150,41 @@ const StopwatchEditStep = React.memo(({ defaultValue, onUpdate, onBack, onClose 
           </div>
           <Button
             type="button"
-            color="secondary"
+            color="brand"
+            variant="tertiary"
             icon={<Icon type="outlined" name={isEditing ? 'check' : 'edit'} />}
             className={styles.editButton}
             onClick={handleToggleEditingClick}
           />
         </div>
-        {isEditing && <Button positive content={t('action.save')} />}
+        {isEditing && (
+          <Button positive color="brand" variant="primary" content={t('action.save')} />
+        )}
       </form>
       <div className={styles.buttonsWrapper}>
         {!isEditing &&
           (defaultValue && defaultValue.startedAt ? (
-            <Button icon={<Icon type="outlined" name="pause" />} onClick={handleStopClick}>
+            <Button
+              color="brand"
+              variant="tertiary"
+              icon={<Icon type="outlined" name="pause" />}
+              onClick={handleStopClick}
+            >
               {t('action.stop')}
             </Button>
           ) : (
-            <Button icon={<Icon type="outlined" name="play_arrow" />} onClick={handleStartClick}>
+            <Button
+              color="brand"
+              variant="primary"
+              icon={<Icon type="outlined" name="play_arrow" />}
+              onClick={handleStartClick}
+            >
               {t('action.start')}
             </Button>
           ))}
         <Button
-          color="danger"
+          color="error"
+          variant="bordered"
           icon={<Icon type="outlined" name="delete" />}
           className={styles.deleteButton}
           onClick={handleClearClick}

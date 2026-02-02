@@ -4,7 +4,7 @@
     display: flex;
     flex-direction: column;
     cursor: grab;
-    border: 1.5px solid rgba(0,0,0,0);
+    border: 1.5px solid transparent;
     padding: 0.125rem 0;
     border-radius: 4px;
 
@@ -17,17 +17,17 @@
     }
 
     &:not(.disableHover):hover {
-      background-color: var(--c--globals--colors--black-050);
+      background-color: var(--c--contextuals--background--semantic--overlay--primary);
       .itemActions {
         display: flex;
       }
     }
 
     &.popoverOpened {
-      background-color: var(--c--globals--colors--black-050);
+      background-color: var(--c--contextuals--background--semantic--overlay--primary);
       .itemActions {
         display: flex;
-        background-color: var(--c--globals--colors--black-050);
+        background-color: var(--c--contextuals--background--semantic--overlay--primary);
         border-radius: 4px;
       }
     }
@@ -44,8 +44,8 @@
   }
 
   .itemDropTarget {
-    background-color: rgba(0, 0, 145, 0.05);
-    outline: 1px solid #000091;
+    background-color: var(--c--contextuals--background--semantic--overlay--primary);
+    outline: 1px solid var(--c--contextuals--border--semantic--brand--primary);
   }
 
   .itemToggle {
@@ -58,22 +58,22 @@
     padding: 0;
     width: 20px;
     height: 20px;
-    color: var(--c--theme--colors--greyscale-600);
+    color: var(--c--contextuals--content--semantic--neutral--secondary);
 
     &:hover {
-      color: var(--c--theme--colors--greyscale-1000);
+      color: var(--c--contextuals--content--semantic--neutral--primary);
     }
   }
 
   .itemIcon {
-    color: var(--c--theme--colors--greyscale-600);
+    color: var(--c--contextuals--content--semantic--neutral--secondary);
   }
 
   .itemName {
     flex: 1;
-    font-size: var(--c--theme--font--sizes--sm);
+    font-size: 14px;
     font-weight: 500;
-    color: var(--c--theme--colors--greyscale-1000);
+    color: var(--c--contextuals--content--semantic--neutral--primary);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -87,17 +87,17 @@
     border: none;
     cursor: pointer;
     margin-right: 4px;
-    color: var(--c--theme--colors--primary-text);
+    color: var(--c--contextuals--content--semantic--neutral--primary);
     display: none;
     padding: 0;
-    border: 1px solid rgba(0,0,0,0);
+    border: 1px solid transparent;
 
     > span {
       font-size: 20px;
     }
 
     &:hover {
-      background-color: var(--c--globals--colors--black-050);
+      background-color: var(--c--contextuals--background--semantic--overlay--primary);
       border-radius: 4px;
     }
   }

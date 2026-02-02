@@ -89,7 +89,7 @@ const ListAdd = React.memo(({ onCreate, onClose }) => {
         />
       </div>
       <div className={styles.controls}>
-        <Button color="primary" size="small" type="submit">
+        <Button color="brand" variant="primary" size="small" type="submit">
           Valider
         </Button>
       </div>

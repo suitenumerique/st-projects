@@ -11,7 +11,7 @@
   .progressBackground {
     position: relative;
     height: 6px;
-    background-color: var(--c--theme--colors--greyscale-200);
+    background-color: var(--c--contextuals--border--semantic--neutral--tertiary);
     width: 200px;
     border-radius: 4px;
     flex: 1;
@@ -20,7 +20,7 @@
 
   .progressBar {
     height: 6px;
-    background-color: var(--c--theme--colors--primary-800);
+    background-color: var(--c--contextuals--border--semantic--brand--primary);
     position: absolute;
     top: 0;
     left: 0;
@@ -32,7 +32,7 @@
   }
 
   .count {
-    color: var(--c--theme--colors--greyscale-400);
+    color: var(--c--contextuals--content--semantic--neutral--tertiary);
     display: inline-block;
     font-size: 12px;
     text-align: center;

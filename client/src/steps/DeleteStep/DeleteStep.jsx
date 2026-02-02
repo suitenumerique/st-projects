@@ -20,7 +20,7 @@ const DeleteStep = React.memo(({ title, content, buttonContent, onConfirm, onBac
       <div>
         <div className={styles.content}>{t(content)}</div>
         <div className={styles.buttons}>
-          <Button color="danger" onClick={onConfirm}>
+          <Button color="error" variant="primary" onClick={onConfirm}>
             {t(buttonContent)}
           </Button>
         </div>

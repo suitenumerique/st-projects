@@ -103,10 +103,10 @@ const BoardCreateStep = React.memo(
             className={styles.createInput}
           />
           <div className={styles.controls}>
-            <Button size="medium" type="submit">
+            <Button size="medium" type="submit" color="brand" variant="primary">
               {t('action.createBoard')}
             </Button>
-            {/* <Button type="button" className={styles.importButton} onClick={handleImportClick}>
+            {/* <Button type="button" color="brand" variant="tertiary" className={styles.importButton} onClick={handleImportClick}>
           <Icon
             name={data.import ? data.import.type : 'arrow down'}
             className={styles.importButtonIcon}
