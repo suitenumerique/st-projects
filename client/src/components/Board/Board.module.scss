@@ -57,16 +57,10 @@
       height: 32px;
       width: 32px;
       flex-shrink: 0;
-      background-color: var(--c--contextuals--background--semantic--overlay--primary);
-      color: var(--c--contextuals--content--semantic--neutral--primary);
       padding: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-
-      &:hover {
-        background-color: var(--c--contextuals--background--semantic--overlay--primary-hover);
-      }
     }
 
     &.popoverOpened {

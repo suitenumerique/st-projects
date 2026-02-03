@@ -256,9 +256,14 @@ export default class extends BaseModel {
   }
 
   getOrderedMembershipsModelArray() {
-    return orderBy(this.memberships.toModelArray(), (boardMembershipModel) =>
-      boardMembershipModel.user.name.toLocaleLowerCase(),
+    return orderBy(
+      this.memberships.toModelArray().filter((boardMembershipModel) => boardMembershipModel.user),
+      (boardMembershipModel) => boardMembershipModel.user.name.toLocaleLowerCase(),
     );
+  }
+
+  getMembershipsCount() {
+    return this.memberships.count();
   }
 
   getMembershipModelForUser(userId) {

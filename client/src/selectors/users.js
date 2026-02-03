@@ -151,9 +151,13 @@ export const selectPrivateBoardsForCurrentUser = createSelector(
       .toRefArray()
       .filter((board) => {
         const boardModel = Board.withId(board.id);
+        const membershipCount = boardModel.getMembershipsCount();
         const memberships = boardModel.getOrderedMembershipsModelArray();
         return (
-          !board.isPublic && memberships.length === 1 && memberships[0].user.id === currentUserId
+          !board.isPublic &&
+          membershipCount === 1 &&
+          memberships.length === 1 &&
+          memberships[0].user.id === currentUserId
         );
       });
 
@@ -169,10 +173,11 @@ export const selectSharedBoardsForCurrentUser = createSelector(
       .toRefArray()
       .filter((board) => {
         const boardModel = Board.withId(board.id);
+        const membershipCount = boardModel.getMembershipsCount();
         const memberships = boardModel.getOrderedMembershipsModelArray();
         return (
           board.isPublic ||
-          (memberships.length > 1 &&
+          (membershipCount > 1 &&
             memberships.some((membership) => membership.user.id === currentUserId))
         );
       });
