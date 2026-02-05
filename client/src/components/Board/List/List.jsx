@@ -13,6 +13,7 @@ import styles from '../Board.module.scss';
 import Card from '../Card';
 import CardCreate from './CardCreate';
 import ListNameEdit from './ListNameEdit';
+import Badge from '../../../ui/Badge';
 import usePopup from '../../../lib/popup/use-popup';
 import ListActionsStep from '../../../steps/ListActionsStep/ListActionsStep';
 import globalStyles from '../../../assets/styles/styles.module.scss';
@@ -156,6 +157,7 @@ function List({
                 />
               )}
               <p className={styles.listName}>{name}</p>
+              <Badge type="neutral">{cards.length}</Badge>
             </div>
           </ListNameEdit>
         </div>
@@ -171,7 +173,7 @@ function List({
             onOpenChange={setIsListActionsPopoverOpen}
           >
             <Button className={styles.listHeaderButton} color="neutral" variant="tertiary">
-              <Icon outlined name="more_horiz" />
+              <Icon outlined name="more_horiz" size="small" />
             </Button>
           </ListActionsPopover>
         )}
