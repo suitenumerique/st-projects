@@ -5,7 +5,6 @@ import { Button } from '@openfun/cunningham-react';
 
 import { useUsersSearch } from '../../hooks';
 import { BoardMembershipRoles } from '../../constants/Enums';
-import Badge from '../../ui/Badge';
 import Filters from './Filters';
 import styles from './BoardActions.module.scss';
 
@@ -140,10 +139,15 @@ const BoardActions = React.memo(
                   Partager
                 </Button>
               ) : (
-                <Badge style={{ cursor: 'pointer' }} onClick={handleShareClick}>
+                <Button
+                  color="brand"
+                  variant="secondary"
+                  className={styles.membersButton}
+                  onClick={handleShareClick}
+                >
                   <Icon type="outlined" name="group" />
-                  <span style={{ fontSize: '16px' }}>{boardMemberships.length}</span>
-                </Badge>
+                  <span>{boardMemberships.length}</span>
+                </Button>
               )}
             </div>
           )}
