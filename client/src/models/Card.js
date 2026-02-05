@@ -32,7 +32,7 @@ export default class extends BaseModel {
       getDefault: () => false,
     }),
     isActivitiesDetailsVisible: attr({
-      getDefault: () => false,
+      getDefault: () => true,
     }),
     isActivitiesDetailsFetching: attr({
       getDefault: () => false,

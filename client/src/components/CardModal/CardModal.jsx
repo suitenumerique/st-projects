@@ -36,8 +36,8 @@ const CardModal = React.memo(
     // isSubscribed,
     isActivitiesFetching,
     isAllActivitiesFetched,
-    // isActivitiesDetailsVisible,
-    // isActivitiesDetailsFetching,
+    isActivitiesDetailsVisible,
+    isActivitiesDetailsFetching,
     listId,
     boardId,
     projectId,
@@ -75,7 +75,7 @@ const CardModal = React.memo(
     onAttachmentUpdate,
     onAttachmentDelete,
     onActivitiesFetch,
-    // onActivitiesDetailsToggle,
+    onActivitiesDetailsToggle,
     onCommentActivityCreate,
     onCommentActivityUpdate,
     onCommentActivityDelete,
@@ -527,18 +527,29 @@ const CardModal = React.memo(
                 <Icon name="comment" type="outlined" size="small" />
               </div>
               <div className={styles.cardModalSectionRight}>
-                <div className={styles.sectionTitle}>{t('common.comments')}</div>
+                <div className={styles.sectionTitle}>
+                  {t('common.commentsAndActivities')}
+                  <Button
+                    size="small"
+                    variant="tertiary"
+                    color="neutral"
+                    onClick={() => onActivitiesDetailsToggle(!isActivitiesDetailsVisible)}
+                  >
+                    {isActivitiesDetailsVisible
+                      ? t('action.hideActivities')
+                      : t('action.showActivities')}
+                  </Button>
+                </div>
                 <div className={styles.detailsItemContent}>
                   <Activities
                     items={activities}
                     isFetching={isActivitiesFetching}
                     isAllFetched={isAllActivitiesFetched}
                     isDetailsVisible={false}
-                    // isDetailsFetching={isActivitiesDetailsFetching}
+                    isDetailsFetching={isActivitiesDetailsFetching}
                     canEdit={canEditCommentActivities}
                     canEditAllComments={canEditAllCommentActivities}
                     onFetch={onActivitiesFetch}
-                    // onDetailsToggle={onActivitiesDetailsToggle}
                     onCommentCreate={onCommentActivityCreate}
                     onCommentUpdate={onCommentActivityUpdate}
                     onCommentDelete={onCommentActivityDelete}
@@ -572,8 +583,8 @@ CardModal.propTypes = {
   // isSubscribed: PropTypes.bool.isRequired,
   isActivitiesFetching: PropTypes.bool.isRequired,
   isAllActivitiesFetched: PropTypes.bool.isRequired,
-  // isActivitiesDetailsVisible: PropTypes.bool.isRequired,
-  // isActivitiesDetailsFetching: PropTypes.bool.isRequired,
+  isActivitiesDetailsVisible: PropTypes.bool.isRequired,
+  isActivitiesDetailsFetching: PropTypes.bool.isRequired,
   listId: PropTypes.string.isRequired,
   boardId: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
@@ -613,7 +624,7 @@ CardModal.propTypes = {
   onAttachmentUpdate: PropTypes.func.isRequired,
   onAttachmentDelete: PropTypes.func.isRequired,
   onActivitiesFetch: PropTypes.func.isRequired,
-  // onActivitiesDetailsToggle: PropTypes.func.isRequired,
+  onActivitiesDetailsToggle: PropTypes.func.isRequired,
   onCommentActivityCreate: PropTypes.func.isRequired,
   onCommentActivityUpdate: PropTypes.func.isRequired,
   onCommentActivityDelete: PropTypes.func.isRequired,
