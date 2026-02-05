@@ -1,6 +1,8 @@
-import { call, put, select } from 'redux-saga/effects';
+import { all, call, put, select } from 'redux-saga/effects';
 
 import { goToBoard, goToCard } from './router';
+import { addUserToCard } from './users';
+import { addLabelToCard } from './labels';
 import request from '../request';
 import selectors from '../../../selectors';
 import actions from '../../../actions';
@@ -36,6 +38,20 @@ export function* createCard(listId, data, autoOpen) {
   }
 
   yield put(actions.createCard.success(localId, card));
+
+  // Auto-add filtered members and labels to the new card
+  const filterUsers = yield select(selectors.selectFilterUsersForCurrentBoard);
+  const filterLabels = yield select(selectors.selectFilterLabelsForCurrentBoard);
+
+  // Add all filtered users
+  if (filterUsers && filterUsers.length > 0) {
+    yield all(filterUsers.map((user) => call(addUserToCard, user.id, card.id)));
+  }
+
+  // Add all filtered labels
+  if (filterLabels && filterLabels.length > 0) {
+    yield all(filterLabels.map((label) => call(addLabelToCard, label.id, card.id)));
+  }
 
   if (autoOpen) {
     yield call(goToCard, card.id);
