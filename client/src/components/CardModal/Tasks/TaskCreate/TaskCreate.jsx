@@ -39,7 +39,7 @@ const TaskCreate = React.forwardRef(({ children, onCreate }, ref) => {
       };
 
       if (!cleanData.name) {
-        nameField.current.ref.current.select();
+        nameField.current?.select();
         return;
       }
 

@@ -1,6 +1,7 @@
-import React, { useCallback, useState, useEffect, useRef } from 'react';
+import React, { useCallback, useState, useEffect, useRef, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import classNames from 'classnames';
 
 // eslint-disable-next-line import/no-unresolved
 import '@mdxeditor/editor/style.css';
@@ -8,13 +9,11 @@ import {
   MDXEditor,
   headingsPlugin,
   listsPlugin,
-  quotePlugin,
   thematicBreakPlugin,
   markdownShortcutPlugin,
   linkPlugin,
   linkDialogPlugin,
   toolbarPlugin,
-  UndoRedo,
   BoldItalicUnderlineToggles,
   CodeToggle,
   CreateLink,
@@ -23,32 +22,50 @@ import {
   Separator,
 } from '@mdxeditor/editor';
 
-import Markdown from '../../../ui/Markdown';
-
 import styles from './CardModalDescription.module.scss';
 
 function EditorToolbar() {
   return (
     <>
-      <UndoRedo />
-      <Separator />
-      <BoldItalicUnderlineToggles />
-      <CodeToggle />
-      <Separator />
       <BlockTypeSelect />
       <Separator />
-      <CreateLink />
+      <BoldItalicUnderlineToggles />
       <Separator />
       <ListsToggle options={['bullet', 'number']} />
+      <Separator />
+      <CodeToggle />
+      <CreateLink />
     </>
   );
 }
+
+const readOnlyPlugins = [
+  headingsPlugin({ allowedHeadingLevels: [1, 2, 3] }),
+  listsPlugin(),
+  thematicBreakPlugin(),
+  linkPlugin(),
+];
 
 function DescriptionComponent({ description, canEdit, onUpdate }) {
   const [t] = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(description || '');
   const editorRef = useRef(null);
+
+  const editorPlugins = useMemo(
+    () => [
+      headingsPlugin({ allowedHeadingLevels: [1, 2, 3] }),
+      listsPlugin(),
+      thematicBreakPlugin(),
+      markdownShortcutPlugin(),
+      linkPlugin(),
+      linkDialogPlugin(),
+      toolbarPlugin({
+        toolbarContents: EditorToolbar,
+      }),
+    ],
+    [],
+  );
 
   const handleClick = useCallback(() => {
     if (canEdit && !isEditing) {
@@ -73,14 +90,22 @@ function DescriptionComponent({ description, canEdit, onUpdate }) {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (isEditing && editorRef.current && !editorRef.current.contains(event.target)) {
+        // Check if clicking on MDXEditor popover/dropdown (rendered in portal)
+        const isEditorPopover =
+          event.target.closest('[data-radix-popper-content-wrapper]') ||
+          event.target.closest('[data-radix-select-viewport]');
+        if (isEditorPopover) {
+          return;
+        }
         handleSave();
       }
     };
 
     if (isEditing) {
-      document.addEventListener('mousedown', handleClickOutside);
+      // Use mouseup instead of mousedown to let Radix handle its click first
+      document.addEventListener('mouseup', handleClickOutside);
       return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener('mouseup', handleClickOutside);
       };
     }
     return undefined;
@@ -114,18 +139,7 @@ function DescriptionComponent({ description, canEdit, onUpdate }) {
         <MDXEditor
           markdown={editValue}
           onChange={setEditValue}
-          plugins={[
-            headingsPlugin(),
-            listsPlugin(),
-            quotePlugin(),
-            thematicBreakPlugin(),
-            markdownShortcutPlugin(),
-            linkPlugin(),
-            linkDialogPlugin(),
-            toolbarPlugin({
-              toolbarContents: EditorToolbar,
-            }),
-          ]}
+          plugins={editorPlugins}
           contentEditableClassName={styles.editorContent}
         />
       </div>
@@ -136,7 +150,10 @@ function DescriptionComponent({ description, canEdit, onUpdate }) {
     return (
       <button
         type="button"
-        className={styles.descriptionButton}
+        className={classNames(
+          styles.descriptionButton,
+          !description && styles.descriptionButtonEmpty,
+        )}
         onClick={handleClick}
         aria-label={t('action.addMoreDetailedDescription')}
       >
@@ -150,9 +167,7 @@ function DescriptionComponent({ description, canEdit, onUpdate }) {
   if (description && !canEdit) {
     return (
       <div className={styles.descriptionText}>
-        <Markdown linkStopPropagation linkTarget="_blank">
-          {description}
-        </Markdown>
+        <MDXEditor key={description} markdown={description} plugins={readOnlyPlugins} readOnly />
       </div>
     );
   }
@@ -166,9 +181,7 @@ function DescriptionComponent({ description, canEdit, onUpdate }) {
         aria-label={t('action.editDescription')}
       >
         <div className={styles.descriptionText}>
-          <Markdown linkStopPropagation linkTarget="_blank">
-            {description}
-          </Markdown>
+          <MDXEditor key={description} markdown={description} plugins={readOnlyPlugins} readOnly />
         </div>
       </button>
     );
