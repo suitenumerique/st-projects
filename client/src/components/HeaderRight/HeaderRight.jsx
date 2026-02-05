@@ -44,7 +44,7 @@ const HeaderRight = React.memo(
         />
 
         {currentUser ? (
-          <UserMenu user={currentUser} logout={onLogout} />
+          <UserMenu user={{ ...currentUser, full_name: currentUser.name }} logout={onLogout} />
         ) : (
           <Button color="brand" variant="tertiary" onClick={onLogin}>
             Connexion
