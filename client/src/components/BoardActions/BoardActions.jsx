@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { ShareModal, ShareModalCopyLinkFooter, Icon, Badge } from '@gouvfr-lasuite/ui-kit';
+import { ShareModal, ShareModalCopyLinkFooter, Icon } from '@gouvfr-lasuite/ui-kit';
 import { Button } from '@openfun/cunningham-react';
 
 import { useUsersSearch } from '../../hooks';
@@ -139,10 +139,15 @@ const BoardActions = React.memo(
                   Partager
                 </Button>
               ) : (
-                <Badge className={styles.membersBadge} type="accent" onClick={handleShareClick}>
+                <Button
+                  color="brand"
+                  variant="secondary"
+                  className={styles.membersButton}
+                  onClick={handleShareClick}
+                >
                   <Icon type="outlined" name="group" />
                   <span>{boardMemberships.length}</span>
-                </Badge>
+                </Button>
               )}
             </div>
           )}
