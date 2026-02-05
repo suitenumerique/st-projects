@@ -1,12 +1,10 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import TextareaAutosize from 'react-textarea-autosize';
-import { Button } from '@openfun/cunningham-react';
-import { Icon } from '@gouvfr-lasuite/ui-kit';
 import { useDidUpdate, useToggle } from '../../../../lib/hooks';
 
-import { useClosableForm, useForm } from '../../../../hooks';
+import { useForm } from '../../../../hooks';
 
 import styles from './CommentCreate.module.scss';
 
@@ -16,15 +14,10 @@ const DEFAULT_DATA = {
 
 const CommentCreate = React.memo(({ onCreate }) => {
   const [t] = useTranslation();
-  const [isOpened, setIsOpened] = useState(false);
   const [data, handleFieldChange, setData] = useForm(DEFAULT_DATA);
   const [selectTextFieldState, selectTextField] = useToggle();
 
   const textField = useRef(null);
-
-  const close = useCallback(() => {
-    setIsOpened(false);
-  }, []);
 
   const submit = useCallback(() => {
     const cleanData = {
@@ -43,20 +36,15 @@ const CommentCreate = React.memo(({ onCreate }) => {
     selectTextField();
   }, [onCreate, data, setData, selectTextField]);
 
-  const handleFieldFocus = useCallback(() => {
-    setIsOpened(true);
-  }, []);
-
   const handleFieldKeyDown = useCallback(
     (event) => {
-      if (event.ctrlKey && event.key === 'Enter') {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
         submit();
       }
     },
     [submit],
   );
-
-  const [handleFieldBlur, handleControlMouseOver, handleControlMouseOut] = useClosableForm(close);
 
   const handleSubmit = useCallback(
     (event) => {
@@ -80,26 +68,9 @@ const CommentCreate = React.memo(({ onCreate }) => {
         minRows={3}
         spellCheck={false}
         className={styles.field}
-        onFocus={handleFieldFocus}
         onKeyDown={handleFieldKeyDown}
         onChange={handleFieldChange}
-        onBlur={handleFieldBlur}
       />
-      {isOpened && (
-        <div className={styles.controls}>
-          <Button
-            type="submit"
-            color="brand"
-            variant="secondary"
-            size="small"
-            icon={<Icon name="add" type="outlined" size="small" />}
-            onMouseOver={handleControlMouseOver}
-            onMouseOut={handleControlMouseOut}
-          >
-            {t('action.addComment')}
-          </Button>
-        </div>
-      )}
     </form>
   );
 });

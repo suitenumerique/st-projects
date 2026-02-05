@@ -1,12 +1,16 @@
 .descriptionButton {
   width: 100%;
-  padding: 8px 12px;
+  padding: 0;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
   background: transparent;
   cursor: pointer;
   text-align: left;
   transition: all 0.2s ease;
+
+  &.descriptionButtonEmpty {
+    padding: 12px;
+  }
 
   &:hover {
     background-color: #f5f5f5;
@@ -29,12 +33,15 @@
   background: transparent;
   min-height: 40px;
   line-height: 1.5;
+  font-family: Marianne, sans-serif;
 
-  :global(.markdown-body) {
-    margin: 0;
-    padding: 0;
-    font-size: 14px;
-    line-height: 1.5;
+  :global(.mdxeditor) {
+    font-family: Marianne, sans-serif;
+  }
+
+  // Hide empty trailing paragraph with <br> added by MDXEditor
+  :global(.mdxeditor) p:last-child:has(br:only-child) {
+    display: none;
   }
 }
 
@@ -54,6 +61,7 @@
   border: none;
   outline: none;
   resize: vertical;
+  font-family: Marianne, sans-serif;
 
   &:focus {
     outline: none;
