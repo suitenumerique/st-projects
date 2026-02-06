@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-02-06
+
+### Added
+
+- Count badge on list headers
+- Automatically assign filtered members and labels to created cards
+- Display all activities by default and make them hideable
+
+### Fixed
+
+- Various interactions on the card modal
+
+### Changed
+
+- UI kit fixes
+
 ## [1.1.0] - 2026-02-03
 
 ### Added
