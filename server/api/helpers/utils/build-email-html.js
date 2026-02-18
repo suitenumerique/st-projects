@@ -15,6 +15,10 @@ module.exports = {
     buttonUrl: {
       type: 'string',
     },
+    buttonLabel: {
+      type: 'string',
+      defaultsTo: 'Ouvrir Projets',
+    },
   },
 
   sync: true,
@@ -31,7 +35,7 @@ module.exports = {
           <tr>
             <td style="background-color:#3E5DE7;border-radius:4px;height:40px;">
               <a href="${inputs.buttonUrl}" style="display:inline-block;height:40px;line-height:40px;padding:0 20px;color:#ffffff;text-decoration:none;font-size:14px;font-weight:500;">
-                &#8599;&nbsp;&nbsp;Ouvrir Projets
+                &#8599;&nbsp;&nbsp;${inputs.buttonLabel}
               </a>
             </td>
           </tr>
