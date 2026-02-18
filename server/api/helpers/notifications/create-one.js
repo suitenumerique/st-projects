@@ -27,7 +27,7 @@ const buildAndSendEmail = async (board, card, action, actorUser, notifiableUser)
 
   switch (action.type) {
     case Action.Types.COMMENT_CARD:
-      subject = `Nouveau commentaire : ${cardName}`;
+      subject = `Nouveau commentaire : ${card.name}`;
       heading = 'Nouveau commentaire !';
       body =
         `<p>${actorName} a ajouté un commentaire dans la carte suivante : ${cardName} ` +
@@ -39,7 +39,7 @@ const buildAndSendEmail = async (board, card, action, actorUser, notifiableUser)
         return;
       }
 
-      subject = `Nouvelle carte attribuée : ${cardName}`;
+      subject = `Nouvelle carte attribuée : ${card.name}`;
       heading = 'Nouvelle carte attribuée !';
       body = `<p>${actorName} vous a attribué la carte suivante : ${cardName} dans le tableau ${boardName}.</p>`;
       break;
