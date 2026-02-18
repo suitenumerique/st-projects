@@ -89,7 +89,7 @@ module.exports = {
     });
 
     if (sails.hooks.smtp.isActive()) {
-      const subject = 'Projets | Nouveau tableau partagé !';
+      const subject = 'Projets - Nouveau tableau partagé !';
       const boardUrl = `${process.env.BASE_URL}/boards/${values.board.id}`;
       const body =
         `<p><strong>${inputs.actorUser.name} (${inputs.actorUser.email})</strong> vous a partagé le tableau suivant : ` +
