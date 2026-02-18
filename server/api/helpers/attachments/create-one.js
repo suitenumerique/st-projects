@@ -75,6 +75,24 @@ module.exports = {
       user: values.creatorUser,
     });
 
+    await sails.helpers.actions.createOne.with({
+      project: inputs.project,
+      board: inputs.board,
+      list: inputs.list,
+      values: {
+        card: values.card,
+        user: values.creatorUser,
+        type: Action.Types.ADD_ATTACHMENT,
+        data: {
+          attachment: {
+            id: attachment.id,
+            name: values.name,
+          },
+        },
+      },
+      request: inputs.request,
+    });
+
     if (!values.card.coverAttachmentId && attachment.image) {
       await sails.helpers.cards.updateOne.with({
         record: values.card,

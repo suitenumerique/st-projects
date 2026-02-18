@@ -288,6 +288,26 @@ module.exports = {
         });
       }
 
+      if (
+        !_.isUndefined(values.dueDate) &&
+        String(values.dueDate) !== String(inputs.record.dueDate)
+      ) {
+        await sails.helpers.actions.createOne.with({
+          project,
+          board,
+          list,
+          values: {
+            card,
+            user: inputs.actorUser,
+            type: Action.Types.CHANGE_DUE_DATE,
+            data: {
+              dueDate: values.dueDate,
+            },
+          },
+          request: inputs.request,
+        });
+      }
+
       // TODO: add transfer action
     }
 

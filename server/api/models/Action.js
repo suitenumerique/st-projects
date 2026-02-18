@@ -9,6 +9,9 @@ const Types = {
   CREATE_CARD: 'createCard',
   MOVE_CARD: 'moveCard',
   COMMENT_CARD: 'commentCard',
+  ADD_MEMBER_TO_CARD: 'addMemberToCard',
+  CHANGE_DUE_DATE: 'changeDueDate',
+  ADD_ATTACHMENT: 'addAttachment',
 };
 
 module.exports = {

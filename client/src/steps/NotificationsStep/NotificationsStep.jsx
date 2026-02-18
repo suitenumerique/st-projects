@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { useTranslation, Trans } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Button } from '@openfun/cunningham-react';
+import { Icon } from '@gouvfr-lasuite/ui-kit';
 import PopoverHeader from '../../ui/Popover/PopoverHeader';
 
 import Paths from '../../constants/Paths';
@@ -12,21 +13,21 @@ import User from '../../ui/User';
 
 import styles from './NotificationsStep.module.scss';
 
-const NotificationsStep = React.memo(({ items, onDelete, onClose }) => {
+const NotificationsStep = React.memo(({ items, onMarkAsRead, onClose }) => {
   const [t] = useTranslation();
 
-  const handleDelete = useCallback(
+  const handleMarkAsRead = useCallback(
     (id) => {
-      onDelete(id);
+      onMarkAsRead(id);
     },
-    [onDelete],
+    [onMarkAsRead],
   );
 
-  const handleDeleteAll = useCallback(() => {
+  const handleMarkAllAsRead = useCallback(() => {
     items.forEach((item) => {
-      onDelete(item.id);
+      onMarkAsRead(item.id);
     });
-  }, [items, onDelete]);
+  }, [items, onMarkAsRead]);
 
   const renderItemContent = useCallback(
     ({ activity, card }) => {
@@ -42,15 +43,28 @@ const NotificationsStep = React.memo(({ items, onDelete, onClose }) => {
                 toList: activity.data.toList.name,
               }}
             >
-              {activity.user.name}
-              {' moved '}
+              <strong />
               <Link to={Paths.CARDS.replace(':id', card.id)} onClick={onClose}>
                 {card.name}
               </Link>
-              {' from '}
-              {activity.data.fromList.name}
-              {' to '}
-              {activity.data.toList.name}
+              <strong />
+              <strong />
+            </Trans>
+          );
+        case ActivityTypes.ADD_MEMBER_TO_CARD:
+          return (
+            <Trans
+              i18nKey="common.userAssignedYouToCard"
+              values={{
+                user: activity.user.name,
+                member: activity.data.member.name,
+                card: card.name,
+              }}
+            >
+              <strong />
+              <Link to={Paths.CARDS.replace(':id', card.id)} onClick={onClose}>
+                {card.name}
+              </Link>
             </Trans>
           );
         case ActivityTypes.COMMENT_CARD: {
@@ -65,14 +79,41 @@ const NotificationsStep = React.memo(({ items, onDelete, onClose }) => {
                 card: card.name,
               }}
             >
-              {activity.user.name}
-              {` left a new comment «${commentText}» to `}
+              <strong />
               <Link to={Paths.CARDS.replace(':id', card.id)} onClick={onClose}>
                 {card.name}
               </Link>
             </Trans>
           );
         }
+        case ActivityTypes.CHANGE_DUE_DATE:
+          return (
+            <Trans
+              i18nKey="common.userChangedDueDateOfCard"
+              values={{
+                user: activity.user.name,
+                card: card.name,
+              }}
+            >
+              <strong />
+              <Link to={Paths.CARDS.replace(':id', card.id)} onClick={onClose} />
+            </Trans>
+          );
+        case ActivityTypes.ADD_ATTACHMENT:
+          return (
+            <Trans
+              i18nKey="common.userAddedAttachmentToCard"
+              values={{
+                user: activity.user.name,
+                card: card.name,
+              }}
+            >
+              <strong />
+              <Link to={Paths.CARDS.replace(':id', card.id)} onClick={onClose}>
+                {card.name}
+              </Link>
+            </Trans>
+          );
         default:
       }
 
@@ -90,45 +131,50 @@ const NotificationsStep = React.memo(({ items, onDelete, onClose }) => {
       />
       <div>
         {items.length > 0 ? (
-          <div className={styles.wrapper}>
+          <>
+            <div className={styles.wrapper}>
+              {items.map((item) => (
+                <div key={item.id} className={styles.item}>
+                  {item.card && item.activity ? (
+                    <>
+                      <User
+                        name={item.activity.user.name}
+                        avatarUrl={item.activity.user.avatarUrl}
+                        size="small"
+                      />
+                      <span className={styles.itemContent}>{renderItemContent(item)}</span>
+                    </>
+                  ) : (
+                    <div className={styles.itemDeleted}>{t('common.cardOrActionAreDeleted')}</div>
+                  )}
+                  <Button
+                    type="button"
+                    color="neutral"
+                    variant="tertiary"
+                    size="small"
+                    onClick={() => handleMarkAsRead(item.id)}
+                  >
+                    <Icon name="check_circle" type="outlined" size="small" />
+                  </Button>
+                </div>
+              ))}
+            </div>
             {items.length > 1 && (
-              <Button
-                type="button"
-                color="error"
-                variant="primary"
-                icon="trash alternate outline"
-                content={t('action.deleteNotifications')}
-                onClick={handleDeleteAll}
-                className={styles.deleteAllButton}
-              />
-            )}
-            {items.map((item) => (
-              <div key={item.id} className={styles.item}>
-                {item.card && item.activity ? (
-                  <>
-                    <User
-                      name={item.activity.user.name}
-                      avatarUrl={item.activity.user.avatarUrl}
-                      size="large"
-                    />
-                    <span className={styles.itemContent}>{renderItemContent(item)}</span>
-                  </>
-                ) : (
-                  <div className={styles.itemDeleted}>{t('common.cardOrActionAreDeleted')}</div>
-                )}
+              <div className={styles.markAllAsReadButton}>
                 <Button
                   type="button"
-                  color="error"
-                  variant="primary"
-                  icon="trash alternate outline"
-                  className={styles.itemButton}
-                  onClick={() => handleDelete(item.id)}
-                />
+                  color="neutral"
+                  variant="tertiary"
+                  onClick={handleMarkAllAsRead}
+                >
+                  <Icon name="check_circle" type="outlined" size="small" />
+                  &nbsp;{t('action.markAllAsRead')}
+                </Button>
               </div>
-            ))}
-          </div>
+            )}
+          </>
         ) : (
-          t('common.noUnreadNotifications')
+          <span className={styles.noUnreadNotifications}>{t('common.noUnreadNotifications')}</span>
         )}
       </div>
     </>
@@ -137,7 +183,7 @@ const NotificationsStep = React.memo(({ items, onDelete, onClose }) => {
 
 NotificationsStep.propTypes = {
   items: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  onDelete: PropTypes.func.isRequired,
+  onMarkAsRead: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 

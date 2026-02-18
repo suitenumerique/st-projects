@@ -14,39 +14,50 @@ const valuesValidator = (value) => {
   return true;
 };
 
-// TODO: use templates (views) to build html
+const cardUrl = (card) => `${process.env.BASE_URL}/cards/${card.id}`;
+
 const buildAndSendEmail = async (board, card, action, actorUser, notifiableUser) => {
-  let emailData;
+  let subject;
+  let heading;
+  let body;
+
+  const actorName = `<strong>${actorUser.name} (${actorUser.email})</strong>`;
+  const cardName = `<strong>${card.name}</strong>`;
+  const boardName = `<strong>${board.name}</strong>`;
+
   switch (action.type) {
-    case Action.Types.MOVE_CARD:
-      emailData = {
-        subject: `${actorUser.name} moved ${card.name} from ${action.data.fromList.name} to ${action.data.toList.name} on ${board.name}`,
-        html:
-          `<p>${actorUser.name} moved ` +
-          `<a href="${process.env.BASE_URL}/cards/${card.id}">${card.name}</a> ` +
-          `from ${action.data.fromList.name} to ${action.data.toList.name} ` +
-          `on <a href="${process.env.BASE_URL}/boards/${board.id}">${board.name}</a></p>`,
-      };
+    case Action.Types.COMMENT_CARD:
+      subject = 'Projets | Nouveau commentaire !';
+      heading = 'Nouveau commentaire !';
+      body =
+        `<p>${actorName} a ajouté un commentaire dans la carte suivante : ${cardName} ` +
+        `dans le tableau ${boardName}</p>`;
 
       break;
-    case Action.Types.COMMENT_CARD:
-      emailData = {
-        subject: `${actorUser.name} left a new comment to ${card.name} on ${board.name}`,
-        html:
-          `<p>${actorUser.name} left a new comment to ` +
-          `<a href="${process.env.BASE_URL}/cards/${card.id}">${card.name}</a> ` +
-          `on <a href="${process.env.BASE_URL}/boards/${board.id}">${board.name}</a></p>` +
-          `<p>${action.data.text}</p>`,
-      };
+    case Action.Types.ADD_MEMBER_TO_CARD:
+      if (notifiableUser.id !== action.data.member.id) {
+        return;
+      }
 
+      subject = 'Projets | Nouvelle carte attribuée !';
+      heading = 'Nouvelle carte attribuée !';
+      body = `<p>${actorName} vous a attribué la carte suivante : ${cardName} dans le tableau ${boardName}.</p>`;
       break;
     default:
       return;
   }
 
+  const html = sails.helpers.utils.buildEmailHtml.with({
+    subject,
+    heading,
+    body,
+    buttonUrl: cardUrl(card),
+  });
+
   await sails.helpers.utils.sendEmail.with({
-    ...emailData,
     to: notifiableUser.email,
+    subject,
+    html,
   });
 };
 

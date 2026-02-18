@@ -35,6 +35,18 @@ const buildAndSendMarkdownMessage = async (card, action, actorUser, send) => {
       markdown = `*${actorUser.name}* commented on ${cardLink}:\n>${action.data.text}`;
 
       break;
+    case Action.Types.ADD_MEMBER_TO_CARD:
+      markdown = `${actorUser.name} assigned *${action.data.member.name}* to ${cardLink}`;
+
+      break;
+    case Action.Types.CHANGE_DUE_DATE:
+      markdown = `${actorUser.name} changed the due date of ${cardLink}`;
+
+      break;
+    case Action.Types.ADD_ATTACHMENT:
+      markdown = `${actorUser.name} added an attachment to ${cardLink}`;
+
+      break;
     default:
       return;
   }
@@ -60,6 +72,18 @@ const buildAndSendHtmlMessage = async (card, action, actorUser, send) => {
 
       break;
     }
+    case Action.Types.ADD_MEMBER_TO_CARD:
+      html = `${actorUser.name} assigned <b>${action.data.member.name}</b> to ${cardLink}`;
+
+      break;
+    case Action.Types.CHANGE_DUE_DATE:
+      html = `${actorUser.name} changed the due date of ${cardLink}`;
+
+      break;
+    case Action.Types.ADD_ATTACHMENT:
+      html = `${actorUser.name} added an attachment to ${cardLink}`;
+
+      break;
     default:
       return;
   }
