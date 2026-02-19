@@ -7,7 +7,7 @@ import { useDroppable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import classNames from 'classnames';
 import { Button } from '@gouvfr-lasuite/cunningham-react';
-import { Icon } from '@gouvfr-lasuite/ui-kit';
+import { Badge, Icon } from '@gouvfr-lasuite/ui-kit';
 // import { useTranslation } from 'react-i18next';
 import { upperFirst, camelCase } from 'lodash';
 import styles from '../Board.module.scss';
@@ -159,6 +159,7 @@ function List({
                 />
               )}
               <p className={styles.listName}>{name}</p>
+              <Badge type="neutral">{cards.length}</Badge>
             </div>
           </ListNameEdit>
         </div>
