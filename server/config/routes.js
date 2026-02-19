@@ -139,6 +139,8 @@ module.exports.routes = {
   'GET /api/notifications/:id': 'notifications/show',
   'PATCH /api/notifications/:ids': 'notifications/update',
 
+  'GET /robots.txt': 'robots',
+
   'GET /user-avatars/*': {
     fn: staticDirServer('/user-avatars', () =>
       path.join(
