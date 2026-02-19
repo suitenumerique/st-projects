@@ -2,8 +2,9 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import DatePicker from 'react-datepicker';
-import { Button } from '@openfun/cunningham-react';
+import { Button } from '@gouvfr-lasuite/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
+
 import { useDidUpdate, useToggle } from '../../lib/hooks';
 
 import 'react-datepicker/dist/react-datepicker.css';
@@ -151,9 +152,12 @@ const DueDateEditStep = React.memo(({ defaultValue, onUpdate, onBack, onClose })
           onChange={handleDatePickerChange}
         />
         <div className={styles.buttonsWrapper}>
-          <Button type="submit">{t('action.save')}</Button>
+          <Button type="submit" color="brand" variant="primary">
+            {t('action.save')}
+          </Button>
           <Button
-            color="danger"
+            color="error"
+            variant="bordered"
             icon={<Icon type="outlined" name="delete" />}
             onClick={handleClearClick}
           />

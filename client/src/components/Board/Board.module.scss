@@ -1,7 +1,7 @@
 :global(#app) {
 
   a {
-    color: var(----c--theme--colors--greyscale-800)
+    color: var(--c--contextuals--content--semantic--neutral--primary);
   }
 
   .wrapper {
@@ -39,7 +39,7 @@
   }
 
   .list {
-    background: var(--c--theme--colors--greyscale-100);
+    background: var(--c--contextuals--background--semantic--neutral--tertiary);
     border-radius: 4px;
     width: 272px;
     flex-shrink: 0;
@@ -57,21 +57,21 @@
       height: 32px;
       width: 32px;
       flex-shrink: 0;
-      background-color: var(--c--theme--colors--greyscale-100);
-      color: var(--c--theme--colors--greyscale-800);
+      background-color: var(--c--contextuals--background--semantic--overlay--primary);
+      color: var(--c--contextuals--content--semantic--neutral--primary);
       padding: 0;
       display: flex;
       align-items: center;
       justify-content: center;
 
       &:hover {
-        background-color: #7c7c7c49;
+        background-color: var(--c--contextuals--background--semantic--overlay--primary-hover);
       }
     }
 
     &.popoverOpened {
       .listHeaderButton {
-        background-color: var(--c--theme--colors--greyscale-300);
+        background-color: var(--c--contextuals--background--semantic--overlay--primary);
       }
     }
 
@@ -146,7 +146,7 @@
 
   .dropZoneActive {
     background-color: rgba(0, 123, 255, 0.1);
-    border: 2px dashed #007bff;
+    border: 2px dashed var(--c--contextuals--border--semantic--brand--primary);
     border-radius: 4px;
     min-height: 40px;
   }
@@ -156,7 +156,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #6c757d;
+    color: var(--c--contextuals--content--semantic--neutral--secondary);
     font-style: italic;
     font-size: 14px;
   }
@@ -183,11 +183,11 @@
     }
 
     &.popoverOpened {
-      outline: 2px solid #000091;
+      outline: 2px solid var(--c--contextuals--border--semantic--brand--primary);
 
       .cardActionsButton {
         opacity: 1;
-        background-color: var(--c--theme--colors--greyscale-100);
+        background-color: var(--c--contextuals--background--semantic--overlay--primary);
       }
 
     }
@@ -195,7 +195,7 @@
   }
 
   .card:hover {
-    outline: 2px solid #000091;
+    outline: 2px solid var(--c--contextuals--border--semantic--brand--primary);
     cursor: pointer;
 
     .cardActionsButton {
@@ -252,7 +252,7 @@
   }
 
   .cardName {
-    color: #17394d;
+    color: var(--c--contextuals--content--semantic--neutral--primary);
     font-size: 14px;
     line-height: 20px;
     padding-bottom: 6px;
@@ -298,7 +298,7 @@
   .cardInfo {
     font-size: 12px;
     line-height: 20px;
-    color: var(--c--theme--colors--greyscale-500);
+    color: var(--c--contextuals--content--semantic--neutral--tertiary);
     display: flex;
     align-items: center;
   }

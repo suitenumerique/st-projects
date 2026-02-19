@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } 
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import TextareaAutosize from 'react-textarea-autosize';
-import { Button } from '@openfun/cunningham-react';
+import { Button } from '@gouvfr-lasuite/cunningham-react';
 
 import { useClosableForm, useField } from '../../../../hooks';
 import { focusEnd } from '../../../../utils/element-helpers';
@@ -128,8 +128,10 @@ const CardNameEdit = React.forwardRef(({ children, defaultValue, onUpdate }, ref
         />
         <div className={styles.buttons}>
           <Button
-            color="primary"
+            color="brand"
+            variant="primary"
             type="submit"
+            size="small"
             onMouseOver={handleControlMouseOver}
             onMouseOut={handleControlMouseOut}
             onMouseDown={handleFormMouseDown}

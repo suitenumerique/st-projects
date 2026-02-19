@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Input, Select, Switch } from '@openfun/cunningham-react';
+import { Input, Select, Switch } from '@gouvfr-lasuite/cunningham-react';
 import { HorizontalSeparator } from '@gouvfr-lasuite/ui-kit';
 
 import locales from '../../../locales';

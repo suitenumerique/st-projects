@@ -1,11 +1,11 @@
 import React, { useMemo, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@openfun/cunningham-react';
+import { Button } from '@gouvfr-lasuite/cunningham-react';
 import { DropdownMenu } from '@gouvfr-lasuite/ui-kit';
-import PopoverHeader from '../../ui/Popover/PopoverHeader';
 
 import { useForm } from '../../hooks';
+import PopoverHeader from '../../ui/Popover/PopoverHeader';
 
 import styles from './CardMoveStep.module.scss';
 
@@ -96,7 +96,12 @@ const CardMoveStep = React.memo(
               onSelectValue={handleBoardIdChange}
             >
               <div className={styles.selector}>
-                <Button color="secondary" size="small" onClick={() => setIsBoardDropdownOpen(true)}>
+                <Button
+                  color="brand"
+                  variant="bordered"
+                  size="small"
+                  onClick={() => setIsBoardDropdownOpen(true)}
+                >
                   {selectedBoard ? selectedBoard.name : t('common.selectBoard')}
                 </Button>
               </div>
@@ -126,7 +131,8 @@ const CardMoveStep = React.memo(
               >
                 <div className={styles.selector}>
                   <Button
-                    color="secondary"
+                    color="brand"
+                    variant="bordered"
                     size="small"
                     onClick={() => setIsListDropdownOpen(true)}
                   >
@@ -139,6 +145,8 @@ const CardMoveStep = React.memo(
           <Button
             type="submit"
             disabled={(selectedBoard && selectedBoard.isFetching !== false) || !selectedList}
+            color="brand"
+            variant="primary"
           >
             {t('action.move')}
           </Button>

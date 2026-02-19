@@ -2,12 +2,12 @@ import { dequal } from 'dequal';
 import React, { useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@openfun/cunningham-react';
+import { Button } from '@gouvfr-lasuite/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
-import { useToggle } from '../../lib/hooks';
-import PopoverHeader from '../../ui/Popover/PopoverHeader';
 
 import { useForm } from '../../hooks';
+import { useToggle } from '../../lib/hooks';
+import PopoverHeader from '../../ui/Popover/PopoverHeader';
 import {
   createStopwatch,
   getStopwatchParts,
@@ -155,27 +155,41 @@ const StopwatchEditStep = React.memo(({ defaultValue, onUpdate, onBack, onClose 
           </div>
           <Button
             type="button"
-            color="secondary"
+            color="brand"
+            variant="tertiary"
             icon={<Icon type="outlined" name={isEditing ? 'check' : 'edit'} />}
             className={styles.editButton}
             onClick={handleToggleEditingClick}
           />
         </div>
-        {isEditing && <Button>{t('action.save')}</Button>}
+        {isEditing && (
+          <Button positive color="brand" variant="primary" content={t('action.save')} />
+        )}
       </form>
       <div className={styles.buttonsWrapper}>
         {!isEditing &&
           (defaultValue && defaultValue.startedAt ? (
-            <Button icon={<Icon type="outlined" name="pause" />} onClick={handleStopClick}>
+            <Button
+              color="brand"
+              variant="tertiary"
+              icon={<Icon type="outlined" name="pause" />}
+              onClick={handleStopClick}
+            >
               {t('action.stop')}
             </Button>
           ) : (
-            <Button icon={<Icon type="outlined" name="play_arrow" />} onClick={handleStartClick}>
+            <Button
+              color="brand"
+              variant="primary"
+              icon={<Icon type="outlined" name="play_arrow" />}
+              onClick={handleStartClick}
+            >
               {t('action.start')}
             </Button>
           ))}
         <Button
-          color="danger"
+          color="error"
+          variant="bordered"
           icon={<Icon type="outlined" name="delete" />}
           className={styles.deleteButton}
           onClick={handleClearClick}

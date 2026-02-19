@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-import { DropdownMenu, Icon, LaGaufre } from '@gouvfr-lasuite/ui-kit';
-import { Button } from '@openfun/cunningham-react';
+import { Button } from '@gouvfr-lasuite/cunningham-react';
+import { DropdownMenu, Icon, LaGaufreV2 } from '@gouvfr-lasuite/ui-kit';
 
 import NotificationsStep from '../../steps/NotificationsStep';
 import usePopup from '../../lib/popup/use-popup';
@@ -17,6 +17,7 @@ const HeaderRight = React.memo(
     lagaufreWidgetPath,
     onNotificationDelete,
     onSettingsClick,
+    onLogin,
     onLogout,
   }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -26,7 +27,7 @@ const HeaderRight = React.memo(
 
     return (
       <>
-        {currentUser && (
+        {currentUser ? (
           <>
             <NotificationsPopover
               items={notifications}
@@ -35,7 +36,7 @@ const HeaderRight = React.memo(
               align="center"
             >
               <Button
-                color="primary-text"
+                variant="tertiary"
                 icon={
                   <>
                     <Icon type="outlined" name="notifications" />
@@ -68,13 +69,13 @@ const HeaderRight = React.memo(
             >
               <Button
                 className={styles.onlySm}
-                color="primary-text"
+                variant="tertiary"
                 icon={<Icon name="person" type="outlined" />}
                 onClick={() => setIsOpen(!isOpen)}
               />
               <Button
                 className={styles.overSm}
-                color="primary-text"
+                variant="tertiary"
                 onClick={() => setIsOpen(!isOpen)}
                 icon={
                   <span className="material-icons">
@@ -87,9 +88,13 @@ const HeaderRight = React.memo(
               </Button>
             </DropdownMenu>
           </>
+        ) : (
+          <Button color="brand" variant="tertiary" onClick={onLogin}>
+            Connexion
+          </Button>
         )}
 
-        <LaGaufre widgetPath={lagaufreWidgetPath} apiUrl={lagaufreWidgetApiUrl} />
+        <LaGaufreV2 widgetPath={lagaufreWidgetPath} apiUrl={lagaufreWidgetApiUrl} />
       </>
     );
   },
@@ -101,6 +106,7 @@ HeaderRight.propTypes = {
   lagaufreWidgetApiUrl: PropTypes.string.isRequired,
   lagaufreWidgetPath: PropTypes.string.isRequired,
   onSettingsClick: PropTypes.func.isRequired,
+  onLogin: PropTypes.func.isRequired,
   onLogout: PropTypes.func.isRequired,
   onNotificationDelete: PropTypes.func.isRequired,
 };

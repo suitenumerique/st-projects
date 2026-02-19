@@ -6,7 +6,7 @@
   min-height: 35px;
   cursor: pointer;
   background-image: none;
-  color: var(--c--theme--colors--greyscale-1000);
+  color: var(--c--contextuals--content--semantic--neutral--primary);
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -18,7 +18,7 @@
   }
 
   &:hover {
-    background-color: var(--c--theme--colors--greyscale-100);
+    background-color: var(--c--contextuals--background--semantic--overlay--primary);
     .itemEdit {
       opacity: 1;
     }
@@ -29,11 +29,11 @@
   }
 
   &:focus {
-    background-color: var(--c--theme--colors--greyscale-100);
+    background-color: var(--c--contextuals--background--semantic--overlay--primary);
   }
 
   &.popoverOpened {
-    background-color: var(--c--theme--colors--greyscale-100);
+    background-color: var(--c--contextuals--background--semantic--overlay--primary);
 
     .itemEdit {
       opacity: 1;
@@ -42,11 +42,11 @@
 }
 
 .itemWrapperActive {
-  background-color: var(--c--theme--colors--greyscale-100);
+  background-color: var(--c--contextuals--background--semantic--overlay--primary);
 }
 
 .itemIcon {
-  background-color: var(--c--theme--colors--primary-500);
+  background-color: var(--c--contextuals--background--semantic--brand--primary);
   border: 1px solid hsla(0,0%,100%,.2);
   height: 1.1rem;
   width: 1.1rem;
@@ -78,7 +78,7 @@
 
 .itemProjectName {
   font-size: 12px;
-  color: var(--c--theme--colors--greyscale-600);
+  color: var(--c--contextuals--content--semantic--neutral--secondary);
   line-height: 1.4;
 }
 
@@ -89,7 +89,7 @@
   top: 50%;
   transform: translateY(-50%);
   right: 6px;
-  background-color: var(--c--theme--colors--greyscale-100);
+  background-color: var(--c--contextuals--background--semantic--neutral--tertiary);
 }
 
 .itemDescription {

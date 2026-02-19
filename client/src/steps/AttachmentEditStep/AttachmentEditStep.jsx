@@ -2,7 +2,7 @@ import { dequal } from 'dequal';
 import React, { useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button, Input } from '@openfun/cunningham-react';
+import { Button, Input } from '@gouvfr-lasuite/cunningham-react';
 
 import { useForm } from '../../hooks';
 import PopoverHeader from '../../ui/Popover/PopoverHeader';
@@ -63,7 +63,9 @@ const AttachmentEditStep = React.memo(({ defaultData, onUpdate, onClose }) => {
           onChange={handleFieldChange}
         />
         <div className={styles.buttons}>
-          <Button type="submit">{t('action.save')}</Button>
+          <Button type="submit" color="brand" variant="primary">
+            {t('action.save')}
+          </Button>
         </div>
       </form>
     </>

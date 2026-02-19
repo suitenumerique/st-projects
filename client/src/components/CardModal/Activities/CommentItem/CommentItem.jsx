@@ -2,9 +2,9 @@ import React, { useCallback, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
-
-import { Button } from '@openfun/cunningham-react';
+import { Button } from '@gouvfr-lasuite/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
+
 import getDateFormat from '../../../../utils/get-date-format';
 import CommentEdit from '../CommentEdit';
 import Markdown from '../../../../ui/Markdown';
@@ -71,7 +71,8 @@ const CommentItem = React.memo(
                     >
                       <Button
                         className={styles.commentActionsButton}
-                        color="tertiary-text"
+                        color="neutral"
+                        variant="tertiary"
                         size="small"
                         icon={<Icon name="more_horiz" type="outlined" size="small" />}
                       />

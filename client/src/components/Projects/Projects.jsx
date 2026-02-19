@@ -1,4 +1,4 @@
-import { Button, Select } from '@openfun/cunningham-react';
+import { Button, Select } from '@gouvfr-lasuite/cunningham-react';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation, Trans } from 'react-i18next';

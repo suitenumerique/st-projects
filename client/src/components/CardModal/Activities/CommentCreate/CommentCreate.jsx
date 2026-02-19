@@ -2,10 +2,10 @@ import React, { useCallback, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import TextareaAutosize from 'react-textarea-autosize';
-import { Button } from '@openfun/cunningham-react';
+import { Button } from '@gouvfr-lasuite/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
-import { useDidUpdate, useToggle } from '../../../../lib/hooks';
 
+import { useDidUpdate, useToggle } from '../../../../lib/hooks';
 import { useClosableForm, useForm } from '../../../../hooks';
 
 import styles from './CommentCreate.module.scss';
@@ -89,7 +89,8 @@ const CommentCreate = React.memo(({ onCreate }) => {
         <div className={styles.controls}>
           <Button
             type="submit"
-            color="tertiary"
+            color="brand"
+            variant="secondary"
             size="small"
             icon={<Icon name="add" type="outlined" size="small" />}
             onMouseOver={handleControlMouseOver}

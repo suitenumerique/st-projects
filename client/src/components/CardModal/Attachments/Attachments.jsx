@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Gallery, Item as GalleryItem } from 'react-photoswipe-gallery';
-import { Button } from '@openfun/cunningham-react';
+import { Button } from '@gouvfr-lasuite/cunningham-react';
+
 import NewAttachmentInput from '../../../ui/NewAttachmentInput';
 import { useToggle } from '../../../lib/hooks';
 import FilePicker from '../../../ui/FilePicker/FilePicker';
@@ -146,7 +147,12 @@ const Attachments = React.memo(
             {galleryItemsNode}
           </Gallery>
           {items.length > INITIALLY_VISIBLE && (
-            <Button color="secondary" size="small" onClick={handleToggleAllVisibleClick}>
+            <Button
+              color="neutral"
+              variant="bordered"
+              size="small"
+              onClick={handleToggleAllVisibleClick}
+            >
               {isAllVisible
                 ? t('action.showFewerAttachments')
                 : t('action.showAllAttachments', {

@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button, Select } from '@openfun/cunningham-react';
+import { Button, Select } from '@gouvfr-lasuite/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 
 import usePopup from '../../lib/popup/use-popup';
@@ -85,6 +85,8 @@ const LeftMenu = React.memo(
             hideCloseButton
           >
             <Button
+              color="brand"
+              variant="primary"
               className={styles.addBoardButton}
               icon={<Icon name="add" type="outlined" />}
               size="medium"
@@ -95,7 +97,8 @@ const LeftMenu = React.memo(
           {canEditProject && (
             <Button
               onClick={handleProjectSettingsClick}
-              color="tertiary-text"
+              color="neutral"
+              variant="tertiary"
               icon={<Icon name="settings" type="outlined" />}
               size="medium"
             />

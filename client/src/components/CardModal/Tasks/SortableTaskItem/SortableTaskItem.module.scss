@@ -10,7 +10,7 @@
     }
 
     .checkbox {
-      margin-top: 4px;
+      margin-top: 6px;
       margin-right: 0.5rem;
     }
 
@@ -24,7 +24,7 @@
       align-items: center;
 
       &.contentHoverable:hover {
-        background: var(--c--theme--colors--greyscale-100);
+        background: var(--c--contextuals--background--semantic--overlay--primary);
       }
 
       &.draggable {
@@ -40,9 +40,9 @@
       flex: 1;
       font-size: 14px;
       line-height: 20px;
-      color: var(--c--theme--colors--greyscale-800);
+      color: var(--c--contextuals--content--semantic--neutral--primary);
       &.taskCompleted {
-        color: var(--c--theme--colors--greyscale-400);
+        color: var(--c--contextuals--content--semantic--neutral--tertiary);
         text-decoration: line-through;
       }
     }
@@ -59,7 +59,7 @@
 
     &.popoverOpened {
       .taskWrapper {
-        background-color: var(--c--theme--colors--greyscale-100);
+        background-color: var(--c--contextuals--background--semantic--overlay--primary);
       }
       .taskActionsButton {
         opacity: 1;

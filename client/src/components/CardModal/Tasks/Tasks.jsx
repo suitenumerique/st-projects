@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@openfun/cunningham-react';
+import { Button } from '@gouvfr-lasuite/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 import {
   DndContext,
@@ -106,7 +106,12 @@ const Tasks = React.memo(({ items, canEdit, onCreate, onUpdate, onMove, onDelete
       )}
       {canEdit && (
         <TaskCreate onCreate={onCreate}>
-          <Button color="tertiary" size="small" icon={<Icon type="outlined" name="add" />}>
+          <Button
+            color="brand"
+            variant="secondary"
+            size="small"
+            icon={<Icon type="outlined" name="add" />}
+          >
             {items.length > 0 ? t('action.addAnotherTask') : t('action.addTask')}
           </Button>
         </TaskCreate>

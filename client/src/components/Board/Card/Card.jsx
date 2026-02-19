@@ -4,8 +4,8 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
+import { Button } from '@gouvfr-lasuite/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
-import { Button } from '@openfun/cunningham-react';
 import styles from '../Board.module.scss';
 import Label from '../../../ui/Label';
 import DueDate from '../../../ui/DueDate';
@@ -229,7 +229,8 @@ function Card({
                 >
                   <Button
                     className={classNames(styles.cardActionsButton)}
-                    color="tertiary-text"
+                    color="neutral"
+                    variant="tertiary"
                     icon={<Icon name="edit" type="outlined" />}
                     size="small"
                   />

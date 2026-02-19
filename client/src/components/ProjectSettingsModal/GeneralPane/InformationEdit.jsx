@@ -2,7 +2,7 @@ import pickBy from 'lodash/pickBy';
 import React, { useCallback, useMemo, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button, Input } from '@openfun/cunningham-react';
+import { Button, Input } from '@gouvfr-lasuite/cunningham-react';
 
 import { useForm } from '../../../hooks';
 

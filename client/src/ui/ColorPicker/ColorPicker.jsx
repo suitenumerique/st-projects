@@ -3,10 +3,9 @@ import camelCase from 'lodash/camelCase';
 import upperFirst from 'lodash/upperFirst';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Button } from '@gouvfr-lasuite/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 // import { useTranslation } from 'react-i18next';
-
-import { Button } from '@openfun/cunningham-react';
 
 import globalStyles from '../../assets/styles/styles.module.scss';
 import styles from './ColorPicker.module.scss';
@@ -21,6 +20,7 @@ const ColorPicker = React.memo(({ current, onChange, colors, allowDeletion }) =>
             key={color}
             type="button"
             name="color"
+            variant="primary"
             value={color}
             className={classNames(
               styles.colorButton,
@@ -33,7 +33,7 @@ const ColorPicker = React.memo(({ current, onChange, colors, allowDeletion }) =>
         ))}
       </div>
       {current && allowDeletion && (
-        <Button color="secondary" onClick={onChange}>
+        <Button color="brand" variant="tertiary" onClick={onChange}>
           Retirer la couleur
         </Button>
       )}

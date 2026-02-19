@@ -2,8 +2,8 @@ import { dequal } from 'dequal';
 import React, { useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import { Button, Input } from '@gouvfr-lasuite/cunningham-react';
 
-import { Button, Input } from '@openfun/cunningham-react';
 import PopoverHeader from '../../ui/Popover/PopoverHeader';
 import { useForm, useSteps } from '../../hooks';
 import LabelColors from '../../constants/LabelColors';
@@ -88,8 +88,15 @@ const LabelEditStep = React.memo(({ defaultData, onUpdate, onDelete, onBack }) =
         <div className={styles.fieldLabel}>{t('common.color')}</div>
         <ColorPicker colors={LabelColors} current={data.color} onChange={handleFieldChange} />
         <div className={styles.controls}>
-          <Button type="submit">{t('action.save')}</Button>
-          <Button color="secondary" className={styles.deleteButton} onClick={handleDeleteClick}>
+          <Button type="submit" color="brand" variant="primary">
+            {t('action.save')}
+          </Button>
+          <Button
+            color="error"
+            variant="bordered"
+            className={styles.deleteButton}
+            onClick={handleDeleteClick}
+          >
             {t('action.delete')}
           </Button>
         </div>

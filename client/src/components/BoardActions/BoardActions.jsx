@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import { Button } from '@gouvfr-lasuite/cunningham-react';
 import { ShareModal, ShareModalCopyLinkFooter, Icon } from '@gouvfr-lasuite/ui-kit';
-import { Button } from '@openfun/cunningham-react';
 
 import { useUsersSearch } from '../../hooks';
 import { BoardMembershipRoles } from '../../constants/Enums';
@@ -144,7 +144,12 @@ const BoardActions = React.memo(
               boardMemberships.some(
                 (boardMembership) => boardMembership.userId === currentUser.id,
               ) ? (
-                <Button onClick={handleShareClick} title="Share board" color="tertiary-text">
+                <Button
+                  title="Share board"
+                  color="neutral"
+                  variant="tertiary"
+                  onClick={handleShareClick}
+                >
                   {t('action.share')}
                 </Button>
               ) : (

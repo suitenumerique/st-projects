@@ -8,7 +8,7 @@
     }
 
     &:not(:last-child) {
-      border-bottom: 1px solid var(--c--theme--colors--greyscale-200);
+      border-bottom: 1px solid var(--c--contextuals--background--semantic--overlay--primary);
     }
   }
 
@@ -63,7 +63,7 @@
   .deleteAllButtonWrapper {
     display: flex;
     justify-content: end;
-    border-bottom: 1px solid var(--c--theme--colors--greyscale-200);
+    border-bottom: 1px solid var(--c--contextuals--background--semantic--overlay--primary);
   }
 
   .deleteAllButton {

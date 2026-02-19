@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@openfun/cunningham-react';
+import { Button } from '@gouvfr-lasuite/cunningham-react';
 import { Icon, Spinner } from '@gouvfr-lasuite/ui-kit';
 
 import usePopup from '../../../../lib/popup';
@@ -120,7 +120,8 @@ const AttachmentItem = React.forwardRef(
           >
             <Button
               className={styles.attachmentActionsButton}
-              color="tertiary-text"
+              color="neutral"
+              variant="tertiary"
               size="small"
               icon={<Icon name="more_horiz" type="outlined" size="small" />}
             />

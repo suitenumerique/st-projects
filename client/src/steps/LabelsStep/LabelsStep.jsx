@@ -2,7 +2,7 @@ import pick from 'lodash/pick';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button, Checkbox } from '@openfun/cunningham-react';
+import { Button, Checkbox } from '@gouvfr-lasuite/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 import {
   DndContext,
@@ -247,7 +247,8 @@ const LabelsStep = React.memo(
         {canEdit && (
           <Button
             size="small"
-            color="tertiary"
+            color="brand"
+            variant="tertiary"
             onClick={handleAddClick}
             className={styles.addButton}
             icon={<Icon size="small" name="add" type="outlined" aria-hidden="true" />}

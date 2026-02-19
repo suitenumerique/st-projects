@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Input, Button } from '@openfun/cunningham-react';
-import { useDidUpdate, useToggle } from '../../../lib/hooks';
+import { Input, Button } from '@gouvfr-lasuite/cunningham-react';
 
+import { useDidUpdate, useToggle } from '../../../lib/hooks';
 import { useForm } from '../../../hooks';
 
 import styles from './ListCreate.module.scss';
@@ -89,7 +89,7 @@ const ListAdd = React.memo(({ onCreate, onClose }) => {
         />
       </div>
       <div className={styles.controls}>
-        <Button color="primary" size="small" type="submit">
+        <Button type="submit" color="brand" variant="primary" size="small">
           {t('action.submit')}
         </Button>
       </div>

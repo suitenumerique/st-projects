@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import { Button, Input } from '@gouvfr-lasuite/cunningham-react';
 
-import { Button, Input } from '@openfun/cunningham-react';
 import { useForm } from '../../hooks';
 import LabelColors from '../../constants/LabelColors';
 import ColorPicker from '../../ui/ColorPicker';
+import PopoverHeader from '../../ui/Popover/PopoverHeader';
 
 import styles from './LabelCreateStep.module.scss';
-import PopoverHeader from '../../ui/Popover/PopoverHeader';
 
 const LabelCreateStep = React.memo(({ defaultData, onCreate, onBack }) => {
   const [t] = useTranslation();
@@ -62,7 +62,7 @@ const LabelCreateStep = React.memo(({ defaultData, onCreate, onBack }) => {
         <div className={styles.fieldLabel}>{t('common.color')}</div>
         <ColorPicker colors={LabelColors} current={data.color} onChange={handleFieldChange} />
         <div className={styles.controls}>
-          <Button type="submit" color="primary" className={styles.submitButton}>
+          <Button type="submit" color="brand" variant="primary" className={styles.submitButton}>
             {t('action.createLabel')}
           </Button>
         </div>

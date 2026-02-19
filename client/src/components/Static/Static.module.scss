@@ -16,13 +16,13 @@
 
   .messageIcon {
     margin-top: -84px;
-    color: var(--c--theme--colors--greyscale-1000);
+    color: var(--c--contextuals--content--semantic--neutral--primary);
   }
 
   .messageTitle {
     font-size: 32px;
     margin: 0 0 8px;
-    color: var(--c--theme--colors--greyscale-1000);
+    color: var(--c--contextuals--content--semantic--neutral--primary);
   }
 
   .messageContent {
@@ -30,7 +30,7 @@
     line-height: 1.4;
     margin: 4px 0 0;
     text-align: center;
-    color: var(--c--theme--colors--greyscale-1000);
+    color: var(--c--contextuals--content--semantic--neutral--primary);
   }
 
   .loading {

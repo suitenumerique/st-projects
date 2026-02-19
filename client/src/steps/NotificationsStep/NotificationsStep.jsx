@@ -3,12 +3,12 @@ import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation, Trans } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Button } from '@openfun/cunningham-react';
+import { Button } from '@gouvfr-lasuite/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
-import PopoverHeader from '../../ui/Popover/PopoverHeader';
 
 import Paths from '../../constants/Paths';
 import { ActivityTypes } from '../../constants/Enums';
+import PopoverHeader from '../../ui/Popover/PopoverHeader';
 import User from '../../ui/User';
 
 import styles from './NotificationsStep.module.scss';
@@ -95,11 +95,12 @@ const NotificationsStep = React.memo(({ items, onDelete, onClose }) => {
             {items.length > 1 && (
               <div className={styles.deleteAllButtonWrapper}>
                 <Button
-                  onClick={handleDeleteAll}
-                  color="primary-text"
+                  color="error"
+                  variant="primary"
                   icon={<Icon name="delete_sweep" type="outlined" />}
                   size="nano"
                   className={styles.deleteAllButton}
+                  onClick={handleDeleteAll}
                 >
                   {t('action.deleteNotifications')}
                 </Button>
@@ -121,10 +122,11 @@ const NotificationsStep = React.memo(({ items, onDelete, onClose }) => {
                     <div className={styles.itemDeleted}>{t('common.cardOrActionAreDeleted')}</div>
                   )}
                   <Button
-                    onClick={() => handleDelete(item.id)}
-                    color="primary-text"
+                    color="error"
+                    variant="primary"
                     icon={<Icon name="delete" type="outlined" />}
                     size="nano"
+                    onClick={() => handleDelete(item.id)}
                   />
                 </div>
               </div>

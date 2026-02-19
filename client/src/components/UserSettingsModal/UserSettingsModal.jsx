@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Modal } from '@openfun/cunningham-react';
+import { Modal } from '@gouvfr-lasuite/cunningham-react';
 
 import AccountPane from './AccountPane';
 import User from '../../ui/User';

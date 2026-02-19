@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Checkbox } from '@openfun/cunningham-react';
+import { Button, Checkbox } from '@gouvfr-lasuite/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -49,7 +49,12 @@ function SortableLabelItem({ label, currentIds, canEdit, onSelect, onDeselect, o
         />
         {canEdit && (
           <div className={styles.itemActions}>
-            <Button size="small" color="tertiary-text" onClick={() => onEdit(label.id)}>
+            <Button
+              size="small"
+              color="neutral"
+              variant="tertiary"
+              onClick={() => onEdit(label.id)}
+            >
               <Icon size="small" name="edit" type="outlined" aria-hidden="true" />
             </Button>
           </div>

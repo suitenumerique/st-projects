@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
+import { ModalProvider } from '@gouvfr-lasuite/cunningham-react';
 import { CunninghamProvider } from '@gouvfr-lasuite/ui-kit';
 import { ReduxRouter } from '../lib/redux-router';
 import i18n from '../i18n';
@@ -17,18 +18,20 @@ import '../assets/styles/globals.scss';
 function Root({ store, history }) {
   return (
     <Provider store={store}>
-      <CunninghamProvider currentLocale={i18n.resolvedLanguage} theme="light">
-        <ReduxRouter history={history}>
-          <Routes>
-            <Route path={Paths.LOGIN} element={<LoginWrapperContainer />} />
-            <Route path={Paths.OIDC_CALLBACK} element={<LoginWrapperContainer />} />
-            <Route path={Paths.ROOT} element={<CoreContainer />} />
-            <Route path={Paths.PROJECTS} element={<CoreContainer />} />
-            <Route path={Paths.BOARDS} element={<CoreContainer />} />
-            <Route path={Paths.CARDS} element={<CoreContainer />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </ReduxRouter>
+      <CunninghamProvider currentLocale={i18n.resolvedLanguage} theme="dsfr-light">
+        <ModalProvider>
+          <ReduxRouter history={history}>
+            <Routes>
+              <Route path={Paths.LOGIN} element={<LoginWrapperContainer />} />
+              <Route path={Paths.OIDC_CALLBACK} element={<LoginWrapperContainer />} />
+              <Route path={Paths.ROOT} element={<CoreContainer />} />
+              <Route path={Paths.PROJECTS} element={<CoreContainer />} />
+              <Route path={Paths.BOARDS} element={<CoreContainer />} />
+              <Route path={Paths.CARDS} element={<CoreContainer />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </ReduxRouter>
+        </ModalProvider>
       </CunninghamProvider>
     </Provider>
   );

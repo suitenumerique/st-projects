@@ -2,9 +2,9 @@ import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } 
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import TextareaAutosize from 'react-textarea-autosize';
-import { Button } from '@openfun/cunningham-react';
-import { useDidUpdate, useToggle } from '../../../../lib/hooks';
+import { Button } from '@gouvfr-lasuite/cunningham-react';
 
+import { useDidUpdate, useToggle } from '../../../../lib/hooks';
 import { useClosableForm, useForm } from '../../../../hooks';
 
 import styles from './TaskCreate.module.scss';
@@ -128,7 +128,8 @@ const TaskCreate = React.forwardRef(({ children, onCreate }, ref) => {
       <div>
         {/* eslint-disable-next-line jsx-a11y/mouse-events-have-key-events */}
         <Button
-          color="tertiary"
+          color="brand"
+          variant="secondary"
           size="small"
           onMouseOver={handleControlMouseOver}
           onMouseOut={handleControlMouseOut}

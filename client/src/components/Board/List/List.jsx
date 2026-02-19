@@ -6,7 +6,7 @@ import { SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-
 import { useDroppable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import classNames from 'classnames';
-import { Button } from '@openfun/cunningham-react';
+import { Button } from '@gouvfr-lasuite/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 // import { useTranslation } from 'react-i18next';
 import { upperFirst, camelCase } from 'lodash';
@@ -173,7 +173,7 @@ function List({
             onColorEdit={handleColorEdit}
             onOpenChange={setIsListActionsPopoverOpen}
           >
-            <Button className={styles.listHeaderButton}>
+            <Button className={styles.listHeaderButton} color="brand" variant="tertiary">
               <Icon outlined name="more_horiz" />
             </Button>
           </ListActionsPopover>
@@ -233,7 +233,8 @@ function List({
         {!isAddCardOpened && canEdit && (
           <div className={styles.addCardButton}>
             <Button
-              color="tertiary-text"
+              color="brand"
+              variant="tertiary"
               size="small"
               onClick={() => {
                 handleAddCardClick();

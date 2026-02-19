@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@openfun/cunningham-react';
+import { Button } from '@gouvfr-lasuite/cunningham-react';
 import { HorizontalSeparator, ShareModal } from '@gouvfr-lasuite/ui-kit';
 
 import { useUsersSearch } from '../../../hooks';
@@ -100,7 +100,7 @@ const GeneralPane = React.memo(
               buttonContent="action.delete"
               onConfirm={onDelete}
             >
-              <Button color="danger">
+              <Button color="error" variant="primary">
                 {t('action.deleteProject', {
                   context: 'title',
                 })}

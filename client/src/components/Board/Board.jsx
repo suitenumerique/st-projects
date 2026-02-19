@@ -17,8 +17,8 @@ import {
 } from '@dnd-kit/sortable';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@openfun/cunningham-react';
 import { groupBy } from 'lodash';
+import { Button } from '@gouvfr-lasuite/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 import CardModalContainer from '../../containers/CardModalContainer';
 import ListCreate from './ListCreate';
@@ -358,7 +358,8 @@ function Board({
                   <ListCreate onCreate={onListCreate} onClose={handleAddListClose} />
                 ) : (
                   <Button
-                    color="tertiary-text"
+                    color="brand"
+                    variant="tertiary"
                     size="small"
                     onClick={handleAddListClick}
                     className={styles.addListButton}
