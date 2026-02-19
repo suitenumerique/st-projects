@@ -21,6 +21,7 @@ module.exports.policies = {
   'users/create': ['is-authenticated', 'is-admin'],
   'users/delete': ['is-authenticated', 'is-admin'],
 
+  robots: true,
   'show-config': true,
   'access-tokens/create': true,
   'access-tokens/exchange-using-oidc': true,
