@@ -89,14 +89,12 @@ function DescriptionComponent({ description, canEdit, onUpdate }) {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (isEditing && editorRef.current && !editorRef.current.contains(event.target)) {
-        // Check if clicking on MDXEditor popover/dropdown (rendered in portal)
-        const isEditorPopover =
-          event.target.closest('[data-radix-popper-content-wrapper]') ||
-          event.target.closest('[data-radix-select-viewport]');
-        if (isEditorPopover) {
-          return;
-        }
+      if (
+        isEditing &&
+        editorRef.current &&
+        !editorRef.current.contains(event.target) &&
+        !event.target.closest('.mdxeditor-popup-container')
+      ) {
         handleSave();
       }
     };
