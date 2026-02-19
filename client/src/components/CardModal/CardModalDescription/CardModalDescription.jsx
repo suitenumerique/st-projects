@@ -72,7 +72,12 @@ function DescriptionComponent({ description, canEdit, onUpdate }) {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (isEditing && editorRef.current && !editorRef.current.contains(event.target)) {
+      if (
+        isEditing &&
+        editorRef.current &&
+        !editorRef.current.contains(event.target) &&
+        !event.target.closest('.mdxeditor-popup-container')
+      ) {
         handleSave();
       }
     };
