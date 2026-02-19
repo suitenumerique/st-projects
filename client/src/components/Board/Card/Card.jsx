@@ -1,7 +1,8 @@
 import React, { useCallback, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
+import { PointerActivationConstraints } from '@dnd-kit/dom';
+import { KeyboardSensor, PointerSensor } from '@dnd-kit/react';
+import { useSortable } from '@dnd-kit/react/sortable';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { Button } from '@gouvfr-lasuite/cunningham-react';
@@ -17,6 +18,14 @@ import Paths from '../../../constants/Paths';
 import { stopStopwatch, startStopwatch } from '../../../utils/stopwatch';
 import CardActionsStep from '../../../steps/CardActionsStep';
 import usePopup from '../../../lib/popup/use-popup';
+
+const CardPointerSensor = PointerSensor.configure({
+  activationConstraints: [
+    new PointerActivationConstraints.Distance({
+      value: 5, // Allow clicking the card through draggable area
+    }),
+  ],
+});
 
 function Card({
   id,
@@ -55,17 +64,17 @@ function Card({
   onLabelMove,
   onLabelDelete,
   currentUser,
+  index,
 }) {
-  const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
+  const sortable = useSortable({
     id,
-    data: { type: 'Card', id },
+    index,
+    group: listId,
+    type: 'Card',
+    accept: ['Card'],
     disabled: !canEdit,
+    sensors: [KeyboardSensor, CardPointerSensor],
   });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
 
   const CardActionsPopover = usePopup(CardActionsStep);
   const nameEdit = useRef(null);
@@ -172,18 +181,16 @@ function Card({
 
   return (
     <div
-      ref={setNodeRef}
-      style={style}
+      ref={(el) => {
+        sortable.ref(el);
+        sortable.handleRef(el);
+      }}
       className={classNames(
         styles.card,
         canEdit ? styles.draggable : '',
-        isDragging ? styles.dragging : '',
+        sortable.isDragging ? styles.dragging : '',
         isCardActionsPopoverOpen ? styles.popoverOpened : '',
       )}
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      {...attributes}
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      {...listeners}
     >
       <CardNameEdit ref={nameEdit} defaultValue={name} onUpdate={handleNameUpdate}>
         <div>
@@ -248,19 +255,20 @@ function Card({
 
 Card.propTypes = {
   id: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   dueDate: PropTypes.string.isRequired,
   isDueDateCompleted: PropTypes.bool.isRequired,
   stopwatch: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  isCompleted: PropTypes.bool.isRequired,
+  isCompleted: PropTypes.bool.isRequired, // eslint-disable-line react/no-unused-prop-types
   coverUrl: PropTypes.string.isRequired,
   boardId: PropTypes.string.isRequired,
   listId: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   isPersisted: PropTypes.bool.isRequired,
   attachmentsTotal: PropTypes.number.isRequired,
-  notificationsTotal: PropTypes.number.isRequired,
+  notificationsTotal: PropTypes.number.isRequired, // eslint-disable-line react/no-unused-prop-types
   users: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   labels: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   tasks: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types

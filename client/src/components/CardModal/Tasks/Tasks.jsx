@@ -1,21 +1,11 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@gouvfr-lasuite/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
-import {
-  DndContext,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  closestCenter,
-} from '@dnd-kit/core';
-import {
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
+import { DragDropProvider } from '@dnd-kit/react';
+import { isSortable } from '@dnd-kit/react/sortable';
+
 import SortableTaskItem from './SortableTaskItem';
 import TaskCreate from './TaskCreate';
 
@@ -23,17 +13,6 @@ import styles from './Tasks.module.scss';
 
 const Tasks = React.memo(({ items, canEdit, onCreate, onUpdate, onMove, onDelete }) => {
   const [t] = useTranslation();
-
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 5,
-      },
-    }),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    }),
-  );
 
   const handleUpdate = useCallback(
     (id, data) => {
@@ -49,25 +28,29 @@ const Tasks = React.memo(({ items, canEdit, onCreate, onUpdate, onMove, onDelete
     [onDelete],
   );
 
+  /**
+   * @type {NonNullable<
+   *   import("react").ComponentProps<
+   *     typeof import("@dnd-kit/react").DragDropProvider
+   *   >["onDragEnd"]
+   * >}
+   */
   const handleDragEnd = useCallback(
     (event) => {
-      const { active, over } = event;
-      if (!over || active.id === over.id) {
+      const { source } = event.operation;
+
+      if (event.canceled || !source || !isSortable(source)) {
         return;
       }
 
-      const oldIndex = items.findIndex((item) => item.id === active.id);
-      const newIndex = items.findIndex((item) => item.id === over.id);
-
-      if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
-        onMove(active.id, newIndex);
+      if (source.index !== source.initialIndex) {
+        onMove(source.id, source.index);
       }
     },
-    [items, onMove],
+    [onMove],
   );
 
   const completedItems = items.filter((item) => item.isCompleted);
-  const taskIds = useMemo(() => items.map((item) => item.id), [items]);
 
   return (
     <>
@@ -85,24 +68,23 @@ const Tasks = React.memo(({ items, canEdit, onCreate, onUpdate, onMove, onDelete
         </div>
       )}
       {items.length > 0 && (
-        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-          <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
-            <div className={styles.tasksWrapper}>
-              {items.map((item) => (
-                <SortableTaskItem
-                  key={item.id}
-                  id={item.id}
-                  name={item.name}
-                  isCompleted={item.isCompleted}
-                  isPersisted={item.isPersisted}
-                  canEdit={canEdit}
-                  onUpdate={(data) => handleUpdate(item.id, data)}
-                  onDelete={() => handleDelete(item.id)}
-                />
-              ))}
-            </div>
-          </SortableContext>
-        </DndContext>
+        <DragDropProvider onDragEnd={handleDragEnd}>
+          <div className={styles.tasksWrapper}>
+            {items.map((item, itemIndex) => (
+              <SortableTaskItem
+                key={item.id}
+                id={item.id}
+                index={itemIndex}
+                name={item.name}
+                isCompleted={item.isCompleted}
+                isPersisted={item.isPersisted}
+                canEdit={canEdit}
+                onUpdate={(data) => handleUpdate(item.id, data)}
+                onDelete={() => handleDelete(item.id)}
+              />
+            ))}
+          </div>
+        </DragDropProvider>
       )}
       {canEdit && (
         <TaskCreate onCreate={onCreate}>

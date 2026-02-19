@@ -1,10 +1,9 @@
-import React, { useState, useRef, useCallback, useMemo } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
-import { SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable';
-import { useDroppable } from '@dnd-kit/core';
-import { CSS } from '@dnd-kit/utilities';
+import { KeyboardSensor, PointerSensor } from '@dnd-kit/react';
+import { useSortable } from '@dnd-kit/react/sortable';
 import classNames from 'classnames';
 import { Button } from '@gouvfr-lasuite/cunningham-react';
 import { Badge, Icon } from '@gouvfr-lasuite/ui-kit';
@@ -18,8 +17,35 @@ import usePopup from '../../../lib/popup/use-popup';
 import ListActionsStep from '../../../steps/ListActionsStep/ListActionsStep';
 import globalStyles from '../../../assets/styles/styles.module.scss';
 
+// sortable placeholder so the sortable system can always route cards to this list.
+// rendered in every list (not just empty ones) so that when the last card is dragged
+// away, the plugin still has a target to route the card back to.
+function ListDropTarget({ listId, index }) {
+  const sortable = useSortable({
+    id: `empty-placeholder-${listId}`,
+    index,
+    group: listId,
+    type: 'Card',
+    accept: ['Card'],
+    sensors: [],
+  });
+
+  return (
+    <div
+      ref={sortable.ref}
+      className={classNames(styles.emptyDropZone, sortable.isDropTarget && styles.dropZoneActive)}
+    />
+  );
+}
+
+ListDropTarget.propTypes = {
+  listId: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
+};
+
 function List({
   id,
+  index,
   name,
   isPersisted,
   color,
@@ -50,28 +76,19 @@ function List({
 }) {
   const [t] = useTranslation();
 
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+  const sortable = useSortable({
     id,
-    data: { type: 'List', id },
+    index,
+    group: 'lists',
+    type: 'List',
+    accept: ['List'],
     disabled: !canEdit,
-  });
-
-  const { setNodeRef: setDropRef } = useDroppable({
-    id: `list-drop-${id}`,
+    sensors: [KeyboardSensor, PointerSensor],
   });
 
   // const [t] = useTranslation();
   const [isAddCardOpened, setIsAddCardOpened] = useState(false);
   const [isListActionsPopoverOpen, setIsListActionsPopoverOpen] = useState(false);
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
-  const cardsIds = useMemo(() => {
-    return cards.map((card) => card.id);
-  }, [cards]);
 
   const nameEdit = useRef(null);
 
@@ -119,20 +136,15 @@ function List({
 
   return (
     <div
-      ref={setNodeRef}
-      style={style}
+      ref={sortable.ref}
       className={classNames(
         styles.list,
         canEdit ? styles.draggable : '',
-        isDragging ? styles.dragging : '',
+        sortable.isDragging ? styles.dragging : '',
         isListActionsPopoverOpen ? styles.popoverOpened : '',
       )}
     >
-      <div
-        {...attributes} // eslint-disable-line react/jsx-props-no-spreading
-        {...listeners} // eslint-disable-line react/jsx-props-no-spreading
-        className={classNames(styles.listHeader, canEdit && styles.listHeaderEditable)}
-      >
+      <div className={classNames(styles.listHeader, canEdit && styles.listHeaderEditable)}>
         <div
           onClick={() => {
             handleHeaderClick();
@@ -180,79 +192,79 @@ function List({
           </ListActionsPopover>
         )}
       </div>
-      <SortableContext items={cardsIds} strategy={verticalListSortingStrategy}>
-        <div ref={setDropRef} className={classNames(styles.cardsContainer)}>
-          {cards.map((card) => (
-            <Card
-              key={card.id}
-              id={card.id}
-              name={card.name}
-              description={card.description}
-              dueDate={card.dueDate}
-              isDueDateCompleted={card.isDueDateCompleted}
-              stopwatch={card.stopwatch}
-              coverUrl={card.coverUrl}
-              boardId={card.boardId}
-              listId={card.listId}
-              projectId={card.projectId}
-              isPersisted={card.isPersisted}
-              attachmentsTotal={card.attachmentsTotal}
-              notificationsTotal={card.notificationsTotal}
-              users={card.users}
-              labels={card.labels}
-              tasks={card.tasks}
-              editableBoards={editableBoards}
-              allBoardMemberships={allBoardMemberships}
-              allLabels={allBoardLabels}
-              currentUser={currentUser}
-              canEdit={canEdit}
-              onBoardFetch={onBoardFetch}
-              onUpdate={(data) => onCardUpdate(card.id, data)}
-              onMove={(listId, index) => onCardMove(card.id, listId, index)}
-              onTransfer={(boardId, listId) => onCardTransfer(card.id, boardId, listId)}
-              onDuplicate={() => onCardDuplicate(card.id)}
-              onDelete={() => onCardDelete(card.id)}
-              onUserAdd={(userId) => onCardUserAdd(userId, card.id)}
-              onUserRemove={(userId) => onCardUserRemove(userId, card.id)}
-              onLabelAdd={(labelId) => onCardLabelAdd(labelId, card.id)}
-              onLabelRemove={(labelId) => onCardLabelRemove(labelId, card.id)}
-              onLabelCreate={(data) => onCardLabelCreate(data)}
-              onLabelUpdate={(labelId, data) => onCardLabelUpdate(labelId, data)}
-              onLabelMove={(labelId, index) => onCardLabelMove(labelId, index)}
-              onLabelDelete={(labelId) => onCardLabelDelete(labelId)}
-            />
-          ))}
-          {cards.length === 0 && <div className={styles.emptyDropZone} />}
-          {canEdit && (
-            <CardCreate
-              isOpened={isAddCardOpened}
-              onCreate={onCardCreate}
-              onClose={handleAddCardClose}
-            />
-          )}
-        </div>
-        {!isAddCardOpened && canEdit && (
-          <div className={styles.addCardButton}>
-            <Button
-              color="brand"
-              variant="tertiary"
-              size="small"
-              onClick={() => {
-                handleAddCardClick();
-              }}
-            >
-              <Icon name="add" />
-              {t('action.newCard')}
-            </Button>
-          </div>
+      <div className={classNames(styles.cardsContainer)}>
+        {cards.map((card, cardIndex) => (
+          <Card
+            key={card.id}
+            id={card.id}
+            index={cardIndex}
+            name={card.name}
+            description={card.description}
+            dueDate={card.dueDate}
+            isDueDateCompleted={card.isDueDateCompleted}
+            stopwatch={card.stopwatch}
+            coverUrl={card.coverUrl}
+            boardId={card.boardId}
+            listId={card.listId}
+            projectId={card.projectId}
+            isPersisted={card.isPersisted}
+            attachmentsTotal={card.attachmentsTotal}
+            notificationsTotal={card.notificationsTotal}
+            users={card.users}
+            labels={card.labels}
+            tasks={card.tasks}
+            editableBoards={editableBoards}
+            allBoardMemberships={allBoardMemberships}
+            allLabels={allBoardLabels}
+            currentUser={currentUser}
+            canEdit={canEdit}
+            onBoardFetch={onBoardFetch}
+            onUpdate={(data) => onCardUpdate(card.id, data)}
+            onMove={(listId, targetIndex) => onCardMove(card.id, listId, targetIndex)}
+            onTransfer={(boardId, listId) => onCardTransfer(card.id, boardId, listId)}
+            onDuplicate={() => onCardDuplicate(card.id)}
+            onDelete={() => onCardDelete(card.id)}
+            onUserAdd={(userId) => onCardUserAdd(userId, card.id)}
+            onUserRemove={(userId) => onCardUserRemove(userId, card.id)}
+            onLabelAdd={(labelId) => onCardLabelAdd(labelId, card.id)}
+            onLabelRemove={(labelId) => onCardLabelRemove(labelId, card.id)}
+            onLabelCreate={(data) => onCardLabelCreate(data)}
+            onLabelUpdate={(labelId, data) => onCardLabelUpdate(labelId, data)}
+            onLabelMove={(labelId, targetIndex) => onCardLabelMove(labelId, targetIndex)}
+            onLabelDelete={(labelId) => onCardLabelDelete(labelId)}
+          />
+        ))}
+        <ListDropTarget listId={id} index={cards.length} />
+        {canEdit && (
+          <CardCreate
+            isOpened={isAddCardOpened}
+            onCreate={onCardCreate}
+            onClose={handleAddCardClose}
+          />
         )}
-      </SortableContext>
+      </div>
+      {!isAddCardOpened && canEdit && (
+        <div className={styles.addCardButton}>
+          <Button
+            color="brand"
+            variant="tertiary"
+            size="small"
+            onClick={() => {
+              handleAddCardClick();
+            }}
+          >
+            <Icon name="add" />
+            {t('action.newCard')}
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
 
 List.propTypes = {
   id: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   isPersisted: PropTypes.bool.isRequired,
   color: PropTypes.string.isRequired,

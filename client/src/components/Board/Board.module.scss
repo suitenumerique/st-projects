@@ -140,8 +140,8 @@
     gap: 0.5rem;
     height: fit-content;
     padding: 2px 8px 2px 8px;
+    overflow-x: hidden;
     overflow-y: auto;
-
   }
 
   .dropZoneActive {
@@ -152,7 +152,7 @@
   }
 
   .emptyDropZone {
-    min-height: 1px;
+    height: 1px;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -1,8 +1,8 @@
 import React, { useCallback, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
+import { KeyboardSensor, PointerSensor } from '@dnd-kit/react';
+import { useSortable } from '@dnd-kit/react/sortable';
 import { Button, Checkbox } from '@gouvfr-lasuite/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 
@@ -13,17 +13,16 @@ import TaskActionsStep from '../../../../steps/TaskActionsStep';
 import styles from './SortableTaskItem.module.scss';
 
 const SortableTaskItem = React.memo(
-  ({ id, name, isCompleted, isPersisted, canEdit, onUpdate, onDelete }) => {
-    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+  ({ id, index, name, isCompleted, isPersisted, canEdit, onUpdate, onDelete }) => {
+    const sortable = useSortable({
       id,
+      index,
+      group: 'tasks',
       disabled: !isPersisted || !canEdit,
+      sensors: [KeyboardSensor, PointerSensor],
     });
     const [isTaskActionsPopoverOpen, setIsTaskActionsPopoverOpen] = useState(false);
 
-    const style = {
-      transform: CSS.Transform.toString(transform),
-      transition,
-    };
     const nameEdit = useRef(null);
 
     const handleClick = useCallback(() => {
@@ -55,11 +54,10 @@ const SortableTaskItem = React.memo(
 
     return (
       <div
-        ref={setNodeRef}
-        style={style}
+        ref={sortable.ref}
         className={classNames(
           styles.wrapper,
-          isDragging && styles.dragging,
+          sortable.isDragging && styles.dragging,
           isTaskActionsPopoverOpen && styles.popoverOpened,
         )}
       >
@@ -78,10 +76,6 @@ const SortableTaskItem = React.memo(
               isPersisted && canEdit && styles.draggable,
             )}
             onClick={handleClick}
-            // eslint-disable-next-line react/jsx-props-no-spreading
-            {...attributes}
-            // eslint-disable-next-line react/jsx-props-no-spreading
-            {...listeners}
           >
             <span className={classNames(styles.task, isCompleted && styles.taskCompleted)}>
               {name}
@@ -110,6 +104,7 @@ const SortableTaskItem = React.memo(
 
 SortableTaskItem.propTypes = {
   id: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   isCompleted: PropTypes.bool.isRequired,
   isPersisted: PropTypes.bool.isRequired,

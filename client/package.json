@@ -71,10 +71,9 @@
     }
   },
   "dependencies": {
-    "@dnd-kit/core": "^6.3.1",
-    "@dnd-kit/react": "^0.1.21",
-    "@dnd-kit/sortable": "^10.0.0",
-    "@dnd-kit/utilities": "^3.2.2",
+    "@dnd-kit/dom": "^0.3.2",
+    "@dnd-kit/helpers": "^0.3.2",
+    "@dnd-kit/react": "^0.3.2",
     "@gouvfr-lasuite/cunningham-react": "^4.2.0",
     "@gouvfr-lasuite/ui-kit": "^0.19.8",
     "@mdxeditor/editor": "^3.47.0",

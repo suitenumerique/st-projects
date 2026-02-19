@@ -2,35 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Checkbox } from '@gouvfr-lasuite/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
+import { KeyboardSensor, PointerSensor } from '@dnd-kit/react';
+import { useSortable } from '@dnd-kit/react/sortable';
 import classNames from 'classnames';
 
 import Label from '../../ui/Label';
 
 import styles from './LabelsStep.module.scss';
 
-function SortableLabelItem({ label, currentIds, canEdit, onSelect, onDeselect, onEdit }) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+function SortableLabelItem({ label, index, currentIds, canEdit, onSelect, onDeselect, onEdit }) {
+  const sortable = useSortable({
     id: label.id,
+    index,
+    group: 'labels',
+    type: 'Label',
+    accept: ['Label'],
     disabled: !canEdit,
+    sensors: [KeyboardSensor, PointerSensor],
   });
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className={classNames(isDragging && styles.dragging)}
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      {...attributes}
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      {...(canEdit ? listeners : {})}
-    >
+    <div ref={sortable.ref} className={classNames(sortable.isDragging && styles.dragging)}>
       <div className={classNames(styles.filterItem, canEdit && styles.draggable)}>
         <Checkbox
           checked={currentIds.includes(label.id)}
@@ -70,6 +62,7 @@ SortableLabelItem.propTypes = {
     name: PropTypes.string,
     color: PropTypes.string.isRequired,
   }).isRequired,
+  index: PropTypes.number.isRequired,
   currentIds: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   canEdit: PropTypes.bool,
   onSelect: PropTypes.func.isRequired,
