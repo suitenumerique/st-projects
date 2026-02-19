@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { Modal, Button, Checkbox } from '@openfun/cunningham-react';
+import { Modal, Button, Checkbox, Tooltip } from '@openfun/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 import usePopup from '../../lib/popup';
 
@@ -221,7 +221,9 @@ const CardModal = React.memo(
           <div className={styles.cardModalHeaderRight}>
             {window.isSecureContext && (
               <button type="button" className="modal-button" onClick={handleCopyLinkClick}>
-                <Icon name={isLinkCopied ? 'check' : 'link'} size="medium" />
+                <Tooltip placement="bottom" content={t('action.copyLink', { context: 'title' })}>
+                  <Icon name={isLinkCopied ? 'check' : 'link'} size="medium" />
+                </Tooltip>
               </button>
             )}
             {canEdit && (

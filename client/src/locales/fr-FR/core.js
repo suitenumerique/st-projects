@@ -214,7 +214,7 @@ export default {
       addTask: 'Ajouter une tâche',
       addToCard: 'Ajouter à la carte',
       addUser: 'Ajouter un utilisateur',
-      copyLink_title: 'Copier le lien',
+      copyLink_title: 'Copier le lien de la tâche',
       create: 'Créer',
       createBoard: 'Créer un tableau',
       createFile: 'Créer un fichier',

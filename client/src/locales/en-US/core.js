@@ -207,7 +207,7 @@ export default {
       addTask: 'Add task',
       addToCard: 'Add to card',
       addUser: 'Add user',
-      copyLink_title: 'Copy Link',
+      copyLink_title: 'Copy task link',
       create: 'Create',
       createBoard: 'Create board',
       createFile: 'Create file',
