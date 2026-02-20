@@ -187,7 +187,7 @@ function List({
             onOpenChange={setIsListActionsPopoverOpen}
           >
             <Button className={styles.listHeaderButton} color="brand" variant="tertiary">
-              <Icon outlined name="more_horiz" />
+              <Icon type="outlined" name="more_horiz" />
             </Button>
           </ListActionsPopover>
         )}
