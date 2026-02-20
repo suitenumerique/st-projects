@@ -3,6 +3,39 @@
 @use "./cunningham-tokens.css";
 @use "./cunningham-tokens.scss" as *;
 
+.c__header__left {
+  // [WORKAROUND] Make sure the application name is not weirdly centered by the library MainLayout
+  margin-right: auto;
+}
+
+.c__left-panel__mobile {
+  width: 100%;
+  max-width: 400px;
+}
+
+.c__main-layout__header {
+  z-index: 1;
+}
+
+.c__main-layout__content__center__children {
+  position: relative;
+}
+
+*[id^="c__modals-portal-"] {
+  // To display modals over the left menu if this one triggers them
+  position: relative;
+  z-index: 1000;
+
+  .c__modal {
+    // On mobile the modal is squeezed, and setting min-width won't help on the wrapper we have access to in our own code
+    // That's probably an issue with the design system
+    @media (max-width: 575px) {
+      min-width: 90%;
+    }
+  }
+}
+
+
 .c__header__right {
   gap: 1rem;
 }
