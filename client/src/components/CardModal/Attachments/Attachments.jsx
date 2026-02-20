@@ -128,7 +128,7 @@ const Attachments = React.memo(
 
     return (
       <>
-        <div className={galleryItemsNode.length > 0 && styles.attachmentsGallery}>
+        <div className={galleryItemsNode.length > 0 ? styles.attachmentsGallery : undefined}>
           <Gallery
             withCaption
             withDownloadButton

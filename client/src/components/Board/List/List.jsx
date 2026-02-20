@@ -171,8 +171,8 @@ function List({
             onColorEdit={handleColorEdit}
             onOpenChange={setIsListActionsPopoverOpen}
           >
-            <Button className={styles.listHeaderButton} color="neutral" variant="tertiary">
-              <Icon outlined name="more_horiz" size="small" />
+            <Button className={styles.listHeaderButton} color="brand" variant="tertiary">
+              <Icon type="outlined" name="more_horiz" />
             </Button>
           </ListActionsPopover>
         )}
