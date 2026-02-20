@@ -33,6 +33,12 @@ export default class extends BaseModel {
     filterText: attr({
       getDefault: () => '',
     }),
+    includeCardsWithoutMembers: attr({
+      getDefault: () => false,
+    }),
+    includeCardsWithoutLabels: attr({
+      getDefault: () => false,
+    }),
   };
 
   static reducer({ type, payload }, Board) {
@@ -97,11 +103,19 @@ export default class extends BaseModel {
 
         break;
       case ActionTypes.USER_TO_BOARD_FILTER_ADD:
-        Board.withId(payload.boardId).filterUsers.add(payload.id);
+        if (payload.id === null) {
+          Board.withId(payload.boardId).update({ includeCardsWithoutMembers: true });
+        } else {
+          Board.withId(payload.boardId).filterUsers.add(payload.id);
+        }
 
         break;
       case ActionTypes.USER_FROM_BOARD_FILTER_REMOVE:
-        Board.withId(payload.boardId).filterUsers.remove(payload.id);
+        if (payload.id === null) {
+          Board.withId(payload.boardId).update({ includeCardsWithoutMembers: false });
+        } else {
+          Board.withId(payload.boardId).filterUsers.remove(payload.id);
+        }
 
         break;
       case ActionTypes.PROJECT_CREATE_HANDLE:
@@ -169,11 +183,19 @@ export default class extends BaseModel {
         break;
       }
       case ActionTypes.LABEL_TO_BOARD_FILTER_ADD:
-        Board.withId(payload.boardId).filterLabels.add(payload.id);
+        if (payload.id === null) {
+          Board.withId(payload.boardId).update({ includeCardsWithoutLabels: true });
+        } else {
+          Board.withId(payload.boardId).filterLabels.add(payload.id);
+        }
 
         break;
       case ActionTypes.LABEL_FROM_BOARD_FILTER_REMOVE:
-        Board.withId(payload.boardId).filterLabels.remove(payload.id);
+        if (payload.id === null) {
+          Board.withId(payload.boardId).update({ includeCardsWithoutLabels: false });
+        } else {
+          Board.withId(payload.boardId).filterLabels.remove(payload.id);
+        }
 
         break;
       case ActionTypes.TEXT_FILTER_IN_CURRENT_BOARD: {

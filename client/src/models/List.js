@@ -128,20 +128,31 @@ export default class extends BaseModel {
 
     const filterUserIds = this.board.filterUsers.toRefArray().map((user) => user.id);
     const filterLabelIds = this.board.filterLabels.toRefArray().map((label) => label.id);
+    const { includeCardsWithoutMembers, includeCardsWithoutLabels } = this.board;
 
-    if (filterUserIds.length > 0) {
+    if (filterUserIds.length > 0 || includeCardsWithoutMembers) {
       cardModels = cardModels.filter((cardModel) => {
         const users = cardModel.users.toRefArray();
 
-        return users.some((user) => filterUserIds.includes(user.id));
+        if (includeCardsWithoutMembers && users.length === 0) {
+          return true;
+        }
+
+        return filterUserIds.length > 0 && users.some((user) => filterUserIds.includes(user.id));
       });
     }
 
-    if (filterLabelIds.length > 0) {
+    if (filterLabelIds.length > 0 || includeCardsWithoutLabels) {
       cardModels = cardModels.filter((cardModel) => {
         const labels = cardModel.labels.toRefArray();
 
-        return labels.some((label) => filterLabelIds.includes(label.id));
+        if (includeCardsWithoutLabels && labels.length === 0) {
+          return true;
+        }
+
+        return (
+          filterLabelIds.length > 0 && labels.some((label) => filterLabelIds.includes(label.id))
+        );
       });
     }
 
