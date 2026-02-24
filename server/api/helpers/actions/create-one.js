@@ -148,17 +148,19 @@ module.exports = {
     });
 
     if (action.type === Action.Types.ADD_MEMBER_TO_CARD) {
-      await sails.helpers.notifications.createOne.with({
-        values: {
-          userId: action.data.member.id,
-          action,
-        },
-        project: inputs.project,
-        board: inputs.board,
-        list: inputs.list,
-        card: values.card,
-        actorUser: values.user,
-      });
+      if (action.data.member.id !== action.userId) {
+        await sails.helpers.notifications.createOne.with({
+          values: {
+            userId: action.data.member.id,
+            action,
+          },
+          project: inputs.project,
+          board: inputs.board,
+          list: inputs.list,
+          card: values.card,
+          actorUser: values.user,
+        });
+      }
     } else {
       const subscriptionUserIds = await sails.helpers.cards.getSubscriptionUserIds(
         action.cardId,
