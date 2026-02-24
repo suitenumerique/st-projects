@@ -48,6 +48,14 @@
     flex: 1;
     font-size: 12px;
     padding: 0 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .itemDate {
+    font-size: 11px;
+    color: var(--c--contextuals--content--semantic--neutral--tertiary);
   }
 
   .itemDeleted {

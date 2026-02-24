@@ -5,7 +5,9 @@ import { useTranslation, Trans } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Button } from '@openfun/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
+import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import PopoverHeader from '../../ui/Popover/PopoverHeader';
+import i18n from '../../i18n';
 
 import Paths from '../../constants/Paths';
 import { ActivityTypes } from '../../constants/Enums';
@@ -142,7 +144,17 @@ const NotificationsStep = React.memo(({ items, onMarkAsRead, onClose }) => {
                         avatarUrl={item.activity.user.avatarUrl}
                         size="small"
                       />
-                      <span className={styles.itemContent}>{renderItemContent(item)}</span>
+                      <div className={styles.itemContent}>
+                        <span>{renderItemContent(item)}</span>
+                        {item.createdAt && (
+                          <span className={styles.itemDate}>
+                            {formatDistanceToNow(new Date(item.createdAt), {
+                              addSuffix: true,
+                              locale: i18n.dateFns.getLocale(),
+                            })}
+                          </span>
+                        )}
+                      </div>
                     </>
                   ) : (
                     <div className={styles.itemDeleted}>{t('common.cardOrActionAreDeleted')}</div>
