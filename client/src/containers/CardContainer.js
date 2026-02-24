@@ -91,4 +91,30 @@ const mapDispatchToProps = (dispatch, { id }) =>
     dispatch,
   );
 
-export default connect(makeMapStateToProps, mapDispatchToProps)(Card);
+// when having a lot of cards the comparaison below saving ressources by skipping `makeMapStateToProps`,
+// it's useful when an index has changed due to a drag&drop (since moreover moving a card may affect multiple others position)
+function areStatesEqual(next, prev) {
+  if (next === prev) {
+    return true;
+  }
+
+  if (next.router !== prev.router) {
+    return false;
+  }
+
+  const n = next.orm;
+  const p = prev.orm;
+
+  return (
+    n.Card === p.Card &&
+    n.User === p.User &&
+    n.Label === p.Label &&
+    n.Task === p.Task &&
+    n.Attachment === p.Attachment &&
+    n.Notification === p.Notification &&
+    n.Board === p.Board &&
+    n.BoardMembership === p.BoardMembership
+  );
+}
+
+export default connect(makeMapStateToProps, mapDispatchToProps, null, { areStatesEqual })(Card);
