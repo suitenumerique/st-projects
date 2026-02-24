@@ -2,14 +2,12 @@ import React, { useState, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
-import { KeyboardSensor, PointerSensor } from '@dnd-kit/react';
-import { useSortable } from '@dnd-kit/react/sortable';
 import classNames from 'classnames';
 import { Button } from '@gouvfr-lasuite/cunningham-react';
 import { Badge, Icon } from '@gouvfr-lasuite/ui-kit';
 import { upperFirst, camelCase } from 'lodash';
 import styles from '../Board.module.scss';
-import CardContainer from '../../../containers/CardContainer';
+import SortableCard from '../Card/SortableCard';
 import CardCreate from './CardCreate';
 import ListDropTarget from './ListDropTarget';
 import ListNameEdit from './ListNameEdit';
@@ -19,7 +17,6 @@ import globalStyles from '../../../assets/styles/styles.module.scss';
 
 function List({
   id,
-  index,
   name,
   isPersisted,
   color,
@@ -31,16 +28,6 @@ function List({
   onCardCreate,
 }) {
   const [t] = useTranslation();
-
-  const sortable = useSortable({
-    id,
-    index,
-    group: 'lists',
-    type: 'List',
-    accept: ['List'],
-    disabled: !canEdit,
-    sensors: [KeyboardSensor, PointerSensor],
-  });
 
   const [isAddCardOpened, setIsAddCardOpened] = useState(false);
   const [isListActionsPopoverOpen, setIsListActionsPopoverOpen] = useState(false);
@@ -100,16 +87,14 @@ function List({
   }, []);
 
   return (
-    <div
-      ref={sortable.ref}
-      className={classNames(
-        styles.list,
-        canEdit ? styles.draggable : '',
-        sortable.isDragging ? styles.dragging : '',
-        isListActionsPopoverOpen ? styles.popoverOpened : '',
-      )}
-    >
-      <div className={classNames(styles.listHeader, canEdit && styles.listHeaderEditable)}>
+    <>
+      <div
+        className={classNames(
+          styles.listHeader,
+          canEdit && styles.listHeaderEditable,
+          isListActionsPopoverOpen ? styles.popoverOpened : '',
+        )}
+      >
         <div
           onClick={handleHeaderClick}
           onKeyDown={handleHeaderKeyDown}
@@ -152,7 +137,7 @@ function List({
       </div>
       <div className={classNames(styles.cardsContainer)}>
         {cardIds.map((cardId, cardIndex) => (
-          <CardContainer key={cardId} id={cardId} index={cardIndex} />
+          <SortableCard key={cardId} id={cardId} index={cardIndex} listId={id} canEdit={canEdit} />
         ))}
         <ListDropTarget listId={id} index={cardIds.length} />
         {canEdit && (
@@ -171,13 +156,12 @@ function List({
           </Button>
         </div>
       )}
-    </div>
+    </>
   );
 }
 
 List.propTypes = {
   id: PropTypes.string.isRequired,
-  index: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   isPersisted: PropTypes.bool.isRequired,
   color: PropTypes.string.isRequired,

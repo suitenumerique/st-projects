@@ -176,7 +176,7 @@
       justify-content: center;
     }
 
-    &.popoverOpened {
+    &:has([data-popover-open]) {
       outline: 2px solid var(--c--contextuals--border--semantic--brand--primary);
 
       .cardActionsButton {

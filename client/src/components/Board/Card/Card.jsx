@@ -1,11 +1,9 @@
 import React, { useCallback, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
+import { Button } from '@gouvfr-lasuite/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
-import { Button } from '@openfun/cunningham-react';
 import styles from '../Board.module.scss';
 import Label from '../../../ui/Label';
 import DueDate from '../../../ui/DueDate';
@@ -56,17 +54,6 @@ function Card({
   onLabelDelete,
   currentUser,
 }) {
-  const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
-    id,
-    data: { type: 'Card', id },
-    disabled: !canEdit,
-  });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
   const CardActionsPopover = usePopup(CardActionsStep);
   const nameEdit = useRef(null);
   const [isCardActionsPopoverOpen, setIsCardActionsPopoverOpen] = useState(false);
@@ -171,78 +158,63 @@ function Card({
   );
 
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className={classNames(
-        styles.card,
-        canEdit ? styles.draggable : '',
-        isDragging ? styles.dragging : '',
-        isCardActionsPopoverOpen ? styles.popoverOpened : '',
-      )}
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      {...attributes}
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      {...listeners}
-    >
-      <CardNameEdit ref={nameEdit} defaultValue={name} onUpdate={handleNameUpdate}>
-        <div>
-          {isPersisted && currentUser ? (
-            <>
-              <Link
-                to={Paths.CARDS.replace(':id', id)}
-                className={styles.cardContent}
-                onClick={handleClick}
+    <CardNameEdit ref={nameEdit} defaultValue={name} onUpdate={handleNameUpdate}>
+      <div data-popover-open={isCardActionsPopoverOpen || undefined}>
+        {isPersisted && currentUser ? (
+          <>
+            <Link
+              to={Paths.CARDS.replace(':id', id)}
+              className={styles.cardContent}
+              onClick={handleClick}
+            >
+              {contentNode}
+            </Link>
+            {canEdit && (
+              <CardActionsPopover
+                card={{
+                  dueDate,
+                  stopwatch,
+                  boardId,
+                  listId,
+                  projectId,
+                }}
+                editableBoards={editableBoards}
+                boardMemberships={allBoardMemberships}
+                currentUserIds={users.map((user) => user.id)}
+                labels={allLabels}
+                currentLabelIds={labels.map((label) => label.id)}
+                onNameEdit={handleNameEdit}
+                onUpdate={onUpdate}
+                onMove={onMove}
+                onTransfer={onTransfer}
+                onDuplicate={onDuplicate}
+                onDelete={onDelete}
+                onUserAdd={onUserAdd}
+                onUserRemove={onUserRemove}
+                onBoardFetch={onBoardFetch}
+                onLabelAdd={onLabelAdd}
+                onLabelRemove={onLabelRemove}
+                onLabelCreate={onLabelCreate}
+                onLabelUpdate={onLabelUpdate}
+                onLabelMove={onLabelMove}
+                onLabelDelete={onLabelDelete}
+                onOpenChange={setIsCardActionsPopoverOpen}
               >
-                {contentNode}
-              </Link>
-              {canEdit && (
-                <CardActionsPopover
-                  card={{
-                    dueDate,
-                    stopwatch,
-                    boardId,
-                    listId,
-                    projectId,
-                  }}
-                  editableBoards={editableBoards}
-                  boardMemberships={allBoardMemberships}
-                  currentUserIds={users.map((user) => user.id)}
-                  labels={allLabels}
-                  currentLabelIds={labels.map((label) => label.id)}
-                  onNameEdit={handleNameEdit}
-                  onUpdate={onUpdate}
-                  onMove={onMove}
-                  onTransfer={onTransfer}
-                  onDuplicate={onDuplicate}
-                  onDelete={onDelete}
-                  onUserAdd={onUserAdd}
-                  onUserRemove={onUserRemove}
-                  onBoardFetch={onBoardFetch}
-                  onLabelAdd={onLabelAdd}
-                  onLabelRemove={onLabelRemove}
-                  onLabelCreate={onLabelCreate}
-                  onLabelUpdate={onLabelUpdate}
-                  onLabelMove={onLabelMove}
-                  onLabelDelete={onLabelDelete}
-                  onOpenChange={setIsCardActionsPopoverOpen}
-                >
-                  <Button
-                    className={classNames(styles.cardActionsButton)}
-                    color="neutral"
-                    variant="tertiary"
-                    icon={<Icon name="edit" type="outlined" />}
-                    size="small"
-                  />
-                </CardActionsPopover>
-              )}
-            </>
-          ) : (
-            <span className={styles.content}>{contentNode}</span>
-          )}
-        </div>
-      </CardNameEdit>
-    </div>
+                <Button
+                  className={classNames(styles.cardActionsButton)}
+                  color="neutral"
+                  variant="tertiary"
+                  icon={<Icon name="edit" type="outlined" />}
+                  size="small"
+                />
+              </CardActionsPopover>
+            )}
+          </>
+        ) : (
+          <span className={styles.content}>{contentNode}</span>
+        )}
+      </div>
+    </CardNameEdit>
   );
 }
 
@@ -253,14 +225,14 @@ Card.propTypes = {
   dueDate: PropTypes.string.isRequired,
   isDueDateCompleted: PropTypes.bool.isRequired,
   stopwatch: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  isCompleted: PropTypes.bool.isRequired,
+  isCompleted: PropTypes.bool.isRequired, // eslint-disable-line react/no-unused-prop-types
   coverUrl: PropTypes.string.isRequired,
   boardId: PropTypes.string.isRequired,
   listId: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   isPersisted: PropTypes.bool.isRequired,
   attachmentsTotal: PropTypes.number.isRequired,
-  notificationsTotal: PropTypes.number.isRequired,
+  notificationsTotal: PropTypes.number.isRequired, // eslint-disable-line react/no-unused-prop-types
   users: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   labels: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   tasks: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types

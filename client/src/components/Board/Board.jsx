@@ -11,6 +11,7 @@ import { Icon } from '@gouvfr-lasuite/ui-kit';
 import CardContainer from '../../containers/CardContainer';
 import CardModalContainer from '../../containers/CardModalContainer';
 import ListContainer from '../../containers/ListContainer';
+import SortableList from './List/SortableList';
 import ListCreate from './ListCreate';
 import styles from './Board.module.scss';
 
@@ -140,7 +141,7 @@ function Board({
       >
         <div className={styles.container}>
           {listIds.map((listId, listIndex) => (
-            <ListContainer key={listId} id={listId} index={listIndex} />
+            <SortableList key={listId} id={listId} index={listIndex} canEdit={canEdit} />
           ))}
           {canEdit && (
             <div className={styles.list}>
@@ -175,7 +176,11 @@ function Board({
             }
 
             if (source.type === 'Card') {
-              return <CardContainer id={source.id} index={source.index} />;
+              return (
+                <div className={styles.card}>
+                  <CardContainer id={source.id} />
+                </div>
+              );
             }
 
             return null;
