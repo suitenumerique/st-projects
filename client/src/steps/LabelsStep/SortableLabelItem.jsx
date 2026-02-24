@@ -74,4 +74,4 @@ SortableLabelItem.defaultProps = {
   canEdit: true,
 };
 
-export default SortableLabelItem;
+export default React.memo(SortableLabelItem);

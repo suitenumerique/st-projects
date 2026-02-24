@@ -210,60 +210,6 @@ export const selectCardsForCurrentBoard = createSelector(
   },
 );
 
-// Enhanced selector that includes related data - use with caution as it may impact performance
-export const selectCardsWithDetailsForCurrentBoard = createSelector(
-  orm,
-  (state) => selectPath(state).boardId,
-  ({ Board }, id) => {
-    if (!id) {
-      return id;
-    }
-
-    const boardModel = Board.withId(id);
-
-    if (!boardModel) {
-      return boardModel;
-    }
-
-    // Get filtered cards from each list instead of all cards from board
-    const filteredCards = [];
-    const lists = boardModel.lists.toModelArray();
-
-    lists.forEach((listModel) => {
-      const listFilteredCards = listModel.getFilteredOrderedCardsModelArray();
-      listFilteredCards.forEach((cardModel) => {
-        filteredCards.push({
-          ...cardModel.ref,
-          isPersisted: !isLocalId(cardModel.id),
-          coverUrl: cardModel.coverAttachment && cardModel.coverAttachment.coverUrl,
-          users: cardModel.users.toRefArray(),
-          labels: cardModel.labels.toRefArray(),
-          tasks: cardModel
-            .getOrderedTasksQuerySet()
-            .toRefArray()
-            .map((task) => ({
-              ...task,
-              isPersisted: !isLocalId(task.id),
-            })),
-          attachments: cardModel
-            .getOrderedAttachmentsQuerySet()
-            .toRefArray()
-            .map((attachment) => ({
-              ...attachment,
-              isCover: attachment.id === cardModel.coverAttachmentId,
-              isPersisted: !isLocalId(attachment.id),
-            })),
-          attachmentsTotal: cardModel.attachments.count(),
-          notificationsTotal: cardModel.getUnreadNotificationsQuerySet().count(),
-          lastActivityId: cardModel.getFilteredOrderedInCardActivitiesQuerySet().last()?.id,
-        });
-      });
-    });
-
-    return filteredCards;
-  },
-);
-
 export const selectFilterUsersForCurrentBoard = createSelector(
   orm,
   (state) => selectPath(state).boardId,
@@ -370,7 +316,6 @@ export default {
   selectLabelsForCurrentBoard,
   selectListIdsForCurrentBoard,
   selectListsForCurrentBoard,
-  selectCardsWithDetailsForCurrentBoard,
   selectFilterUsersForCurrentBoard,
   selectIncludeCardsWithoutMembersForCurrentBoard,
   selectIncludeCardsWithoutLabelsForCurrentBoard,

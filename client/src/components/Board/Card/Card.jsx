@@ -293,4 +293,4 @@ Card.propTypes = {
   onLabelDelete: PropTypes.func.isRequired,
 };
 
-export default Card;
+export default React.memo(Card);
