@@ -1,5 +1,5 @@
-import React, { useState, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import classNames from 'classnames';
@@ -28,6 +28,30 @@ function List({
   onCardCreate,
 }) {
   const [t] = useTranslation();
+
+  // this is filled by SortableCard on mount (Map<cardId, SortableInstance>)
+  const cardSortablesRef = useRef(new Map());
+
+  const handleSortableReady = useCallback((cardId, sortableInstance) => {
+    if (sortableInstance) {
+      cardSortablesRef.current.set(cardId, sortableInstance);
+    } else {
+      cardSortablesRef.current.delete(cardId);
+    }
+  }, []);
+
+  // patching sortable indexes directly will prevent rerendering a lot of time `SortableCard`
+  // when moving a card and due to subsequent position changes on other cards, this was putting pressure on the `DragOverlay`
+  // unable to hide its overlay because optimistic UI had the priority (triggered from the redux action)
+  useLayoutEffect(() => {
+    cardIds.forEach((cardId, cardIndex) => {
+      const proxied = cardSortablesRef.current.get(cardId);
+
+      if (proxied) {
+        proxied.draggable.sortable.index = cardIndex;
+      }
+    });
+  }, [cardIds]);
 
   const [isAddCardOpened, setIsAddCardOpened] = useState(false);
   const [isListActionsPopoverOpen, setIsListActionsPopoverOpen] = useState(false);
@@ -136,8 +160,14 @@ function List({
         )}
       </div>
       <div className={classNames(styles.cardsContainer)}>
-        {cardIds.map((cardId, cardIndex) => (
-          <SortableCard key={cardId} id={cardId} index={cardIndex} listId={id} canEdit={canEdit} />
+        {cardIds.map((cardId) => (
+          <SortableCard
+            key={cardId}
+            id={cardId}
+            listId={id}
+            canEdit={canEdit}
+            onSortableReady={handleSortableReady}
+          />
         ))}
         <ListDropTarget listId={id} index={cardIds.length} />
         {canEdit && (
