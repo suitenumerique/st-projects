@@ -1,8 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { PointerActivationConstraints } from '@dnd-kit/dom';
-import { KeyboardSensor, PointerSensor } from '@dnd-kit/react';
-import { useSortable } from '@dnd-kit/react/sortable';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { Button } from '@gouvfr-lasuite/cunningham-react';
@@ -18,14 +15,6 @@ import Paths from '../../../constants/Paths';
 import { stopStopwatch, startStopwatch } from '../../../utils/stopwatch';
 import CardActionsStep from '../../../steps/CardActionsStep';
 import usePopup from '../../../lib/popup/use-popup';
-
-const CardPointerSensor = PointerSensor.configure({
-  activationConstraints: [
-    new PointerActivationConstraints.Distance({
-      value: 5, // Allow clicking the card through draggable area
-    }),
-  ],
-});
 
 function Card({
   id,
@@ -64,18 +53,7 @@ function Card({
   onLabelMove,
   onLabelDelete,
   currentUser,
-  index,
 }) {
-  const sortable = useSortable({
-    id,
-    index,
-    group: listId,
-    type: 'Card',
-    accept: ['Card'],
-    disabled: !canEdit,
-    sensors: [KeyboardSensor, CardPointerSensor],
-  });
-
   const CardActionsPopover = usePopup(CardActionsStep);
   const nameEdit = useRef(null);
   const [isCardActionsPopoverOpen, setIsCardActionsPopoverOpen] = useState(false);
@@ -180,82 +158,68 @@ function Card({
   );
 
   return (
-    <div
-      ref={(el) => {
-        sortable.ref(el);
-        sortable.handleRef(el);
-      }}
-      className={classNames(
-        styles.card,
-        canEdit ? styles.draggable : '',
-        sortable.isDragging ? styles.dragging : '',
-        isCardActionsPopoverOpen ? styles.popoverOpened : '',
-      )}
-    >
-      <CardNameEdit ref={nameEdit} defaultValue={name} onUpdate={handleNameUpdate}>
-        <div>
-          {isPersisted && currentUser ? (
-            <>
-              <Link
-                to={Paths.CARDS.replace(':id', id)}
-                className={styles.cardContent}
-                onClick={handleClick}
+    <CardNameEdit ref={nameEdit} defaultValue={name} onUpdate={handleNameUpdate}>
+      <div data-popover-open={isCardActionsPopoverOpen || undefined}>
+        {isPersisted && currentUser ? (
+          <>
+            <Link
+              to={Paths.CARDS.replace(':id', id)}
+              className={styles.cardContent}
+              onClick={handleClick}
+            >
+              {contentNode}
+            </Link>
+            {canEdit && (
+              <CardActionsPopover
+                card={{
+                  dueDate,
+                  stopwatch,
+                  boardId,
+                  listId,
+                  projectId,
+                }}
+                editableBoards={editableBoards}
+                boardMemberships={allBoardMemberships}
+                currentUserIds={users.map((user) => user.id)}
+                labels={allLabels}
+                currentLabelIds={labels.map((label) => label.id)}
+                onNameEdit={handleNameEdit}
+                onUpdate={onUpdate}
+                onMove={onMove}
+                onTransfer={onTransfer}
+                onDuplicate={onDuplicate}
+                onDelete={onDelete}
+                onUserAdd={onUserAdd}
+                onUserRemove={onUserRemove}
+                onBoardFetch={onBoardFetch}
+                onLabelAdd={onLabelAdd}
+                onLabelRemove={onLabelRemove}
+                onLabelCreate={onLabelCreate}
+                onLabelUpdate={onLabelUpdate}
+                onLabelMove={onLabelMove}
+                onLabelDelete={onLabelDelete}
+                onOpenChange={setIsCardActionsPopoverOpen}
               >
-                {contentNode}
-              </Link>
-              {canEdit && (
-                <CardActionsPopover
-                  card={{
-                    dueDate,
-                    stopwatch,
-                    boardId,
-                    listId,
-                    projectId,
-                  }}
-                  editableBoards={editableBoards}
-                  boardMemberships={allBoardMemberships}
-                  currentUserIds={users.map((user) => user.id)}
-                  labels={allLabels}
-                  currentLabelIds={labels.map((label) => label.id)}
-                  onNameEdit={handleNameEdit}
-                  onUpdate={onUpdate}
-                  onMove={onMove}
-                  onTransfer={onTransfer}
-                  onDuplicate={onDuplicate}
-                  onDelete={onDelete}
-                  onUserAdd={onUserAdd}
-                  onUserRemove={onUserRemove}
-                  onBoardFetch={onBoardFetch}
-                  onLabelAdd={onLabelAdd}
-                  onLabelRemove={onLabelRemove}
-                  onLabelCreate={onLabelCreate}
-                  onLabelUpdate={onLabelUpdate}
-                  onLabelMove={onLabelMove}
-                  onLabelDelete={onLabelDelete}
-                  onOpenChange={setIsCardActionsPopoverOpen}
-                >
-                  <Button
-                    className={classNames(styles.cardActionsButton)}
-                    color="neutral"
-                    variant="tertiary"
-                    icon={<Icon name="edit" type="outlined" />}
-                    size="small"
-                  />
-                </CardActionsPopover>
-              )}
-            </>
-          ) : (
-            <span className={styles.content}>{contentNode}</span>
-          )}
-        </div>
-      </CardNameEdit>
-    </div>
+                <Button
+                  className={classNames(styles.cardActionsButton)}
+                  color="neutral"
+                  variant="tertiary"
+                  icon={<Icon name="edit" type="outlined" />}
+                  size="small"
+                />
+              </CardActionsPopover>
+            )}
+          </>
+        ) : (
+          <span className={styles.content}>{contentNode}</span>
+        )}
+      </div>
+    </CardNameEdit>
   );
 }
 
 Card.propTypes = {
   id: PropTypes.string.isRequired,
-  index: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   dueDate: PropTypes.string.isRequired,
