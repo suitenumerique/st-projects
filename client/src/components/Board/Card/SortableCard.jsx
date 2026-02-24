@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import PropTypes from 'prop-types';
 import { PointerActivationConstraints } from '@dnd-kit/dom';
 import { KeyboardSensor, PointerSensor } from '@dnd-kit/react';
@@ -16,16 +16,27 @@ const CardPointerSensor = PointerSensor.configure({
   ],
 });
 
-function SortableCard({ id, index, listId, canEdit }) {
+function SortableCard({ id, listId, canEdit, onSortableReady }) {
   const sortable = useSortable({
     id,
-    index,
+    index: 0, // initially it was a prop but it was lagging when dropping a card that was changing a lot of positions (= indexes), so now patching them with references
     group: listId,
     type: 'Card',
     accept: ['Card'],
     disabled: !canEdit,
     sensors: [KeyboardSensor, CardPointerSensor],
   });
+
+  // register the Sortable instance with the parent List so it can update `sortable.index` imperatively
+  // when card order changes without triggering a React re-render of this component
+  const sortableInstance = sortable.sortable;
+
+  // useLayoutEffect so this runs BEFORE the parent List's useLayoutEffect
+  useLayoutEffect(() => {
+    onSortableReady(id, sortableInstance);
+
+    return () => onSortableReady(id, null);
+  }, [id, sortableInstance, onSortableReady]);
 
   return (
     <div
@@ -46,9 +57,9 @@ function SortableCard({ id, index, listId, canEdit }) {
 
 SortableCard.propTypes = {
   id: PropTypes.string.isRequired,
-  index: PropTypes.number.isRequired,
   listId: PropTypes.string.isRequired,
   canEdit: PropTypes.bool.isRequired,
+  onSortableReady: PropTypes.func.isRequired,
 };
 
 export default React.memo(SortableCard);
