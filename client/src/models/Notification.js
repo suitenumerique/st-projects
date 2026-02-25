@@ -8,6 +8,7 @@ export default class extends BaseModel {
 
   static fields = {
     id: attr(),
+    createdAt: attr(),
     type: attr(),
     data: attr(),
     isRead: attr(),

@@ -107,6 +107,26 @@ module.exports = {
       // TODO: send webhooks
     }
 
+    const memberUser = values.user || (await sails.helpers.users.getOne(cardMembership.userId));
+
+    await sails.helpers.actions.createOne.with({
+      project: inputs.project,
+      board: inputs.board,
+      list: inputs.list,
+      values: {
+        card: values.card,
+        user: inputs.actorUser,
+        type: Action.Types.ADD_MEMBER_TO_CARD,
+        data: {
+          member: {
+            id: memberUser.id,
+            name: memberUser.name,
+          },
+        },
+      },
+      request: inputs.request,
+    });
+
     return cardMembership;
   },
 };

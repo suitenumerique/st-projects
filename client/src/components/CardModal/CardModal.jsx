@@ -33,7 +33,7 @@ const CardModal = React.memo(
     dueDate,
     isDueDateCompleted,
     stopwatch,
-    // isSubscribed,
+    isSubscribed,
     isActivitiesFetching,
     isAllActivitiesFetched,
     isActivitiesDetailsVisible,
@@ -108,11 +108,11 @@ const CardModal = React.memo(
       }, 3000);
     }, []);
 
-    // const handleToggleSubscriptionClick = useCallback(() => {
-    //   onUpdate({
-    //     isSubscribed: !isSubscribed,
-    //   });
-    // }, [isSubscribed, onUpdate]);
+    const handleToggleSubscriptionClick = useCallback(() => {
+      onUpdate({
+        isSubscribed: !isSubscribed,
+      });
+    }, [isSubscribed, onUpdate]);
 
     const handleClose = useCallback(() => {
       if (isGalleryOpened.current) {
@@ -225,7 +225,12 @@ const CardModal = React.memo(
             )}
             {canEdit && (
               <div className={styles.optionsButtonContainer}>
-                <CardModalActionsPopover onDuplicate={onDuplicate} onDelete={onDelete}>
+                <CardModalActionsPopover
+                  onDuplicate={onDuplicate}
+                  onDelete={onDelete}
+                  onToggleSubscription={handleToggleSubscriptionClick}
+                  isSubscribed={isSubscribed}
+                >
                   <button type="button" className="modal-button">
                     <Icon name="more_horiz" size="medium" />
                   </button>
@@ -581,7 +586,7 @@ CardModal.propTypes = {
   dueDate: PropTypes.instanceOf(Date),
   isDueDateCompleted: PropTypes.bool,
   stopwatch: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  // isSubscribed: PropTypes.bool.isRequired,
+  isSubscribed: PropTypes.bool.isRequired,
   isActivitiesFetching: PropTypes.bool.isRequired,
   isAllActivitiesFetched: PropTypes.bool.isRequired,
   isActivitiesDetailsVisible: PropTypes.bool.isRequired,
