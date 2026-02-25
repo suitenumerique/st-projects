@@ -7,14 +7,14 @@ import HeaderRight from '../components/HeaderRight';
 
 const mapStateToProps = (state) => {
   const currentUser = selectors.selectCurrentUser(state);
-  // const notifications = selectors.selectNotificationsForCurrentUser(state);
+  const notifications = selectors.selectNotificationsForCurrentUser(state);
   const config = selectors.selectConfig(state);
 
   const { reactAppLagaufreWidgetApiUrl, reactAppLagaufreWidgetPath } = config;
 
   return {
     currentUser,
-    // notifications,
+    notifications,
     reactAppLagaufreWidgetApiUrl,
     reactAppLagaufreWidgetPath,
   };
@@ -24,7 +24,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       // onLanguageUpdate: entryActions.updateCurrentUserLanguage,
-      // onNotificationDelete: entryActions.deleteNotification,
+      onNotificationMarkAsRead: entryActions.deleteNotification,
       onLogin: entryActions.authenticateUsingOidc,
       onLogout: entryActions.logout,
     },

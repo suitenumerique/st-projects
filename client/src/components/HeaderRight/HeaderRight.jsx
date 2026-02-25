@@ -1,25 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-import { DropdownMenu, UserMenu } from '@gouvfr-lasuite/ui-kit';
+import { DropdownMenu, UserMenu, Icon } from '@gouvfr-lasuite/ui-kit';
 import { Button } from '@openfun/cunningham-react';
 import LaGaufreButton from '../../ui/LaGaufreButton';
 
-// import NotificationsStep from '../../steps/NotificationsStep';
-// import usePopup from '../../lib/popup';
+import NotificationsStep from '../../steps/NotificationsStep';
+import usePopup from '../../lib/popup';
 
 const HeaderRight = React.memo(
   ({
     currentUser,
+    notifications,
+    onNotificationMarkAsRead,
     reactAppLagaufreWidgetApiUrl,
     reactAppLagaufreWidgetPath,
     onLogout,
     onLogin,
   }) => {
-    // const NotificationsPopover = usePopup(NotificationsStep, {
-    //   side: 'bottom',
-    //   align: 'end',
-    // });
+    const NotificationsPopover = usePopup(NotificationsStep);
 
     if (currentUser) {
       window.posthog.identify(currentUser.id, {
@@ -29,14 +28,19 @@ const HeaderRight = React.memo(
 
     return (
       <>
-        {/* <NotificationsPopover items={notifications} onDelete={onNotificationDelete}>
-          <Button color="brand" variant="tertiary" className={styles.notificationButton}>
-            <Icon type="outlined" name="notifications" />
-            {/* {notifications.length >= 0 && (
-            <span className={styles.notification}>{notifications.length}</span>
-          )}
-          </Button>
-        </NotificationsPopover> */}
+        {currentUser && (
+          <NotificationsPopover
+            items={notifications}
+            onMarkAsRead={onNotificationMarkAsRead}
+            side="bottom"
+            align="end"
+          >
+            <Button color="brand" variant="tertiary">
+              <Icon type="outlined" name="notifications" />
+              {notifications?.length > 0 && <span>{notifications.length}</span>}
+            </Button>
+          </NotificationsPopover>
+        )}
 
         <LaGaufreButton
           reactAppLagaufreWidgetApiUrl={reactAppLagaufreWidgetApiUrl}
@@ -118,8 +122,8 @@ HeaderRight.propTypes = {
   currentUser: PropTypes.object.isRequired,
   onLogout: PropTypes.func.isRequired,
   onLogin: PropTypes.func.isRequired,
-  // notifications: PropTypes.array.isRequired,
-  // onNotificationDelete: PropTypes.func.isRequired,
+  notifications: PropTypes.array.isRequired,
+  onNotificationMarkAsRead: PropTypes.func.isRequired,
   // onLanguageUpdate: PropTypes.func.isRequired,
   reactAppLagaufreWidgetApiUrl: PropTypes.string.isRequired,
   reactAppLagaufreWidgetPath: PropTypes.string.isRequired,

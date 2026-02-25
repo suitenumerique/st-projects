@@ -88,6 +88,28 @@ module.exports = {
       user: inputs.actorUser,
     });
 
+    if (sails.hooks.smtp.isActive()) {
+      const subject = `Nouveau tableau partagé : ${values.board.name}`;
+      const boardUrl = `${process.env.BASE_URL}/boards/${values.board.id}`;
+      const body =
+        `<p><strong>${inputs.actorUser.name} (${inputs.actorUser.email})</strong> vous a partagé le tableau suivant : ` +
+        `<strong>${values.board.name}</strong>.</p>`;
+
+      const html = sails.helpers.utils.buildEmailHtml.with({
+        subject,
+        heading: 'Nouveau tableau partagé !',
+        body,
+        buttonUrl: boardUrl,
+        buttonLabel: 'Ouvrir le tableau',
+      });
+
+      await sails.helpers.utils.sendEmail.with({
+        to: values.user.email,
+        subject,
+        html,
+      });
+    }
+
     return boardMembership;
   },
 };

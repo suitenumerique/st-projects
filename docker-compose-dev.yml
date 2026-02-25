@@ -103,6 +103,10 @@ services:
       - OIDC_SCOPES=openid profile email organization
       - OIDC_FULLNAME_ATTRIBUTES=given_name,family_name
       - OIDC_USE_DEFAULT_RESPONSE_MODE=true
+      - SMTP_HOST=host.docker.internal
+      - SMTP_PORT=1025
+      - SMTP_SECURE=false
+      - SMTP_FROM="Projets" <noreply@projets.local>
       # - OIDC_USERNAME_ATTRIBUTE=preferred_username
       # - OIDC_EMAIL_ATTRIBUTE=email
       # - OIDC_ROLES_ATTRIBUTE=groups
