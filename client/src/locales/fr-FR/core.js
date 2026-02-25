@@ -179,6 +179,9 @@ export default {
       support: 'Support',
       taskActions_title: 'Actions de tâche',
       tasks: 'Tâches',
+      theme: 'Thème',
+      themeDark: 'Sombre',
+      themeLight: 'Clair',
       thereIsNoPreviewAvailableForThisAttachment:
         "Il n'y a pas d'aperçu disponible pour cette pièce jointe.",
       time: 'Temps',

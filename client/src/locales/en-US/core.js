@@ -174,6 +174,9 @@ export default {
       support: 'Support',
       taskActions_title: 'Task Actions',
       tasks: 'Tasks',
+      theme: 'Theme',
+      themeDark: 'Dark',
+      themeLight: 'Light',
       thereIsNoPreviewAvailableForThisAttachment:
         'There is no preview available for this attachment.',
       time: 'Time',

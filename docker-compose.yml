@@ -15,6 +15,8 @@ services:
       - DATABASE_URL=postgresql://postgres@postgres/projects
       - SECRET_KEY=generate-key
 
+      # - THEME_PREFIX=dsfr # To use a specific Cunningham theme base
+
       # - TRUST_PROXY=0
       # - TOKEN_EXPIRES_IN=365 # In days
 

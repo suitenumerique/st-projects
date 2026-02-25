@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Input, Select, Switch } from '@gouvfr-lasuite/cunningham-react';
 import { HorizontalSeparator } from '@gouvfr-lasuite/ui-kit';
 
+import { useTheme } from '../../../hooks/use-theme';
 import locales from '../../../locales';
 
 import styles from './AccountPane.module.scss';
@@ -20,6 +21,7 @@ const AccountPane = React.memo(
     onLanguageUpdate,
   }) => {
     const [t] = useTranslation();
+    const { theme, setTheme } = useTheme();
 
     const handleSubscribeToOwnCardsChange = useCallback(() => {
       onUpdate({
@@ -59,27 +61,52 @@ const AccountPane = React.memo(
           onChange={handleSubscribeToOwnCardsChange}
         />
         <HorizontalSeparator />
-        <Select
-          label={t('common.language', {
-            context: 'title',
-          })}
-          options={[
-            {
-              value: 'auto',
-              label: t('common.detectAutomatically'),
-            },
-            ...locales.map((locale) => ({
-              value: locale.language,
-              label: locale.name,
-            })),
-          ]}
-          defaultValue={language || 'auto'}
-          clearable={false}
-          onChange={(event) => {
-            handleLanguageChange(event.target.value);
-          }}
-          fullWidth
-        />
+        <div className={styles.preferences}>
+          <Select
+            label={t('common.theme')}
+            options={[
+              {
+                value: 'system',
+                label: t('common.detectAutomatically'),
+              },
+              {
+                value: 'light',
+                label: t('common.themeLight'),
+              },
+              {
+                value: 'dark',
+                label: t('common.themeDark'),
+              },
+            ]}
+            defaultValue={theme}
+            clearable={false}
+            onChange={(event) => {
+              setTheme(event.target.value);
+            }}
+            fullWidth
+          />
+          <Select
+            label={t('common.language', {
+              context: 'title',
+            })}
+            options={[
+              {
+                value: 'auto',
+                label: t('common.detectAutomatically'),
+              },
+              ...locales.map((locale) => ({
+                value: locale.language,
+                label: locale.name,
+              })),
+            ]}
+            defaultValue={language || 'auto'}
+            clearable={false}
+            onChange={(event) => {
+              handleLanguageChange(event.target.value);
+            }}
+            fullWidth
+          />
+        </div>
       </div>
     );
   },

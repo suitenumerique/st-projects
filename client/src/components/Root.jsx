@@ -10,29 +10,46 @@ import i18n from '../i18n';
 import Paths from '../constants/Paths';
 import LoginWrapperContainer from '../containers/LoginWrapperContainer';
 import CoreContainer from '../containers/CoreContainer';
+import { ThemeProvider, useTheme } from '../hooks/use-theme';
 import NotFound from './NotFound';
 
 import '../assets/styles/reset.scss';
 import '../assets/styles/globals.scss';
 
+function ThemedApp({ children }) {
+  const { resolvedTheme } = useTheme();
+
+  return (
+    <CunninghamProvider currentLocale={i18n.resolvedLanguage} theme={resolvedTheme}>
+      {children}
+    </CunninghamProvider>
+  );
+}
+
+ThemedApp.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
 function Root({ store, history }) {
   return (
     <Provider store={store}>
-      <CunninghamProvider currentLocale={i18n.resolvedLanguage} theme="dsfr-light">
-        <ModalProvider>
-          <ReduxRouter history={history}>
-            <Routes>
-              <Route path={Paths.LOGIN} element={<LoginWrapperContainer />} />
-              <Route path={Paths.OIDC_CALLBACK} element={<LoginWrapperContainer />} />
-              <Route path={Paths.ROOT} element={<CoreContainer />} />
-              <Route path={Paths.PROJECTS} element={<CoreContainer />} />
-              <Route path={Paths.BOARDS} element={<CoreContainer />} />
-              <Route path={Paths.CARDS} element={<CoreContainer />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </ReduxRouter>
-        </ModalProvider>
-      </CunninghamProvider>
+      <ThemeProvider>
+        <ThemedApp>
+          <ModalProvider>
+            <ReduxRouter history={history}>
+              <Routes>
+                <Route path={Paths.LOGIN} element={<LoginWrapperContainer />} />
+                <Route path={Paths.OIDC_CALLBACK} element={<LoginWrapperContainer />} />
+                <Route path={Paths.ROOT} element={<CoreContainer />} />
+                <Route path={Paths.PROJECTS} element={<CoreContainer />} />
+                <Route path={Paths.BOARDS} element={<CoreContainer />} />
+                <Route path={Paths.CARDS} element={<CoreContainer />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </ReduxRouter>
+          </ModalProvider>
+        </ThemedApp>
+      </ThemeProvider>
     </Provider>
   );
 }
