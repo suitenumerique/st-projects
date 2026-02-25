@@ -9,28 +9,26 @@
   }
 
   .wrapper {
-    background: #dce0e4;
+    background-color: var(--c--contextuals--background--semantic--info--secondary);
+    color: var(--c--contextuals--content--semantic--info--secondary);
     border-radius: 3px;
-    color: #6a808b;
     display: inline-block;
     font-variant-numeric: tabular-nums;
     transition: background 0.3s ease;
     vertical-align: top;
-  }
 
-  .wrapperActive {
-    background: #21ba45;
-    color: #fff;
-
-    &.wrapperHoverable:hover {
-      background: #16ab39;
-      color: #fff;
+    &:hover {
+      background-color: var(--c--contextuals--background--semantic--info--secondary-hover);
     }
   }
 
-  .wrapperHoverable:hover {
-    background: #d2d8dc;
-    color: #17394d;
+  .wrapperActive {
+    background-color: var(--c--contextuals--background--semantic--success--secondary);
+    color: var(--c--contextuals--content--semantic--success--secondary);
+
+    &:hover {
+      background-color: var(--c--contextuals--background--semantic--success--secondary-hover);
+    }
   }
 
   /* Sizes */

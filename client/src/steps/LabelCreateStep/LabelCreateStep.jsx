@@ -52,10 +52,10 @@ const LabelCreateStep = React.memo(({ defaultData, onCreate, onBack }) => {
         {/* <LabelEditor data={data} onFieldChange={handleFieldChange} /> */}
         <div className={styles.fieldLabel}>{t('common.title')}</div>
         <Input
-          label="Nom de l'étiquette"
           ref={nameField}
           name="name"
           value={data.name}
+          variant="classic"
           className={styles.field}
           onChange={handleFieldChange}
         />

@@ -1,7 +1,7 @@
 import React, { useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@gouvfr-lasuite/cunningham-react';
+import { Button, Input } from '@gouvfr-lasuite/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 import classNames from 'classnames';
 
@@ -50,13 +50,14 @@ const Filters = React.memo(
     return (
       <>
         <span className={styles.filter}>
-          <input
+          <Input
             ref={searchFieldRef}
             name="search"
             value={filterText}
             onChange={(event) => handleSearchChange(event, { value: event.target.value })}
-            className={styles.search}
             placeholder={t('common.searchCards')}
+            variant="classic"
+            className={styles.search}
           />
         </span>
         <span className={styles.filter}>

@@ -2,21 +2,23 @@
   .wrapper {
     display: flex;
     flex-direction: column;
-    flex: 1 1 auto;
     justify-content: center;
     align-items: center;
     padding: 30px;
-    padding-bottom: 0;
+    color: var(--c--contextuals--content--semantic--neutral--primary);
   }
 
   // No need of using media query to hide it on mobile, it fits perfectly since there is almost no content on the page
   .backgroundWrapper {
     flex: 1;
     width: 100%;
-    background: url('../../assets/images/projects_background.svg');
+    background: url('../../assets/images/projects_background.webp');
     background-repeat: no-repeat;
     background-size: contain;
     background-position: bottom center;
+    max-height: 400px;
+    margin-top: auto;
+    margin-bottom: 5vh;
   }
 
   .title {
@@ -42,8 +44,8 @@
   }
 
   .notification {
-    background: #eb5a46;
-    color: #fff;
+    background: var(--c--contextuals--background--semantic--error--primary);
+    color: var(--c--contextuals--content--semantic--neutral--primary);
     float: right;
     font-size: 12px;
     line-height: 20px;

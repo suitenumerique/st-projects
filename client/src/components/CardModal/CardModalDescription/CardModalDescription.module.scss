@@ -1,7 +1,7 @@
 .descriptionButton {
   width: 100%;
   padding: 8px 12px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--c--contextuals--border--semantic--neutral--primary);
   border-radius: 4px;
   background: transparent;
   cursor: pointer;
@@ -9,18 +9,18 @@
   transition: all 0.2s ease;
 
   &:hover {
-    background-color: #f5f5f5;
-    border-color: #d0d0d0;
+    background-color: var(--c--contextuals--background--semantic--neutral--tertiary);;
+    border-color: var(--c--contextuals--border--semantic--neutral--tertiary);
   }
 
   &:focus {
-    outline: 2px solid #0066cc;
+    outline: 2px solid var(--c--components--forms-input--border-color--focus);
     outline-offset: 2px;
   }
 }
 
 .descriptionButtonText {
-  color: #666;
+  color: var(--c--contextuals--content--semantic--neutral--secondary);
 }
 
 .descriptionText {
@@ -31,6 +31,7 @@
   line-height: 1.5;
 
   :global(.markdown-body) {
+    color: var(--c--contextuals--content--semantic--neutral--primary);
     margin: 0;
     padding: 0;
     font-size: 14px;
@@ -39,15 +40,20 @@
 }
 
 .descriptionEditor {
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  background: white;
   min-height: 200px;
   overflow: hidden;
+
+  color: var(--c--contextuals--content--semantic--neutral--primary) !important;
+  border-radius: var(--c--components--forms-input--border-radius);
+  border-width: var(--c--components--forms-input--border-width);
+  border-color: var(--c--components--forms-input--border-color);
+  border-style: var(--c--components--forms-input--border-style);
+  background-color: var(--c--components--forms-input--background-color);
 }
 
 .editorContent {
   min-height: 150px;
+  color: var(--c--contextuals--content--semantic--neutral--primary) !important;
   padding: 12px;
   font-size: 14px;
   line-height: 1.5;
@@ -69,56 +75,5 @@
 
   &:focus {
     outline: none;
-  }
-}
-
-.editorControls {
-  display: flex;
-  gap: 8px;
-  padding: 8px 12px;
-  border-top: 1px solid #e0e0e0;
-  background: #f8f9fa;
-  border-radius: 0 0 4px 4px;
-}
-
-.saveButton {
-  padding: 6px 12px;
-  background-color: #0066cc;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    background-color: #0052a3;
-  }
-
-  &:focus {
-    outline: 2px solid #0066cc;
-    outline-offset: 2px;
-  }
-}
-
-.cancelButton {
-  padding: 6px 12px;
-  background-color: transparent;
-  color: #666;
-  border: 1px solid #d0d0d0;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background-color: #f5f5f5;
-    border-color: #b0b0b0;
-  }
-
-  &:focus {
-    outline: 2px solid #0066cc;
-    outline-offset: 2px;
   }
 }

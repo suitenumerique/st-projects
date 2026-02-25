@@ -78,10 +78,10 @@ const LabelEditStep = React.memo(({ defaultData, onUpdate, onDelete, onBack }) =
       <form onSubmit={handleSubmit}>
         <div className={styles.fieldLabel}>{t('common.title')}</div>
         <Input
-          label="Nom de l'étiquette"
           ref={nameField}
           name="name"
           value={data.name}
+          variant="classic"
           className={styles.field}
           onChange={handleFieldChange}
         />

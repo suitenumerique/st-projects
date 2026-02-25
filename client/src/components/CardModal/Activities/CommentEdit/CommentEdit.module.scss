@@ -5,8 +5,8 @@
   }
 
   .field {
-    background: #fff;
-    border: 1px solid rgba(9, 30, 66, 0.13);
+    background: var(--c--contextuals--background--surface--primary);
+    border: 1px solid var(--c--contextuals--border--semantic--neutral--secondary);
     border-radius: 3px;
     box-sizing: border-box;
     display: block;

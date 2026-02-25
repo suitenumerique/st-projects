@@ -2,6 +2,7 @@
   #app {
 
     .react-datepicker {
+      background: var(--c--contextuals--background--semantic--info--secondary);
       border: 0;
       font-size: 14px;
       width: 100%;
@@ -14,7 +15,7 @@
 
     .react-datepicker__current-month,
     .react-datepicker-time__header {
-      color: #555e74;
+      color: var(--c--contextuals--content--semantic--info--secondary);
       font-weight: 500;
       font-size: 14px;
       line-height: 32px;
@@ -23,7 +24,7 @@
     }
 
     .react-datepicker__header {
-      background: #fff;
+      background: var(--c--contextuals--background--semantic--info--secondary);
       border: 0;
       padding: 0;
     }
@@ -31,14 +32,14 @@
     .react-datepicker__day-name,
     .react-datepicker__day,
     .react-datepicker__time-name {
-      color: #555e74;
+      color: var(--c--contextuals--content--semantic--info--secondary);
       display: inline-block;
       width: 40px;
       font-weight: 500;
       line-height: 28px;
       text-align: center;
       margin: 0;
-      border: 2px solid #FFFFFF;
+      border: 2px solid var(--c--contextuals--background--semantic--info--secondary);
     }
 
     .react-datepicker__day-name {
@@ -49,13 +50,14 @@
     .react-datepicker__day--in-selecting-range,
     .react-datepicker__day--in-range {
       border-radius: 4px;
-      border: 2px solid #000091;
-      background: #FFFFFF;
-      color: #000091;
+      border: 2px solid var(--c--contextuals--border--semantic--info--secondary);
+      background: var(--c--contextuals--background--semantic--info--tertiary);
+      color: var(--c--contextuals--content--semantic--info--secondary);
     }
 
     .react-datepicker__day--outside-month {
-      color: #a4abbc;
+      color: var(--c--contextuals--content--semantic--info--primary);
+      opacity: 0.25
     }
 
     .react-datepicker__month {
@@ -69,21 +71,23 @@
 
     .react-datepicker__navigation--previous {
       left: 0;
-      border-right-color: #999;
     }
 
     .react-datepicker__navigation--next {
       right: 0;
-      border-left-color: #999;
     }
 
     .react-datepicker__navigation {
       border-width: 7px 9px;
-      top: 0;
+      top: 3px;
     }
 
     .react-datepicker__day {
       outline: none;
+
+      &:hover {
+        background: var(--c--contextuals--background--semantic--info--secondary-hover);;
+      }
     }
 
     .pswp .pswp__img--placeholder {

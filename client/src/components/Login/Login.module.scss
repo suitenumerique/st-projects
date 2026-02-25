@@ -2,6 +2,13 @@
   .logoGouv {
     margin-right: 2rem;
     height: 60px;
+
+    :global(html[class*='cunningham-theme--'][class*='-dark']) & {
+      // Managing like that for now since we have the same issue for the Footer from UI Kit
+      background: var(--c--globals--colors--gray-000); // Must be light mode for var(--c--contextuals--background--surface--secondary);
+      padding: 8px;
+      border-radius: 10px;
+    }
   }
 
   .logoLink {
@@ -17,17 +24,35 @@
     height: 100%;
 
     & > span {
+      background-color: var(--c--contextuals--background--semantic--info--tertiary) !important;
+      color: var(--c--contextuals--content--semantic--info--tertiary);
       font-weight: bold;
       font-size: 11px;
-      color: rgb(89, 88, 211);
       display: flex;
       flex-direction: column;
-      background: rgb(236, 236, 255);
-      color: rgb(89, 88, 211);
       height: 16px;
       padding: 4px 6px;
       border-radius: 12px;
       line-height: 9px;
+    }
+
+    // Adjust the logo colors to always correspond to the current theme base and theme mode
+    svg path {
+      &[fill="#2845C1"] {
+        fill: var(--c--globals--colors--logo-1-light);
+
+        :global(html[class*='cunningham-theme--'][class*='-dark']) & {
+          fill: var(--c--globals--colors--logo-1-dark);
+        }
+      }
+
+      &[fill="#C83F49"] {
+        fill: var(--c--globals--colors--logo-2-light);
+
+        :global(html[class*='cunningham-theme--'][class*='-dark']) & {
+          fill: var(--c--globals--colors--logo-2-dark);
+        }
+      }
     }
   }
 

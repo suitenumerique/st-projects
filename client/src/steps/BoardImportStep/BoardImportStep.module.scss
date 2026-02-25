@@ -2,7 +2,7 @@
   .button {
     background: transparent;
     box-shadow: none;
-    color: #6b808c;
+    color: var(--c--contextuals--content--semantic--neutral--tertiary);
     font-weight: normal;
     margin-top: 8px;
     padding: 6px 11px;
@@ -10,8 +10,8 @@
     transition: none;
 
     &:hover {
-      background: rgba(9, 30, 66, 0.08);
-      color: #092d42;
+      background: var(--c--contextuals--background--semantic--overlay--primary);
+      color: var(--c--contextuals--content--semantic--neutral--primary);
     }
   }
 }

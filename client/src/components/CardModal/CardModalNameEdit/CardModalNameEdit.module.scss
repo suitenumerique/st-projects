@@ -2,6 +2,7 @@
   .field {
     width: 100%;
     background: transparent;
+    color: var(--c--contextuals--content--semantic--neutral--primary);
     border: 1px solid transparent;
     border-radius: 3px;
     box-shadow: none;
@@ -16,9 +17,8 @@
     min-height: auto;
 
     &:focus {
-      background: #fff;
-      border-color: var(--c--contextuals--border--semantic--brand--primary);
-      outline: 0;
+      background: var(--c--contextuals--background--semantic--overlay--primary);
+      outline: 2px solid var(--c--components--forms-input--border-color--focus);
     }
   }
 }

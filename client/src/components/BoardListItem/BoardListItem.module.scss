@@ -47,7 +47,7 @@
 
 .itemIcon {
   background-color: var(--c--contextuals--background--semantic--brand--primary);
-  border: 1px solid hsla(0,0%,100%,.2);
+  border: 1px solid var(--c--contextuals--border--semantic--neutral--tertiary);
   height: 1.1rem;
   width: 1.1rem;
   border-radius: 0.25rem;
@@ -61,7 +61,7 @@
 
   &::before {
     --icon-size: .7rem;
-    color: #ffffff;
+    color: var(--c--contextuals--content--semantic--neutral--primary);
   }
 }
 
@@ -98,11 +98,11 @@
   position: absolute;
   left: calc(100% - 10px);
   bottom: -10px;
-  background-color: #ffffff;
-  border: 1px solid #e0e0e0;
+  background-color: var(--c--contextuals--background--surface--primary);
+  border: 1px solid var(--c--contextuals--border--semantic--neutral--secondary);
   padding: 8px;
   border-radius: 4px;
   width: 300px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--c--components--modal--box-shadow);
   opacity: 0;
 }

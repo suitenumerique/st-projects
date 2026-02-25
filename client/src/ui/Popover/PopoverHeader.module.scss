@@ -21,6 +21,7 @@
     }
 
     .popoverClose, .popoverBack {
+      color: var(--c--contextuals--content--semantic--neutral--primary);
       font-family: inherit;
       border-radius: 10px;
       height: 25px;

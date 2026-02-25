@@ -1,15 +1,16 @@
 :global(#app) {
   .dropzone {
-    background: white;
+    background: var(--c--contextuals--background--semantic--neutral--tertiary);
     font-size: 20px;
     font-weight: bold;
     height: 100%;
     line-height: 30px;
-    opacity: 0.7;
+    opacity: 0.9;
     padding: 200px 50px;
     position: absolute;
     text-align: center;
     width: 100%;
     z-index: 2001;
+    margin-left: -1.5rem; // Fix due to modal scroller logic
   }
 }

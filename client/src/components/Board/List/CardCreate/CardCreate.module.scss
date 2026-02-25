@@ -5,23 +5,34 @@
   }
 
   .fieldWrapper {
-    background: #fff;
     border-radius: 4px;
-    box-shadow: 0 1px 0 #ccc;
     margin-bottom: 8px;
     min-height: 20px;
     padding: 6px 8px 2px;
     font-size: 14px;
+
+    border-radius: var(--c--components--forms-input--border-radius);
+    border-width: var(--c--components--forms-input--border-width);
+    border-color: var(--c--components--forms-input--border-color);
+    border-style: var(--c--components--forms-input--border-style);
+    background-color: var(--c--components--forms-input--background-color);
+
+    &:focus-within {
+      outline: 2px solid var(--c--components--forms-input--border-color--focus);
+    }
   }
 
   .field {
-    border: none;
     margin-bottom: 4px;
     outline: none;
     overflow: hidden;
     padding: 0;
     resize: none;
     width: 100%;
+    border: none;
+
+    color: var(--c--contextuals--content--semantic--neutral--primary);
+    background-color: transparent;
   }
 
   .controls {

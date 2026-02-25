@@ -168,7 +168,9 @@ function DescriptionComponent({ description, canEdit, onUpdate }) {
         type="button"
         className={styles.descriptionButton}
         onClick={handleClick}
-        aria-label={t('action.editDescription')}
+        aria-label={t('action.editDescription', {
+          context: 'title',
+        })}
       >
         <div className={styles.descriptionText}>
           <Markdown linkStopPropagation linkTarget="_blank">

@@ -16,6 +16,7 @@ import HeaderRightContainer from '../../containers/HeaderRightContainer';
 import styles from './Login.module.scss';
 
 import illustration from '../../assets/images/illustration.jpg';
+import { ReactComponent as Logo } from '../../assets/images/logo.svg';
 import Paths from '../../constants/Paths';
 
 // const createMessage = (error) => {
@@ -115,7 +116,7 @@ const Login = React.memo(({ theme, onAuthenticateUsingOidc }) => {
                     {...localeTheme.header.logo}
                   />
                 ) : (
-                  <img src="/logo.svg" alt="" />
+                  <Logo />
                 )}
                 <span className={styles.overSm}>BETA</span>
               </div>

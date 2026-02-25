@@ -30,11 +30,11 @@
   }
 
   .dragOverlay.list {
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--c--components--modal--box-shadow);
   }
 
   .dragOverlay.card {
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--c--components--modal--box-shadow);
     width: 256px;
   }
 
@@ -44,7 +44,7 @@
     width: 272px;
     flex-shrink: 0;
     position: relative;
-    box-shadow:  0px 1px 1px #1E1F2140, 0px 0px 1px #1E1F214F;
+    box-shadow: var(--c--components--modal--box-shadow);
     transition: background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease;
     height: fit-content;
     max-height: calc(100vh - 125px);
@@ -117,6 +117,7 @@
   }
 
   .listName {
+    color: var(--c--contextuals--content--semantic--neutral--primary);
     font-weight: bold;
     line-height: 20px;
     max-height: 256px;
@@ -145,7 +146,7 @@
   }
 
   .dropZoneActive {
-    background-color: rgba(0, 123, 255, 0.1);
+    background-color: var(--c--contextuals--background--semantic--brand--tertiary);
     border: 2px dashed var(--c--contextuals--border--semantic--brand--primary);
     border-radius: 4px;
     min-height: 40px;
@@ -162,11 +163,9 @@
   }
 
   .card {
-    background: white;
+    background-color: var(--c--contextuals--background--surface--secondary);
     padding: 8px 12px 8px 12px;
     border-radius: 4px;
-    box-shadow: 0px 1px 1px #1E1F2140, 0px 0px 1px #1E1F214F;
-    transition: box-shadow 0.2s;
     position: relative;
 
     .cardActionsButton {
@@ -214,7 +213,7 @@
   }
 
   .card[data-disabled="true"]:hover {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--c--components--modal--box-shadow);
   }
 
   .card.dragging {

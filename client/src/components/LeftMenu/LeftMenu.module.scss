@@ -78,20 +78,4 @@
     width: 100%;
     flex-direction: column;
   }
-
-  .bottomBar {
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 0.75rem;
-    border-top: 1px solid var(--c--contextuals--border--semantic--neutral--tertiary);
-    background-color: #FFFFFF;
-    flex-shrink: 0;
-
-    button {
-      width: 100%;
-      justify-content: center;
-    }
-  }
 }
