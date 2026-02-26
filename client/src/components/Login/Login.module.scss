@@ -1,7 +1,13 @@
 :global(#app) {
   .logoGouv {
+    display: none;
     margin-right: 2rem;
     height: 60px;
+
+    :global(html[class*='cunningham-theme--dsfr']) &, :global(html[class*='cunningham-theme--anct']) & {
+      // As specified inside Login.tsx the french gov logo is for now hardcoded but hidden inappropriate themes
+      display: block;
+    }
 
     :global(html[class*='cunningham-theme--'][class*='-dark']) & {
       // Managing like that for now since we have the same issue for the Footer from UI Kit

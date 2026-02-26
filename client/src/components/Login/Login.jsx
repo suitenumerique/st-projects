@@ -106,7 +106,7 @@ const Login = React.memo(({ theme, onAuthenticateUsingOidc }) => {
         icon={
           <>
             <Link to={Paths.ROOT} className={styles.logoLink}>
-              {/* TODO: gouv logo should be switchable as for Projects application logo with THEME environement variable, but for now it can be replaced with pixel in the public folder */}
+              {/* TODO: gov logo should be switchable as for Projects application logo with THEME environement variable, but for now it can be replaced with pixel in the public folder if needed (theme base not being "dsfr" or "anct" will hide it in the meantime) */}
               <img src="/logo-gouv.svg" alt="" className={styles.logoGouv} />
               <div className={styles.logoWrapper}>
                 {localeTheme.header?.logo ? (
