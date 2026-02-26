@@ -9,6 +9,7 @@
     border-bottom: 1px solid var(--c--contextuals--border--semantic--neutral--tertiary);
     padding: 14px 20px;
     display: flex;
+    gap: 1rem;
     justify-content: space-between;
     align-items: center;
     width: 100%;
@@ -17,6 +18,18 @@
     z-index: 1000;
 
     .cardModalHeaderLeft {
+      min-width: 0; // Needed otherwise it won't work
+
+      .listNameButton {
+        width: stretch; // Needed otherwise it overflows
+      }
+
+      .listName {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
       .boardSelectorIcon {
         margin-left: 4px;
       }

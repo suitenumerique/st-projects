@@ -203,8 +203,13 @@ const CardModal = React.memo(
                 onTransfer={onTransfer}
                 onBoardFetch={onBoardFetch}
               >
-                <Button size="small" variant="secondary" color="brand">
-                  {currentListName}
+                <Button
+                  size="small"
+                  variant="secondary"
+                  color="brand"
+                  className={styles.listNameButton}
+                >
+                  <span className={styles.listName}>{currentListName}</span>
                   <Icon
                     name="keyboard_arrow_down"
                     className={styles.boardSelectorIcon}
@@ -213,8 +218,13 @@ const CardModal = React.memo(
                 </Button>
               </CardMovePopover>
             ) : (
-              <Button size="small" variant="secondary" color="brand">
-                {currentListName}
+              <Button
+                size="small"
+                variant="secondary"
+                color="brand"
+                className={styles.listNameButton}
+              >
+                <span className={styles.listName}>{currentListName}</span>
               </Button>
             )}
           </div>
