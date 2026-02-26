@@ -91,30 +91,104 @@ const mapDispatchToProps = (dispatch, { id }) =>
     dispatch,
   );
 
-// when having a lot of cards the comparaison below saving ressources by skipping `makeMapStateToProps`,
-// it's useful when an index has changed due to a drag&drop (since moreover moving a card may affect multiple others position)
-function areStatesEqual(next, prev) {
-  if (next === prev) {
-    return true;
+// helper to check if any row referenced by a foreign key index changed for a given foreign key value
+function associatedEntityIndexChanged(nTable, pTable, indexField, fkValue) {
+  const nIds = nTable.indexes?.[indexField]?.[fkValue];
+  const pIds = pTable.indexes?.[indexField]?.[fkValue];
+
+  if (nIds !== pIds) {
+    return true; // rows added or removed
   }
 
-  if (next.router !== prev.router) {
+  if (!nIds) {
+    return false; // no rows for this foreign key value
+  }
+
+  return nIds.some((rowId) => nTable.itemsById[rowId] !== pTable.itemsById[rowId]);
+}
+
+// helper to check if any entity row (User or Label...) referenced through a many-to-many junction changed for this card
+function associatedEntityIndexChangedAmongManyToMany(nJunction, nEntity, pEntity, cardId, toField) {
+  const junctionIds = nJunction.indexes?.fromCardId?.[cardId];
+
+  if (!junctionIds) {
     return false;
   }
 
+  return junctionIds.some((jId) => {
+    const entityId = nJunction.itemsById[jId]?.[toField];
+
+    return entityId && nEntity.itemsById[entityId] !== pEntity.itemsById[entityId];
+  });
+}
+
+// when having a lot of cards the comparaison below saving ressources by skipping `makeMapStateToProps`,
+// it's useful when an index has changed due to a drag&drop (since moreover moving a card may affect multiple others position)
+function areStatesEqual(next, prev, nextOwnProps) {
   const n = next.orm;
   const p = prev.orm;
 
-  return (
-    n.Card === p.Card &&
-    n.User === p.User &&
-    n.Label === p.Label &&
-    n.Task === p.Task &&
-    n.Attachment === p.Attachment &&
-    n.Notification === p.Notification &&
-    n.Board === p.Board &&
-    n.BoardMembership === p.BoardMembership
-  );
+  // ORM unchanged (e.g. router-only change)
+  if (n === p) {
+    return true;
+  }
+
+  const cardId = nextOwnProps.id;
+
+  // current card's own row changed (name, description, dueDate, stopwatch...)
+  if (n.Card.itemsById[cardId] !== p.Card.itemsById[cardId]) {
+    return false;
+  }
+
+  // then below check any entities that could be linked to this card and that is potentially
+  // displayed in the card (excluding card modal), meaning a change inside may modify the card rendering
+  if (
+    n.CardUsers !== p.CardUsers &&
+    associatedEntityIndexChanged(n.CardUsers, p.CardUsers, 'fromCardId', cardId)
+  ) {
+    return false;
+  }
+
+  if (
+    n.CardLabels !== p.CardLabels &&
+    associatedEntityIndexChanged(n.CardLabels, p.CardLabels, 'fromCardId', cardId)
+  ) {
+    return false;
+  }
+
+  if (
+    n.User !== p.User &&
+    associatedEntityIndexChangedAmongManyToMany(n.CardUsers, n.User, p.User, cardId, 'toUserId')
+  ) {
+    return false;
+  }
+
+  if (
+    n.Label !== p.Label &&
+    associatedEntityIndexChangedAmongManyToMany(n.CardLabels, n.Label, p.Label, cardId, 'toLabelId')
+  ) {
+    return false;
+  }
+
+  if (n.Task !== p.Task && associatedEntityIndexChanged(n.Task, p.Task, 'cardId', cardId)) {
+    return false;
+  }
+
+  if (
+    n.Attachment !== p.Attachment &&
+    associatedEntityIndexChanged(n.Attachment, p.Attachment, 'cardId', cardId)
+  ) {
+    return false;
+  }
+
+  if (
+    n.Notification !== p.Notification &&
+    associatedEntityIndexChanged(n.Notification, p.Notification, 'cardId', cardId)
+  ) {
+    return false;
+  }
+
+  return true;
 }
 
 export default connect(makeMapStateToProps, mapDispatchToProps, null, { areStatesEqual })(Card);
