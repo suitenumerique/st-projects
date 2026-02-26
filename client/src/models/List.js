@@ -135,33 +135,29 @@ export default class extends BaseModel {
 
     const filterUserIds = this.board.filterUsers.toRefArray().map((user) => user.id);
     const filterLabelIds = this.board.filterLabels.toRefArray().map((label) => label.id);
-    const { includeCardsWithoutMembers } = this.board;
+    const { includeCardsWithoutMembers, includeCardsWithoutLabels } = this.board;
 
     if (filterUserIds.length > 0 || includeCardsWithoutMembers) {
       cardModels = cardModels.filter((cardModel) => {
         const users = cardModel.users.toRefArray();
-        const hasNoMembers = users.length === 0;
-        const hasMatchingMember = filterUserIds.some((userId) =>
-          users.some((user) => user.id === userId),
-        );
+        if (includeCardsWithoutMembers && users.length === 0) {
+          return true;
+        }
 
-        // Show cards that have no members OR cards that have matching members
-        return (includeCardsWithoutMembers && hasNoMembers) || hasMatchingMember;
+        return filterUserIds.length > 0 && users.some((user) => filterUserIds.includes(user.id));
       });
     }
-
-    const { includeCardsWithoutLabels } = this.board;
 
     if (filterLabelIds.length > 0 || includeCardsWithoutLabels) {
       cardModels = cardModels.filter((cardModel) => {
         const labels = cardModel.labels.toRefArray();
-        const hasNoLabels = labels.length === 0;
-        const hasMatchingLabel = filterLabelIds.some((labelId) =>
-          labels.some((label) => label.id === labelId),
-        );
+        if (includeCardsWithoutLabels && labels.length === 0) {
+          return true;
+        }
 
-        // Show cards that have no labels OR cards that have matching labels
-        return (includeCardsWithoutLabels && hasNoLabels) || hasMatchingLabel;
+        return (
+          filterLabelIds.length > 0 && labels.some((label) => filterLabelIds.includes(label.id))
+        );
       });
     }
 
