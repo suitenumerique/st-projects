@@ -163,10 +163,9 @@ function areStatesEqual(next, prev, nextOwnProps) {
     return false;
   }
 
-  if (
-    n.Label !== p.Label &&
-    associatedEntityIndexChangedAmongManyToMany(n.CardLabels, n.Label, p.Label, cardId, 'toLabelId')
-  ) {
+  // re-render on any label change (create, delete, rename, color) since all board labels are passed to the card popover
+  // (otherwise we would have used the condition `associatedEntityIndexChangedAmongManyToMany(n.CardLabels, n.Label, p.Label, cardId, 'toLabelId')`
+  if (n.Label !== p.Label) {
     return false;
   }
 
