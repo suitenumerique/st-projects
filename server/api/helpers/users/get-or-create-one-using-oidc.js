@@ -95,6 +95,8 @@ module.exports = {
     // Build name from array of attributes
     const name = sails.config.custom.oidcFullnameAttributes.map((attr) => claims[attr]).join(' ');
 
+    const { organizationIdClaim } = sails.config.custom;
+
     const values = {
       isAdmin,
       email: claims[sails.config.custom.oidcEmailAttribute],
@@ -104,6 +106,9 @@ module.exports = {
     };
     if (!sails.config.custom.oidcIgnoreUsername) {
       values.username = claims[sails.config.custom.oidcUsernameAttribute];
+    }
+    if (organizationIdClaim && claims[organizationIdClaim]) {
+      values.siret = claims[organizationIdClaim];
     }
 
     let user;
@@ -148,6 +153,9 @@ module.exports = {
     if (!sails.config.custom.oidcIgnoreRoles) {
       updateFieldKeys.push('isAdmin');
     }
+    if (organizationIdClaim) {
+      updateFieldKeys.push('siret');
+    }
 
     const updateValues = {};
     // eslint-disable-next-line no-restricted-syntax
@@ -164,6 +172,30 @@ module.exports = {
         })
         .intercept('emailAlreadyInUse', 'emailAlreadyInUse')
         .intercept('usernameAlreadyInUse', 'usernameAlreadyInUse');
+    }
+
+    if (organizationIdClaim && user.siret) {
+      let project = await Project.findOne({ siret: user.siret });
+      if (!project) {
+        const projectName = await sails.helpers.utils.getNameFromSiren.with({
+          siren: user.siret,
+        });
+        project = await Project.create({
+          siret: user.siret,
+          name: projectName,
+        }).fetch();
+      }
+
+      const existingProjectManager = await ProjectManager.findOne({
+        projectId: project.id,
+        userId: user.id,
+      });
+      if (!existingProjectManager) {
+        await ProjectManager.create({
+          projectId: project.id,
+          userId: user.id,
+        });
+      }
     }
 
     return user;
