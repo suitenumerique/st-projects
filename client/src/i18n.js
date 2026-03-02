@@ -32,6 +32,9 @@ i18n.dateFns = {
 };
 
 i18n.on('languageChanged', () => {
+  // will update `lang` attribute on `<html>` since `index.html` is a static public file
+  document.documentElement.lang = new Intl.Locale(i18n.resolvedLanguage).language;
+
   setDefaultLocale(i18n.resolvedLanguage);
 });
 
