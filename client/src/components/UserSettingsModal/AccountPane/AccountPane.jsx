@@ -30,8 +30,8 @@ const AccountPane = React.memo(
     }, [subscribeToOwnCards, onUpdate]);
 
     const handleLanguageChange = useCallback(
-      (_, { value }) => {
-        onLanguageUpdate(value === 'auto' ? null : value); // FIXME: hack
+      (localeValue) => {
+        onLanguageUpdate(localeValue === 'auto' ? null : localeValue);
       },
       [onLanguageUpdate],
     );
