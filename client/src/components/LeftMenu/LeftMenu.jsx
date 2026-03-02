@@ -91,7 +91,7 @@ const LeftMenu = React.memo(
               icon={<Icon name="add" type="outlined" />}
               size="medium"
             >
-              {t('action.newBoard')}
+              <span className={styles.addBoardButtonText}>{t('action.newBoard')}</span>
             </Button>
           </BoardCreateStepPopover>
           {canEditProject && (

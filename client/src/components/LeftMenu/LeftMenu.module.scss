@@ -20,6 +20,13 @@
   .addBoardButton {
     flex: 1;
     font-weight: 500;
+    overflow: hidden;
+
+    .addBoardButtonText {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
 
   .projects {
