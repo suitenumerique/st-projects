@@ -29,29 +29,36 @@ module.exports = {
       .getProjectPath(inputs.id)
       .intercept('pathNotFound', () => Errors.BOARD_NOT_FOUND);
 
-    const isBoardMember = await sails.helpers.users.isBoardMember(currentUser.id, board.id);
+    if (!board.isPublic) {
+      if (!currentUser) {
+        throw Errors.BOARD_NOT_FOUND; // Forbidden
+      }
 
-    // Check if user is authenticated
-    if (!isBoardMember && !board.isPublic) {
+      const isBoardMember = await sails.helpers.users.isBoardMember(currentUser.id, board.id);
       const isProjectManager = await sails.helpers.users.isProjectManager(
         currentUser.id,
         project.id,
       );
 
-      if (!isProjectManager) {
+      if (!isBoardMember && !isProjectManager) {
         throw Errors.BOARD_NOT_FOUND; // Forbidden
       }
-    }
-
-    // For unauthenticated users, only allow access to public boards
-    if (!currentUser && !board.isPublic) {
-      throw Errors.BOARD_NOT_FOUND; // Forbidden
     }
 
     const boardMemberships = await sails.helpers.boards.getBoardMemberships(board.id);
 
     const userIds = sails.helpers.utils.mapRecords(boardMemberships, 'userId');
-    const users = await sails.helpers.users.getMany(userIds);
+    let users = await sails.helpers.users.getMany(userIds);
+
+    // For public links while not being logged in, at least mask the email of users
+    if (board.isPublic && !currentUser) {
+      users = users.map((user) => {
+        return {
+          ...user.toJSON(), // Do not spread directly to keep private properties omitted
+          email: '**masked**',
+        };
+      });
+    }
 
     const labels = await sails.helpers.boards.getLabels(board.id);
     const lists = await sails.helpers.boards.getLists(board.id);
@@ -59,10 +66,13 @@ module.exports = {
     const cards = await sails.helpers.boards.getCards(board.id);
     const cardIds = sails.helpers.utils.mapRecords(cards);
 
-    const cardSubscriptions = await sails.helpers.cardSubscriptions.getMany({
-      cardId: cardIds,
-      userId: currentUser.id,
-    });
+    let cardSubscriptions = [];
+    if (currentUser) {
+      cardSubscriptions = await sails.helpers.cardSubscriptions.getMany({
+        cardId: cardIds,
+        userId: currentUser.id,
+      });
+    }
 
     const cardMemberships = await sails.helpers.cards.getCardMemberships(cardIds);
     const cardLabels = await sails.helpers.cards.getCardLabels(cardIds);

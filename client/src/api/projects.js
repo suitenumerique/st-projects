@@ -1,3 +1,4 @@
+import http from './http';
 import socket from './socket';
 import { transformUser } from './users';
 import { transformProjectManager } from './project-managers';
@@ -10,8 +11,8 @@ const getProjects = (headers) =>
     ...body,
     included: {
       ...body.included,
-      // users: body.included.users.map(transformUser),
-      // projectManagers: body.included.projectManagers.map(transformProjectManager),
+      users: body.included.users.map(transformUser),
+      projectManagers: body.included.projectManagers.map(transformProjectManager),
       boardMemberships: body.included.boardMemberships.map(transformBoardMembership),
     },
   }));
@@ -38,6 +39,9 @@ const getProject = (id, headers) =>
 
 const updateProject = (id, data, headers) => socket.patch(`/projects/${id}`, data, headers);
 
+const updateProjectBackgroundImage = (id, data, headers) =>
+  http.post(`/projects/${id}/background-image`, data, headers);
+
 const deleteProject = (id, headers) => socket.delete(`/projects/${id}`, undefined, headers);
 
 export default {
@@ -45,5 +49,6 @@ export default {
   createProject,
   getProject,
   updateProject,
+  updateProjectBackgroundImage,
   deleteProject,
 };

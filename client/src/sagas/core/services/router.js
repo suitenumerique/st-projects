@@ -64,6 +64,25 @@ export function* handleLocationChange() {
     yield take([ActionTypes.CORE_INITIALIZE, 'SET_INITIALIZING_FALSE']);
   }
 
+  switch (pathsMatch.pattern.path) {
+    case Paths.ROOT: {
+      const config = yield select(selectors.selectConfig);
+      if (config && config.isOrgMode) {
+        const currentUser = yield select(selectors.selectCurrentUser);
+        const allProjects = yield select(selectors.selectProjectsForCurrentUser);
+        const defaultProject = allProjects.find(
+          (p) => p.organizationId === currentUser.organizationId,
+        );
+        if (defaultProject) {
+          yield call(goToProject, defaultProject.id);
+          return;
+        }
+      }
+      break;
+    }
+    default:
+  }
+
   let board;
   let users;
   let projects;

@@ -6,7 +6,6 @@ import {
   Board,
   BoardMembership,
   Card,
-  Folder,
   Label,
   List,
   Notification,
@@ -14,7 +13,6 @@ import {
   ProjectManager,
   Task,
   User,
-  UserBoardPreference,
 } from './models';
 
 const orm = new ORM({
@@ -27,8 +25,6 @@ orm.register(
   ProjectManager,
   Board,
   BoardMembership,
-  Folder,
-  UserBoardPreference,
   Label,
   List,
   Card,

@@ -3,8 +3,8 @@ import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation, Trans } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Button } from '@openfun/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
+import { Button } from '@gouvfr-lasuite/cunningham-react';
 import PopoverHeader from '../../ui/Popover/PopoverHeader';
 
 import Paths from '../../constants/Paths';
@@ -95,8 +95,9 @@ const NotificationsStep = React.memo(({ items, onDelete, onClose }) => {
             {items.length > 1 && (
               <div className={styles.deleteAllButtonWrapper}>
                 <Button
+                  color="error"
+                  variant="primary"
                   onClick={handleDeleteAll}
-                  color="primary-text"
                   icon={<Icon name="delete_sweep" type="outlined" />}
                   size="nano"
                   className={styles.deleteAllButton}
@@ -122,7 +123,8 @@ const NotificationsStep = React.memo(({ items, onDelete, onClose }) => {
                   )}
                   <Button
                     onClick={() => handleDelete(item.id)}
-                    color="primary-text"
+                    color="error"
+                    variant="primary"
                     icon={<Icon name="delete" type="outlined" />}
                     size="nano"
                   />

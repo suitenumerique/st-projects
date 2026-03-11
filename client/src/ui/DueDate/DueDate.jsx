@@ -37,15 +37,15 @@ const FULL_DATE_FORMAT_BY_SIZE = {
 const STATUS_ICON_PROPS_BY_STATUS = {
   [STATUSES.DUE_SOON]: {
     name: 'warning',
-    color: '#F27E27',
+    color: 'var(--c--contextuals--border--semantic--warning--primary)',
   },
   [STATUSES.OVERDUE]: {
     name: 'hourglass_bottom',
-    color: '#D83F3D',
+    color: 'var(--c--contextuals--border--semantic--error--primary)',
   },
   [STATUSES.COMPLETED]: {
     name: 'check_box',
-    color: '#20BB45',
+    color: 'var(--c--contextuals--border--semantic--success--primary)',
   },
 };
 

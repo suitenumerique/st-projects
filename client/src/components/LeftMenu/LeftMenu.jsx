@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button, Select } from '@openfun/cunningham-react';
+import { Button, Select } from '@gouvfr-lasuite/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 
 import usePopup from '../../lib/popup/use-popup';
@@ -20,6 +20,7 @@ const LeftMenu = React.memo(
     privateBoards,
     sharedBoards,
     templateBoards,
+    isOrgMode,
     canEditProject,
     onProjectSettingsClick,
     onBoardAdd,
@@ -41,42 +42,44 @@ const LeftMenu = React.memo(
 
     return (
       <div className={styles.wrapper}>
-        <div className={styles.projects}>
-          <Select
-            label={t('common.project')}
-            options={projects.map((project) => {
-              return {
-                value: project.id,
-                label: `${project.name}${
-                  project.notificationsTotal > 0
-                    ? // Unfortunately the select cannot a accept elements for now, so having the fallback version (maybe not useful if notifications panel in the header?)
-                      ` (${project.notificationsTotal})`
-                    : // <>
-                      //   {' '}
-                      //   <span className={styles.notification}>{project.notificationsTotal}</span>
-                      // </>
-                      ''
-                }`,
-              };
-            })}
-            defaultValue={currentProject.id}
-            clearable={false}
-            onChange={(event) => {
-              const selectedItem = projects.find((item) => {
-                return item.id === event.target.value;
-              });
+        {!isOrgMode && (
+          <div className={styles.projects}>
+            <Select
+              label={t('common.project')}
+              options={projects.map((project) => {
+                return {
+                  value: project.id,
+                  label: `${project.name}${
+                    project.notificationsTotal > 0
+                      ? // Unfortunately the select cannot a accept elements for now, so having the fallback version (maybe not useful if notifications panel in the header?)
+                        ` (${project.notificationsTotal})`
+                      : // <>
+                        //   {' '}
+                        //   <span className={styles.notification}>{project.notificationsTotal}</span>
+                        // </>
+                        ''
+                  }`,
+                };
+              })}
+              defaultValue={currentProject.id}
+              clearable={false}
+              onChange={(event) => {
+                const selectedItem = projects.find((item) => {
+                  return item.id === event.target.value;
+                });
 
-              if (selectedItem) {
-                const to = selectedItem.firstBoardId
-                  ? Paths.BOARDS.replace(':id', selectedItem.firstBoardId)
-                  : Paths.PROJECTS.replace(':id', selectedItem.id);
+                if (selectedItem) {
+                  const to = selectedItem.firstBoardId
+                    ? Paths.BOARDS.replace(':id', selectedItem.firstBoardId)
+                    : Paths.PROJECTS.replace(':id', selectedItem.id);
 
-                store.dispatch(push(to));
-              }
-            }}
-            className={styles.projectsSelect}
-          />
-        </div>
+                  store.dispatch(push(to));
+                }
+              }}
+              className={styles.projectsSelect}
+            />
+          </div>
+        )}
         <div className={styles.topBar}>
           <BoardCreateStepPopover
             onCreate={onBoardAdd}
@@ -85,17 +88,20 @@ const LeftMenu = React.memo(
             hideCloseButton
           >
             <Button
+              color="brand"
+              variant="primary"
               className={styles.addBoardButton}
               icon={<Icon name="add" type="outlined" />}
               size="medium"
             >
-              {t('action.newBoard')}
+              <span className={styles.addBoardButtonText}>{t('action.newBoard')}</span>
             </Button>
           </BoardCreateStepPopover>
-          {canEditProject && (
+          {canEditProject && !isOrgMode && (
             <Button
               onClick={handleProjectSettingsClick}
-              color="tertiary-text"
+              color="neutral"
+              variant="tertiary"
               icon={<Icon name="settings" type="outlined" />}
               size="medium"
             />
@@ -153,6 +159,7 @@ LeftMenu.propTypes = {
   privateBoards: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   sharedBoards: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   templateBoards: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  isOrgMode: PropTypes.bool.isRequired,
   canEditProject: PropTypes.bool.isRequired,
   onProjectSettingsClick: PropTypes.func.isRequired,
   onBoardAdd: PropTypes.func.isRequired,

@@ -7,11 +7,16 @@
     resize: none;
     min-height: 32px;
     display: flex;
-    border-radius: 4px;
-    border: none;
+
+    color: var(--c--contextuals--content--semantic--neutral--primary);
+    border-radius: var(--c--components--forms-input--border-radius);
+    border-width: var(--c--components--forms-input--border-width);
+    border-color: var(--c--components--forms-input--border-color);
+    border-style: var(--c--components--forms-input--border-style);
+    background-color: var(--c--components--forms-input--background-color);
+
     &:focus {
-      border: 1px solid #000091;
-      outline: none;
+      outline: 2px solid var(--c--components--forms-input--border-color--focus);
     }
   }
 }

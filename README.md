@@ -160,6 +160,17 @@ npm start
 
 This will start both the server (port 3000) and client (port 3001) concurrently.
 
+### Tips
+
+#### Using the right theme
+
+The underlying UI framework provides multiple themes like `light`, `dark`, `dsfr-light`, `dsfr-dark`... (the list [is available here](https://github.com/suitenumerique/ui-kit/blob/main/README.md#themes)). By default Projects will use `light` or `dark` depending on the user settings.
+
+In case you want to specify another theme base:
+
+- For development: create the file `client/.env.local` and append inside for example `THEME_PREFIX=dsfr`
+- For deployment: provide `THEME_PREFIX=dsfr` as an environment variable
+
 #### Additional stack resources
 
 - [Sails.js Documentation](https://sailsjs.com/documentation)

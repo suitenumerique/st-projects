@@ -2,7 +2,7 @@ import { dequal } from 'dequal';
 import React, { useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button, Input } from '@openfun/cunningham-react';
+import { Button, Input } from '@gouvfr-lasuite/cunningham-react';
 
 import { useForm } from '../../hooks';
 import PopoverHeader from '../../ui/Popover/PopoverHeader';
@@ -59,7 +59,7 @@ const BoardEditStep = React.memo(({ defaultData, onUpdate, onBack, onClose }) =>
         />
 
         <div className={styles.buttons}>
-          <Button type="submit" size="medium">
+          <Button type="submit" color="brand" variant="primary" size="medium">
             {t('action.save')}
           </Button>
         </div>

@@ -2,22 +2,10 @@ import pick from 'lodash/pick';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button, Checkbox } from '@openfun/cunningham-react';
+import { Button, Checkbox } from '@gouvfr-lasuite/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
-import {
-  DndContext,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  closestCenter,
-} from '@dnd-kit/core';
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
+import { DragDropProvider } from '@dnd-kit/react';
+import { isSortable } from '@dnd-kit/react/sortable';
 
 import PopoverHeader from '../../ui/Popover/PopoverHeader';
 
@@ -69,35 +57,26 @@ const LabelsStep = React.memo(
       setSortedItems(items);
     }, [items]);
 
-    const sensors = useSensors(
-      useSensor(PointerSensor, {
-        activationConstraint: {
-          distance: 5,
-        },
-      }),
-      useSensor(KeyboardSensor, {
-        coordinateGetter: sortableKeyboardCoordinates,
-      }),
-    );
-
+    /**
+     * @type {NonNullable<
+     *   import("react").ComponentProps<
+     *     typeof import("@dnd-kit/react").DragDropProvider
+     *   >["onDragEnd"]
+     * >}
+     */
     const handleDragEnd = useCallback(
       (event) => {
-        const { active, over } = event;
-        if (!over || active.id === over.id) {
+        const { source } = event.operation;
+
+        if (event.canceled || !source || !isSortable(source)) {
           return;
         }
 
-        const oldIndex = sortedItems.findIndex((item) => item.id === active.id);
-        const newIndex = sortedItems.findIndex((item) => item.id === over.id);
-
-        if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
-          const newSortedItems = arrayMove(sortedItems, oldIndex, newIndex);
-          setSortedItems(newSortedItems);
-
-          onMove(active.id, newIndex);
+        if (source.index !== source.initialIndex) {
+          onMove(source.id, source.index);
         }
       },
-      [sortedItems, onMove],
+      [onMove],
     );
 
     const searchField = useRef(null);
@@ -220,34 +199,27 @@ const LabelsStep = React.memo(
             </div>
           )}
           {filteredItems.length > 0 && (
-            <DndContext
-              sensors={sensors}
-              collisionDetection={closestCenter}
-              onDragEnd={handleDragEnd}
-            >
-              <SortableContext
-                items={filteredItems.map((item) => item.id)}
-                strategy={verticalListSortingStrategy}
-              >
-                {filteredItems.map((label) => (
-                  <SortableLabelItem
-                    key={label.id}
-                    label={label}
-                    currentIds={currentIds}
-                    canEdit={canEdit}
-                    onSelect={handleSelect}
-                    onDeselect={handleDeselect}
-                    onEdit={handleEdit}
-                  />
-                ))}
-              </SortableContext>
-            </DndContext>
+            <DragDropProvider onDragEnd={handleDragEnd}>
+              {filteredItems.map((label, labelIndex) => (
+                <SortableLabelItem
+                  key={label.id}
+                  label={label}
+                  index={labelIndex}
+                  currentIds={currentIds}
+                  canEdit={canEdit}
+                  onSelect={handleSelect}
+                  onDeselect={handleDeselect}
+                  onEdit={handleEdit}
+                />
+              ))}
+            </DragDropProvider>
           )}
         </div>
         {canEdit && (
           <Button
             size="small"
-            color="tertiary"
+            color="brand"
+            variant="tertiary"
             onClick={handleAddClick}
             className={styles.addButton}
             icon={<Icon size="small" name="add" type="outlined" aria-hidden="true" />}

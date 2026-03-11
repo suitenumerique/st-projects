@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button, Input } from '@openfun/cunningham-react';
+import { Button, Input } from '@gouvfr-lasuite/cunningham-react';
+
+import { useForm } from '../../hooks'; // useSteps
 import { useDidUpdate, useToggle } from '../../lib/hooks';
 import BoardListItem from '../../components/BoardListItem/BoardListItem';
 import PopoverHeader from '../../ui/Popover/PopoverHeader';
-
-import { useForm } from '../../hooks'; // useSteps
 
 import styles from './BoardCreateStep.module.scss';
 
@@ -103,10 +103,10 @@ const BoardCreateStep = React.memo(
             className={styles.createInput}
           />
           <div className={styles.controls}>
-            <Button size="medium" type="submit">
+            <Button type="submit" color="brand" variant="primary" size="medium">
               {t('action.create')}
             </Button>
-            {/* <Button type="button" className={styles.importButton} onClick={handleImportClick}>
+            {/* <Button type="button" color="brand" variant="tertiary" className={styles.importButton} onClick={handleImportClick}>
           <Icon
             name={data.import ? data.import.type : 'arrow down'}
             className={styles.importButtonIcon}

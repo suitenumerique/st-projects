@@ -2,29 +2,29 @@ ARG NODE_VERSION=22.21.1
 
 FROM node:${NODE_VERSION}-alpine AS server-dependencies
 
-RUN apk -U upgrade \
-  && apk add build-base python3 --no-cache
+RUN apk add build-base python3 --no-cache
 
 WORKDIR /app
 
 COPY server/package.json server/package-lock.json ./
 
-RUN npm install --omit=dev
+RUN npm ci --omit=dev --no-audit --no-fund
 
-FROM node:${NODE_VERSION} AS client
+FROM node:${NODE_VERSION}-alpine AS client
 
 WORKDIR /app
 
-COPY client .
+COPY client/package.json client/package-lock.json client/.npmrc ./
 
-RUN npm install --omit=dev
+RUN npm ci --omit=dev --no-audit --no-fund
+
+COPY client .
 
 RUN DISABLE_ESLINT_PLUGIN=true npm run build
 
 FROM node:${NODE_VERSION}-alpine
 
-RUN apk -U upgrade \
-  && apk add bash --no-cache
+RUN apk add bash --no-cache
 
 USER node
 WORKDIR /app

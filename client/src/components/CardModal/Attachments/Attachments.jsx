@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Gallery, Item as GalleryItem } from 'react-photoswipe-gallery';
-import { Button } from '@openfun/cunningham-react';
+import { Button } from '@gouvfr-lasuite/cunningham-react';
 import NewAttachmentInput from '../../../ui/NewAttachmentInput';
 import { useToggle } from '../../../lib/hooks';
 import FilePicker from '../../../ui/FilePicker/FilePicker';

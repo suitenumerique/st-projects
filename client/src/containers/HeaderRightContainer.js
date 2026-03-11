@@ -25,6 +25,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       onNotificationDelete: entryActions.deleteNotification,
       onSettingsClick: entryActions.openUserSettingsModal,
+      onLogin: entryActions.authenticateUsingOidc,
       onLogout: entryActions.logout,
     },
     dispatch,

@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next"
 import { useState, useEffect, useRef } from "react"
-import { Button, ButtonElement } from "@openfun/cunningham-react";
+import { Button, ButtonElement } from '@gouvfr-lasuite/cunningham-react';
 
 /**
  * A button that opens the lagaufre widget

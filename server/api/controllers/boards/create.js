@@ -49,16 +49,27 @@ module.exports = {
   async fn(inputs) {
     const { currentUser } = this.req;
 
-    const project = await Project.findOne(inputs.projectId);
+    let project;
+    if (sails.config.custom.organizationIdClaim) {
+      if (!currentUser.organizationId) {
+        throw Errors.PROJECT_NOT_FOUND;
+      }
+      project = await Project.findOne({ organizationId: currentUser.organizationId });
+    } else {
+      project = await Project.findOne(inputs.projectId);
+      if (project) {
+        const isProjectManager = await sails.helpers.users.isProjectManager(
+          currentUser.id,
+          project.id,
+        );
+        if (!isProjectManager) {
+          project = null;
+        }
+      }
+    }
 
     if (!project) {
       throw Errors.PROJECT_NOT_FOUND;
-    }
-
-    const isProjectManager = await sails.helpers.users.isProjectManager(currentUser.id, project.id);
-
-    if (!isProjectManager) {
-      throw Errors.PROJECT_NOT_FOUND; // Forbidden
     }
 
     const values = _.pick(inputs, ['name']);

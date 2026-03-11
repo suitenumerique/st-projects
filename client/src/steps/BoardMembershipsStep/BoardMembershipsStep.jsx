@@ -1,9 +1,9 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-
-import { Checkbox } from '@openfun/cunningham-react';
+import { Checkbox } from '@gouvfr-lasuite/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
+
 import { useField } from '../../hooks';
 import PopoverHeader from '../../ui/Popover/PopoverHeader';
 import User from '../../ui/User';

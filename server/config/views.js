@@ -36,5 +36,5 @@ module.exports.views = {
    */
 
   layout: false,
-  locals: { BASE_URL: process.env.BASE_URL },
+  locals: { BASE_URL: process.env.BASE_URL, THEME_PREFIX: process.env.THEME_PREFIX || '' },
 };

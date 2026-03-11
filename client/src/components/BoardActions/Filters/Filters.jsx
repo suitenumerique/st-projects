@@ -1,11 +1,11 @@
 import React, { useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import { Button, Input } from '@gouvfr-lasuite/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
-import { Button } from '@openfun/cunningham-react';
 import classNames from 'classnames';
-import usePopup from '../../../lib/popup/use-popup';
 
+import usePopup from '../../../lib/popup/use-popup';
 import User from '../../../ui/User';
 import Label from '../../../ui/Label';
 import BoardMembershipsStep from '../../../steps/BoardMembershipsStep';
@@ -50,13 +50,14 @@ const Filters = React.memo(
     return (
       <>
         <span className={styles.filter}>
-          <input
+          <Input
             ref={searchFieldRef}
             name="search"
             value={filterText}
             onChange={(event) => handleSearchChange(event, { value: event.target.value })}
-            className={styles.search}
             placeholder={t('common.searchCards')}
+            variant="classic"
+            className={styles.search}
           />
         </span>
         <span className={styles.filter}>
@@ -72,7 +73,8 @@ const Filters = React.memo(
           >
             <Button
               type="button"
-              color="secondary"
+              color="brand"
+              variant="bordered"
               size="small"
               icon={<Icon type="outlined" name="group" size="small" />}
               className={classNames(
@@ -112,7 +114,8 @@ const Filters = React.memo(
           >
             <Button
               type="button"
-              color="secondary"
+              color="brand"
+              variant="bordered"
               size="small"
               icon={<Icon type="outlined" name="label" size="small" />}
               className={classNames(

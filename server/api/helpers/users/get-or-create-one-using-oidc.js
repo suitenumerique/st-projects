@@ -108,7 +108,7 @@ module.exports = {
       values.username = claims[sails.config.custom.oidcUsernameAttribute];
     }
     if (organizationIdClaim && claims[organizationIdClaim]) {
-      values.siret = claims[organizationIdClaim];
+      values.organizationId = claims[organizationIdClaim];
     }
 
     let user;
@@ -154,7 +154,7 @@ module.exports = {
       updateFieldKeys.push('isAdmin');
     }
     if (organizationIdClaim) {
-      updateFieldKeys.push('siret');
+      updateFieldKeys.push('organizationId');
     }
 
     const updateValues = {};
@@ -174,26 +174,15 @@ module.exports = {
         .intercept('usernameAlreadyInUse', 'usernameAlreadyInUse');
     }
 
-    if (organizationIdClaim && user.siret) {
-      let project = await Project.findOne({ siret: user.siret });
-      if (!project) {
+    if (organizationIdClaim && user.organizationId) {
+      const existingProject = await Project.findOne({ organizationId: user.organizationId });
+      if (!existingProject) {
         const projectName = await sails.helpers.utils.getNameFromSiren.with({
-          siren: user.siret,
+          siren: user.organizationId,
         });
-        project = await Project.create({
-          siret: user.siret,
+        await Project.create({
+          organizationId: user.organizationId,
           name: projectName,
-        }).fetch();
-      }
-
-      const existingProjectManager = await ProjectManager.findOne({
-        projectId: project.id,
-        userId: user.id,
-      });
-      if (!existingProjectManager) {
-        await ProjectManager.create({
-          projectId: project.id,
-          userId: user.id,
         });
       }
     }

@@ -3,6 +3,10 @@ const valuesValidator = (value) => {
     return false;
   }
 
+  if (!_.isUndefined(value.position) && !_.isFinite(value.position)) {
+    return false;
+  }
+
   return true;
 };
 
@@ -33,13 +37,12 @@ module.exports = {
   async fn(inputs) {
     const { values } = inputs;
 
-    // const projectManagerUserIds = await sails.helpers.projects.getManagerUserIds(
-    //   inputs.record.projectId,
-    // );
+    const projectManagerUserIds = await sails.helpers.projects.getManagerUserIds(
+      inputs.record.projectId,
+    );
 
     const boardMemberUserIds = await sails.helpers.boards.getMemberUserIds(inputs.record.id);
-    // const boardRelatedUserIds = _.union(projectManagerUserIds, boardMemberUserIds);
-    const boardRelatedUserIds = boardMemberUserIds;
+    const boardRelatedUserIds = _.union(projectManagerUserIds, boardMemberUserIds);
 
     // Position is now handled via user preferences, not board properties
     // Remove position from values if present

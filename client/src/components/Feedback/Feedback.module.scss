@@ -21,6 +21,12 @@
     align-items: center;
     text-decoration: none;
 
+    img {
+      :global(html[class*='cunningham-theme--'][class*='-dark']) & {
+        filter: invert(100%);
+      }
+    }
+
     .itemTitle {
       font-weight: 700;
       font-size: 14px;

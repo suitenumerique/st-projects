@@ -51,9 +51,10 @@ module.exports = {
       type: 'string',
       required: true,
     },
-    siret: {
+    organizationId: {
       type: 'string',
       allowNull: true,
+      columnName: 'organization_id',
     },
     background: {
       type: 'json',

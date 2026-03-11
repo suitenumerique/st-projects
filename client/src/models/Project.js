@@ -9,6 +9,7 @@ export default class extends BaseModel {
   static fields = {
     id: attr(),
     name: attr(),
+    organizationId: attr(),
     managerUsers: many({
       to: 'User',
       through: 'ProjectManager',
@@ -51,7 +52,6 @@ export default class extends BaseModel {
       case ActionTypes.PROJECT_UPDATE: {
         const project = Project.withId(payload.id);
         project.update(payload.data);
-
         break;
       }
       case ActionTypes.PROJECT_DELETE:
@@ -108,9 +108,7 @@ export default class extends BaseModel {
   }
 
   getOrderedBoardsQuerySet() {
-    // Boards are now ordered by user preferences, not by a global position
-    // This method is kept for compatibility but ordering should be done via user preferences
-    return this.boards;
+    return this.boards.orderBy('position');
   }
 
   getOrderedBoardsModelArrayForUser(userId) {

@@ -15,7 +15,7 @@ const mapStateToProps = (state) => {
 
   const config = selectors.selectConfig(state);
 
-  const { templateBoards } = config;
+  const { templateBoards, isOrgMode } = config;
 
   return {
     projects,
@@ -24,6 +24,7 @@ const mapStateToProps = (state) => {
     privateBoards,
     sharedBoards,
     templateBoards,
+    isOrgMode,
     canEditProject: isCurrentUserManager,
   };
 };

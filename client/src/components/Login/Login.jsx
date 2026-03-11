@@ -16,6 +16,7 @@ import HeaderRightContainer from '../../containers/HeaderRightContainer';
 import styles from './Login.module.scss';
 
 import illustration from '../../assets/images/illustration.jpg';
+import { ReactComponent as Logo } from '../../assets/images/logo.svg';
 import Paths from '../../constants/Paths';
 
 // const createMessage = (error) => {
@@ -105,7 +106,7 @@ const Login = React.memo(({ theme, onAuthenticateUsingOidc }) => {
         icon={
           <>
             <Link to={Paths.ROOT} className={styles.logoLink}>
-              {/* TODO: gouv logo should be switchable as for Projects application logo with THEME environement variable, but for now it can be replaced with pixel in the public folder */}
+              {/* TODO: gov logo should be switchable as for Projects application logo with THEME environement variable, but for now it can be replaced with pixel in the public folder if needed (theme base not being "dsfr" or "anct" will hide it in the meantime) */}
               <img src="/logo-gouv.svg" alt="" className={styles.logoGouv} />
               <div className={styles.logoWrapper}>
                 {localeTheme.header?.logo ? (
@@ -115,7 +116,7 @@ const Login = React.memo(({ theme, onAuthenticateUsingOidc }) => {
                     {...localeTheme.header.logo}
                   />
                 ) : (
-                  <img src="/logo.svg" alt="" />
+                  <Logo />
                 )}
                 <span className={styles.overSm}>BETA</span>
               </div>

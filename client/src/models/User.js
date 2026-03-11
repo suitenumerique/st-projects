@@ -49,6 +49,7 @@ export default class extends BaseModel {
     isUsernameLocked: attr(),
     isDeletionLocked: attr(),
     deletedAt: attr(),
+    organizationId: attr(),
     createdAt: attr({
       getDefault: () => new Date(),
     }),

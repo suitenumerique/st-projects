@@ -3,12 +3,8 @@
     padding-bottom: 0.5rem;
     background-clip: content-box !important;
 
-    &:hover {
-      background: var(--c--globals--colors--gray-025);
-    }
-
     &:not(:last-child) {
-      border-bottom: 1px solid var(--c--theme--colors--greyscale-200);
+      border-bottom: 1px solid var(--c--contextuals--background--semantic--overlay--primary);
     }
   }
 
@@ -46,24 +42,12 @@
     max-height: 60vh;
     overflow-x: hidden;
     overflow-y: auto;
-
-    &::-webkit-scrollbar {
-      width: 5px;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      border-radius: 3px;
-    }
   }
 
   .deleteAllButtonWrapper {
     display: flex;
     justify-content: end;
-    border-bottom: 1px solid var(--c--theme--colors--greyscale-200);
+    border-bottom: 1px solid var(--c--contextuals--background--semantic--overlay--primary);
   }
 
   .deleteAllButton {

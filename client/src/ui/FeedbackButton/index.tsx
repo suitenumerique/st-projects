@@ -1,5 +1,5 @@
 import { Icon, IconType } from "@gouvfr-lasuite/ui-kit"
-import { Button, ButtonProps } from "@openfun/cunningham-react"
+import { Button, ButtonProps } from '@gouvfr-lasuite/cunningham-react'
 import { useTranslation } from "react-i18next"
 import { useSelector } from 'react-redux';
 import selectors from '../../selectors';

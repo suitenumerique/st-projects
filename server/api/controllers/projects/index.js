@@ -2,58 +2,16 @@ module.exports = {
   async fn() {
     const { currentUser } = this.req;
 
-    const { organizationIdClaim } = sails.config.custom;
-
-    if (organizationIdClaim) {
-      // Org mode: user is auto-assigned to the project matching their organization ID claim
-      const userProject = await sails.helpers.projects.getOne({
-        siret: currentUser.siret,
-      });
-
-      const boardMemberships = await sails.helpers.users.getBoardMemberships([currentUser.id], {
-        role: {
-          '!=': 'public_reader',
-        },
-      });
-      const membershipBoardIds = sails.helpers.utils.mapRecords(boardMemberships, 'boardId');
-      const membershipBoards = await sails.helpers.boards.getMany({
-        id: membershipBoardIds,
-      });
-
-      const membershipProjectIds = sails.helpers.utils
-        .mapRecords(membershipBoards, 'projectId', true)
-        .filter((projectId) => projectId !== userProject.id);
-
-      const membershipProjects = await sails.helpers.projects.getMany(membershipProjectIds);
-
-      const projects = [userProject, ...membershipProjects];
-      const boards = [...membershipBoards];
-      const allBoardMemberships = await sails.helpers.boards.getBoardMemberships(membershipBoardIds);
-
-      const folders = await sails.helpers.folders.getMany.with({
-        criteria: {
-          userId: currentUser.id,
-        },
-      });
-
-      const userBoardPreferences = await sails.helpers.userBoardPreferences.getMany({
-        userId: currentUser.id,
-      });
-
-      return {
-        items: projects,
-        included: {
-          boards,
-          boardMemberships: allBoardMemberships,
-          folders,
-          userBoardPreferences,
-        },
-      };
-    }
-
-    // Free mode: users manage their own projects
     const managerProjectIds = await sails.helpers.users.getManagerProjectIds(currentUser.id);
     const managerProjects = await sails.helpers.projects.getMany(managerProjectIds);
+
+    if (sails.config.custom.organizationIdClaim && currentUser.organizationId) {
+      const orgProject = await Project.findOne({ organizationId: currentUser.organizationId });
+      if (orgProject && !managerProjectIds.includes(orgProject.id)) {
+        managerProjectIds.push(orgProject.id);
+        managerProjects.push(orgProject);
+      }
+    }
 
     const boardMemberships = await sails.helpers.users.getBoardMemberships(currentUser.id);
     const membershipBoardIds = sails.helpers.utils.mapRecords(boardMemberships, 'boardId');
@@ -75,8 +33,7 @@ module.exports = {
 
     const projectManagers = await sails.helpers.projects.getProjectManagers(projectIds);
 
-    const userIds = sails.helpers.utils.mapRecords(projectManagers, 'userId', true);
-    const users = await sails.helpers.users.getMany(userIds);
+    const managerUserIds = sails.helpers.utils.mapRecords(projectManagers, 'userId', true);
 
     const managerBoards = await sails.helpers.projects.getBoards(managerProjectIds);
 
@@ -87,9 +44,15 @@ module.exports = {
     const boards = [...managerBoards, ...membershipBoards];
     const boardIds = sails.helpers.utils.mapRecords(boards);
 
+    // Get all board memberships for these boards (not just current user's), it will help adjusting UI depending on if it's shared or not
     const allBoardMemberships = await sails.helpers.boardMemberships.getMany({
       boardId: boardIds,
     });
+
+    const memberUserIds = sails.helpers.utils.mapRecords(allBoardMemberships, 'userId', true);
+
+    const uniqueUserIds = [...new Set([...managerUserIds, ...memberUserIds])];
+    const users = await sails.helpers.users.getMany(uniqueUserIds);
 
     return {
       items: projects,

@@ -1,8 +1,8 @@
 :global(#app) {
   .notification {
-    background: #eb5a46;
+    background: var(--c--contextuals--background--semantic--error--primary);
     border-radius: 8px;
-    color: #fff;
+    color: var(--c--contextuals--content--semantic--neutral--primary);
     display: inline-block;
     font-size: 14px;
     font-weight: bold;

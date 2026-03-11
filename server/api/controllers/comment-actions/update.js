@@ -42,29 +42,31 @@ module.exports = {
     let { action } = path;
     const { card, list, board, project } = path;
 
-    // const isProjectManager = await sails.helpers.users.isProjectManager(currentUser.id, project.id);
+    const isProjectManager = await sails.helpers.users.isProjectManager(currentUser.id, project.id);
 
-    // if (!isProjectManager) {
-    if (action.userId !== currentUser.id) {
-      throw Errors.COMMENT_ACTION_NOT_FOUND; // Forbidden
+    if (!isProjectManager) {
+      if (action.userId !== currentUser.id) {
+        throw Errors.COMMENT_ACTION_NOT_FOUND; // Forbidden
+      }
+
+      const boardMembership = await BoardMembership.findOne({
+        boardId: board.id,
+        userId: currentUser.id,
+      });
+
+      if (!boardMembership) {
+        throw Errors.COMMENT_ACTION_NOT_FOUND; // Forbidden
+      }
+
+      if (
+        ![BoardMembership.Roles.EDITOR, BoardMembership.Roles.OWNER].includes(
+          boardMembership.role,
+        ) &&
+        !boardMembership.canComment
+      ) {
+        throw Errors.NOT_ENOUGH_RIGHTS;
+      }
     }
-
-    const boardMembership = await BoardMembership.findOne({
-      boardId: board.id,
-      userId: currentUser.id,
-    });
-
-    if (!boardMembership) {
-      throw Errors.COMMENT_ACTION_NOT_FOUND; // Forbidden
-    }
-
-    if (
-      ![BoardMembership.Roles.EDITOR, BoardMembership.Roles.OWNER].includes(boardMembership.role) &&
-      !boardMembership.canComment
-    ) {
-      throw Errors.NOT_ENOUGH_RIGHTS;
-    }
-    // }
 
     const values = {
       data: _.pick(inputs, ['text']),

@@ -134,6 +134,14 @@ module.exports = {
       }
 
       if (!isOnlyPasswordChange) {
+        /* const projectIds = await sails.helpers.users.getManagerProjectIds(user.id);
+
+        const userIds = _.union(
+          [user.id],
+          await sails.helpers.users.getAdminIds(),
+          await sails.helpers.projects.getManagerAndBoardMemberUserIds(projectIds),
+        ); */
+
         // Note: before any user change was brodcasted to all users but since we want the discovery of users
         // to only apply if you have a link with them, we removed it. Something like the user name update is not
         // allowed from now, and even if it was, it's not that sensitive and waiting for the next full reload is fine

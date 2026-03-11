@@ -42,61 +42,57 @@ export const selectCurrentUser = createSelector(
 export const selectProjectsForCurrentUser = createSelector(
   orm,
   (state) => selectCurrentUserId(state),
-  (id) => {
+  ({ User }, id) => {
     if (!id) {
       return id;
     }
 
-    return [];
+    const userModel = User.withId(id);
 
-    // const userModel = User.withId(id);
+    if (!userModel) {
+      return userModel;
+    }
 
-    // if (!userModel) {
-    //   return userModel;
-    // }
+    return userModel.getOrderedAvailableProjectsModelArray().map((projectModel) => {
+      const boardsModels = projectModel.getOrderedBoardsModelArrayAvailableForUser(userModel.id);
 
-    // return userModel.getOrderedAvailableProjectsModelArray().map((projectModel) => {
-    //   const boardsModels = projectModel.getOrderedBoardsModelArrayAvailableForUser(userModel.id);
+      let notificationsTotal = 0;
+      boardsModels.forEach((boardModel) => {
+        boardModel.cards.toModelArray().forEach((cardModel) => {
+          notificationsTotal += cardModel.getUnreadNotificationsQuerySet().count();
+        });
+      });
 
-    //   let notificationsTotal = 0;
-    //   boardsModels.forEach((boardModel) => {
-    //     boardModel.cards.toModelArray().forEach((cardModel) => {
-    //       notificationsTotal += cardModel.getUnreadNotificationsQuerySet().count();
-    //     });
-    //   });
-
-    //   return {
-    //     ...projectModel.ref,
-    //     notificationsTotal,
-    //     firstBoardId: boardsModels[0] && boardsModels[0].id,
-    //   };
-    // });
+      return {
+        ...projectModel.ref,
+        notificationsTotal,
+        firstBoardId: boardsModels[0] && boardsModels[0].id,
+      };
+    });
   },
 );
 
 export const selectProjectsToListsForCurrentUser = createSelector(
   orm,
   (state) => selectCurrentUserId(state),
-  (id) => {
+  ({ User }, id) => {
     if (!id) {
       return id;
     }
 
-    return [];
+    const userModel = User.withId(id);
 
-    // const userModel = User.withId(id);
+    if (!userModel) {
+      return userModel;
+    }
 
-    // if (!userModel) {
-    //   return userModel;
-    // }
-
-    // return userModel.getOrderedAvailableProjectsModelArray().map((projectModel) => ({
-    //   ...projectModel.ref,
-    //   boards: projectModel.getOrderedBoardsModelArrayForUser(id).map((boardModel) => ({
-    //     ...boardModel.ref,
-    //     lists: boardModel.getOrderedListsQuerySet().toRefArray(),
-    //   })),
-    // }));
+    return userModel.getOrderedAvailableProjectsModelArray().map((projectModel) => ({
+      ...projectModel.ref,
+      boards: projectModel.getOrderedBoardsModelArrayForUser(id).map((boardModel) => ({
+        ...boardModel.ref,
+        lists: boardModel.getOrderedListsQuerySet().toRefArray(),
+      })),
+    }));
   },
 );
 
@@ -139,7 +135,7 @@ export const selectUserDefaultProject = createSelector(
     }
 
     const allProjects = Project.all().toRefArray();
-    return allProjects.find((project) => project.siret === userModel.siret);
+    return allProjects.find((project) => project.organizationId === userModel.organizationId);
   },
 );
 

@@ -7,6 +7,7 @@ import { Header, MainLayout, Spinner } from '@gouvfr-lasuite/ui-kit';
 import styles from './Core.module.scss';
 
 import Feedback from '../Feedback';
+import { ReactComponent as Logo } from '../../assets/images/logo.svg';
 import ModalTypes from '../../constants/ModalTypes';
 import Paths from '../../constants/Paths';
 import LeftMenuContainer from '../../containers/LeftMenuContainer';
@@ -92,7 +93,7 @@ const Core = React.memo(
                         {...headerLogo}
                       />
                     ) : (
-                      <img src="/logo.svg" alt="" />
+                      <Logo />
                     )}
                     <span className={styles.overSm}>BETA</span>
                   </div>
@@ -142,7 +143,7 @@ const Core = React.memo(
                           {...headerLogo}
                         />
                       ) : (
-                        <img src="/logo.svg" alt="" />
+                        <Logo />
                       )}
                       <span className={styles.overSm}>BETA</span>
                     </div>

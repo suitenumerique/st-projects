@@ -6,14 +6,14 @@ import entryActions from '../entry-actions';
 import Projects from '../components/Projects';
 
 const mapStateToProps = (state) => {
-  const { allowAllToCreateProjects } = selectors.selectConfig(state);
+  const { allowAllToCreateProjects, isOrgMode } = selectors.selectConfig(state);
   const currentUser = selectors.selectCurrentUser(state);
   const projects = selectors.selectProjectsForCurrentUser(state);
 
   return {
     currentUser,
     items: projects,
-    canAdd: allowAllToCreateProjects || currentUser.isAdmin,
+    canAdd: !isOrgMode && (allowAllToCreateProjects || currentUser.isAdmin),
   };
 };
 

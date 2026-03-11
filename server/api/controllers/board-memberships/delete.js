@@ -35,17 +35,23 @@ module.exports = {
     let { boardMembership } = path;
     const { board, project } = path;
 
-    // Prevent deletion of owner memberships
     if (boardMembership.role === 'owner') {
       throw Errors.CANNOT_DELETE_OWNER;
     }
 
     if (boardMembership.userId !== currentUser.id) {
-      const isBoardOwner = await sails.helpers.users.isBoardOwner(currentUser.id, board.id);
-      const isBoardEditor = await sails.helpers.users.isBoardEditor(currentUser.id, board.id);
+      const isProjectManager = await sails.helpers.users.isProjectManager(
+        currentUser.id,
+        project.id,
+      );
 
-      if (!isBoardOwner && !isBoardEditor) {
-        throw Errors.BOARD_MEMBERSHIP_NOT_FOUND; // Forbidden
+      if (!isProjectManager) {
+        const isBoardOwner = await sails.helpers.users.isBoardOwner(currentUser.id, board.id);
+        const isBoardEditor = await sails.helpers.users.isBoardEditor(currentUser.id, board.id);
+
+        if (!isBoardOwner && !isBoardEditor) {
+          throw Errors.BOARD_MEMBERSHIP_NOT_FOUND; // Forbidden
+        }
       }
     }
 

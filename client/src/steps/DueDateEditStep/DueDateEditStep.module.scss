@@ -21,13 +21,20 @@
 
     input {
       border-radius: 4px;
-      border: 1px solid var(--c--theme--colors--greyscale-400);
       height: 36px;
       width: 100%;
       font-size: 14px;
       padding: 0 8px;
+
+      color: var(--c--contextuals--content--semantic--neutral--primary);
+      border-radius: var(--c--components--forms-input--border-radius);
+      border-width: var(--c--components--forms-input--border-width);
+      border-color: var(--c--components--forms-input--border-color);
+      border-style: var(--c--components--forms-input--border-style);
+      background-color: var(--c--components--forms-input--background-color);
+
       &:focus {
-        border-color: var(--c--theme--colors--primary-800);
+        border-color: var(--c--contextuals--border--semantic--brand--primary);
         outline: none;
       }
     }

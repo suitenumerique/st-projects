@@ -1,5 +1,5 @@
 import i18n from 'i18next';
-// import LanguageDetector from 'i18next-browser-languagedetector';
+import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 import formatDate from 'date-fns/format';
 import parseDate from 'date-fns/parse';
@@ -32,6 +32,9 @@ i18n.dateFns = {
 };
 
 i18n.on('languageChanged', () => {
+  // will update `lang` attribute on `<html>` since `index.html` is a static public file
+  document.documentElement.lang = new Intl.Locale(i18n.resolvedLanguage).language;
+
   setDefaultLocale(i18n.resolvedLanguage);
 });
 
@@ -52,14 +55,13 @@ const parseDatePostProcessor = {
 };
 
 i18n
-  // .use(LanguageDetector)
+  .use(LanguageDetector)
   .use(formatDatePostProcessor)
   .use(parseDatePostProcessor)
   .use(initReactI18next)
   .init({
     resources: embeddedLocales,
-    fallbackLng: 'fr-fr',
-    lng: 'fr-fr',
+    fallbackLng: 'en-US',
     supportedLngs: languages,
     load: 'currentOnly',
     interpolation: {

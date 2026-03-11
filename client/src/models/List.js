@@ -93,13 +93,6 @@ export default class extends BaseModel {
 
     const { filterText } = this.board;
 
-    // cardModels.sort((a, b) => {
-    //   if (a.isCompleted === b.isCompleted) {
-    //     return a.position - b.position;
-    //   }
-    //   return a.isCompleted ? 1 : -1;
-    // });
-
     if (filterText !== '') {
       let re = null;
       const posSpace = filterText.indexOf(' ');
@@ -140,6 +133,7 @@ export default class extends BaseModel {
     if (filterUserIds.length > 0 || includeCardsWithoutMembers) {
       cardModels = cardModels.filter((cardModel) => {
         const users = cardModel.users.toRefArray();
+
         if (includeCardsWithoutMembers && users.length === 0) {
           return true;
         }
@@ -151,6 +145,7 @@ export default class extends BaseModel {
     if (filterLabelIds.length > 0 || includeCardsWithoutLabels) {
       cardModels = cardModels.filter((cardModel) => {
         const labels = cardModel.labels.toRefArray();
+
         if (includeCardsWithoutLabels && labels.length === 0) {
           return true;
         }

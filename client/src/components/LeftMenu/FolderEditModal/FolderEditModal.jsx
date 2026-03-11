@@ -1,5 +1,5 @@
 import { useEffect, useCallback } from 'react';
-import { Modal, Button, Input } from '@openfun/cunningham-react';
+import { Modal, Button, Input } from '@gouvfr-lasuite/cunningham-react';
 import PropTypes from 'prop-types';
 import { useForm } from '../../../hooks';
 

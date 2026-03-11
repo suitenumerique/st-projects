@@ -21,6 +21,10 @@ module.exports = {
   async fn(inputs) {
     const { currentUser } = this.req;
 
+    if (sails.config.custom.organizationIdClaim) {
+      throw Errors.NOT_ENOUGH_RIGHTS;
+    }
+
     if (!currentUser.isAdmin && !sails.config.custom.allowAllToCreateProjects) {
       throw Errors.NOT_ENOUGH_RIGHTS;
     }

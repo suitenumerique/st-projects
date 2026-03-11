@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import TextareaAutosize from 'react-textarea-autosize';
-import { Button } from '@openfun/cunningham-react';
+import { Button } from '@gouvfr-lasuite/cunningham-react';
 import { useDidUpdate, useToggle } from '../../../../lib/hooks';
 
 import { useClosableForm, useForm } from '../../../../hooks';
@@ -29,7 +29,7 @@ const CardAdd = React.memo(({ isOpened, onCreate, onClose }) => {
       };
 
       if (!cleanData.name) {
-        nameField.current.ref.current.select();
+        nameField.current.select();
         return;
       }
 
@@ -110,7 +110,8 @@ const CardAdd = React.memo(({ isOpened, onCreate, onClose }) => {
         {/* eslint-disable-next-line jsx-a11y/mouse-events-have-key-events */}
         <Button
           type="submit"
-          color="primary"
+          color="brand"
+          variant="primary"
           size="small"
           className={styles.submitButton}
           onMouseOver={handleControlMouseOver}

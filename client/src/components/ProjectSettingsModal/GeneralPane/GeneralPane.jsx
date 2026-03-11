@@ -1,9 +1,10 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@openfun/cunningham-react';
+import { Button } from '@gouvfr-lasuite/cunningham-react';
 import { HorizontalSeparator, ShareModal } from '@gouvfr-lasuite/ui-kit';
 
+import { useUsersSearch } from '../../../hooks';
 import usePopup from '../../../lib/popup/use-popup';
 import InformationEdit from './InformationEdit';
 import DeleteStep from '../../../steps/DeleteStep';
@@ -11,11 +12,21 @@ import DeleteStep from '../../../steps/DeleteStep';
 import styles from './GeneralPane.module.scss';
 
 const GeneralPane = React.memo(
-  ({ name, managers, allUsers, onUpdate, onDelete, onManagerCreate, onManagerDelete }) => {
+  ({
+    name,
+    managers,
+    searchedUsers,
+    isSearchingUsers,
+    onUpdate,
+    onDelete,
+    onManagerCreate,
+    onManagerDelete,
+    onSearchUsers,
+    onClearUserSearch,
+  }) => {
     const [t] = useTranslation();
 
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-    const [searchedUsers, setSearchedUsers] = useState([]);
 
     const handleShareClick = useCallback(() => {
       setIsShareModalOpen(true);
@@ -23,31 +34,22 @@ const GeneralPane = React.memo(
 
     const handleShareModalClose = useCallback(() => {
       setIsShareModalOpen(false);
-    }, []);
 
-    const searchableUsers = useMemo(() => {
-      return allUsers.map((user) => {
+      onClearUserSearch(); // Empty the search for a proper next modal opening
+    }, [onClearUserSearch]);
+
+    const userIdsToExclude = useMemo(() => managers.map((manager) => manager.user.id), [managers]);
+    const [debouncedHandleUsersQuery] = useUsersSearch(userIdsToExclude, onSearchUsers);
+
+    const formattedSearchedUsers = useMemo(() => {
+      return searchedUsers.map((user) => {
         return {
           id: user.id,
           full_name: user.name,
           email: user.email,
         };
       });
-    }, [allUsers]);
-
-    const onSearchUsers = useCallback(
-      (search) => {
-        const filteredUsers = searchableUsers.filter((user) => {
-          return (
-            (user.email.includes(search) || user.full_name.includes(search)) &&
-            !managers.some((manager) => manager.user.id === user.id)
-          );
-        });
-
-        setSearchedUsers(filteredUsers);
-      },
-      [searchableUsers, managers],
-    );
+    }, [searchedUsers]);
 
     const modalMembers = useMemo(() => {
       return managers.map((manager) => {
@@ -98,7 +100,7 @@ const GeneralPane = React.memo(
               buttonContent="action.delete"
               onConfirm={onDelete}
             >
-              <Button color="danger">
+              <Button color="error" variant="primary">
                 {t('action.deleteProject', {
                   context: 'title',
                 })}
@@ -108,6 +110,9 @@ const GeneralPane = React.memo(
         </div>
 
         <ShareModal
+          key={isShareModalOpen ? 'open' : 'closed'} // [WORKAROUND] To avoid previous search input to appear again after opening the modal
+          // TODO: should be adjusted to avoid letting inviting random email since it has no reality then (ref: https://github.com/suitenumerique/ui-kit/issues/151)
+          // for now we are using `patch-package` to fix this
           isOpen={isShareModalOpen}
           onClose={handleShareModalClose}
           modalTitle={t('common.managers_title')} // For whatever reason `{ context: 'title' }` is not working here, so using directly the suffix (missing context since modal?)
@@ -128,10 +133,11 @@ const GeneralPane = React.memo(
           onUpdateAccess={() => {
             // No need since only 1 role
           }}
-          onSearchUsers={onSearchUsers}
+          onSearchUsers={debouncedHandleUsersQuery}
+          loading={isSearchingUsers}
           hasNextMembers={false}
           hasNextInvitations={false}
-          searchUsersResult={searchedUsers || []}
+          searchUsersResult={formattedSearchedUsers}
           onInviteUser={(users) => {
             users.forEach((user) => {
               onManagerCreate({
@@ -148,11 +154,14 @@ const GeneralPane = React.memo(
 GeneralPane.propTypes = {
   name: PropTypes.string.isRequired,
   managers: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  allUsers: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  searchedUsers: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  isSearchingUsers: PropTypes.bool.isRequired, // eslint-disable-line react/forbid-prop-types
   onUpdate: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   onManagerCreate: PropTypes.func.isRequired,
   onManagerDelete: PropTypes.func.isRequired,
+  onSearchUsers: PropTypes.func.isRequired,
+  onClearUserSearch: PropTypes.func.isRequired,
 };
 
 export default GeneralPane;

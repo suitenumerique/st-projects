@@ -1,36 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Checkbox } from '@openfun/cunningham-react';
+import { Button, Checkbox } from '@gouvfr-lasuite/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
+import { KeyboardSensor, PointerSensor } from '@dnd-kit/react';
+import { useSortable } from '@dnd-kit/react/sortable';
 import classNames from 'classnames';
 
 import Label from '../../ui/Label';
 
 import styles from './LabelsStep.module.scss';
 
-function SortableLabelItem({ label, currentIds, canEdit, onSelect, onDeselect, onEdit }) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+function SortableLabelItem({ label, index, currentIds, canEdit, onSelect, onDeselect, onEdit }) {
+  const sortable = useSortable({
     id: label.id,
+    index,
+    group: 'labels',
+    type: 'Label',
+    accept: ['Label'],
     disabled: !canEdit,
+    sensors: [KeyboardSensor, PointerSensor],
   });
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className={classNames(isDragging && styles.dragging)}
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      {...attributes}
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      {...(canEdit ? listeners : {})}
-    >
+    <div ref={sortable.ref} className={classNames(sortable.isDragging && styles.dragging)}>
       <div className={classNames(styles.filterItem, canEdit && styles.draggable)}>
         <Checkbox
           checked={currentIds.includes(label.id)}
@@ -49,7 +41,12 @@ function SortableLabelItem({ label, currentIds, canEdit, onSelect, onDeselect, o
         />
         {canEdit && (
           <div className={styles.itemActions}>
-            <Button size="small" color="tertiary-text" onClick={() => onEdit(label.id)}>
+            <Button
+              size="small"
+              color="neutral"
+              variant="tertiary"
+              onClick={() => onEdit(label.id)}
+            >
               <Icon size="small" name="edit" type="outlined" aria-hidden="true" />
             </Button>
           </div>
@@ -65,6 +62,7 @@ SortableLabelItem.propTypes = {
     name: PropTypes.string,
     color: PropTypes.string.isRequired,
   }).isRequired,
+  index: PropTypes.number.isRequired,
   currentIds: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   canEdit: PropTypes.bool,
   onSelect: PropTypes.func.isRequired,
@@ -76,4 +74,4 @@ SortableLabelItem.defaultProps = {
   canEdit: true,
 };
 
-export default SortableLabelItem;
+export default React.memo(SortableLabelItem);

@@ -1,7 +1,56 @@
 @use "@gouvfr-lasuite/ui-kit/sass/fonts";
 @use "@gouvfr-lasuite/ui-kit/style";
 @use "./cunningham-tokens.css";
-@use "./cunningham-tokens-sass" as *;
+@use "./cunningham-tokens.scss" as *;
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color:
+    var(--c--contextuals--border--semantic--neutral--secondary)
+    transparent;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--c--contextuals--border--semantic--neutral--tertiary);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--c--contextuals--border--semantic--neutral--secondary);
+  border-radius: 3px;
+
+  &:hover {
+    background-color: var(--c--contextuals--border--semantic--neutral--secondary-hover);
+  }
+}
+
+html[class*='cunningham-theme--'][class*='-dark'] {
+  .c__footer {
+    .c__footer__logo {
+      background: var(--c--globals--colors--gray-000); // Must be light mode for var(--c--contextuals--background--surface--primary);
+      padding: 10px;
+      border-radius: 12px;
+    }
+
+    a[target="_blank"] {
+      img {
+        filter: invert(100%);
+      }
+    }
+  }
+
+  .c__hero__display {
+    img {
+      background: var(--c--globals--colors--gray-000); // Must be light mode for var(--c--contextuals--background--surface--primary);
+      padding: 10px;
+      border-radius: 12px;
+    }
+  }
+}
 
 .c__header__left {
   // [WORKAROUND] Make sure the application name is not weirdly centered by the library MainLayout
@@ -11,6 +60,10 @@
 .c__left-panel__mobile {
   width: 100%;
   max-width: 400px;
+}
+
+.c__main-layout__header {
+  z-index: 1;
 }
 
 .c__main-layout__content__center__children {
@@ -51,6 +104,7 @@
 }
 
 .modal-button {
+  color: var(--c--contextuals--content--semantic--brand--primary);
   font-family: inherit;
   border-radius: 10px;
   height: 30px;
@@ -63,11 +117,11 @@
   cursor: pointer;
 
   &:hover {
-    background-color: var(--c--theme--colors--greyscale-100);
+    background-color: var(--c--contextuals--background--semantic--overlay--primary);
   }
 
   &:focus {
-    box-shadow: 0 0 0 2px var(--c--theme--colors--greyscale-100);
+    box-shadow: 0 0 0 2px var(--c--contextuals--background--semantic--overlay--primary);
     outline: none;
   }
 }
@@ -90,5 +144,104 @@
 
 .mdxeditor-toolbar {
   border-radius: 0;
-  background-color: var(--c--theme--colors--greyscale-100);
+  background-color: var(--c--contextuals--background--semantic--overlay--primary);
+
+  button[data-toolbar-item] {
+    &:hover {
+      background: var(--c--contextuals--background--semantic--neutral--secondary-hover) !important;
+    }
+
+    &[data-state="on"] {
+      background: var(--c--contextuals--background--semantic--neutral--secondary) !important;
+    }
+  }
+}
+
+.mdxeditor-root-contenteditable {
+  code, tt {
+    span {
+      background-color: var(--c--contextuals--background--semantic--neutral--secondary) !important;
+    }
+  }
+
+  blockquote {
+    padding: 0 1em;
+    color: var(--c--contextuals--content--semantic--neutral--tertiary);
+    border-left: .25em solid var(--c--contextuals--border--semantic--neutral--secondary);
+  }
+}
+
+.mdxeditor-select-content {
+  background: var(--c--components--modal--background-color);
+  color: var(--c--components--modal--color);
+
+  [role="option"] {
+    &[data-highlighted] {
+      background: var(--c--contextuals--background--semantic--overlay--primary);
+    }
+
+    &:hover {
+      background: var(--c--contextuals--background--semantic--overlay--primary-hover);
+    }
+  }
+}
+
+.mdxeditor-popup-container {
+  [role="dialog"] {
+    background: var(--c--components--modal--background-color);
+    color: var(--c--components--modal--color);
+
+    input {
+      border-radius: var(--c--components--forms-input--border-radius);
+      border-width: var(--c--components--forms-input--border-width);
+      border-color: var(--c--components--forms-input--border-color);
+      border-style: var(--c--components--forms-input--border-style);
+      background-color: var(--c--components--forms-input--background-color);
+    }
+
+    button {
+      cursor: pointer;
+
+      &[type="submit"] {
+        background-color: var(--c--contextuals--background--semantic--brand--primary);
+        color: var(--c--contextuals--content--semantic--brand--on-brand);
+      }
+
+      &[type="reset"] {
+        background-color: var(--c--contextuals--background--semantic--neutral--tertiary);
+        color: var(--c--contextuals--content--semantic--neutral--tertiary);
+      }
+
+      &:has(svg) {
+        color: var(--c--components--forms-input--color);
+        background-color: var(--c--components--forms-input--background-color);
+
+        &:hover {
+          background-color: var(--c--components--forms-input--background-color);
+        }
+      }
+    }
+  }
+}
+
+
+html[class*='cunningham-theme--'][class*='-dark'] {
+  .mdxeditor-toolbar {
+    svg {
+      filter: invert(100%);
+    }
+
+    button[role="combobox"] {
+      color: var(--c--contextuals--content--semantic--neutral--primary);
+      border-radius: var(--c--components--forms-input--border-radius);
+      border-width: var(--c--components--forms-input--border-width);
+      border-color: var(--c--components--forms-input--border-color);
+      border-style: var(--c--components--forms-input--border-style);
+      background-color: var(--c--components--forms-input--background-color);
+
+      &:hover {
+        background-color: var(--c--components--forms-input--background-color);
+      }
+    }
+  }
 }

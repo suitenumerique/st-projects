@@ -24,14 +24,21 @@ module.exports = {
   async fn(inputs, exits) {
     const { currentUser } = this.req;
 
-    const { attachment, card } = await sails.helpers.attachments
+    const { attachment, card, project } = await sails.helpers.attachments
       .getProjectPath(inputs.id)
       .intercept('pathNotFound', () => Errors.ATTACHMENT_NOT_FOUND);
 
     const isBoardMember = await sails.helpers.users.isBoardMember(currentUser.id, card.boardId);
 
     if (!isBoardMember) {
-      throw Errors.ATTACHMENT_NOT_FOUND;
+      const isProjectManager = await sails.helpers.users.isProjectManager(
+        currentUser.id,
+        project.id,
+      );
+
+      if (!isProjectManager) {
+        throw Errors.ATTACHMENT_NOT_FOUND; // Forbidden
+      }
     }
 
     const fileManager = sails.hooks['file-manager'].getInstance();

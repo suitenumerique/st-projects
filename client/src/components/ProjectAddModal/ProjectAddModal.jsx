@@ -1,7 +1,7 @@
 import React, { useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button, Input, Modal } from '@openfun/cunningham-react';
+import { Button, Input, Modal } from '@gouvfr-lasuite/cunningham-react';
 
 import { useForm } from '../../hooks';
 

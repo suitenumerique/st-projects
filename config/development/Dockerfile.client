@@ -15,10 +15,4 @@ COPY package.json package-lock.json .
 # Note: that's why adding a dependency needs something like `docker compose -f docker-compose-dev.yml up --build --renew-anon-volumes`
 COPY patches ./patches
 
-RUN npm install --legacy-peer-deps
-
-WORKDIR /app
-
-COPY ../../package.json ../../package-lock.json .
-
-RUN npm install --legacy-peer-deps
+RUN npm ci --legacy-peer-deps --no-audit --no-fund

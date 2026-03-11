@@ -19,6 +19,8 @@ server/views/*
 server/public/*
 !server/public/user-avatars
 server/public/user-avatars/*
+!server/public/project-background-images
+server/public/project-background-images/*
 
 server/private/*
 !server/private/attachments

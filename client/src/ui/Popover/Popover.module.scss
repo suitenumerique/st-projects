@@ -1,9 +1,11 @@
 :global(#app) {
   .popoverWrapper {
-    background: white;
-    border-radius: 4px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    border: 1px solid var(--c--theme--colors--greyscale-200);
+    background-color: var(--c--components--modal--background-color);
+    border-radius: var(--c--components--modal--border-radius);
+    border: 1px solid var(--c--contextuals--border--semantic--neutral--primary);
+    box-shadow: var(--c--components--modal--box-shadow);
+    color: var(--c--components--modal--color);
+    box-shadow: 0 10px 20px -5px var(--c--contextuals--background--semantic--overlay--primary), 0 6px 10px -5px var(--c--contextuals--background--semantic--overlay--primary);
     z-index: 50;
   }
 

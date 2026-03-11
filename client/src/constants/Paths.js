@@ -6,8 +6,6 @@ const OIDC_CALLBACK = `${Config.BASE_PATH}/oidc-callback`;
 const PROJECTS = `${Config.BASE_PATH}/projects/:id`;
 const BOARDS = `${Config.BASE_PATH}/boards/:id`;
 const CARDS = `${Config.BASE_PATH}/cards/:id`;
-const TEST_BOARD = `${Config.BASE_PATH}/test-board`;
-const NEW_BOARD = `${Config.BASE_PATH}/new-board`;
 
 export default {
   ROOT,
@@ -16,6 +14,4 @@ export default {
   PROJECTS,
   BOARDS,
   CARDS,
-  TEST_BOARD,
-  NEW_BOARD,
 };

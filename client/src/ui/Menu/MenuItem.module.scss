@@ -2,6 +2,7 @@
 
   .menuItem {
     background: transparent;
+    color: var(--c--components--modal--color);
     border: none;
     cursor: pointer;
     width: 100%;
@@ -15,7 +16,7 @@
     font-weight: 500;
 
     &:hover {
-      background: var(--c--theme--colors--greyscale-100);
+      background: var(--c--contextuals--background--semantic--overlay--primary);
     }
 
     &:focus {

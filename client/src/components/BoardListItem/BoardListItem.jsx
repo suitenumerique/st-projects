@@ -9,7 +9,7 @@ import styles from './BoardListItem.module.scss';
 import BoardActionsStep from '../../steps/BoardActionsStep';
 import usePopup from '../../lib/popup/use-popup';
 
-export default function BoardListItem({
+function BoardListItem({
   board,
   showDescription,
   editable,
@@ -102,3 +102,5 @@ BoardListItem.defaultProps = {
   onBoardUpdate: () => {},
   onBoardDelete: () => {},
 };
+
+export default React.memo(BoardListItem);
