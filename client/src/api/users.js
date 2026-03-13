@@ -15,7 +15,7 @@ const searchUsers = (query, excludeUserIds, headers) => {
   params.append('query', query);
 
   if (excludeUserIds && excludeUserIds.length > 0) {
-    excludeUserIds.forEach((id) => params.append('excludeUserIds[]', id));
+    excludeUserIds.forEach((id) => params.append('excludeUserIds', id));
   }
 
   return socket.get(`/users/search?${params.toString()}`, undefined, headers).then((body) => ({

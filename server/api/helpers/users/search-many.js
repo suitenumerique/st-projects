@@ -22,10 +22,8 @@ module.exports = {
     const resultsLimit = 5;
     const { query, currentUserId, excludeUserIds } = inputs;
 
-    // Current user should not be found in the search, also other that could be already considered out the search logic
-    const allExcludedUserIds = excludeUserIds
-      ? [currentUserId, ...excludeUserIds]
-      : [currentUserId];
+    // Not excluding the current user since he could view a board as project manager, while not being directly a member of it (needing to add himself)
+    const allExcludedUserIds = excludeUserIds || [];
 
     // First, try to find exact email match
     const exactEmailQuery = {
