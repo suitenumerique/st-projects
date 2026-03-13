@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { UserAvatar } from '@gouvfr-lasuite/ui-kit';
 
@@ -9,9 +9,39 @@ const SIZES = {
   LARGE: 'large',
 };
 
+const AVATAR_COLORS = [
+  'gray',
+  'brand',
+  'red',
+  'orange',
+  'brown',
+  'green',
+  'blue-1',
+  'blue-2',
+  'pink',
+  'yellow',
+  'purple',
+];
+
+const AVATAR_SHADES = ['primary', 'secondary']; // tertiary is too light
+
+const getAvatarColor = (name) => {
+  let hash = 0;
+  for (let i = 0; i < name.length; i += 1) {
+    hash = name.charCodeAt(i) + hash * 31;
+  }
+
+  const index = Math.abs(hash) % (AVATAR_COLORS.length * AVATAR_SHADES.length);
+  const color = AVATAR_COLORS[index % AVATAR_COLORS.length];
+  const shade = AVATAR_SHADES[Math.floor(index / AVATAR_COLORS.length)];
+
+  return `var(--c--contextuals--background--palette--${color}--${shade})`;
+};
+
 // eslint-disable-next-line no-unused-vars
 const User = React.memo(({ name, avatarUrl, size, isDisabled, onClick }) => {
-  const contentNode = <UserAvatar fullName={name} size={size} />;
+  const forceColor = useMemo(() => getAvatarColor(name), [name]);
+  const contentNode = <UserAvatar fullName={name} size={size} forceColor={forceColor} />;
 
   return onClick ? (
     <button type="button" disabled={isDisabled} onClick={onClick}>
