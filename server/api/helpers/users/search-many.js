@@ -54,13 +54,30 @@ module.exports = {
       userIdsInSameBoards = sameBoardMemberships.map((bm) => bm.userId);
     }
 
-    // Find all users in the same projects
+    // Find all users in the same projects (both managers and board members)
     let userIdsInSameProjects = [];
     if (currentUserProjectIds.length > 0) {
       const sameProjectManagements = await ProjectManager.find({
         projectId: currentUserProjectIds,
       });
-      userIdsInSameProjects = sameProjectManagements.map((pm) => pm.userId);
+
+      const boardsInProjects = await Board.find({
+        projectId: currentUserProjectIds,
+      }).select(['id']);
+      const boardIdsInProjects = boardsInProjects.map((b) => b.id);
+
+      let userIdsInProjectBoards = [];
+      if (boardIdsInProjects.length > 0) {
+        const projectBoardMemberships = await BoardMembership.find({
+          boardId: boardIdsInProjects,
+        });
+        userIdsInProjectBoards = projectBoardMemberships.map((bm) => bm.userId);
+      }
+
+      userIdsInSameProjects = [
+        ...sameProjectManagements.map((pm) => pm.userId),
+        ...userIdsInProjectBoards,
+      ];
     }
 
     // Combine all user IDs from shared contexts (excluding needed ones)
