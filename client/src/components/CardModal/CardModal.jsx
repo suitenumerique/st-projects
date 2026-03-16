@@ -433,7 +433,6 @@ const CardModal = React.memo(
                             <button type="button" className="bare-button">
                               <DueDate
                                 size="medium"
-                                withStatusIcon
                                 value={dueDate}
                                 isCompleted={isDueDateCompleted}
                                 onClick={() => {}}
@@ -442,12 +441,7 @@ const CardModal = React.memo(
                           </DueDateEditPopover>
                         </>
                       ) : (
-                        <DueDate
-                          size="medium"
-                          withStatusIcon
-                          value={dueDate}
-                          isCompleted={isDueDateCompleted}
-                        />
+                        <DueDate size="medium" value={dueDate} isCompleted={isDueDateCompleted} />
                       )}
                     </div>
                   </div>

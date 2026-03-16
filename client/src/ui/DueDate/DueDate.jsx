@@ -37,15 +37,12 @@ const FULL_DATE_FORMAT_BY_SIZE = {
 const STATUS_ICON_PROPS_BY_STATUS = {
   [STATUSES.DUE_SOON]: {
     name: 'warning',
-    color: 'var(--c--contextuals--border--semantic--warning--primary)',
   },
   [STATUSES.OVERDUE]: {
     name: 'hourglass_bottom',
-    color: 'var(--c--contextuals--border--semantic--error--primary)',
   },
   [STATUSES.COMPLETED]: {
     name: 'check_box',
-    color: 'var(--c--contextuals--border--semantic--success--primary)',
   },
 };
 
@@ -67,7 +64,7 @@ const getStatus = (dateTime, isCompleted) => {
   return null;
 };
 
-const DueDate = React.memo(({ value, size, isCompleted, isDisabled, withStatusIcon, onClick }) => {
+const DueDate = React.memo(({ value, size, isCompleted, isDisabled, onClick }) => {
   const [t] = useTranslation();
   const forceUpdate = useForceUpdate();
 
@@ -109,7 +106,7 @@ const DueDate = React.memo(({ value, size, isCompleted, isDisabled, withStatusIc
       className={classNames(
         styles.wrapper,
         styles[`wrapper${upperFirst(size)}`],
-        !withStatusIcon && statusRef.current && styles[`wrapper${upperFirst(statusRef.current)}`],
+        statusRef.current && styles[`wrapper${upperFirst(statusRef.current)}`],
         onClick && styles.wrapperHoverable,
       )}
     >
@@ -117,7 +114,7 @@ const DueDate = React.memo(({ value, size, isCompleted, isDisabled, withStatusIc
         value,
         postProcess: 'formatDate',
       })}
-      {withStatusIcon && statusRef.current && (
+      {statusRef.current && (
         <Icon
           size="small"
           type="outlined"
@@ -143,17 +140,13 @@ DueDate.propTypes = {
   size: PropTypes.oneOf(Object.values(SIZES)),
   isCompleted: PropTypes.bool.isRequired,
   isDisabled: PropTypes.bool,
-  withStatusIcon: PropTypes.bool,
   onClick: PropTypes.func,
-  onCompletionToggle: PropTypes.func,
 };
 
 DueDate.defaultProps = {
   size: SIZES.MEDIUM,
   isDisabled: false,
-  withStatusIcon: false,
   onClick: undefined,
-  onCompletionToggle: undefined,
 };
 
 export default DueDate;
