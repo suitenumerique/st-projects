@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { Modal, Button, Checkbox, Tooltip } from '@gouvfr-lasuite/cunningham-react';
+import { Modal, Button, Checkbox } from '@gouvfr-lasuite/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 
 import usePopup from '../../lib/popup';
@@ -15,6 +15,7 @@ import AttachmentAddZone from './AttachmentAddZone';
 import Activities from './Activities';
 import User from '../../ui/User';
 import Label from '../../ui/Label';
+import Tooltip from '../../ui/Tooltip/Tooltip';
 import DueDate from '../../ui/DueDate';
 import Stopwatch from '../../ui/Stopwatch';
 import BoardMembershipsStep from '../../steps/BoardMembershipsStep';
@@ -231,7 +232,7 @@ const CardModal = React.memo(
           <div className={styles.cardModalHeaderRight}>
             {window.isSecureContext && (
               <button type="button" className="modal-button" onClick={handleCopyLinkClick}>
-                <Tooltip placement="bottom" content={t('action.copyLink', { context: 'title' })}>
+                <Tooltip placement="top" content={t('action.copyLink', { context: 'title' })}>
                   <Icon name={isLinkCopied ? 'check' : 'link'} size="medium" />
                 </Tooltip>
               </button>
@@ -384,11 +385,21 @@ const CardModal = React.memo(
                               onUserDeselect={onUserRemove}
                             >
                               <button type="button" className="bare-button">
-                                <User name={user.name} size="medium" avatarUrl={user.avatarUrl} />
+                                <User
+                                  name={user.name}
+                                  size="medium"
+                                  avatarUrl={user.avatarUrl}
+                                  showTooltip
+                                />
                               </button>
                             </BoardMembershipsPopover>
                           ) : (
-                            <User name={user.name} size="medium" avatarUrl={user.avatarUrl} />
+                            <User
+                              name={user.name}
+                              size="medium"
+                              avatarUrl={user.avatarUrl}
+                              showTooltip
+                            />
                           )}
                         </span>
                       ))}

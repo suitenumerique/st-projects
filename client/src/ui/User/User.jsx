@@ -2,6 +2,8 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { UserAvatar } from '@gouvfr-lasuite/ui-kit';
 
+import Tooltip from '../Tooltip/Tooltip';
+
 const SIZES = {
   XSMALL: 'xsmall',
   SMALL: 'small',
@@ -39,9 +41,17 @@ const getAvatarColor = (name) => {
 };
 
 // eslint-disable-next-line no-unused-vars
-const User = React.memo(({ name, avatarUrl, size, isDisabled, onClick }) => {
+const User = React.memo(({ name, avatarUrl, size, isDisabled, onClick, showTooltip }) => {
   const forceColor = useMemo(() => getAvatarColor(name), [name]);
-  const contentNode = <UserAvatar fullName={name} size={size} forceColor={forceColor} />;
+  const avatarNode = <UserAvatar fullName={name} size={size} forceColor={forceColor} />;
+
+  const contentNode = showTooltip ? (
+    <Tooltip placement="top" content={name}>
+      {avatarNode}
+    </Tooltip>
+  ) : (
+    avatarNode
+  );
 
   return onClick ? (
     <button type="button" disabled={isDisabled} onClick={onClick}>
@@ -58,6 +68,7 @@ User.propTypes = {
   size: PropTypes.oneOf(Object.values(SIZES)),
   isDisabled: PropTypes.bool,
   onClick: PropTypes.func,
+  showTooltip: PropTypes.bool,
 };
 
 User.defaultProps = {
@@ -65,6 +76,7 @@ User.defaultProps = {
   size: SIZES.MEDIUM,
   isDisabled: false,
   onClick: undefined,
+  showTooltip: false,
 };
 
 export default User;

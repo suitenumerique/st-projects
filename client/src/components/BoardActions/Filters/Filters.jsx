@@ -91,7 +91,13 @@ const Filters = React.memo(
                 </div>
               )}
               {filterUsers.map((user) => (
-                <User key={user.id} name={user.name} avatarUrl={user.avatarUrl} size="small" />
+                <User
+                  key={user.id}
+                  name={user.name}
+                  avatarUrl={user.avatarUrl}
+                  size="small"
+                  showTooltip
+                />
               ))}
             </Button>
           </BoardMembershipsPopover>

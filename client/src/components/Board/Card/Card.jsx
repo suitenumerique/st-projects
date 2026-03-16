@@ -147,7 +147,13 @@ function Card({
             {users.length > 0 && (
               <div className={classNames(styles.cardInfo, styles.cardUsers)}>
                 {users.map((user) => (
-                  <User key={user.id} name={user.name} avatarUrl={user.avatarUrl} size="small" />
+                  <User
+                    key={user.id}
+                    name={user.name}
+                    avatarUrl={user.avatarUrl}
+                    size="small"
+                    showTooltip
+                  />
                 ))}
               </div>
             )}
