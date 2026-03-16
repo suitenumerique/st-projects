@@ -22,10 +22,13 @@ const http = {};
       credentials: 'include',
     })
       .then((response) =>
-        response.json().then((body) => ({
-          body,
-          isError: response.status !== 200,
-        })),
+        response
+          .json()
+          .catch(() => ({ message: response.statusText || `Error ${response.status}` }))
+          .then((body) => ({
+            body,
+            isError: response.status !== 200,
+          })),
       )
       .then(({ body, isError }) => {
         if (isError) {

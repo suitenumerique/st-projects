@@ -1,8 +1,8 @@
-import React, { useCallback, useRef, useState, useMemo } from 'react';
+import React, { useCallback, useEffect, useRef, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { Modal, Button, Checkbox } from '@gouvfr-lasuite/cunningham-react';
+import { Modal, Button, Checkbox, useToastProvider } from '@gouvfr-lasuite/cunningham-react';
 import { Icon } from '@gouvfr-lasuite/ui-kit';
 
 import usePopup from '../../lib/popup';
@@ -81,8 +81,10 @@ const CardModal = React.memo(
     onCommentActivityUpdate,
     onCommentActivityDelete,
     onClose,
+    attachmentError,
   }) => {
     const [t] = useTranslation();
+    const { toast } = useToastProvider();
     const [currentListName, setCurrentListName] = useState();
     const [isLinkCopied, setIsLinkCopied] = useState(false);
 
@@ -101,6 +103,12 @@ const CardModal = React.memo(
     useMemo(() => {
       setCurrentListName(lists.find((list) => list.id === listId)?.name || null);
     }, [lists, listId]);
+
+    useEffect(() => {
+      if (attachmentError) {
+        toast(attachmentError, 'error');
+      }
+    }, [attachmentError]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const handleCopyLinkClick = useCallback(() => {
       navigator.clipboard.writeText(window.location.href);
@@ -657,6 +665,7 @@ CardModal.propTypes = {
   onCommentActivityUpdate: PropTypes.func.isRequired,
   onCommentActivityDelete: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
+  attachmentError: PropTypes.string,
 };
 
 CardModal.defaultProps = {
@@ -664,6 +673,7 @@ CardModal.defaultProps = {
   dueDate: undefined,
   isDueDateCompleted: false,
   stopwatch: undefined,
+  attachmentError: null,
 };
 
 export default CardModal;

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
-import { ModalProvider } from '@gouvfr-lasuite/cunningham-react';
+import { ModalProvider, ToastProvider } from '@gouvfr-lasuite/cunningham-react';
 import { CunninghamProvider } from '@gouvfr-lasuite/ui-kit';
 import { ReduxRouter } from '../lib/redux-router';
 import i18n from '../i18n';
@@ -35,19 +35,21 @@ function Root({ store, history }) {
     <Provider store={store}>
       <ThemeProvider>
         <ThemedApp>
-          <ModalProvider>
-            <ReduxRouter history={history}>
-              <Routes>
-                <Route path={Paths.LOGIN} element={<LoginWrapperContainer />} />
-                <Route path={Paths.OIDC_CALLBACK} element={<LoginWrapperContainer />} />
-                <Route path={Paths.ROOT} element={<CoreContainer />} />
-                <Route path={Paths.PROJECTS} element={<CoreContainer />} />
-                <Route path={Paths.BOARDS} element={<CoreContainer />} />
-                <Route path={Paths.CARDS} element={<CoreContainer />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </ReduxRouter>
-          </ModalProvider>
+          <ToastProvider>
+            <ModalProvider>
+              <ReduxRouter history={history}>
+                <Routes>
+                  <Route path={Paths.LOGIN} element={<LoginWrapperContainer />} />
+                  <Route path={Paths.OIDC_CALLBACK} element={<LoginWrapperContainer />} />
+                  <Route path={Paths.ROOT} element={<CoreContainer />} />
+                  <Route path={Paths.PROJECTS} element={<CoreContainer />} />
+                  <Route path={Paths.BOARDS} element={<CoreContainer />} />
+                  <Route path={Paths.CARDS} element={<CoreContainer />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </ReduxRouter>
+            </ModalProvider>
+          </ToastProvider>
         </ThemedApp>
       </ThemeProvider>
     </Provider>

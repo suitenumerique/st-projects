@@ -73,6 +73,7 @@ const mapStateToProps = (state) => {
     canEdit: isCurrentUserEditor,
     canEditCommentActivities: isCurrentUserEditorOrCanComment,
     canEditAllCommentActivities: isCurrentUserManager,
+    attachmentError: state.ui.attachmentError,
   };
 };
 
