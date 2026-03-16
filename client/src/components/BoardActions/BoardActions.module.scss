@@ -10,6 +10,19 @@
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .warning {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    background-color: var(--c--contextuals--background--semantic--warning--secondary);
+    color: var(--c--contextuals--content--semantic--warning--secondary);
   }
 
   .boardName {

@@ -44,6 +44,11 @@ const mapStateToProps = (state) => {
     canEdit: isCurrentUserEditor,
     canEditMemberships: isCurrentUserEditor || isCurrentUserManager,
     canSeeMemberships: isCurrentUserMember || isCurrentUserManager,
+    isProjectManagerNotMember: isCurrentUserManager && !isCurrentUserMember,
+    isViewerOnly:
+      isCurrentUserMember &&
+      !isCurrentUserEditor &&
+      currentUserMembership.role === BoardMembershipRoles.VIEWER,
     isBoardPublic: currentBoard ? currentBoard.isPublic : false,
     searchedUsers,
     isSearchingUsers,

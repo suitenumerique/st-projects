@@ -43,6 +43,8 @@ const BoardActions = React.memo(
     onBoardUpdate,
     onSearchUsers,
     onClearUserSearch,
+    isProjectManagerNotMember,
+    isViewerOnly,
   }) => {
     const [t] = useTranslation();
 
@@ -112,8 +114,21 @@ const BoardActions = React.memo(
       }
     }, [filterLabels, onLabelToFilterAdd]);
 
+    let warningMessage = null;
+    if (isProjectManagerNotMember) {
+      warningMessage = t('common.boardWarningProjectManagerNotMember');
+    } else if (isViewerOnly) {
+      warningMessage = t('common.boardWarningViewerOnly');
+    }
+
     return (
       <div className={styles.wrapper}>
+        {warningMessage && (
+          <div className={styles.warning}>
+            <Icon name="info" type="outlined" size="small" />
+            <span>{warningMessage}</span>
+          </div>
+        )}
         <h4 className={styles.boardName}>{currentBoardName}</h4>
         <div className={styles.actions}>
           <div className={styles.action}>
@@ -293,6 +308,8 @@ BoardActions.propTypes = {
   onBoardUpdate: PropTypes.func.isRequired,
   onSearchUsers: PropTypes.func.isRequired,
   onClearUserSearch: PropTypes.func.isRequired,
+  isProjectManagerNotMember: PropTypes.bool.isRequired,
+  isViewerOnly: PropTypes.bool.isRequired,
 };
 
 export default BoardActions;

@@ -50,6 +50,9 @@ export default {
       boardName: 'Nom du tableau',
       boardNotFound_title: 'Carte non trouvée',
       boardPermissions_title: 'Permissions du tableau',
+      boardWarningProjectManagerNotMember:
+        "Vous consultez ce tableau en tant que gestionnaire de projet. Vous n'êtes pas membre et avez des interactions limitées.",
+      boardWarningViewerOnly: 'Vous avez un accès en lecture seule à ce tableau.',
       canComment: 'Peut commenter',
       canEditContentOfBoard: 'Peut éditer le contenu du tableau',
       canOnlyViewBoard: 'Peut uniquement voir le tableau',
@@ -115,7 +118,8 @@ export default {
       hours: 'Heures',
       importBoard_title: 'Importer un tableau',
       internalBoardWorkspace: 'Espace interne',
-      internalBoardWorkspaceDescription: 'Tableaux dont les membres sont uniquement des gestionnaires du projet',
+      internalBoardWorkspaceDescription:
+        'Tableaux dont les membres sont uniquement des gestionnaires du projet',
       invalidCurrentPassword: 'Mot de passe actuel invalide',
       labels: 'Étiquettes',
       language: 'Langue',

@@ -45,6 +45,9 @@ export default {
       boardName: 'Board name',
       boardNotFound_title: 'Board Not Found',
       boardPermissions_title: 'Board permissions',
+      boardWarningProjectManagerNotMember:
+        'You are viewing this board as a project manager. You are not a member and have limited interactions.',
+      boardWarningViewerOnly: 'You have read-only access to this board.',
       canComment: 'Can comment',
       canEditContentOfBoard: 'Can edit the content of the board.',
       canOnlyViewBoard: 'Can only view the board.',
@@ -168,7 +171,8 @@ export default {
       settings: 'Settings',
       setupReady: 'Everything is ready {{userName}}!',
       sharedBoardWorkspace: 'Shared workspace',
-      sharedBoardWorkspaceDescription: 'Boards with at least one member who is not a project manager',
+      sharedBoardWorkspaceDescription:
+        'Boards with at least one member who is not a project manager',
       sortList_title: 'Sort List',
       startByCreatingProject: 'You can now <1>Create project</1>',
       stopwatch: 'Stopwatch',
