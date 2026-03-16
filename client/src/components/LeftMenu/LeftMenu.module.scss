@@ -69,6 +69,13 @@
         display: flex;
         align-items: center;
         justify-content: flex-start;
+        gap: 4px;
+      }
+
+      .spaceTitleIcon {
+        display: flex;
+        color: var(--c--contextuals--content--semantic--neutral--tertiary);
+        cursor: help;
       }
     }
   }

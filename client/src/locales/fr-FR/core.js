@@ -115,6 +115,7 @@ export default {
       hours: 'Heures',
       importBoard_title: 'Importer un tableau',
       internalBoardWorkspace: 'Espace interne',
+      internalBoardWorkspaceDescription: 'Tableaux dont les membres sont uniquement des gestionnaires du projet',
       invalidCurrentPassword: 'Mot de passe actuel invalide',
       labels: 'Étiquettes',
       language: 'Langue',
@@ -172,6 +173,8 @@ export default {
       settings: 'Réglages',
       setupReady: 'Tout est prêt {{userName}} !',
       sharedBoardWorkspace: 'Espace partagé',
+      sharedBoardWorkspaceDescription:
+        "Tableaux avec au moins un membre qui n'est pas gestionnaire du projet",
       sortList_title: 'Trier la liste',
       startByCreatingProject: 'Vous pouvez dès à présent <1>Créer un projet</1>',
       stopwatch: 'Minuteur',

@@ -7,6 +7,7 @@ import { Icon } from '@gouvfr-lasuite/ui-kit';
 import usePopup from '../../lib/popup/use-popup';
 import BoardListItemContainer from '../../containers/BoardListItemContainer';
 import BoardCreateStep from '../../steps/BoardCreateStep';
+import Tooltip from '../../ui/Tooltip/Tooltip';
 import styles from './LeftMenu.module.scss';
 import { push } from '../../lib/redux-router';
 import Paths from '../../constants/Paths';
@@ -106,7 +107,12 @@ const LeftMenu = React.memo(
         </div>
         <div className={styles.spaces}>
           <div className={styles.space}>
-            <p className={styles.spaceTitle}>{t('common.internalBoardWorkspace')}</p>
+            <p className={styles.spaceTitle}>
+              {t('common.internalBoardWorkspace')}
+              <Tooltip placement="right" content={t('common.internalBoardWorkspaceDescription')}>
+                <Icon name="info" type="outlined" size="small" className={styles.spaceTitleIcon} />
+              </Tooltip>
+            </p>
             {privateBoards.length === 0 ? (
               <p className={styles.emptySpace}>{t('common.noBoards')}</p>
             ) : (
@@ -125,7 +131,12 @@ const LeftMenu = React.memo(
             )}
           </div>
           <div className={styles.space}>
-            <p className={styles.spaceTitle}>{t('common.sharedBoardWorkspace')}</p>
+            <p className={styles.spaceTitle}>
+              {t('common.sharedBoardWorkspace')}
+              <Tooltip placement="right" content={t('common.sharedBoardWorkspaceDescription')}>
+                <Icon name="info" type="outlined" size="small" className={styles.spaceTitleIcon} />
+              </Tooltip>
+            </p>
             {sharedBoards.length === 0 ? (
               <p className={styles.emptySpace}>{t('common.noBoards')}</p>
             ) : (

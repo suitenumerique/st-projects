@@ -62,6 +62,15 @@ const Tooltip = React.memo(({ content, placement, children }) => {
       } else if (overflowLeft > 0) {
         offset = overflowLeft;
       }
+    } else {
+      const overflowBottom = tooltipRect.bottom - (window.innerHeight - VIEWPORT_PADDING);
+      const overflowTop = VIEWPORT_PADDING - tooltipRect.top;
+
+      if (overflowBottom > 0) {
+        offset = -overflowBottom;
+      } else if (overflowTop > 0) {
+        offset = overflowTop;
+      }
     }
 
     setShift(offset);
@@ -102,11 +111,13 @@ const Tooltip = React.memo(({ content, placement, children }) => {
 
   const anchor = getAnchorPosition();
   const isHorizontal = placement === 'top' || placement === 'bottom';
-  const arrowStyle = isHorizontal ? { left: `calc(50% - ${shift}px)` } : {};
+  const arrowStyle = isHorizontal
+    ? { left: `calc(50% - ${shift}px)` }
+    : { top: `calc(50% - ${shift}px)` };
 
   const tooltipStyle = {
-    top: anchor.top,
-    left: anchor.left + shift,
+    top: anchor.top + (isHorizontal ? 0 : shift),
+    left: anchor.left + (isHorizontal ? shift : 0),
     visibility: isPositioned ? 'visible' : 'hidden',
   };
 
