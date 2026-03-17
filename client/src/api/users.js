@@ -11,14 +11,13 @@ export const transformUser = (user) => ({
 /* Actions */
 
 const searchUsers = (query, excludeUserIds, headers) => {
-  const params = new URLSearchParams();
-  params.append('query', query);
+  const data = { query };
 
   if (excludeUserIds && excludeUserIds.length > 0) {
-    excludeUserIds.forEach((id) => params.append('excludeUserIds', id));
+    data.excludeUserIds = excludeUserIds;
   }
 
-  return socket.get(`/users/search?${params.toString()}`, undefined, headers).then((body) => ({
+  return socket.get('/users/search', data, headers).then((body) => ({
     ...body,
     items: body.items.map(transformUser),
   }));
