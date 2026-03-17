@@ -44,6 +44,9 @@ export default {
         'Êtes-vous sûr de vouloir supprimer ce membre du projet ?',
       attachment: 'Pièce jointe',
       attachments: 'Pièces jointes',
+      attachmentTooLarge: 'La pièce jointe est trop lourde.',
+      attachmentUploadError:
+        "Une erreur inattendue est survenue lors de l'envoi de la pièce jointe.",
       authentication: 'Authentification',
       background: 'Arrière-plan',
       board: 'Tableau',

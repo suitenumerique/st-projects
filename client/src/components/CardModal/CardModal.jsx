@@ -106,7 +106,11 @@ const CardModal = React.memo(
 
     useEffect(() => {
       if (attachmentError) {
-        toast(attachmentError, 'error');
+        const message =
+          String(attachmentError) === '413'
+            ? t('common.attachmentTooLarge')
+            : t('common.attachmentUploadError');
+        toast(message, 'error');
       }
     }, [attachmentError]); // eslint-disable-line react-hooks/exhaustive-deps
 

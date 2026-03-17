@@ -39,6 +39,8 @@ export default {
         'Are you sure you want to remove this member from the board?',
       attachment: 'Attachment',
       attachments: 'Attachments',
+      attachmentTooLarge: 'The attachment is too large to upload.',
+      attachmentUploadError: 'An unexpected error occurred while uploading the attachment.',
       authentication: 'Authentication',
       background: 'Background',
       board: 'Board',

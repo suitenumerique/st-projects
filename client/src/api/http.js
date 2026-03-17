@@ -24,7 +24,9 @@ const http = {};
       .then((response) =>
         response
           .json()
-          .catch(() => ({ message: response.statusText || `Error ${response.status}` }))
+          .catch(() => ({
+            code: response.status,
+          }))
           .then((body) => ({
             body,
             isError: response.status !== 200,
