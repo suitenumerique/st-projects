@@ -17,6 +17,8 @@ module.exports = {
     missingValues: {},
     emailAlreadyInUse: {},
     usernameAlreadyInUse: {},
+    accessNotAllowed: {},
+    oidcInvalidSiret: {},
   },
 
   async fn(inputs) {
@@ -119,6 +121,17 @@ module.exports = {
     if (claims.siret) {
       values.siret = claims.siret;
     }
+
+    await sails.helpers.utils.checkEntitlements
+      .with({
+        email: values.email,
+        siret: claims.siret,
+        sub: claims.sub,
+        idpId: claims.idp_id,
+      })
+      .tolerate('notConfigured')
+      .intercept('accessDenied', 'accessNotAllowed')
+      .intercept('oidcInvalidSiret', 'oidcInvalidSiret');
 
     let user;
     // This whole block technically needs to be executed in a transaction

@@ -92,4 +92,7 @@ module.exports.custom = {
 
   reactAppLagaufreWidgetApiUrl: process.env.REACT_APP_LAGAUFRE_WIDGET_API_URL,
   reactAppLagaufreWidgetPath: process.env.REACT_APP_LAGAUFRE_WIDGET_PATH,
+
+  entitlementsApiKey: process.env.ENTITLEMENTS_API_KEY,
+  entitlementsServiceId: process.env.ENTITLEMENTS_SERVICE_ID,
 };

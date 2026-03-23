@@ -21,6 +21,12 @@ const Errors = {
   MISSING_VALUES: {
     missingValues: 'Unable to retrieve required values',
   },
+  ACCESS_NOT_ALLOWED: {
+    accessNotAllowed: 'Access not allowed for this organization',
+  },
+  OIDC_INVALID_SIRET: {
+    oidcInvalidSiret: 'SIRET validation failed for this identity provider',
+  },
 };
 
 module.exports = {
@@ -58,6 +64,12 @@ module.exports = {
     missingValues: {
       responseType: 'unprocessableEntity',
     },
+    accessNotAllowed: {
+      responseType: 'forbidden',
+    },
+    oidcInvalidSiret: {
+      responseType: 'forbidden',
+    },
   },
 
   async fn(inputs) {
@@ -79,7 +91,9 @@ module.exports = {
       .intercept('invalidUserinfoConfiguration', () => Errors.INVALID_USERINFO_CONFIGURATION)
       .intercept('emailAlreadyInUse', () => Errors.EMAIL_ALREADY_IN_USE)
       .intercept('usernameAlreadyInUse', () => Errors.USERNAME_ALREADY_IN_USE)
-      .intercept('missingValues', () => Errors.MISSING_VALUES);
+      .intercept('missingValues', () => Errors.MISSING_VALUES)
+      .intercept('accessNotAllowed', () => Errors.ACCESS_NOT_ALLOWED)
+      .intercept('oidcInvalidSiret', () => Errors.OIDC_INVALID_SIRET);
 
     const { token: accessToken, payload: accessTokenPayload } = sails.helpers.utils.createJwtToken(
       user.id,
