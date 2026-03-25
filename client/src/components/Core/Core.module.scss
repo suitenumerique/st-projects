@@ -118,15 +118,4 @@
     }
   }
 
-  .overSm {
-    @media (max-width: 575px) {
-      display: none !important;
-    }
-  }
-
-  .onlySm {
-    @media (min-width: 576px) {
-      display: none !important;
-    }
-  }
 }

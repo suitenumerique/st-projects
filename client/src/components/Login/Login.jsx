@@ -119,7 +119,6 @@ const Login = React.memo(({ theme, onAuthenticateUsingOidc }) => {
                 ) : (
                   <Logo />
                 )}
-                <span className={styles.overSm}>BETA</span>
               </div>
             </Link>
             <Feedback items={localeTheme.feedback.items} />

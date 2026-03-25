@@ -44,6 +44,8 @@ const Core = React.memo(
 
       const languageWithoutRegion = i18n.language.split(/[-_]/)[0];
 
+      console.log('theme', theme);
+
       return {
         headerLogo: theme.header?.[languageWithoutRegion]?.logo ?? theme.header?.default.logo,
         feedbackItems:
@@ -51,6 +53,17 @@ const Core = React.memo(
         feedbackWidget: theme.feedbackWidget,
       };
     }, [theme, i18n.language]);
+
+    useEffect(() => {
+      if (!theme?.favicon) return;
+
+      const { src, darkSrc } = theme.favicon;
+
+      document.querySelectorAll('link[rel="icon"]').forEach((link) => {
+        const isDark = link.getAttribute('media')?.includes('dark');
+        link.setAttribute('href', isDark && darkSrc ? darkSrc : src);
+      });
+    }, [theme]);
 
     useEffect(() => {
       let title;
@@ -98,7 +111,6 @@ const Core = React.memo(
                     ) : (
                       <Logo />
                     )}
-                    <span className={styles.overSm}>BETA</span>
                   </div>
                 </Link>
                 <Feedback items={feedbackItems} />
@@ -155,7 +167,6 @@ const Core = React.memo(
                       ) : (
                         <Logo />
                       )}
-                      <span className={styles.overSm}>BETA</span>
                     </div>
                   </Link>
                   <Feedback items={feedbackItems} />

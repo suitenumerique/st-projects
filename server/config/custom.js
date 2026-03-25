@@ -21,7 +21,7 @@ const ThemeLinkSchema = z.object({
   href: z.string().min(1),
 });
 
-const HeaderThemeSchema = z.object({
+const LocaleThemeHeaderSchema = z.object({
   logo: z
     .object({
       src: z.string().min(1),
@@ -30,6 +30,12 @@ const HeaderThemeSchema = z.object({
       alt: z.string(),
     })
     .optional(),
+});
+
+const HeaderThemeSchema = z.object({
+  default: LocaleThemeHeaderSchema,
+  fr: LocaleThemeHeaderSchema.optional(),
+  en: LocaleThemeHeaderSchema.optional(),
 });
 
 const LocaleThemeFooterSchema = z.object({
@@ -64,7 +70,13 @@ const LocaleThemeFeedbackSchema = z.object({
     .optional(),
 });
 
+const FaviconThemeSchema = z.object({
+  src: z.string().min(1),
+  darkSrc: z.string().min(1).optional(),
+});
+
 const ThemeSchema = z.object({
+  favicon: FaviconThemeSchema.optional(),
   header: HeaderThemeSchema.optional(),
   footer: z
     .object({
