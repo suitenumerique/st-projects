@@ -1,5 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 const STORAGE_KEY = 'theme';
 const { THEME_PREFIX } = window;
@@ -38,6 +39,7 @@ function resolveTheme(theme) {
 }
 
 export function ThemeProvider({ children }) {
+  const disableDarkMode = useSelector((state) => state.root?.config?.theme?.disableDarkMode);
   const [theme, setThemeState] = useState(getStoredTheme);
   const [resolvedTheme, setResolvedTheme] = useState(() => resolveTheme(theme));
 
@@ -51,6 +53,10 @@ export function ThemeProvider({ children }) {
   }, []);
 
   useEffect(() => {
+    if (disableDarkMode) {
+      setResolvedTheme(withPrefix(LIGHT));
+      return undefined;
+    }
     setResolvedTheme(resolveTheme(theme));
 
     if (theme !== SYSTEM) {
@@ -68,7 +74,7 @@ export function ThemeProvider({ children }) {
     return () => {
       mediaQuery.removeEventListener('change', handler);
     };
-  }, [theme]);
+  }, [theme, disableDarkMode]);
 
   const value = useMemo(
     () => ({ theme, resolvedTheme, setTheme }),

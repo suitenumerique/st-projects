@@ -3,6 +3,7 @@ const path = require('path');
 
 const BASE_URL_PLACEHOLDER = 'BASE_URL_PLACEHOLDER';
 const THEME_PREFIX_PLACEHOLDER = 'THEME_PREFIX_PLACEHOLDER';
+const DISABLE_DARK_MODE_PLACEHOLDER = 'DISABLE_DARK_MODE_PLACEHOLDER';
 
 const replaceInFile = (file, ...pairs) => {
   fs.readFile(file, 'utf8', (readError, data) => {
@@ -29,8 +30,9 @@ const replacePlaceholders = (compiler) => {
   compiler.hooks.assetEmitted.tap('ReplacePlaceholders', (file, info) => {
     const hasBaseUrl = info.content.indexOf(BASE_URL_PLACEHOLDER) >= 0;
     const hasThemePrefix = info.content.indexOf(THEME_PREFIX_PLACEHOLDER) >= 0;
+    const hasDisableDarkMode = info.content.indexOf(DISABLE_DARK_MODE_PLACEHOLDER) >= 0;
 
-    if (!hasBaseUrl && !hasThemePrefix) {
+    if (!hasBaseUrl && !hasThemePrefix && !hasDisableDarkMode) {
       return;
     }
 

@@ -77,6 +77,7 @@ const FaviconThemeSchema = z.object({
 
 const ThemeSchema = z.object({
   favicon: FaviconThemeSchema.optional(),
+  disableDarkMode: z.boolean().optional(),
   header: HeaderThemeSchema.optional(),
   footer: z
     .object({
