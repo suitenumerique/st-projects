@@ -159,6 +159,7 @@ export const selectPrivateBoardsForCurrentUser = createSelector(
           (memberships.length === 0 ||
             memberships.every(
               (membership) =>
+                membership.userId === currentUserId ||
                 projectManagers.findIndex((manager) => manager.userId === membership.userId) !== -1,
             ))
         );
@@ -199,6 +200,7 @@ export const selectSharedBoardsForCurrentUser = createSelector(
           (memberships.length > 0 &&
             memberships.some(
               (membership) =>
+                membership.userId !== currentUserId &&
                 projectManagers.findIndex((manager) => manager.userId === membership.userId) === -1,
             ))
         );

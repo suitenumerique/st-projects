@@ -42,7 +42,7 @@ export const selectCurrentUser = createSelector(
 export const selectProjectsForCurrentUser = createSelector(
   orm,
   (state) => selectCurrentUserId(state),
-  ({ User }, id) => {
+  ({ User, Project }, id) => {
     if (!id) {
       return id;
     }
@@ -53,7 +53,18 @@ export const selectProjectsForCurrentUser = createSelector(
       return userModel;
     }
 
-    return userModel.getOrderedAvailableProjectsModelArray().map((projectModel) => {
+    const projectModels = userModel.getOrderedAvailableProjectsModelArray();
+
+    if (userModel.organizationId) {
+      const orgProject = Project.all()
+        .toModelArray()
+        .find((p) => p.organizationId === userModel.organizationId);
+      if (orgProject && !projectModels.some((p) => p.id === orgProject.id)) {
+        projectModels.push(orgProject);
+      }
+    }
+
+    return projectModels.map((projectModel) => {
       const boardsModels = projectModel.getOrderedBoardsModelArrayAvailableForUser(userModel.id);
 
       let notificationsTotal = 0;
@@ -139,49 +150,6 @@ export const selectUserDefaultProject = createSelector(
   },
 );
 
-export const selectPrivateBoardsForCurrentUser = createSelector(
-  orm,
-  (state) => selectCurrentUserId(state),
-  ({ Board }, currentUserId) => {
-    const privateBoards = Board.all()
-      .toRefArray()
-      .filter((board) => {
-        const boardModel = Board.withId(board.id);
-        const membershipCount = boardModel.getMembershipsCount();
-        const memberships = boardModel.getOrderedMembershipsModelArray();
-        return (
-          !board.isPublic &&
-          membershipCount === 1 &&
-          memberships.length === 1 &&
-          memberships[0].user.id === currentUserId
-        );
-      });
-
-    return privateBoards;
-  },
-);
-
-export const selectSharedBoardsForCurrentUser = createSelector(
-  orm,
-  (state) => selectCurrentUserId(state),
-  ({ Board }, currentUserId) => {
-    const sharedBoards = Board.all()
-      .toRefArray()
-      .filter((board) => {
-        const boardModel = Board.withId(board.id);
-        const membershipCount = boardModel.getMembershipsCount();
-        const memberships = boardModel.getOrderedMembershipsModelArray();
-        return (
-          board.isPublic ||
-          (membershipCount > 1 &&
-            memberships.some((membership) => membership.user.id === currentUserId))
-        );
-      });
-
-    return sharedBoards;
-  },
-);
-
 export const selectEditableBoardsForCurrentUser = createSelector(
   orm,
   (state) => selectCurrentUserId(state),
@@ -226,8 +194,6 @@ export default {
   selectProjectsToListsForCurrentUser,
   selectNotificationsForCurrentUser,
   selectUserDefaultProject,
-  selectPrivateBoardsForCurrentUser,
-  selectSharedBoardsForCurrentUser,
   selectEditableBoardsForCurrentUser,
   selectSearchedUsers,
   selectIsSearchingUsers,

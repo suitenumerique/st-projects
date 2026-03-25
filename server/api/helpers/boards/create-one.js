@@ -3,10 +3,6 @@ const valuesValidator = (value) => {
     return false;
   }
 
-  if (!_.isFinite(value.position)) {
-    return false;
-  }
-
   if (!_.isPlainObject(value.project)) {
     return false;
   }
