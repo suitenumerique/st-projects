@@ -255,6 +255,7 @@ export default {
       leaveProject: 'Leave project',
       logOut_title: 'Log Out',
       makeCover_title: 'Make Cover',
+      markAllAsRead: 'Mark all as read',
       move: 'Move',
       moveCard_title: 'Move Card',
       newBoard: 'New board',

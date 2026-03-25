@@ -20,7 +20,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      onNotificationDelete: entryActions.deleteNotification,
+      onNotificationMarkAsRead: entryActions.deleteNotification,
       onSettingsClick: entryActions.openUserSettingsModal,
       onLogin: entryActions.authenticateUsingOidc,
       onLogout: entryActions.logout,

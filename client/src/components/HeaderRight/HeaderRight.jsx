@@ -15,7 +15,7 @@ const HeaderRight = React.memo(
     currentUser,
     notifications,
     gaufre,
-    onNotificationDelete,
+    onNotificationMarkAsRead,
     onSettingsClick,
     onLogin,
     onLogout,
@@ -31,7 +31,7 @@ const HeaderRight = React.memo(
           <>
             <NotificationsPopover
               items={notifications}
-              onDelete={onNotificationDelete}
+              onMarkAsRead={onNotificationMarkAsRead}
               side="bottom"
               align="center"
             >
@@ -116,7 +116,7 @@ HeaderRight.propTypes = {
   onSettingsClick: PropTypes.func.isRequired,
   onLogin: PropTypes.func.isRequired,
   onLogout: PropTypes.func.isRequired,
-  onNotificationDelete: PropTypes.func.isRequired,
+  onNotificationMarkAsRead: PropTypes.func.isRequired,
 };
 
 HeaderRight.defaultProps = {

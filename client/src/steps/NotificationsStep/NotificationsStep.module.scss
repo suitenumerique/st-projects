@@ -1,56 +1,76 @@
 :global(#app) {
-  .itemWrapper {
-    padding-bottom: 0.5rem;
-    background-clip: content-box !important;
+  .wrapper {
+    margin: 0 -12px;
+    max-height: 60vh;
+    max-width: 350px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
 
-    &:not(:last-child) {
-      border-bottom: 1px solid var(--c--contextuals--background--semantic--overlay--primary);
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 3px;
+    }
+  }
+
+  .markAllAsReadButton {
+    border-top: 1px solid var(--c--contextuals--border--semantic--neutral--tertiary);
+    display: flex;
+    justify-content: center;
+    margin: 0px 0px -12px 0px;
+    padding: 12px 0px;
+
+    button {
+      width: 100%;
+      justify-content: center;
     }
   }
 
   .item {
+    padding: 8px 12px;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 12px;
+    justify-content: space-between;
+
+    &:hover {
+      background: var(--c--contextuals--background--semantic--neutral--tertiary);
+    }
   }
 
   .itemContent {
-    display: inline-block;
     flex: 1;
     font-size: 12px;
-    word-break: break-word;
+    padding: 0 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .itemDate {
+    font-size: 11px;
+    color: var(--c--contextuals--content--semantic--neutral--tertiary);
   }
 
   .itemDeleted {
     display: inline-block;
-    font-size: var(--c--theme--font--sizes--sm);
+    line-height: 20px;
+    min-height: 20px;
+    padding: 0 4px 0 8px;
+    vertical-align: top;
+    width: calc(100% - 20px);
   }
 
   .noUnreadNotifications {
-    display: inline-block;
-    font-size: var(--c--theme--font--sizes--sm);
-  }
-
-  .wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-    max-height: 60vh;
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
-
-  .deleteAllButtonWrapper {
-    display: flex;
-    justify-content: end;
-    border-bottom: 1px solid var(--c--contextuals--background--semantic--overlay--primary);
-  }
-
-  .deleteAllButton {
-    margin-bottom: 10px;
+    font-size: 14px;
+    padding: 8px 12px;
+    text-align: center;
+    color: var(--c--contextuals--content--semantic--neutral--tertiary);
   }
 }

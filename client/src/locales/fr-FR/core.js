@@ -261,6 +261,7 @@ export default {
       leaveProject: 'Quitter le projet',
       logOut_title: 'Se déconnecter',
       makeCover_title: 'Faire la couverture',
+      markAllAsRead: 'Tout marquer comme lu',
       move: 'Déplacer',
       moveCard_title: 'Déplacer la carte',
       newBoard: 'Nouveau tableau',
