@@ -23,7 +23,7 @@ const AccountPane = React.memo(
     onLanguageUpdate,
   }) => {
     const [t] = useTranslation();
-    const { theme, setTheme } = useTheme();
+    const { theme, setTheme, disableDarkMode } = useTheme();
 
     const filteredLocales = supportedLanguages
       ? locales.filter((locale) => supportedLanguages.includes(locale.language))
@@ -68,29 +68,31 @@ const AccountPane = React.memo(
         />
         <HorizontalSeparator />
         <div className={styles.preferences}>
-          <Select
-            label={t('common.theme')}
-            options={[
-              {
-                value: 'system',
-                label: t('common.detectAutomatically'),
-              },
-              {
-                value: 'light',
-                label: t('common.themeLight'),
-              },
-              {
-                value: 'dark',
-                label: t('common.themeDark'),
-              },
-            ]}
-            defaultValue={theme}
-            clearable={false}
-            onChange={(event) => {
-              setTheme(event.target.value);
-            }}
-            fullWidth
-          />
+          {!disableDarkMode && (
+            <Select
+              label={t('common.theme')}
+              options={[
+                {
+                  value: 'system',
+                  label: t('common.detectAutomatically'),
+                },
+                {
+                  value: 'light',
+                  label: t('common.themeLight'),
+                },
+                {
+                  value: 'dark',
+                  label: t('common.themeDark'),
+                },
+              ]}
+              defaultValue={theme}
+              clearable={false}
+              onChange={(event) => {
+                setTheme(event.target.value);
+              }}
+              fullWidth
+            />
+          )}
           <Select
             label={t('common.language', {
               context: 'title',

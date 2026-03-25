@@ -77,8 +77,8 @@ export function ThemeProvider({ children }) {
   }, [theme, disableDarkMode]);
 
   const value = useMemo(
-    () => ({ theme, resolvedTheme, setTheme }),
-    [theme, resolvedTheme, setTheme],
+    () => ({ theme, resolvedTheme, setTheme, disableDarkMode: !!disableDarkMode }),
+    [theme, resolvedTheme, setTheme, disableDarkMode],
   );
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
