@@ -5,8 +5,8 @@
     flex-direction: column;
     cursor: grab;
     border: 1.5px solid transparent;
-    padding: 0.125rem 0;
     border-radius: 4px;
+    min-height: 35px;
 
     &:active {
       cursor: grabbing;
@@ -39,7 +39,7 @@
     align-items: center;
     flex-wrap: nowrap;
     gap: 0.25rem;
-    height: 24px;
+    flex: 1;
     cursor: pointer;
   }
 

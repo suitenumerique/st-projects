@@ -54,6 +54,12 @@ module.exports = {
     const uniqueUserIds = [...new Set([...managerUserIds, ...memberUserIds])];
     const users = await sails.helpers.users.getMany(uniqueUserIds);
 
+    const folders = await sails.helpers.folders.getMany({ userId: currentUser.id });
+    const userBoardPreferences = await sails.helpers.userBoardPreferences.getMany({
+      userId: currentUser.id,
+      boardId: boardIds,
+    });
+
     return {
       items: projects,
       included: {
@@ -61,6 +67,8 @@ module.exports = {
         projectManagers,
         boards,
         boardMemberships: allBoardMemberships,
+        folders,
+        userBoardPreferences,
       },
     };
   },

@@ -12,6 +12,7 @@ import {
 import { useTranslation } from 'react-i18next';
 
 import Feedback from '../Feedback';
+import { FeedbackWidget } from '../../ui/FeedbackWidget/index.tsx';
 import HeaderRightContainer from '../../containers/HeaderRightContainer';
 import styles from './Login.module.scss';
 
@@ -122,6 +123,13 @@ const Login = React.memo(({ theme, onAuthenticateUsingOidc }) => {
               </div>
             </Link>
             <Feedback items={localeTheme.feedback.items} />
+            {theme.feedbackWidget && (
+              <FeedbackWidget
+                apiUrl={theme.feedbackWidget.apiUrl}
+                widgetPath={theme.feedbackWidget.widgetPath}
+                channel={theme.feedbackWidget.channel}
+              />
+            )}
           </>
         }
         rightHeaderContent={<HeaderRightContainer />}

@@ -114,7 +114,7 @@ export default {
       heroSubtitle: 'Visualisez et organisez toutes vos tâches dans un espace collaboratif.',
       hours: 'Heures',
       importBoard_title: 'Importer un tableau',
-      internalBoardWorkspace: 'Espace interne',
+      internalBoardWorkspace: 'Espace privé',
       invalidCurrentPassword: 'Mot de passe actuel invalide',
       labels: 'Étiquettes',
       language: 'Langue',

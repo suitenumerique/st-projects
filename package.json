@@ -2,7 +2,7 @@
   "name": "projects",
   "version": "1.25.1",
   "private": true,
-  "homepage": "https://projets.numerique.gouv.fr/",
+  "homepage": "https://projets.suite.anct.gouv.fr/",
   "repository": {
     "type": "git",
     "url": "https://github.com/suitenumerique/projects.git"

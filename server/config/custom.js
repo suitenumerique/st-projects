@@ -80,6 +80,20 @@ const ThemeSchema = z.object({
       en: LocaleThemeFeedbackSchema.optional(),
     })
     .optional(),
+  gaufre: z
+    .object({
+      variant: z.enum(['dinum', 'anct']),
+      apiUrl: z.string().min(1),
+      widgetPath: z.string().min(1),
+    })
+    .optional(),
+  feedbackWidget: z
+    .object({
+      apiUrl: z.string().min(1),
+      widgetPath: z.string().min(1),
+      channel: z.string().min(1),
+    })
+    .optional(),
 });
 
 const TemplateBoardsSchema = z.array(
@@ -175,10 +189,11 @@ module.exports.custom = {
     process.env.TEMPLATE_BOARDS ? JSON.parse(process.env.TEMPLATE_BOARDS) : [],
   ),
 
-  lagaufreWidgetApiUrl:
-    process.env.LAGAUFRE_WIDGET_API_URL || 'https://lasuite.numerique.gouv.fr/api/services',
-  lagaufreWidgetPath:
-    process.env.LAGAUFRE_WIDGET_PATH || 'https://static.suite.anct.gouv.fr/widgets/lagaufre.js',
+  defaultLanguage: process.env.DEFAULT_LANGUAGE || null,
+  supportedLanguages: process.env.SUPPORTED_LANGUAGES
+    ? process.env.SUPPORTED_LANGUAGES.split(',').map((l) => l.trim())
+    : null,
+
 
   theme: ThemeSchema.parse(process.env.THEME ? JSON.parse(process.env.THEME) : defaultTheme),
 };

@@ -5,12 +5,10 @@ import { Button, ButtonElement } from '@gouvfr-lasuite/cunningham-react';
 /**
  * A button that opens the lagaufre widget
  */
-export const LagaufreButton = ({ reactAppLagaufreWidgetApiUrl, reactAppLagaufreWidgetPath }: { reactAppLagaufreWidgetApiUrl: string, reactAppLagaufreWidgetPath: string }) => {
+export const LagaufreButton = ({ apiUrl, widgetPath }: { apiUrl: string, widgetPath: string }) => {
   const { t } = useTranslation()
   const [isWidgetInitialized, setIsWidgetInitialized] = useState(false)
   const buttonRef = useRef<ButtonElement>(null);
-  const apiUrl = reactAppLagaufreWidgetApiUrl;
-  const widgetPath = reactAppLagaufreWidgetPath;
 
   const label: string = t("Other services...");
   const closeLabel: string = t("Close the menu");

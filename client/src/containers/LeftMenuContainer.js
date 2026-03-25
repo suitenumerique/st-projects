@@ -12,6 +12,8 @@ const mapStateToProps = (state) => {
   const privateBoards = selectors.selectPrivateBoardsForCurrentUser(state);
   const sharedBoards = selectors.selectSharedBoardsForCurrentUser(state);
   const isCurrentUserManager = selectors.selectIsCurrentUserManagerForCurrentProject(state);
+  const folders = selectors.selectFoldersForCurrentUser(state);
+  const userBoardPreferences = selectors.selectUserBoardPreferencesForCurrentUser(state);
 
   const config = selectors.selectConfig(state);
 
@@ -23,6 +25,8 @@ const mapStateToProps = (state) => {
     currentBoardId: boardId,
     privateBoards,
     sharedBoards,
+    folders,
+    userBoardPreferences,
     templateBoards,
     isOrgMode,
     canEditProject: isCurrentUserManager,
@@ -34,6 +38,11 @@ const mapDispatchToProps = (dispatch) =>
     {
       onProjectSettingsClick: entryActions.openProjectSettingsModal,
       onBoardAdd: entryActions.createBoardInCurrentProject,
+      onBoardUpdate: entryActions.updateBoard,
+      onBoardDelete: entryActions.deleteBoard,
+      onFolderAdd: entryActions.createFolder,
+      onFolderUpdate: entryActions.updateFolder,
+      onFolderDelete: entryActions.deleteFolder,
     },
     dispatch,
   );

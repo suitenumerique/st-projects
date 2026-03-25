@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { Button } from '@gouvfr-lasuite/cunningham-react';
 import { DropdownMenu, Icon, LaGaufreV2 } from '@gouvfr-lasuite/ui-kit';
+import { LagaufreButton } from '../../ui/LaGaufreButton/LaGaufreButton.tsx';
 
 import NotificationsStep from '../../steps/NotificationsStep';
 import usePopup from '../../lib/popup/use-popup';
@@ -13,8 +14,7 @@ const HeaderRight = React.memo(
   ({
     currentUser,
     notifications,
-    lagaufreWidgetApiUrl,
-    lagaufreWidgetPath,
+    gaufre,
     onNotificationDelete,
     onSettingsClick,
     onLogin,
@@ -94,7 +94,12 @@ const HeaderRight = React.memo(
           </Button>
         )}
 
-        <LaGaufreV2 widgetPath={lagaufreWidgetPath} apiUrl={lagaufreWidgetApiUrl} />
+        {gaufre?.variant === 'dinum' && (
+          <LaGaufreV2 widgetPath={gaufre.widgetPath} apiUrl={gaufre.apiUrl} />
+        )}
+        {gaufre?.variant === 'anct' && (
+          <LagaufreButton apiUrl={gaufre.apiUrl} widgetPath={gaufre.widgetPath} />
+        )}
       </>
     );
   },
@@ -103,14 +108,19 @@ const HeaderRight = React.memo(
 HeaderRight.propTypes = {
   currentUser: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   notifications: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  lagaufreWidgetApiUrl: PropTypes.string.isRequired,
-  lagaufreWidgetPath: PropTypes.string.isRequired,
+  gaufre: PropTypes.shape({
+    variant: PropTypes.oneOf(['dinum', 'anct']).isRequired,
+    apiUrl: PropTypes.string.isRequired,
+    widgetPath: PropTypes.string.isRequired,
+  }),
   onSettingsClick: PropTypes.func.isRequired,
   onLogin: PropTypes.func.isRequired,
   onLogout: PropTypes.func.isRequired,
   onNotificationDelete: PropTypes.func.isRequired,
 };
 
-HeaderRight.defaultProps = {};
+HeaderRight.defaultProps = {
+  gaufre: undefined,
+};
 
 export default HeaderRight;

@@ -2,8 +2,7 @@ ARG NODE_VERSION=22.21.1
 
 FROM node:${NODE_VERSION}-alpine AS server-dependencies
 
-RUN apk -U upgrade \
-  && apk add build-base python3 --no-cache
+RUN apk add --no-cache build-base python3
 
 WORKDIR /app/client
 

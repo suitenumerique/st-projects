@@ -65,7 +65,7 @@
       "emailVerified": true,
       "firstName": "Test",
       "lastName": "User",
-      "email": "user.test@numerique.gouv.fr",
+      "email": "user.test@suite.anct.gouv.fr",
       "credentials": [
         {
           "type": "password",

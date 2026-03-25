@@ -4,9 +4,9 @@
 
 Security is very important to us.
 
-If you have any issue regarding security, please disclose the information responsibly submitting [this form](https://vdp.numerique.gouv.fr/p/Send-a-report?lang=en) and not by creating an issue on the repository. You can also email us at [lasuite@numerique.gouv.fr](mailto:lasuite@numerique.gouv.fr)
+If you have any issue regarding security, please disclose the information responsibly by emailing us at security@suite.anct.gouv.fr and not by creating an issue on the repository.
 
-We appreciate your effort to make Docs more secure.
+We appreciate your effort to make Projects more secure.
 
 ## Vulnerability disclosure policy
 

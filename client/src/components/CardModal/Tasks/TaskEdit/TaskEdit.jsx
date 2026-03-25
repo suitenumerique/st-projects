@@ -98,7 +98,8 @@ const TaskEdit = React.forwardRef(({ children, defaultValue, onUpdate }, ref) =>
       />
       <div>
         <Button
-          color="primary"
+          color="brand"
+          variant="secondary"
           size="small"
           icon={<Icon name="save" type="outlined" size="small" />}
         >

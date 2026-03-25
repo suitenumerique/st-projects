@@ -10,13 +10,10 @@ const mapStateToProps = (state) => {
   const notifications = selectors.selectNotificationsForCurrentUser(state);
   const config = selectors.selectConfig(state);
 
-  const { lagaufreWidgetApiUrl, lagaufreWidgetPath } = config;
-
   return {
     currentUser,
     notifications,
-    lagaufreWidgetApiUrl,
-    lagaufreWidgetPath,
+    gaufre: config.theme?.gaufre,
   };
 };
 

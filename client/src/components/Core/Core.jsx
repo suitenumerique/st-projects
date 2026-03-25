@@ -7,6 +7,7 @@ import { Header, MainLayout, Spinner } from '@gouvfr-lasuite/ui-kit';
 import styles from './Core.module.scss';
 
 import Feedback from '../Feedback';
+import { FeedbackWidget } from '../../ui/FeedbackWidget/index.tsx';
 import { ReactComponent as Logo } from '../../assets/images/logo.svg';
 import ModalTypes from '../../constants/ModalTypes';
 import Paths from '../../constants/Paths';
@@ -32,11 +33,12 @@ const Core = React.memo(
     const defaultTitle = useRef(document.title);
     const [leftPanelOpen, setLeftPanelOpen] = useState(false);
 
-    const { headerLogo, feedbackItems } = useMemo(() => {
+    const { headerLogo, feedbackItems, feedbackWidget } = useMemo(() => {
       if (!theme) {
         return {
           headerLogo: undefined,
           feedbackItems: undefined,
+          feedbackWidget: undefined,
         }; // Theme information has to be fetched from the server
       }
 
@@ -46,6 +48,7 @@ const Core = React.memo(
         headerLogo: theme.header?.[languageWithoutRegion]?.logo ?? theme.header?.default.logo,
         feedbackItems:
           theme.feedback?.[languageWithoutRegion]?.items ?? theme.feedback?.default.items ?? [],
+        feedbackWidget: theme.feedbackWidget,
       };
     }, [theme, i18n.language]);
 
@@ -99,6 +102,13 @@ const Core = React.memo(
                   </div>
                 </Link>
                 <Feedback items={feedbackItems} />
+                {feedbackWidget && (
+                  <FeedbackWidget
+                    apiUrl={feedbackWidget.apiUrl}
+                    widgetPath={feedbackWidget.widgetPath}
+                    channel={feedbackWidget.channel}
+                  />
+                )}
               </>
             }
           >
@@ -149,6 +159,13 @@ const Core = React.memo(
                     </div>
                   </Link>
                   <Feedback items={feedbackItems} />
+                  {feedbackWidget && (
+                    <FeedbackWidget
+                      apiUrl={feedbackWidget.apiUrl}
+                      widgetPath={feedbackWidget.widgetPath}
+                      channel={feedbackWidget.channel}
+                    />
+                  )}
                 </>
               }
               rightIcon={<HeaderRightContainer />}

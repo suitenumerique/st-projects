@@ -120,7 +120,8 @@ const AttachmentItem = React.forwardRef(
           >
             <Button
               className={styles.attachmentActionsButton}
-              color="tertiary-text"
+              color="neutral"
+              variant="tertiary"
               size="small"
               icon={<Icon name="more_horiz" type="outlined" size="small" />}
             />

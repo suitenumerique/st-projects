@@ -9,6 +9,8 @@ const mapStateToProps = (state) => {
   const { email, name, avatarUrl, phone, organization, language, subscribeToOwnCards } =
     selectors.selectCurrentUser(state);
 
+  const { defaultLanguage, supportedLanguages } = selectors.selectConfig(state);
+
   return {
     email,
     name,
@@ -17,6 +19,8 @@ const mapStateToProps = (state) => {
     organization,
     language,
     subscribeToOwnCards,
+    defaultLanguage,
+    supportedLanguages,
   };
 };
 

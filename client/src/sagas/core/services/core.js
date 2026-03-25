@@ -48,7 +48,9 @@ export function* initializeCore() {
     notifications,
   } = yield call(requests.fetchCore); // TODO: handle error
 
-  yield call(i18n.changeLanguage, user.language);
+  const resolvedConfig = yield select(selectors.selectConfig);
+  const language = user.language || (resolvedConfig && resolvedConfig.defaultLanguage) || null;
+  yield call(i18n.changeLanguage, language);
   yield call(i18n.loadCoreLocale);
 
   yield put(

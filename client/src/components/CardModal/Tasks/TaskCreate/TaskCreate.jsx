@@ -128,7 +128,8 @@ const TaskCreate = React.forwardRef(({ children, onCreate }, ref) => {
       <div>
         {/* eslint-disable-next-line jsx-a11y/mouse-events-have-key-events */}
         <Button
-          color="tertiary"
+          color="brand"
+          variant="secondary"
           size="small"
           onMouseOver={handleControlMouseOver}
           onMouseOut={handleControlMouseOut}

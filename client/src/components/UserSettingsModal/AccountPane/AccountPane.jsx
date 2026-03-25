@@ -17,11 +17,17 @@ const AccountPane = React.memo(
     organization,
     language,
     subscribeToOwnCards,
+    defaultLanguage,
+    supportedLanguages,
     onUpdate,
     onLanguageUpdate,
   }) => {
     const [t] = useTranslation();
     const { theme, setTheme } = useTheme();
+
+    const filteredLocales = supportedLanguages
+      ? locales.filter((locale) => supportedLanguages.includes(locale.language))
+      : locales;
 
     const handleSubscribeToOwnCardsChange = useCallback(() => {
       onUpdate({
@@ -94,12 +100,12 @@ const AccountPane = React.memo(
                 value: 'auto',
                 label: t('common.detectAutomatically'),
               },
-              ...locales.map((locale) => ({
+              ...filteredLocales.map((locale) => ({
                 value: locale.language,
                 label: locale.name,
               })),
             ]}
-            defaultValue={language || 'auto'}
+            defaultValue={language || defaultLanguage || 'auto'}
             clearable={false}
             onChange={(event) => {
               handleLanguageChange(event.target.value);
@@ -119,6 +125,8 @@ AccountPane.propTypes = {
   organization: PropTypes.string,
   language: PropTypes.string,
   subscribeToOwnCards: PropTypes.bool.isRequired,
+  defaultLanguage: PropTypes.string,
+  supportedLanguages: PropTypes.arrayOf(PropTypes.string),
   onUpdate: PropTypes.func.isRequired,
   onLanguageUpdate: PropTypes.func.isRequired,
 };
@@ -127,6 +135,8 @@ AccountPane.defaultProps = {
   phone: undefined,
   organization: undefined,
   language: undefined,
+  defaultLanguage: undefined,
+  supportedLanguages: undefined,
 };
 
 export default AccountPane;

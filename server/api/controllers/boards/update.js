@@ -14,6 +14,9 @@ module.exports = {
     position: {
       type: 'number',
     },
+    folderId: {
+      type: 'json',
+    },
     name: {
       type: 'string',
       isNotEmptyString: true,
@@ -45,26 +48,53 @@ module.exports = {
 
     const isProjectManager = await sails.helpers.users.isProjectManager(currentUser.id, project.id);
 
-    if (!isProjectManager) {
-      throw Errors.BOARD_NOT_FOUND; // Forbidden
+    const boardValues = _.pick(inputs, ['name', 'isPublic']);
+    const hasBoardUpdates = Object.keys(boardValues).length > 0;
+    const hasPreferenceUpdates = !_.isUndefined(inputs.position) || !_.isUndefined(inputs.folderId);
+
+    if (hasBoardUpdates) {
+      if (!isProjectManager) {
+        throw Errors.BOARD_NOT_FOUND; // Forbidden
+      }
+
+      board = await sails.helpers.boards.updateOne.with({
+        values: boardValues,
+        project,
+        record: board,
+        actorUser: currentUser,
+        request: this.req,
+      });
+
+      if (!board) {
+        throw Errors.BOARD_NOT_FOUND;
+      }
     }
 
-    const values = _.pick(inputs, ['position', 'name', 'isPublic']);
+    let userBoardPreferences = [];
 
-    board = await sails.helpers.boards.updateOne.with({
-      values,
-      project,
-      record: board,
-      actorUser: currentUser,
-      request: this.req,
-    });
+    if (hasPreferenceUpdates) {
+      const preferenceValues = {};
+      if (!_.isUndefined(inputs.position)) preferenceValues.position = inputs.position;
+      if (!_.isUndefined(inputs.folderId)) preferenceValues.folderId = inputs.folderId;
 
-    if (!board) {
-      throw Errors.BOARD_NOT_FOUND;
+      const preference = await sails.helpers.userBoardPreferences.upsertOne.with({
+        userId: currentUser.id,
+        boardId: inputs.id,
+        values: preferenceValues,
+        actorUser: currentUser,
+        request: this.req,
+      });
+
+      if (preference) {
+        userBoardPreferences = [preference];
+      }
     }
 
     return {
       item: board,
+      included: {
+        userBoardPreferences,
+      },
     };
   },
 };

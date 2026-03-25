@@ -19,7 +19,7 @@
     Chat on Matrix
   </a> - <a href="#getting-started-to-develop-">
     Getting started
-  </a> - <a href="mailto:lasuite@numerique.gouv.fr">
+  </a> - <a href="mailto:contact@suite.anct.gouv.fr">
     Reach out
   </a>
 </p>
@@ -137,7 +137,7 @@ This will:
 
 After setup completes, you can access:
 
-- **Application**: http://localhost:3000 _(credentials: `user.test@numerique.gouv.fr` / `password`)_
+- **Application**: http://localhost:3000 _(credentials: `user.test@suite.anct.gouv.fr` / `password`)_
 - **Keycloak admin console for adding new users**: http://localhost:8080 _(credentials: `admin` / `admin`)_
 
 #### Without Docker
@@ -204,9 +204,9 @@ Projects is built on top of the first version of [Planka](https://github.com/pla
 
 ### Gov ❤️ open source
 
-Projects is the result of a joint effort led by the [DINUM](https://www.numerique.gouv.fr/dinum/) and the [ANCT](https://anct.gouv.fr/) from the French government 🇫🇷🥖.
+Projects is the result of a joint effort led by the [ANCT](https://anct.gouv.fr/) and the [DINUM](https://www.numerique.gouv.fr/dinum/) from the French government 🇫🇷🥖.
 
-We are always looking for new public partners, feel free to [reach out](mailto:lasuite@numerique.gouv.fr) if you are interested in using or contributing to Projects.
+We are always looking for new public partners, feel free to [reach out](mailto:contact@suite.anct.gouv.fr) if you are interested in using or contributing to Projects.
 
 <p align="center">
   <img src="./europe_opensource.png" width="50%"/>

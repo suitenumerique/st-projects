@@ -47,9 +47,9 @@ module.exports = {
         allowAllToCreateProjects: sails.config.custom.allowAllToCreateProjects,
         isOrgMode: !!sails.config.custom.organizationIdClaim,
         templateBoards: sails.config.custom.templateBoards,
-        lagaufreWidgetApiUrl: sails.config.custom.lagaufreWidgetApiUrl,
-        lagaufreWidgetPath: sails.config.custom.lagaufreWidgetPath,
         theme: sails.config.custom.theme,
+        defaultLanguage: sails.config.custom.defaultLanguage,
+        supportedLanguages: sails.config.custom.supportedLanguages,
       },
     };
   },

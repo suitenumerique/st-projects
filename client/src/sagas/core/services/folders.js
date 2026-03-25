@@ -7,35 +7,32 @@ import api from '../../../api';
 import { createLocalId } from '../../../utils/local-id';
 
 export function* createFolder(data) {
-  const currentUserId = yield select(selectors.selectCurrentUserId);
-
-  // Force parentFolderId to null to prevent nested folders
-  const nextData = {
-    ...data,
-    parentFolderId: null,
-    position: yield select(selectors.selectNextFolderPosition, currentUserId, null),
-  };
-
   const localId = yield call(createLocalId);
 
-  yield put(
-    actions.createFolder({
-      ...nextData,
-      userId: currentUserId,
-      id: localId,
-    }),
-  );
-
-  let folder;
-
   try {
-    ({ item: folder } = yield call(request, api.createFolder, nextData));
+    const currentUserId = yield select(selectors.selectCurrentUserId);
+
+    // Force parentFolderId to null to prevent nested folders
+    const nextData = {
+      ...data,
+      parentFolderId: null,
+      position: yield select(selectors.selectNextFolderPosition, currentUserId, null),
+    };
+
+    yield put(
+      actions.createFolder({
+        ...nextData,
+        userId: currentUserId,
+        id: localId,
+      }),
+    );
+
+    const { item: folder } = yield call(request, api.createFolder, nextData);
+
+    yield put(actions.createFolder.success(localId, folder));
   } catch (error) {
     yield put(actions.createFolder.failure(localId, error));
-    return;
   }
-
-  yield put(actions.createFolder.success(localId, folder));
 }
 
 export function* handleFolderCreate(folder) {

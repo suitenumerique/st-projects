@@ -94,7 +94,8 @@ const SortableTaskItem = React.memo(
               >
                 <Button
                   className={styles.taskActionsButton}
-                  color="tertiary-text"
+                  color="neutral"
+                  variant="tertiary"
                   size="small"
                   icon={<Icon name="more_horiz" type="outlined" size="small" />}
                 />

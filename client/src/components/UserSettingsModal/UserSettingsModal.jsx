@@ -17,6 +17,8 @@ const UserSettingsModal = React.memo(
     organization,
     language,
     subscribeToOwnCards,
+    defaultLanguage,
+    supportedLanguages,
     onUpdate,
     onLanguageUpdate,
     onClose,
@@ -43,6 +45,8 @@ const UserSettingsModal = React.memo(
           organization={organization}
           language={language}
           subscribeToOwnCards={subscribeToOwnCards}
+          defaultLanguage={defaultLanguage}
+          supportedLanguages={supportedLanguages}
           onUpdate={onUpdate}
           onLanguageUpdate={onLanguageUpdate}
         />
@@ -59,6 +63,8 @@ UserSettingsModal.propTypes = {
   organization: PropTypes.string,
   language: PropTypes.string,
   subscribeToOwnCards: PropTypes.bool.isRequired,
+  defaultLanguage: PropTypes.string,
+  supportedLanguages: PropTypes.arrayOf(PropTypes.string),
   onUpdate: PropTypes.func.isRequired,
   onLanguageUpdate: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
@@ -69,6 +75,8 @@ UserSettingsModal.defaultProps = {
   phone: undefined,
   organization: undefined,
   language: undefined,
+  defaultLanguage: undefined,
+  supportedLanguages: undefined,
 };
 
 export default UserSettingsModal;

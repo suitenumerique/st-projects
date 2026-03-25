@@ -114,7 +114,7 @@ services:
     environment:
       - DATABASE_URL=postgresql://user:password@postgres:5432/projects_db
 
-      - DEFAULT_ADMIN_EMAIL=user.test@numerique.gouv.fr
+      - DEFAULT_ADMIN_EMAIL=user.test@suite.anct.gouv.fr
       - DEFAULT_ADMIN_PASSWORD=password
       - DEFAULT_ADMIN_NAME=Test User
       - DEFAULT_ADMIN_USERNAME=test.user

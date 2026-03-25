@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Button, Select } from '@gouvfr-lasuite/cunningham-react';
@@ -7,6 +7,8 @@ import { Icon } from '@gouvfr-lasuite/ui-kit';
 import usePopup from '../../lib/popup/use-popup';
 import BoardListItemContainer from '../../containers/BoardListItemContainer';
 import BoardCreateStep from '../../steps/BoardCreateStep';
+import BoardTree from '../BoardTree/BoardTree';
+import FolderEditModal from './FolderEditModal';
 import styles from './LeftMenu.module.scss';
 import { push } from '../../lib/redux-router';
 import Paths from '../../constants/Paths';
@@ -19,14 +21,26 @@ const LeftMenu = React.memo(
     currentBoardId,
     privateBoards,
     sharedBoards,
+    folders,
+    userBoardPreferences,
     templateBoards,
     isOrgMode,
     canEditProject,
     onProjectSettingsClick,
     onBoardAdd,
     onBoardDuplicate,
+    onBoardUpdate,
+    onBoardDelete,
+    onFolderAdd,
+    onFolderUpdate,
+    onFolderDelete,
   }) => {
     const [t] = useTranslation();
+    const [folderModal, setFolderModal] = useState({
+      isOpen: false,
+      isPrivate: false,
+      folder: null,
+    });
 
     const BoardCreateStepPopover = usePopup(BoardCreateStep);
 
@@ -39,6 +53,21 @@ const LeftMenu = React.memo(
         onProjectSettingsClick();
       }
     }, [canEditProject, onProjectSettingsClick]);
+
+    const handleFolderEdit = useCallback((folder) => {
+      setFolderModal({ isOpen: true, isPrivate: folder.isPrivate, folder });
+    }, []);
+
+    const handleFolderModalSubmit = useCallback(
+      (data) => {
+        if (folderModal.folder) {
+          onFolderUpdate(folderModal.folder.id, { name: data.name });
+        } else {
+          onFolderAdd({ ...data, isPrivate: folderModal.isPrivate });
+        }
+      },
+      [folderModal, onFolderAdd, onFolderUpdate],
+    );
 
     return (
       <div className={styles.wrapper}>
@@ -109,10 +138,38 @@ const LeftMenu = React.memo(
         </div>
         <div className={styles.spaces}>
           <div className={styles.space}>
-            <p className={styles.spaceTitle}>{t('common.internalBoardWorkspace')}</p>
-            {privateBoards.length === 0 ? (
+            <p className={styles.spaceTitle}>
+              {t('common.internalBoardWorkspace')}
+              {isOrgMode && (
+                <Button
+                  color="neutral"
+                  variant="tertiary"
+                  size="nano"
+                  icon={<Icon name="add" type="outlined" />}
+                  className={styles.addFolderButton}
+                  onClick={() => setFolderModal({ isOpen: true, isPrivate: true, folder: null })}
+                />
+              )}
+            </p>
+            {isOrgMode && (
+              <BoardTree
+                boards={privateBoards}
+                folders={folders.filter((f) => f.isPrivate)}
+                userBoardPreferences={userBoardPreferences}
+                currentBoardId={currentBoardId}
+                onBoardClick={goToBoard}
+                onBoardUpdate={onBoardUpdate}
+                onBoardDelete={onBoardDelete}
+                onFolderEdit={handleFolderEdit}
+                onFolderUpdate={onFolderUpdate}
+                onFolderDelete={onFolderDelete}
+                canEdit={canEditProject}
+              />
+            )}
+            {!isOrgMode && privateBoards.length === 0 && (
               <p className={styles.emptySpace}>{t('common.noBoards')}</p>
-            ) : (
+            )}
+            {!isOrgMode && privateBoards.length > 0 && (
               <div className={styles.boards}>
                 {privateBoards.map((board) => (
                   <BoardListItemContainer
@@ -128,10 +185,38 @@ const LeftMenu = React.memo(
             )}
           </div>
           <div className={styles.space}>
-            <p className={styles.spaceTitle}>{t('common.sharedBoardWorkspace')}</p>
-            {sharedBoards.length === 0 ? (
+            <p className={styles.spaceTitle}>
+              {t('common.sharedBoardWorkspace')}
+              {isOrgMode && (
+                <Button
+                  color="neutral"
+                  variant="tertiary"
+                  size="nano"
+                  icon={<Icon name="add" type="outlined" />}
+                  className={styles.addFolderButton}
+                  onClick={() => setFolderModal({ isOpen: true, isPrivate: false, folder: null })}
+                />
+              )}
+            </p>
+            {isOrgMode && (
+              <BoardTree
+                boards={sharedBoards}
+                folders={folders.filter((f) => !f.isPrivate)}
+                userBoardPreferences={userBoardPreferences}
+                currentBoardId={currentBoardId}
+                onBoardClick={goToBoard}
+                onBoardUpdate={onBoardUpdate}
+                onBoardDelete={onBoardDelete}
+                onFolderEdit={handleFolderEdit}
+                onFolderUpdate={onFolderUpdate}
+                onFolderDelete={onFolderDelete}
+                canEdit={canEditProject}
+              />
+            )}
+            {!isOrgMode && sharedBoards.length === 0 && (
               <p className={styles.emptySpace}>{t('common.noBoards')}</p>
-            ) : (
+            )}
+            {!isOrgMode && sharedBoards.length > 0 && (
               <div className={styles.boards}>
                 {sharedBoards.map((board) => (
                   <BoardListItemContainer
@@ -147,6 +232,19 @@ const LeftMenu = React.memo(
             )}
           </div>
         </div>
+        {isOrgMode && (
+          <FolderEditModal
+            key={folderModal.folder ? folderModal.folder.id : 'new'}
+            initialData={
+              folderModal.folder
+                ? { id: folderModal.folder.id, name: folderModal.folder.name }
+                : { isPrivate: folderModal.isPrivate }
+            }
+            isOpen={folderModal.isOpen}
+            onClose={() => setFolderModal((prev) => ({ ...prev, isOpen: false }))}
+            onSubmit={handleFolderModalSubmit}
+          />
+        )}
       </div>
     );
   },
@@ -158,17 +256,26 @@ LeftMenu.propTypes = {
   currentBoardId: PropTypes.string,
   privateBoards: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   sharedBoards: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  folders: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  userBoardPreferences: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   templateBoards: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   isOrgMode: PropTypes.bool.isRequired,
   canEditProject: PropTypes.bool.isRequired,
   onProjectSettingsClick: PropTypes.func.isRequired,
   onBoardAdd: PropTypes.func.isRequired,
   onBoardDuplicate: PropTypes.func.isRequired,
+  onBoardUpdate: PropTypes.func.isRequired,
+  onBoardDelete: PropTypes.func.isRequired,
+  onFolderAdd: PropTypes.func.isRequired,
+  onFolderUpdate: PropTypes.func.isRequired,
+  onFolderDelete: PropTypes.func.isRequired,
 };
 
 LeftMenu.defaultProps = {
   privateBoards: [],
   sharedBoards: [],
+  folders: [],
+  userBoardPreferences: [],
   currentBoardId: undefined,
 };
 

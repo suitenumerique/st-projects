@@ -68,7 +68,18 @@
         margin-bottom: 0;
         display: flex;
         align-items: center;
-        justify-content: flex-start;
+        justify-content: space-between;
+        width: 100%;
+
+        .addFolderButton {
+          opacity: 0;
+          transition: opacity 0.15s ease;
+          flex-shrink: 0;
+        }
+      }
+
+      &:hover .addFolderButton {
+        opacity: 1;
       }
     }
   }
