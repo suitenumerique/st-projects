@@ -149,6 +149,7 @@ export default {
       optional_inline: 'optionnel',
       organization: 'Organisation',
       orChooseTemplateBoard: 'Ou choisissez un tableau pré-défini :',
+      owner: 'Propriétaire',
       permissions_title: 'Permissions',
       phone: 'Téléphone',
       preferences: 'Préférences',

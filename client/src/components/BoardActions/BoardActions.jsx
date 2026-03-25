@@ -176,6 +176,10 @@ const BoardActions = React.memo(
           accesses={modalMembers}
           invitationRoles={[
             {
+              label: t('common.owner'),
+              value: BoardMembershipRoles.OWNER,
+            },
+            {
               label: t('common.viewer'),
               value: BoardMembershipRoles.VIEWER,
             },

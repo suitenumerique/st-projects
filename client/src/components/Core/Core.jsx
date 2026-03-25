@@ -44,8 +44,6 @@ const Core = React.memo(
 
       const languageWithoutRegion = i18n.language.split(/[-_]/)[0];
 
-      console.log('theme', theme);
-
       return {
         headerLogo: theme.header?.[languageWithoutRegion]?.logo ?? theme.header?.default.logo,
         feedbackItems:

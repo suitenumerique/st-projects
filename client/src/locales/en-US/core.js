@@ -144,6 +144,7 @@ export default {
       optional_inline: 'optional',
       organization: 'Organization',
       orChooseTemplateBoard: 'Or choose a template board:',
+      owner: 'Owner',
       permissions_title: 'Permissions',
       phone: 'Phone',
       preferences: 'Preferences',
