@@ -189,8 +189,7 @@ export default {
       title: 'Titre',
       userActions_title: "Actions de l'utilisateur",
       userAddedThisCardToList: '<0> {{user}} </0> <1> a ajouté cette carte à {{list}} </1>',
-      userLeftNewCommentToCard:
-        '{{user}} a laissé un nouveau commentaire {{comment}} à <2> {{card}} </2>',
+      userLeftNewCommentToCard: '{{user}} a laissé un nouveau commentaire sur <2> {{card}} </2>',
       userMovedCardFromListToList:
         '{{user}} a déplacé <2> {{card}} </2> de {{fromList}} vers {{toList}}',
       userMovedThisCardFromListToList:

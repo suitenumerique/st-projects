@@ -70,14 +70,11 @@ const NotificationsStep = React.memo(({ items, onMarkAsRead, onClose }) => {
             </Trans>
           );
         case ActivityTypes.COMMENT_CARD: {
-          const commentText = truncate(activity.data.text);
-
           return (
             <Trans
               i18nKey="common.userLeftNewCommentToCard"
               values={{
                 user: activity.user.name,
-                comment: commentText,
                 card: card.name,
               }}
             >
