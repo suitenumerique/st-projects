@@ -15,9 +15,13 @@ function BoardListItem({
   editable,
   isActive,
   canEdit,
+  canDelete,
+  canLeave,
+  currentUserMembershipId,
   handleClick,
   onBoardUpdate,
   onBoardDelete,
+  onBoardLeave,
 }) {
   // const [t] = useTranslation();
   const [isBoardActionsPopoverOpen, setIsBoardActionsPopoverOpen] = useState(false);
@@ -61,11 +65,15 @@ function BoardListItem({
       <div className={styles.itemContent}>
         <p className={styles.itemName}>{board.name}</p>
       </div>
-      {editable && canEdit && (
+      {editable && (canEdit || canLeave) && (
         <BoardActionsPopover
           defaultData={pick(board, 'name')}
+          canEdit={canEdit}
+          canDelete={canDelete}
+          canLeave={canLeave}
           onUpdate={(data) => onBoardUpdate(board.id, data)}
           onDelete={() => onBoardDelete(board.id)}
+          onLeave={() => onBoardLeave(currentUserMembershipId)}
           onOpenChange={setIsBoardActionsPopoverOpen}
         >
           <div
@@ -91,16 +99,23 @@ BoardListItem.propTypes = {
   editable: PropTypes.bool.isRequired,
   isActive: PropTypes.bool,
   canEdit: PropTypes.bool.isRequired,
+  canDelete: PropTypes.bool,
+  canLeave: PropTypes.bool.isRequired,
+  currentUserMembershipId: PropTypes.string,
   handleClick: PropTypes.func.isRequired,
   onBoardUpdate: PropTypes.func,
   onBoardDelete: PropTypes.func,
+  onBoardLeave: PropTypes.func,
 };
 
 BoardListItem.defaultProps = {
   showDescription: false,
   isActive: false,
+  canDelete: false,
+  currentUserMembershipId: null,
   onBoardUpdate: () => {},
   onBoardDelete: () => {},
+  onBoardLeave: () => {},
 };
 
 export default React.memo(BoardListItem);

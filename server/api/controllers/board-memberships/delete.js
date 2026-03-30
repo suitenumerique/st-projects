@@ -36,7 +36,15 @@ module.exports = {
     const { board, project } = path;
 
     if (boardMembership.role === 'owner') {
-      throw Errors.CANNOT_DELETE_OWNER;
+      const otherOwners = await BoardMembership.find({
+        boardId: board.id,
+        role: 'owner',
+        id: { '!=': boardMembership.id },
+      });
+
+      if (otherOwners.length === 0) {
+        throw Errors.CANNOT_DELETE_OWNER;
+      }
     }
 
     if (boardMembership.userId !== currentUser.id) {

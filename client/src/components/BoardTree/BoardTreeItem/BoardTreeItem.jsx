@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import BoardListItem from '../../BoardListItem/BoardListItem';
+import BoardListItemContainer from '../../../containers/BoardListItemContainer';
 import FolderListItem from '../FolderListItem';
 
 const BoardTreeItem = React.memo(
@@ -20,17 +20,12 @@ const BoardTreeItem = React.memo(
   }) => {
     if (item.type === 'board') {
       return (
-        <BoardListItem
-          board={item.data}
-          project={item.data.project}
+        <BoardListItemContainer
+          id={item.data.id}
           showDescription={false}
-          editable={canEdit}
+          editable
           isActive={isActive}
-          currentUser={item.data.currentUser}
-          canEdit={canEdit}
           handleClick={onClick}
-          onBoardUpdate={onUpdate}
-          onBoardDelete={onDelete}
           disableHover={disableHover}
         />
       );
