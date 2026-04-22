@@ -64,6 +64,17 @@ export function* handleLocationChange() {
     yield take([ActionTypes.CORE_INITIALIZE, 'SET_INITIALIZING_FALSE']);
   }
 
+  if (pathsMatch.pattern.path === Paths.ROOT) {
+    const config = yield select(selectors.selectConfig);
+    if (config && config.isOrgMode) {
+      const allProjects = yield select(selectors.selectProjectsForCurrentUser);
+      if (allProjects.length === 1) {
+        yield call(goToProject, allProjects[0].id);
+        return;
+      }
+    }
+  }
+
   let board;
   let users;
   let projects;
