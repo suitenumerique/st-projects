@@ -18,6 +18,8 @@ module.exports.policies = {
 
   '*': 'is-authenticated',
 
+  'stats/index': 'is-stats-authorized',
+
   'users/create': ['is-authenticated', 'is-admin'],
   'users/delete': ['is-authenticated', 'is-admin'],
 
