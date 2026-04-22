@@ -62,6 +62,8 @@ function staticDirServer(prefix, dirFn) {
  */
 
 module.exports.routes = {
+  'GET /api/stats': 'stats/index',
+
   'GET /api/config': 'show-config',
 
   'POST /api/access-tokens': 'access-tokens/create',
