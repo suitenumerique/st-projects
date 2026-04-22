@@ -67,9 +67,13 @@ export function* handleLocationChange() {
   if (pathsMatch.pattern.path === Paths.ROOT) {
     const config = yield select(selectors.selectConfig);
     if (config && config.isOrgMode) {
+      const currentUser = yield select(selectors.selectCurrentUser);
       const allProjects = yield select(selectors.selectProjectsForCurrentUser);
-      if (allProjects.length === 1) {
-        yield call(goToProject, allProjects[0].id);
+      const defaultProject = allProjects.find(
+        (p) => p.organizationId === currentUser.organizationId,
+      );
+      if (defaultProject) {
+        yield call(goToProject, defaultProject.id);
         return;
       }
     }
