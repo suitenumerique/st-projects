@@ -3,6 +3,7 @@ import { createSelector } from 'redux-orm';
 import orm from '../orm';
 import { selectPath } from './router';
 import { selectCurrentUserId } from './users';
+import { selectConfig } from './root';
 import { BoardMembershipRoles } from '../constants/Enums';
 import { isLocalId } from '../utils/local-id';
 
@@ -136,40 +137,39 @@ export const selectPrivateBoardsForCurrentUser = createSelector(
   orm,
   (state) => selectPath(state).projectId,
   (state) => selectCurrentUserId(state),
-  ({ Project }, projectId, currentUserId) => {
-    if (!projectId) {
+  (state) => selectConfig(state).isOrgMode,
+  ({ Project }, projectId, currentUserId, isOrgMode) => {
+    const projectModels = isOrgMode
+      ? Project.all().toModelArray()
+      : [Project.withId(projectId)].filter(Boolean);
+
+    if (!isOrgMode && !projectId) {
       return [];
     }
 
-    const projectModel = Project.withId(projectId);
+    return projectModels.flatMap((projectModel) => {
+      const projectManagers = projectModel.getOrderedManagersQuerySet().toRefArray();
 
-    if (!projectModel) {
-      return projectModel;
-    }
+      return projectModel
+        .getOrderedBoardsModelArrayAvailableForUser(currentUserId)
+        .filter((boardModel) => {
+          const memberships = boardModel.getOrderedMembershipsModelArray();
 
-    const projectManagers = projectModel.getOrderedManagersQuerySet().toRefArray();
-
-    return projectModel
-      .getOrderedBoardsModelArrayAvailableForUser(currentUserId)
-      .filter((boardModel) => {
-        const memberships = boardModel.getOrderedMembershipsModelArray();
-
-        return (
-          !boardModel.isPublic &&
-          (memberships.length === 0 ||
-            memberships.every(
-              (membership) =>
-                membership.userId === currentUserId ||
-                projectManagers.findIndex((manager) => manager.userId === membership.userId) !== -1,
-            ))
-        );
-      })
-      .map((boardModel) => {
-        return {
+          return (
+            !boardModel.isPublic &&
+            (memberships.length === 0 ||
+              memberships.every(
+                (membership) =>
+                  membership.userId === currentUserId ||
+                  projectManagers.findIndex((manager) => manager.userId === membership.userId) !== -1,
+              ))
+          );
+        })
+        .map((boardModel) => ({
           ...boardModel.ref,
           isPersisted: !isLocalId(boardModel.id),
-        };
-      });
+        }));
+    });
   },
 );
 
@@ -177,40 +177,39 @@ export const selectSharedBoardsForCurrentUser = createSelector(
   orm,
   (state) => selectPath(state).projectId,
   (state) => selectCurrentUserId(state),
-  ({ Project }, projectId, currentUserId) => {
-    if (!projectId) {
+  (state) => selectConfig(state).isOrgMode,
+  ({ Project }, projectId, currentUserId, isOrgMode) => {
+    const projectModels = isOrgMode
+      ? Project.all().toModelArray()
+      : [Project.withId(projectId)].filter(Boolean);
+
+    if (!isOrgMode && !projectId) {
       return [];
     }
 
-    const projectModel = Project.withId(projectId);
+    return projectModels.flatMap((projectModel) => {
+      const projectManagers = projectModel.getOrderedManagersQuerySet().toRefArray();
 
-    if (!projectModel) {
-      return projectModel;
-    }
+      return projectModel
+        .getOrderedBoardsModelArrayAvailableForUser(currentUserId)
+        .filter((boardModel) => {
+          const memberships = boardModel.getOrderedMembershipsModelArray();
 
-    const projectManagers = projectModel.getOrderedManagersQuerySet().toRefArray();
-
-    return projectModel
-      .getOrderedBoardsModelArrayAvailableForUser(currentUserId)
-      .filter((boardModel) => {
-        const memberships = boardModel.getOrderedMembershipsModelArray();
-
-        return (
-          boardModel.isPublic ||
-          (memberships.length > 0 &&
-            memberships.some(
-              (membership) =>
-                membership.userId !== currentUserId &&
-                projectManagers.findIndex((manager) => manager.userId === membership.userId) === -1,
-            ))
-        );
-      })
-      .map((boardModel) => {
-        return {
+          return (
+            boardModel.isPublic ||
+            (memberships.length > 0 &&
+              memberships.some(
+                (membership) =>
+                  membership.userId !== currentUserId &&
+                  projectManagers.findIndex((manager) => manager.userId === membership.userId) === -1,
+              ))
+          );
+        })
+        .map((boardModel) => ({
           ...boardModel.ref,
           isPersisted: !isLocalId(boardModel.id),
-        };
-      });
+        }));
+    });
   },
 );
 

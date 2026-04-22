@@ -132,7 +132,8 @@ module.exports.custom = {
 
   userAvatarsPathSegment: 'public/user-avatars',
   projectBackgroundImagesPathSegment: 'public/project-background-images',
-  attachmentsPathSegment: 'private/attachments',
+  attachmentsPathSegment:
+    sails.config.environment === 'production' ? '/attachments' : 'private/attachments',
 
   defaultAdminEmail:
     process.env.DEFAULT_ADMIN_EMAIL && process.env.DEFAULT_ADMIN_EMAIL.toLowerCase(),
@@ -208,7 +209,6 @@ module.exports.custom = {
   supportedLanguages: process.env.SUPPORTED_LANGUAGES
     ? process.env.SUPPORTED_LANGUAGES.split(',').map((l) => l.trim())
     : null,
-
 
   theme: ThemeSchema.parse(process.env.THEME ? JSON.parse(process.env.THEME) : defaultTheme),
 };
