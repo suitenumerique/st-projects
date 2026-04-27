@@ -20,16 +20,22 @@ export const selectPath = createReduxOrmSelector(
   orm,
   selectPathsMatch,
   (state) => selectCurrentUserId(state),
-  ({ Project, Board, Card }, pathsMatch, currentUserId) => {
+  ({ Project, Board, Card, User }, pathsMatch, currentUserId) => {
     if (pathsMatch) {
       switch (pathsMatch.pattern.path) {
         case Paths.PROJECTS: {
           const projectModel = Project.withId(pathsMatch.params.id);
 
-          if (!projectModel || !projectModel.isAvailableForUser(currentUserId)) {
-            return {
-              projectId: null,
-            };
+          if (!projectModel) {
+            return { projectId: null };
+          }
+
+          const userModel = User.withId(currentUserId);
+          const isOrgMember =
+            userModel?.organizationId && projectModel.organizationId === userModel.organizationId;
+
+          if (!isOrgMember && !projectModel.isAvailableForUser(currentUserId)) {
+            return { projectId: null };
           }
 
           return {
