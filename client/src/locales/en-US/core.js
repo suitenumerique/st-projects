@@ -184,8 +184,11 @@ export default {
       title: 'Title',
       userActions_title: 'User Actions',
       userAddedThisCardToList: '<0>{{user}}</0><1> added this card to {{list}}</1>',
-      userLeftNewCommentToCard: '{{user}} left a new comment on <2>{{card}}</2>',
-      userMovedCardFromListToList: '{{user}} moved <2>{{card}}</2> from {{fromList}} to {{toList}}',
+      userAssignedMemberToCard: '{{user}} assigned {{member}} to <0>{{card}}</0>',
+      userAddedAttachmentToCard: '{{user}} added an attachment to <0>{{card}}</0>',
+      userChangedDueDateOfCard: '{{user}} changed the due date of <0>{{card}}</0>',
+      userLeftNewCommentToCard: '{{user}} left a new comment on <0>{{card}}</0>',
+      userMovedCardFromListToList: '{{user}} moved <0>{{card}}</0> from {{fromList}} to {{toList}}',
       userMovedThisCardFromListToList:
         '<0>{{user}}</0><1> moved this card from {{fromList}} to {{toList}}</1>',
       username: 'Username',

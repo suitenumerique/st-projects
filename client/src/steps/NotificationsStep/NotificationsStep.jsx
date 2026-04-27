@@ -31,95 +31,76 @@ const NotificationsStep = React.memo(({ items, onMarkAsRead, onClose }) => {
     });
   }, [items, onMarkAsRead]);
 
-  const renderItemContent = useCallback(
-    ({ activity, card }) => {
-      switch (activity.type) {
-        case ActivityTypes.MOVE_CARD:
-          return (
-            <Trans
-              i18nKey="common.userMovedCardFromListToList"
-              values={{
-                user: activity.user.name,
-                card: card.name,
-                fromList: activity.data.fromList.name,
-                toList: activity.data.toList.name,
-              }}
-            >
-              <strong />
-              <Link to={Paths.CARDS.replace(':id', card.id)} onClick={onClose}>
-                {card.name}
-              </Link>
-              <strong />
-              <strong />
-            </Trans>
-          );
-        case ActivityTypes.ADD_MEMBER_TO_CARD:
-          return (
-            <Trans
-              i18nKey="common.userAssignedYouToCard"
-              values={{
-                user: activity.user.name,
-                member: activity.data.member.name,
-                card: card.name,
-              }}
-            >
-              <strong />
-              <Link to={Paths.CARDS.replace(':id', card.id)} onClick={onClose}>
-                {card.name}
-              </Link>
-            </Trans>
-          );
-        case ActivityTypes.COMMENT_CARD: {
-          return (
-            <Trans
-              i18nKey="common.userLeftNewCommentToCard"
-              values={{
-                user: activity.user.name,
-                card: card.name,
-              }}
-            >
-              <strong />
-              <Link to={Paths.CARDS.replace(':id', card.id)} onClick={onClose}>
-                {card.name}
-              </Link>
-            </Trans>
-          );
-        }
-        case ActivityTypes.CHANGE_DUE_DATE:
-          return (
-            <Trans
-              i18nKey="common.userChangedDueDateOfCard"
-              values={{
-                user: activity.user.name,
-                card: card.name,
-              }}
-            >
-              <strong />
-              <Link to={Paths.CARDS.replace(':id', card.id)} onClick={onClose} />
-            </Trans>
-          );
-        case ActivityTypes.ADD_ATTACHMENT:
-          return (
-            <Trans
-              i18nKey="common.userAddedAttachmentToCard"
-              values={{
-                user: activity.user.name,
-                card: card.name,
-              }}
-            >
-              <strong />
-              <Link to={Paths.CARDS.replace(':id', card.id)} onClick={onClose}>
-                {card.name}
-              </Link>
-            </Trans>
-          );
-        default:
-      }
+  const renderItemContent = useCallback(({ activity, card }) => {
+    switch (activity.type) {
+      case ActivityTypes.MOVE_CARD:
+        return (
+          <Trans
+            i18nKey="common.userMovedCardFromListToList"
+            values={{
+              user: activity.user.name,
+              card: card.name,
+              fromList: activity.data.fromList.name,
+              toList: activity.data.toList.name,
+            }}
+          >
+            <strong />
+          </Trans>
+        );
+      case ActivityTypes.ADD_MEMBER_TO_CARD:
+        return (
+          <Trans
+            i18nKey="common.userAssignedMemberToCard"
+            values={{
+              user: activity.user.name,
+              member: activity.data.member.name,
+              card: card.name,
+            }}
+          >
+            <strong />
+          </Trans>
+        );
+      case ActivityTypes.COMMENT_CARD:
+        return (
+          <Trans
+            i18nKey="common.userLeftNewCommentToCard"
+            values={{
+              user: activity.user.name,
+              card: card.name,
+            }}
+          >
+            <strong />
+          </Trans>
+        );
+      case ActivityTypes.CHANGE_DUE_DATE:
+        return (
+          <Trans
+            i18nKey="common.userChangedDueDateOfCard"
+            values={{
+              user: activity.user.name,
+              card: card.name,
+            }}
+          >
+            <strong />
+          </Trans>
+        );
+      case ActivityTypes.ADD_ATTACHMENT:
+        return (
+          <Trans
+            i18nKey="common.userAddedAttachmentToCard"
+            values={{
+              user: activity.user.name,
+              card: card.name,
+            }}
+          >
+            <strong />
+          </Trans>
+        );
+      default:
+    }
 
-      return null;
-    },
-    [onClose],
-  );
+    return null;
+  }, []);
 
   return (
     <>
@@ -135,7 +116,11 @@ const NotificationsStep = React.memo(({ items, onMarkAsRead, onClose }) => {
               {items.map((item) => (
                 <div key={item.id} className={styles.item}>
                   {item.card && item.activity ? (
-                    <>
+                    <Link
+                      to={Paths.CARDS.replace(':id', item.card.id)}
+                      className={styles.itemBody}
+                      onClick={onClose}
+                    >
                       <User
                         name={item.activity.user.name}
                         avatarUrl={item.activity.user.avatarUrl}
@@ -152,7 +137,7 @@ const NotificationsStep = React.memo(({ items, onMarkAsRead, onClose }) => {
                           </span>
                         )}
                       </div>
-                    </>
+                    </Link>
                   ) : (
                     <div className={styles.itemDeleted}>{t('common.cardOrActionAreDeleted')}</div>
                   )}

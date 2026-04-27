@@ -62,7 +62,7 @@ const ActivityItem = React.memo(({ type, data, createdAt, user }) => {
   return (
     <div>
       <span className={styles.user}>
-        <User name={user.name} avatarUrl={user.avatarUrl} size="xsmall" />
+        <User name={user.name} avatarUrl={user.avatarUrl} size="small" />
       </span>
       <div className={classNames(styles.content)}>
         <div>{contentNode}</div>

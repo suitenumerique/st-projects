@@ -96,15 +96,30 @@ export function* handleLocationChange() {
     case Paths.BOARDS:
     case Paths.CARDS: {
       const currentBoard = yield select(selectors.selectCurrentBoard);
-      const boardId = pathsMatch.params.id;
+      let boardId = pathsMatch.params.id;
+
+      if (pathsMatch.pattern.path === Paths.CARDS) {
+        const path = yield select(selectors.selectPath);
+        if (path.cardId) {
+          boardId = path.boardId;
+        } else {
+          try {
+            ({
+              item: { boardId },
+            } = yield call(request, api.getCard, boardId, true));
+          } catch (error) {
+            break;
+          }
+        }
+      }
 
       const shouldFetchBoard =
-        (currentBoard && currentBoard.isFetching === null) || (!currentBoard && boardId);
+        (currentBoard && currentBoard.isFetching === null) ||
+        !currentBoard ||
+        (boardId && currentBoard.id !== boardId);
 
       if (shouldFetchBoard) {
-        const targetBoardId = currentBoard ? currentBoard.id : boardId;
-
-        yield put(actions.handleLocationChange.fetchBoard(targetBoardId));
+        yield put(actions.handleLocationChange.fetchBoard(boardId));
 
         try {
           ({
@@ -121,7 +136,7 @@ export function* handleLocationChange() {
               tasks,
               attachments,
             },
-          } = yield call(request, api.getBoard, targetBoardId, true));
+          } = yield call(request, api.getBoard, boardId, true));
         } catch (error) {
           // eslint-disable-line no-empty
         }

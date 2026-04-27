@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Spinner } from '@gouvfr-lasuite/ui-kit';
 import { ActivityTypes } from '../../../constants/Enums';
 import CommentCreate from './CommentCreate';
-// import ActivityItem from './ActivityItem';
+import ActivityItem from './ActivityItem';
 import CommentItem from './CommentItem';
 
 import styles from './Activities.module.scss';
@@ -56,30 +56,28 @@ const Activities = React.memo(
       <div className={styles.activitiesWrapper}>
         {canEdit && <CommentCreate onCreate={onCommentCreate} />}
         <div className={styles.activitiesList}>
-          {items.map(
-            (item) =>
-              item.type === ActivityTypes.COMMENT_CARD && (
-                <CommentItem
-                  key={item.id}
-                  data={item.data}
-                  createdAt={item.createdAt}
-                  isPersisted={item.isPersisted}
-                  user={item.user}
-                  canEdit={item.user.isCurrent && canEdit}
-                  canDelete={(item.user.isCurrent && canEdit) || canEditAllComments}
-                  onUpdate={(data) => handleCommentUpdate(item.id, data)}
-                  onDelete={() => handleCommentDelete(item.id)}
-                />
-              ),
-            // ) : (
-            //   <ActivityItem
-            //     key={item.id}
-            //     type={item.type}
-            //     data={item.data}
-            //     createdAt={item.createdAt}
-            //     user={item.user}
-            //   />
-            // ),
+          {items.map((item) =>
+            item.type === ActivityTypes.COMMENT_CARD ? (
+              <CommentItem
+                key={item.id}
+                data={item.data}
+                createdAt={item.createdAt}
+                isPersisted={item.isPersisted}
+                user={item.user}
+                canEdit={item.user.isCurrent && canEdit}
+                canDelete={(item.user.isCurrent && canEdit) || canEditAllComments}
+                onUpdate={(data) => handleCommentUpdate(item.id, data)}
+                onDelete={() => handleCommentDelete(item.id)}
+              />
+            ) : (
+              <ActivityItem
+                key={item.id}
+                type={item.type}
+                data={item.data}
+                createdAt={item.createdAt}
+                user={item.user}
+              />
+            ),
           )}
         </div>
         {isFetching ? (
