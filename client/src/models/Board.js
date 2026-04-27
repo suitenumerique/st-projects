@@ -47,12 +47,14 @@ export default class extends BaseModel {
 
         break;
       case ActionTypes.LOCATION_CHANGE_HANDLE__BOARD_FETCH:
-      case ActionTypes.BOARD_FETCH:
-        Board.withId(payload.id).update({
-          isFetching: true,
-        });
+      case ActionTypes.BOARD_FETCH: {
+        const boardModel = Board.withId(payload.id);
+        if (boardModel) {
+          boardModel.update({ isFetching: true });
+        }
 
         break;
+      }
       case ActionTypes.SOCKET_RECONNECT_HANDLE:
         Board.all().delete();
 
@@ -122,6 +124,11 @@ export default class extends BaseModel {
             });
           });
         }
+
+        break;
+      case ActionTypes.BOARD_DUPLICATE__SUCCESS:
+      case ActionTypes.BOARD_DUPLICATE_HANDLE:
+        Board.upsert(payload.board);
 
         break;
       case ActionTypes.BOARD_CREATE:
