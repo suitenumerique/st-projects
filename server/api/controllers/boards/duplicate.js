@@ -17,7 +17,6 @@ module.exports = {
     targetProjectId: {
       type: 'string',
       regex: /^[0-9]+$/,
-      required: true,
     },
   },
 
@@ -37,19 +36,27 @@ module.exports = {
       .getProjectPath(inputs.boardId)
       .intercept('pathNotFound', () => Errors.BOARD_NOT_FOUND);
 
-    const targetProject = await Project.findOne(inputs.targetProjectId);
+    let targetProject;
+    if (sails.config.custom.organizationIdClaim) {
+      if (!currentUser.organizationId) {
+        throw Errors.PROJECT_NOT_FOUND;
+      }
+      targetProject = await Project.findOne({ organizationId: currentUser.organizationId });
+    } else {
+      targetProject = await Project.findOne(inputs.targetProjectId);
+      if (targetProject) {
+        const isTargetProjectManager = await sails.helpers.users.isProjectManager(
+          currentUser.id,
+          targetProject.id,
+        );
+        if (!isTargetProjectManager) {
+          targetProject = null;
+        }
+      }
+    }
 
     if (!targetProject) {
       throw Errors.PROJECT_NOT_FOUND;
-    }
-
-    const isTargetProjectManager = await sails.helpers.users.isProjectManager(
-      currentUser.id,
-      targetProject.id,
-    );
-
-    if (!isTargetProjectManager) {
-      throw Errors.BOARD_NOT_FOUND;
     }
 
     const newBoard = await sails.helpers.boards.duplicateOne.with({
