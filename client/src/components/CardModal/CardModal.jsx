@@ -526,7 +526,7 @@ const CardModal = React.memo(
               </div>
             </section>
           )}
-          {(canEdit || activities.length > 0) && (
+          {(canEdit || canEditCommentActivities || activities.length > 0) && (
             <section className={classNames(styles.cardModalSection, styles.cardActivitiesSection)}>
               <div className={styles.cardModalSectionLeft}>
                 <Icon name="comment" type="outlined" size="small" />

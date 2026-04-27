@@ -20,6 +20,8 @@ export function* handleSocketReconnect() {
   let projects;
   let projectManagers;
   let boards;
+  let folders;
+  let userBoardPreferences;
   let boardMemberships;
   let labels;
   let lists;
@@ -39,6 +41,8 @@ export function* handleSocketReconnect() {
       projects,
       projectManagers,
       boards,
+      folders,
+      userBoardPreferences,
       boardMemberships,
       labels,
       lists,
@@ -62,6 +66,8 @@ export function* handleSocketReconnect() {
       projects,
       projectManagers,
       boards,
+      folders,
+      userBoardPreferences,
       boardMemberships,
       labels,
       lists,

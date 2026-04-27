@@ -3,6 +3,18 @@ import { jwtDecode } from 'jwt-decode';
 
 import Config from '../constants/Config';
 
+const OIDC_ID_TOKEN_KEY = 'oidc-id-token';
+
+export const setIdToken = (idToken) => {
+  if (idToken) {
+    window.localStorage.setItem(OIDC_ID_TOKEN_KEY, idToken);
+  }
+};
+
+export const getIdToken = () => window.localStorage.getItem(OIDC_ID_TOKEN_KEY);
+
+export const removeIdToken = () => window.localStorage.removeItem(OIDC_ID_TOKEN_KEY);
+
 export const setAccessToken = (accessToken) => {
   const { exp } = jwtDecode(accessToken);
   const expires = new Date(exp * 1000);

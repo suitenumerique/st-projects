@@ -83,6 +83,9 @@ const BoardActions = React.memo(
 
     const modalMembers = useMemo(() => {
       return boardMemberships.map((membership) => {
+        const isCurrentUserOwner =
+          membership.user.id === currentUser.id && membership.role === BoardMembershipRoles.OWNER;
+
         return {
           id: membership.id,
           role:
@@ -95,9 +98,11 @@ const BoardActions = React.memo(
             full_name: membership.user.name,
             email: membership.user.email,
           },
+          // Prevent the current user from removing or changing their own owner membership
+          can_delete: !isCurrentUserOwner,
         };
       });
-    }, [boardMemberships]);
+    }, [boardMemberships, currentUser.id]);
 
     useEffect(() => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -198,6 +203,15 @@ const BoardActions = React.memo(
           onDeleteInvitation={() => {}}
           onUpdateInvitation={() => {}}
           onUpdateAccess={(e, role) => {
+            const membership = boardMemberships.find((m) => m.id === e.id);
+            if (
+              membership &&
+              membership.user.id === currentUser.id &&
+              membership.role === BoardMembershipRoles.OWNER
+            ) {
+              return;
+            }
+
             onMembershipUpdate(
               e.id,
               // Replace the virtual commenter role if needed

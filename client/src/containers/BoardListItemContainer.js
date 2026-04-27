@@ -10,19 +10,26 @@ const makeMapStateToProps = () => {
   const selectBoardById = selectors.makeSelectBoardById();
   const selectCurrentUserMembershipForBoard =
     selectors.makeSelectCurrentUserMembershipForBoardById();
+  const selectOwnerCountForBoard = selectors.makeSelectOwnerCountForBoardById();
 
   return (state, { id }) => {
     const board = selectBoardById(state, id);
     const currentUserMembership = selectCurrentUserMembershipForBoard(state, id);
+    const isOwner =
+      !!currentUserMembership && currentUserMembership.role === BoardMembershipRoles.OWNER;
     const isCurrentUserEditor =
       !!currentUserMembership &&
-      (currentUserMembership.role === BoardMembershipRoles.EDITOR ||
-        currentUserMembership.role === BoardMembershipRoles.OWNER);
+      (currentUserMembership.role === BoardMembershipRoles.EDITOR || isOwner);
+    const ownerCount = selectOwnerCountForBoard(state, id);
+    const canLeave = !!currentUserMembership && (!isOwner || ownerCount > 1);
 
     return {
       id,
       board,
       canEdit: isCurrentUserEditor,
+      canDelete: isOwner,
+      canLeave,
+      currentUserMembershipId: currentUserMembership ? currentUserMembership.id : null,
     };
   };
 };
@@ -32,6 +39,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       onBoardUpdate: entryActions.updateBoard,
       onBoardDelete: entryActions.deleteBoard,
+      onBoardLeave: entryActions.deleteBoardMembership,
     },
     dispatch,
   );

@@ -63,7 +63,7 @@ module.exports = {
   async fn(inputs) {
     const remoteAddress = getRemoteAddress(this.req);
 
-    const user = await sails.helpers.users
+    const { user, idToken } = await sails.helpers.users
       .getOrCreateOneUsingOidc(inputs.code, inputs.nonce)
       .intercept('invalidCodeOrNonce', () => {
         sails.log.warn(`Invalid code or nonce! (IP: ${remoteAddress})`);
@@ -100,7 +100,7 @@ module.exports = {
     }
 
     return {
-      item: accessToken,
+      item: { accessToken, idToken },
     };
   },
 };

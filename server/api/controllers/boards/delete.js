@@ -36,7 +36,11 @@ module.exports = {
     const isProjectManager = await sails.helpers.users.isProjectManager(currentUser.id, project.id);
 
     if (!isProjectManager) {
-      throw Errors.BOARD_NOT_FOUND; // Forbidden
+      const isBoardOwner = await sails.helpers.users.isBoardOwner(currentUser.id, board.id);
+
+      if (!isBoardOwner) {
+        throw Errors.BOARD_NOT_FOUND; // Forbidden
+      }
     }
 
     board = await sails.helpers.boards.deleteOne.with({

@@ -68,7 +68,8 @@ const mapStateToProps = (state) => {
     allBoardMemberships,
     allLabels,
     canEdit: isCurrentUserEditor || isCurrentUserOwner,
-    canEditCommentActivities: isCurrentUserEditor || isCurrentUserOwner,
+    canEditCommentActivities:
+      isCurrentUserEditor || isCurrentUserOwner || !!currentUserMembership?.canComment,
     canEditAllCommentActivities: isCurrentUserOwner || isCurrentUserManager,
   };
 };

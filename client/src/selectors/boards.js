@@ -117,6 +117,25 @@ export const makeSelectCurrentUserMembershipForBoardById = () =>
     },
   );
 
+export const makeSelectOwnerCountForBoardById = () =>
+  createSelector(
+    orm,
+    (_, boardId) => boardId,
+    ({ Board }, boardId) => {
+      if (!boardId) {
+        return 0;
+      }
+
+      const boardModel = Board.withId(boardId);
+
+      if (!boardModel) {
+        return 0;
+      }
+
+      return boardModel.memberships.filter({ role: 'owner' }).count();
+    },
+  );
+
 export const selectLabelsForCurrentBoard = createSelector(
   orm,
   (state) => selectPath(state).boardId,
@@ -367,6 +386,7 @@ export default {
   selectMembershipsForCurrentBoard,
   selectCurrentUserMembershipForCurrentBoard,
   makeSelectCurrentUserMembershipForBoardById,
+  makeSelectOwnerCountForBoardById,
   selectLabelsForCurrentBoard,
   selectListIdsForCurrentBoard,
   selectListsForCurrentBoard,

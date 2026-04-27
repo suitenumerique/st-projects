@@ -105,18 +105,21 @@ const BoardTree = React.memo(
       // eslint-disable-next-line no-underscore-dangle
       const _rootBoards = [];
 
+      const folderIds = new Set(folders.map((f) => f.id));
+
       enrichedBoards.sort(byPos).forEach((b) => {
+        const validFolderId = b.folderId && folderIds.has(b.folderId) ? b.folderId : null;
         const item = {
           id: `board-${b.id}`,
           type: 'board',
-          parentId: b.folderId ? `folder-${b.folderId}` : null,
+          parentId: validFolderId ? `folder-${validFolderId}` : null,
           position: b.position,
           data: b,
         };
 
-        if (b.folderId) {
-          if (!_nestedMap[b.folderId]) _nestedMap[b.folderId] = [];
-          _nestedMap[b.folderId].push(item);
+        if (validFolderId) {
+          if (!_nestedMap[validFolderId]) _nestedMap[validFolderId] = [];
+          _nestedMap[validFolderId].push(item);
         } else {
           _rootBoards.push(item);
         }

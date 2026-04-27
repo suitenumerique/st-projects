@@ -43,9 +43,24 @@ module.exports = {
     let { boardMembership } = path;
     const { board, project } = path;
 
-    // Prevent updating owner memberships
+    // Prevent updating owner memberships unless the owner is downgrading themselves
+    // and at least one other owner remains
     if (boardMembership.role === 'owner') {
-      throw Errors.CANNOT_UPDATE_OWNER;
+      const isSelf = boardMembership.userId === currentUser.id;
+
+      if (!isSelf) {
+        throw Errors.CANNOT_UPDATE_OWNER;
+      }
+
+      const otherOwners = await BoardMembership.find({
+        boardId: board.id,
+        role: 'owner',
+        id: { '!=': boardMembership.id },
+      });
+
+      if (otherOwners.length === 0) {
+        throw Errors.CANNOT_UPDATE_OWNER;
+      }
     }
 
     const isProjectManager = await sails.helpers.users.isProjectManager(currentUser.id, project.id);

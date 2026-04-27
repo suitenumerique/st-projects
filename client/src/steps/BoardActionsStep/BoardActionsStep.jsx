@@ -11,64 +11,95 @@ import DeleteStep from '../DeleteStep';
 const StepTypes = {
   EDIT_NAME: 'EDIT_NAME',
   DELETE: 'DELETE',
+  LEAVE: 'LEAVE',
 };
 
-const BoardActionsStep = React.memo(({ defaultData, onUpdate, onDelete, onClose }) => {
-  const { t } = useTranslation();
+const BoardActionsStep = React.memo(
+  ({ defaultData, canEdit, canDelete, canLeave, onUpdate, onDelete, onLeave, onClose }) => {
+    const { t } = useTranslation();
 
-  const [step, openStep, handleBack] = useSteps();
+    const [step, openStep, handleBack] = useSteps();
 
-  const handleEditNameClick = useCallback(() => {
-    openStep(StepTypes.EDIT_NAME);
-  }, [openStep]);
+    const handleEditNameClick = useCallback(() => {
+      openStep(StepTypes.EDIT_NAME);
+    }, [openStep]);
 
-  const handleDeleteClick = useCallback(() => {
-    openStep(StepTypes.DELETE);
-  }, [openStep]);
+    const handleDeleteClick = useCallback(() => {
+      openStep(StepTypes.DELETE);
+    }, [openStep]);
 
-  if (step) {
-    switch (step.type) {
-      case StepTypes.EDIT_NAME:
-        return (
-          <BoardEditStep
-            defaultData={defaultData}
-            onUpdate={onUpdate}
-            onBack={handleBack}
-            onClose={onClose}
-          />
-        );
-      case StepTypes.DELETE:
-        return (
-          <DeleteStep
-            title="common.deleteBoard"
-            content="common.areYouSureYouWantToDeleteThisBoard"
-            buttonContent="action.deleteBoard"
-            onConfirm={onDelete}
-            onClose={onClose}
-            onBack={handleBack}
-          />
-        );
-      default:
-        return null;
+    const handleLeaveClick = useCallback(() => {
+      openStep(StepTypes.LEAVE);
+    }, [openStep]);
+
+    if (step) {
+      switch (step.type) {
+        case StepTypes.EDIT_NAME:
+          return (
+            <BoardEditStep
+              defaultData={defaultData}
+              onUpdate={onUpdate}
+              onBack={handleBack}
+              onClose={onClose}
+            />
+          );
+        case StepTypes.DELETE:
+          return (
+            <DeleteStep
+              title="common.deleteBoard"
+              content="common.areYouSureYouWantToDeleteThisBoard"
+              buttonContent="action.deleteBoard"
+              onConfirm={onDelete}
+              onClose={onClose}
+              onBack={handleBack}
+            />
+          );
+        case StepTypes.LEAVE:
+          return (
+            <DeleteStep
+              title="common.leaveBoard"
+              content="common.areYouSureYouWantToLeaveBoard"
+              buttonContent="action.leaveBoard"
+              onConfirm={onLeave}
+              onClose={onClose}
+              onBack={handleBack}
+            />
+          );
+        default:
+          return null;
+      }
     }
-  }
 
-  return (
-    <Menu>
-      <MenuItem icon="edit" onClick={handleEditNameClick}>
-        {t('action.rename')}
-      </MenuItem>
-      <MenuItem icon="delete" onClick={handleDeleteClick}>
-        {t('action.remove')}
-      </MenuItem>
-    </Menu>
-  );
-});
+    return (
+      <Menu>
+        {canDelete && (
+          <MenuItem icon="edit" onClick={handleEditNameClick}>
+            {t('action.rename')}
+          </MenuItem>
+        )}
+        {canLeave && (
+          <MenuItem icon="logout" onClick={handleLeaveClick}>
+            {t('action.leaveBoard')}
+          </MenuItem>
+        )}
+        {canDelete && (
+          <MenuItem icon="delete" onClick={handleDeleteClick}>
+            {t('action.remove')}
+          </MenuItem>
+        )}
+      </Menu>
+    );
+  },
+);
 
 BoardActionsStep.propTypes = {
   defaultData: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  canEdit: PropTypes.bool.isRequired,
+  canDelete: PropTypes.bool.isRequired,
+  canLeave: PropTypes.bool.isRequired,
   onUpdate: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
+  onLeave: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
