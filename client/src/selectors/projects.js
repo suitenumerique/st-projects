@@ -161,7 +161,8 @@ export const selectPrivateBoardsForCurrentUser = createSelector(
               memberships.every(
                 (membership) =>
                   membership.userId === currentUserId ||
-                  projectManagers.findIndex((manager) => manager.userId === membership.userId) !== -1,
+                  projectManagers.findIndex((manager) => manager.userId === membership.userId) !==
+                    -1,
               ))
           );
         })
@@ -201,7 +202,8 @@ export const selectSharedBoardsForCurrentUser = createSelector(
               memberships.some(
                 (membership) =>
                   membership.userId !== currentUserId &&
-                  projectManagers.findIndex((manager) => manager.userId === membership.userId) === -1,
+                  projectManagers.findIndex((manager) => manager.userId === membership.userId) ===
+                    -1,
               ))
           );
         })
@@ -215,47 +217,33 @@ export const selectSharedBoardsForCurrentUser = createSelector(
 
 export const selectEditableBoardsForCurrentUser = createSelector(
   orm,
-  (state) => selectPath(state).projectId,
   (state) => selectCurrentUserId(state),
-  ({ Project }, projectId, currentUserId) => {
-    if (!projectId) {
-      return [];
-    }
-
-    const projectModel = Project.withId(projectId);
-
-    if (!projectModel) {
-      return projectModel;
-    }
-
-    return projectModel
-      .getOrderedBoardsModelArrayAvailableForUser(currentUserId)
+  ({ Board }, currentUserId) => {
+    return Board.all()
+      .toModelArray()
       .filter((boardModel) => {
         const memberships = boardModel.getOrderedMembershipsModelArray();
-
-        // Project manager can add boards but cannot interact with them until having membership for it
         return (
           memberships.length > 0 &&
           memberships.some(
             (membership) =>
-              membership.user.id === currentUserId &&
-              membership.role === BoardMembershipRoles.EDITOR,
+              membership.userId === currentUserId &&
+              (membership.role === BoardMembershipRoles.EDITOR ||
+                membership.role === BoardMembershipRoles.OWNER),
           )
         );
       })
-      .map((boardModel) => {
-        return {
-          ...boardModel.ref,
-          isPersisted: !isLocalId(boardModel.id),
-          lists: boardModel
-            .getOrderedListsQuerySet()
-            .toRefArray()
-            .map((list) => ({
-              ...list,
-              isPersisted: !isLocalId(list.id),
-            })),
-        };
-      });
+      .map((boardModel) => ({
+        ...boardModel.ref,
+        isPersisted: !isLocalId(boardModel.id),
+        lists: boardModel
+          .getOrderedListsQuerySet()
+          .toRefArray()
+          .map((list) => ({
+            ...list,
+            isPersisted: !isLocalId(list.id),
+          })),
+      }));
   },
 );
 
