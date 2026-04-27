@@ -5,7 +5,7 @@ import { replace } from '../../../lib/redux-router';
 import selectors from '../../../selectors';
 import actions from '../../../actions';
 import api from '../../../api';
-import { setAccessToken } from '../../../utils/access-token-storage';
+import { setAccessToken, setIdToken } from '../../../utils/access-token-storage';
 import Paths from '../../../constants/Paths';
 
 export function* initializeLogin() {
@@ -94,8 +94,11 @@ export function* authenticateUsingOidcCallback() {
   }
 
   let accessToken;
+  let idToken;
   try {
-    ({ item: accessToken } = yield call(api.exchangeForAccessTokenUsingOidc, {
+    ({
+      item: { accessToken, idToken },
+    } = yield call(api.exchangeForAccessTokenUsingOidc, {
       code,
       nonce,
     }));
@@ -105,6 +108,7 @@ export function* authenticateUsingOidcCallback() {
   }
 
   yield call(setAccessToken, accessToken);
+  yield call(setIdToken, idToken);
   yield put(actions.authenticateUsingOidc.success(accessToken));
 }
 

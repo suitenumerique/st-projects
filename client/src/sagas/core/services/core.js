@@ -6,7 +6,11 @@ import selectors from '../../../selectors';
 import actions from '../../../actions';
 import api from '../../../api';
 import i18n from '../../../i18n';
-import { removeAccessToken, getAccessToken } from '../../../utils/access-token-storage';
+import {
+  removeAccessToken,
+  getAccessToken,
+  removeIdToken,
+} from '../../../utils/access-token-storage';
 
 export function* initializeCore() {
   const currentConfig = yield select(selectors.selectConfig); // TODO: add boolean selector?
@@ -90,6 +94,7 @@ export function* changeCoreLanguage(language) {
 
 export function* logout(invalidateAccessToken = true) {
   yield call(removeAccessToken);
+  yield call(removeIdToken);
 
   if (invalidateAccessToken) {
     yield put(actions.logout.invalidateAccessToken());
