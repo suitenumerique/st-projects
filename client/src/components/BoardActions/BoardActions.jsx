@@ -181,6 +181,10 @@ const BoardActions = React.memo(
           accesses={modalMembers}
           invitationRoles={[
             {
+              label: t('common.editor'),
+              value: BoardMembershipRoles.EDITOR,
+            },
+            {
               label: t('common.owner'),
               value: BoardMembershipRoles.OWNER,
             },
@@ -191,10 +195,6 @@ const BoardActions = React.memo(
             {
               label: t('common.commenter'),
               value: 'commenter',
-            },
-            {
-              label: t('common.editor'),
-              value: BoardMembershipRoles.EDITOR,
             },
           ]}
           onDeleteAccess={(e) => {
@@ -233,6 +233,9 @@ const BoardActions = React.memo(
           searchUsersResult={formattedSearchedUsers}
           onInviteUser={(users, role) => {
             users.forEach((user) => {
+              if (boardMemberships.some((m) => m.userId === user.id)) {
+                return;
+              }
               onMembershipCreate({
                 userId: user.id,
                 ...// Replace the virtual commenter role if needed
