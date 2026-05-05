@@ -211,6 +211,8 @@ const BoardActions = React.memo(
                   title="Share board"
                   color="neutral"
                   variant="tertiary"
+                  size="small"
+                  className={styles.shareButton}
                   onClick={handleShareClick}
                 >
                   {t('action.share')}
