@@ -8,6 +8,9 @@ import { useUsersSearch } from '../../hooks';
 import { BoardMembershipRoles } from '../../constants/Enums';
 import Badge from '../../ui/Badge';
 import Filters from './Filters';
+import BoardActionsStep from '../../steps/BoardActionsStep';
+import usePopup from '../../lib/popup';
+import exportCardsToCsv from '../../utils/export-cards-to-csv';
 import styles from './BoardActions.module.scss';
 
 const BoardActions = React.memo(
@@ -28,6 +31,8 @@ const BoardActions = React.memo(
     isBoardPublic,
     searchedUsers,
     isSearchingUsers,
+    cards,
+    lists,
     onTextFilterUpdate,
     onUserToFilterAdd,
     onUserFromFilterRemove,
@@ -47,6 +52,9 @@ const BoardActions = React.memo(
     const [t] = useTranslation();
 
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+    const [isBoardActionsPopoverOpen, setIsBoardActionsPopoverOpen] = useState(false);
+
+    const BoardActionsPopover = usePopup(BoardActionsStep);
 
     const handleUpdate = useCallback(
       (data) => {
@@ -58,6 +66,10 @@ const BoardActions = React.memo(
     const handleShareClick = useCallback(() => {
       setIsShareModalOpen(true);
     }, []);
+
+    const handleExportCsv = useCallback(() => {
+      exportCardsToCsv(cards, lists, currentBoardName, t);
+    }, [cards, lists, currentBoardName, t]);
 
     const handleShareModalClose = useCallback(() => {
       setIsShareModalOpen(false);
@@ -211,6 +223,26 @@ const BoardActions = React.memo(
               )}
             </div>
           )}
+          <div className={styles.action}>
+            <BoardActionsPopover
+              defaultData={{ name: currentBoardName }}
+              canEdit={false}
+              canDelete={false}
+              canLeave={false}
+              onUpdate={() => {}}
+              onDelete={() => {}}
+              onLeave={() => {}}
+              onExportCsv={handleExportCsv}
+              onOpenChange={setIsBoardActionsPopoverOpen}
+            >
+              <Button
+                color="brand"
+                variant="tertiary"
+                size="small"
+                icon={<Icon name="more_horiz" type="outlined" size="small" />}
+              />
+            </BoardActionsPopover>
+          </div>
         </div>
 
         <ShareModal
@@ -344,6 +376,8 @@ BoardActions.propTypes = {
   canEdit: PropTypes.bool.isRequired,
   canEditMemberships: PropTypes.bool.isRequired,
   canSeeMemberships: PropTypes.bool.isRequired,
+  cards: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  lists: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   isBoardPublic: PropTypes.bool.isRequired,
   onTextFilterUpdate: PropTypes.func.isRequired,
   onUserToFilterAdd: PropTypes.func.isRequired,

@@ -57,7 +57,7 @@
       height: 32px;
       width: 32px;
       flex-shrink: 0;
-      background-color: var(--c--contextuals--background--semantic--overlay--primary);
+      background-color: transparent;
       color: var(--c--contextuals--content--semantic--neutral--primary);
       padding: 0;
       display: flex;
@@ -71,7 +71,7 @@
 
     &.popoverOpened {
       .listHeaderButton {
-        background-color: var(--c--contextuals--background--semantic--overlay--primary);
+        background-color: transparent;
       }
     }
 

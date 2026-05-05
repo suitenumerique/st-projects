@@ -15,7 +15,17 @@ const StepTypes = {
 };
 
 const BoardActionsStep = React.memo(
-  ({ defaultData, canEdit, canDelete, canLeave, onUpdate, onDelete, onLeave, onClose }) => {
+  ({
+    defaultData,
+    canEdit,
+    canDelete,
+    canLeave,
+    onUpdate,
+    onDelete,
+    onLeave,
+    onExportCsv,
+    onClose,
+  }) => {
     const { t } = useTranslation();
 
     const [step, openStep, handleBack] = useSteps();
@@ -23,6 +33,11 @@ const BoardActionsStep = React.memo(
     const handleEditNameClick = useCallback(() => {
       openStep(StepTypes.EDIT_NAME);
     }, [openStep]);
+
+    const handleExportCsvClick = useCallback(() => {
+      onExportCsv();
+      onClose();
+    }, [onExportCsv, onClose]);
 
     const handleDeleteClick = useCallback(() => {
       openStep(StepTypes.DELETE);
@@ -87,6 +102,11 @@ const BoardActionsStep = React.memo(
             {t('action.remove')}
           </MenuItem>
         )}
+        {onExportCsv && (
+          <MenuItem icon="download" onClick={handleExportCsvClick}>
+            {t('action.exportCsv')}
+          </MenuItem>
+        )}
       </Menu>
     );
   },
@@ -100,7 +120,12 @@ BoardActionsStep.propTypes = {
   onUpdate: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   onLeave: PropTypes.func.isRequired,
+  onExportCsv: PropTypes.func,
   onClose: PropTypes.func.isRequired,
+};
+
+BoardActionsStep.defaultProps = {
+  onExportCsv: undefined,
 };
 
 export default BoardActionsStep;
