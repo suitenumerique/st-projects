@@ -96,7 +96,7 @@ const BoardActions = React.memo(
     const modalMembers = useMemo(() => {
       return boardMemberships.map((membership) => {
         const isCurrentUserOwner =
-          membership.user.id === currentUser.id && membership.role === BoardMembershipRoles.OWNER;
+          membership.user.id === currentUser?.id && membership.role === BoardMembershipRoles.OWNER;
 
         return {
           id: membership.id,
@@ -114,7 +114,7 @@ const BoardActions = React.memo(
           can_delete: !isCurrentUserOwner,
         };
       });
-    }, [boardMemberships, currentUser.id]);
+    }, [boardMemberships, currentUser?.id]);
 
     const filterUsersRef = useRef(filterUsers);
     filterUsersRef.current = filterUsers;
