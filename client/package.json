@@ -105,7 +105,7 @@
     "react-markdown": "^8.0.7",
     "react-photoswipe-gallery": "^2.2.7",
     "react-redux": "^9.2.0",
-    "react-router-dom": "^6.28.0",
+    "react-router-dom": "^6.30.4",
     "react-scripts": "^5.0.1",
     "react-textarea-autosize": "^8.5.5",
     "redux": "^5.0.1",
