@@ -85,11 +85,12 @@ deleteProjectManager.success = (projectManager) => ({
   },
 });
 
-deleteProjectManager.failure = (id, error) => ({
+deleteProjectManager.failure = (id, error, projectManager) => ({
   type: ActionTypes.PROJECT_MANAGER_DELETE__FAILURE,
   payload: {
     id,
     error,
+    projectManager,
   },
 });
 

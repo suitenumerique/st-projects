@@ -64,6 +64,12 @@ export default class extends BaseModel {
         ProjectManager.withId(payload.id).delete();
 
         break;
+      case ActionTypes.PROJECT_MANAGER_DELETE__FAILURE:
+        if (payload.projectManager) {
+          ProjectManager.upsert(payload.projectManager);
+        }
+
+        break;
       case ActionTypes.PROJECT_MANAGER_DELETE__SUCCESS:
       case ActionTypes.PROJECT_MANAGER_DELETE_HANDLE: {
         const projectManagerModel = ProjectManager.withId(payload.projectManager.id);

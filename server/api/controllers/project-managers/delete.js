@@ -2,6 +2,9 @@ const Errors = {
   PROJECT_MANAGER_NOT_FOUND: {
     projectManagerNotFound: 'Project manager not found',
   },
+  MUST_NOT_BE_LAST_MANAGER: {
+    mustNotBeLastManager: 'Must not be last manager',
+  },
 };
 
 module.exports = {
@@ -16,6 +19,9 @@ module.exports = {
   exits: {
     projectManagerNotFound: {
       responseType: 'notFound',
+    },
+    mustNotBeLastManager: {
+      responseType: 'unprocessableEntity',
     },
   },
 
@@ -37,7 +43,16 @@ module.exports = {
       throw Errors.PROJECT_MANAGER_NOT_FOUND; // Forbidden
     }
 
-    // TODO: check if the last one
+    // Prevent orphaning the project: the last manager can never be removed,
+    // otherwise nobody could ever manage the project (add members/managers) again
+    const managerCount = await ProjectManager.count({
+      projectId: projectManager.projectId,
+    });
+
+    if (managerCount <= 1) {
+      throw Errors.MUST_NOT_BE_LAST_MANAGER;
+    }
+
     projectManager = await sails.helpers.projectManagers.deleteOne.with({
       record: projectManager,
       actorUser: currentUser,

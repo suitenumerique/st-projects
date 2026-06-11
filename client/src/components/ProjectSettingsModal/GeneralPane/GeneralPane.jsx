@@ -52,10 +52,14 @@ const GeneralPane = React.memo(
     }, [searchedUsers]);
 
     const modalMembers = useMemo(() => {
+      // The last manager must never be removable, otherwise the project would be left orphaned
+      const canDeleteManager = managers.length > 1;
+
       return managers.map((manager) => {
         return {
           id: manager.id,
           role: 'manager',
+          can_delete: canDeleteManager,
           user: {
             id: manager.user.id,
             full_name: manager.user.name,

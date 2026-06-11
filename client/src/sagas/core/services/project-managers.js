@@ -132,7 +132,7 @@ export function* handleProjectManagerCreate(projectManager) {
 }
 
 export function* deleteProjectManager(id) {
-  let projectManager = yield select(selectors.selectProjectManagerById, id);
+  const prevProjectManager = yield select(selectors.selectProjectManagerById, id);
 
   const currentUserId = yield select(selectors.selectCurrentUserId);
   const { projectId } = yield select(selectors.selectPath);
@@ -140,15 +140,16 @@ export function* deleteProjectManager(id) {
   yield put(
     actions.deleteProjectManager(
       id,
-      projectManager.userId === currentUserId,
-      projectManager.projectId === projectId,
+      prevProjectManager.userId === currentUserId,
+      prevProjectManager.projectId === projectId,
     ),
   );
 
+  let projectManager;
   try {
     ({ item: projectManager } = yield call(request, api.deleteProjectManager, id));
   } catch (error) {
-    yield put(actions.deleteProjectManager.failure(id, error));
+    yield put(actions.deleteProjectManager.failure(id, error, prevProjectManager));
     return;
   }
 
