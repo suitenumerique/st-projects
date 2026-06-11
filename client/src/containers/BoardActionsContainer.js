@@ -42,7 +42,7 @@ const mapStateToProps = (state) => {
     includeCardsWithoutLabels,
     boardMemberships,
     canEdit: isCurrentUserEditor,
-    canEditMemberships: isCurrentUserEditor || isCurrentUserManager,
+    canEditMemberships: isCurrentUserManager,
     canSeeMemberships: isCurrentUserMember || isCurrentUserManager,
     isProjectManagerNotMember: isCurrentUserManager && !isCurrentUserMember,
     isViewerOnly:

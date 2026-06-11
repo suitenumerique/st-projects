@@ -62,6 +62,10 @@ export default class extends BaseModel {
         BoardMembership.upsert(payload.boardMembership);
 
         break;
+      case ActionTypes.BOARD_MEMBERSHIP_CREATE__FAILURE:
+        BoardMembership.withId(payload.localId).delete();
+
+        break;
       case ActionTypes.BOARD_MEMBERSHIP_CREATE_HANDLE:
         BoardMembership.upsert(payload.boardMembership);
 
