@@ -79,7 +79,7 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@gouvfr-lasuite/cunningham-react": "^4.2.0",
     "@gouvfr-lasuite/ui-kit": "^0.19.8",
-    "@mdxeditor/editor": "^3.47.0",
+    "@mdxeditor/editor": "^4.0.4",
     "@radix-ui/react-popover": "^1.1.15",
     "classnames": "^2.5.1",
     "core-js-pure": "^3.45.1",
