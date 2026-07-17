@@ -77,6 +77,7 @@
     "@dnd-kit/react": "^0.3.2",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
+    "@fontsource-variable/hanken-grotesk": "^5.2.8",
     "@gouvfr-lasuite/cunningham-react": "^4.2.0",
     "@gouvfr-lasuite/ui-kit": "^0.19.8",
     "@mdxeditor/editor": "^3.47.0",

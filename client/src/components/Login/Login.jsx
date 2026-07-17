@@ -20,6 +20,8 @@ import illustration from '../../assets/images/illustration.jpg';
 import { ReactComponent as Logo } from '../../assets/images/logo.svg';
 import Paths from '../../constants/Paths';
 
+const { THEME_PREFIX } = window;
+
 // const createMessage = (error) => {
 //   if (!error) {
 //     return error;
@@ -76,6 +78,8 @@ import Paths from '../../constants/Paths';
 
 const Login = React.memo(({ theme, onAuthenticateUsingOidc }) => {
   const { t, i18n } = useTranslation();
+
+  const isGovDeployment = THEME_PREFIX === 'dsfr' || THEME_PREFIX === 'anct';
 
   const localeTheme = useMemo(() => {
     const languageWithoutRegion = i18n.language.split(/[-_]/)[0];
@@ -147,10 +151,12 @@ const Login = React.memo(({ theme, onAuthenticateUsingOidc }) => {
             }
           />
         </HomeGutter>
-        <Footer
-          // eslint-disable-next-line react/jsx-props-no-spreading
-          {...localeTheme.footer}
-        />
+        {isGovDeployment && (
+          <Footer
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            {...localeTheme.footer}
+          />
+        )}
       </MainLayout>
     </div>
   );

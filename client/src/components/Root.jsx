@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import { ModalProvider } from '@gouvfr-lasuite/cunningham-react';
 import { CunninghamProvider } from '@gouvfr-lasuite/ui-kit';
@@ -18,6 +18,23 @@ import '../assets/styles/globals.scss';
 
 function ThemedApp({ children }) {
   const { resolvedTheme } = useTheme();
+  const colors = useSelector((state) => state.root?.config?.theme?.colors);
+  const fontFamily = useSelector((state) => state.root?.config?.theme?.fontFamily);
+
+  useEffect(() => {
+    Object.entries(colors ?? {}).forEach(([name, value]) => {
+      document.documentElement.style.setProperty(name, value);
+    });
+  }, [colors]);
+
+  useEffect(() => {
+    if (!fontFamily) {
+      return;
+    }
+
+    document.documentElement.style.setProperty('--c--globals--font--families--base', fontFamily);
+    document.documentElement.style.setProperty('--c--globals--font--families--accent', fontFamily);
+  }, [fontFamily]);
 
   return (
     <CunninghamProvider currentLocale={i18n.resolvedLanguage} theme={resolvedTheme}>
