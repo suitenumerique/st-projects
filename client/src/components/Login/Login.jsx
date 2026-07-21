@@ -79,7 +79,7 @@ const { THEME_PREFIX } = window;
 const Login = React.memo(({ theme, onAuthenticateUsingOidc }) => {
   const { t, i18n } = useTranslation();
 
-  const isGovDeployment = THEME_PREFIX === 'dsfr' || THEME_PREFIX === 'anct';
+  const isGovDeployment = THEME_PREFIX === 'dsfr';
 
   const localeTheme = useMemo(() => {
     const languageWithoutRegion = i18n.language.split(/[-_]/)[0];
