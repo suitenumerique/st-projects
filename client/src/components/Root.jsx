@@ -20,6 +20,7 @@ function ThemedApp({ children }) {
   const { resolvedTheme } = useTheme();
   const colors = useSelector((state) => state.root?.config?.theme?.colors);
   const fontFamily = useSelector((state) => state.root?.config?.theme?.fontFamily);
+  const favicon = useSelector((state) => state.root?.config?.theme?.favicon);
 
   useEffect(() => {
     Object.entries(colors ?? {}).forEach(([name, value]) => {
@@ -35,6 +36,19 @@ function ThemedApp({ children }) {
     document.documentElement.style.setProperty('--c--globals--font--families--base', fontFamily);
     document.documentElement.style.setProperty('--c--globals--font--families--accent', fontFamily);
   }, [fontFamily]);
+
+  useEffect(() => {
+    if (!favicon) {
+      return;
+    }
+
+    const { src, darkSrc } = favicon;
+
+    document.querySelectorAll('link[rel="icon"]').forEach((link) => {
+      const isDark = link.getAttribute('media')?.includes('dark');
+      link.setAttribute('href', isDark && darkSrc ? darkSrc : src);
+    });
+  }, [favicon]);
 
   return (
     <CunninghamProvider currentLocale={i18n.resolvedLanguage} theme={resolvedTheme}>

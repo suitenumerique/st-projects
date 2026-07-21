@@ -53,17 +53,6 @@ const Core = React.memo(
     }, [theme, i18n.language]);
 
     useEffect(() => {
-      if (!theme?.favicon) return;
-
-      const { src, darkSrc } = theme.favicon;
-
-      document.querySelectorAll('link[rel="icon"]').forEach((link) => {
-        const isDark = link.getAttribute('media')?.includes('dark');
-        link.setAttribute('href', isDark && darkSrc ? darkSrc : src);
-      });
-    }, [theme]);
-
-    useEffect(() => {
       let title;
       if (currentProject) {
         title = currentProject.name;
