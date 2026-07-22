@@ -8,7 +8,7 @@ import styles from './Core.module.scss';
 
 import Feedback from '../Feedback';
 import { FeedbackWidget } from '../../ui/FeedbackWidget/index.tsx';
-import { ReactComponent as Logo } from '../../assets/images/logo.svg';
+import { useTheme } from '../../hooks/use-theme';
 import ModalTypes from '../../constants/ModalTypes';
 import Paths from '../../constants/Paths';
 import LeftMenuContainer from '../../containers/LeftMenuContainer';
@@ -29,6 +29,7 @@ const Core = React.memo(
     currentBoard,
   }) => {
     const { t, i18n } = useTranslation();
+    const { colorScheme } = useTheme();
 
     const defaultTitle = useRef(document.title);
     const [leftPanelOpen, setLeftPanelOpen] = useState(false);
@@ -96,7 +97,7 @@ const Core = React.memo(
                         {...headerLogo}
                       />
                     ) : (
-                      <Logo />
+                      <img alt="" src={`/oss/${colorScheme}/logo.svg`} />
                     )}
                   </div>
                 </Link>
@@ -152,7 +153,7 @@ const Core = React.memo(
                           {...headerLogo}
                         />
                       ) : (
-                        <Logo />
+                        <img alt="" src={`/oss/${colorScheme}/logo.svg`} />
                       )}
                     </div>
                   </Link>

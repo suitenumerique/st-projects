@@ -17,7 +17,7 @@ import '../assets/styles/reset.scss';
 import '../assets/styles/globals.scss';
 
 function ThemedApp({ children }) {
-  const { resolvedTheme } = useTheme();
+  const { resolvedTheme, colorScheme } = useTheme();
   const colors = useSelector((state) => state.root?.config?.theme?.colors);
   const fontFamily = useSelector((state) => state.root?.config?.theme?.fontFamily);
   const favicon = useSelector((state) => state.root?.config?.theme?.favicon);
@@ -39,6 +39,13 @@ function ThemedApp({ children }) {
 
   useEffect(() => {
     if (!favicon) {
+      // No custom favicon configured: follow the app's resolved theme (like the logo),
+      // instead of the OS-level prefers-color-scheme media query.
+      const defaultSrc = `/oss/${colorScheme}/favicon.svg`;
+
+      document.querySelectorAll('link[rel="icon"]').forEach((link) => {
+        link.setAttribute('href', defaultSrc);
+      });
       return;
     }
 
@@ -48,7 +55,7 @@ function ThemedApp({ children }) {
       const isDark = link.getAttribute('media')?.includes('dark');
       link.setAttribute('href', isDark && darkSrc ? darkSrc : src);
     });
-  }, [favicon]);
+  }, [favicon, colorScheme]);
 
   return (
     <CunninghamProvider currentLocale={i18n.resolvedLanguage} theme={resolvedTheme}>
