@@ -12,7 +12,7 @@ For a working starting point, see [`server/.env.sample`](./server/.env.sample) (
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `BASE_URL`     | Public URL of the application (e.g. `https://projects.example.com`). Used to build absolute links (emails, webhooks, OIDC redirect/logout URIs) and to derive the base path/protocol. |
 | `DATABASE_URL` | PostgreSQL connection string (e.g. `postgresql://user:password@host:5432/db`).                                                                                                        |
-| `SECRET_KEY`   | Secret used to sign session cookies. Use a long, random value in production.                                                                                                          |
+| `SECRET_KEY`   | Secret used to sign session cookies. Use a long, random value in production. When running multiple replicas, they must all share the **same** value (see [Horizontal scaling](#horizontal-scaling-multiple-instances-optional)).                     |
 
 ### Core / general
 
@@ -66,6 +66,8 @@ Only needed to store attachments/avatars/backgrounds on an S3-compatible bucket 
 ### Horizontal scaling (multiple instances), optional
 
 Only needed when running **more than one** instance/process behind a load balancer. By default the app keeps sessions in memory and broadcasts realtime socket events per-process, so a second instance would not receive the live updates emitted by the first. Setting `REDIS_URL` shares both sessions and socket.io broadcasts through Redis (via `@sailshq/connect-redis` and `@sailshq/socket.io-redis`), which is required for the realtime collaboration to work across instances. Only applied in production (`NODE_ENV=production`).
+
+All replicas must sit behind an external load balancer pointed at the app's port (`1337` in the container) and share the **same `SECRET_KEY`**: session ID cookies are signed with it, so a cookie issued by one instance is only accepted by the others when the secret matches. They must likewise share the same `DATABASE_URL` and `REDIS_URL`.
 
 To scale out you must **also** move file storage off local disk to [S3](#object-storage-s3-optional) — otherwise attachments/avatars/backgrounds uploaded on one instance are not visible from the others.
 

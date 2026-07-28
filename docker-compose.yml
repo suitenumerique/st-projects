@@ -55,9 +55,13 @@ services:
       # - ORGANIZATION_ID_CLAIM=
 
       ### Horizontal scaling (multiple instances)
-      # Only needed to run more than one instance behind a load balancer: shares
-      # sessions and realtime socket broadcasts through Redis. Uncomment the
-      # `redis` service below as well, and configure S3 so uploads are shared too.
+      # This file defines a SINGLE instance (bound to host port 3000). To scale
+      # out, run several `projects` instances behind an external load balancer
+      # pointed at the container port 1337 — do not rely on `docker compose
+      # --scale`, which cannot republish the fixed host port per replica. Every
+      # replica must share this Redis, the same DATABASE_URL, and the same
+      # SECRET_KEY (used to sign session cookies), plus S3 so uploads are shared.
+      # Uncomment the `redis` service (and its depends_on) below as well.
       # - REDIS_URL=redis://redis:6379/0
 
       ### Object storage (S3)
@@ -111,6 +115,10 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      # Uncomment together with the `redis` service below when scaling horizontally,
+      # so startup waits for Redis to be ready.
+      # redis:
+      #   condition: service_healthy
 
   postgres:
     image: postgres:16-alpine
