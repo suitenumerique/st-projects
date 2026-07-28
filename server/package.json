@@ -29,7 +29,7 @@
     }
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.698.0",
+    "@aws-sdk/client-s3": "^3.1045.0",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "dotenv-cli": "^7.4.4",
