@@ -54,6 +54,12 @@ services:
       # matching the value of this OIDC claim. Leave unset for free mode.
       # - ORGANIZATION_ID_CLAIM=
 
+      ### Horizontal scaling (multiple instances)
+      # Only needed to run more than one instance behind a load balancer: shares
+      # sessions and realtime socket broadcasts through Redis. Uncomment the
+      # `redis` service below as well, and configure S3 so uploads are shared too.
+      # - REDIS_URL=redis://redis:6379/0
+
       ### Object storage (S3)
       # - S3_ENDPOINT=
       # - S3_REGION=
@@ -119,6 +125,17 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  # Only needed for horizontal scaling (see REDIS_URL above). Uncomment to run
+  # several `projects` instances that share sessions and realtime broadcasts.
+  # redis:
+  #   image: redis:7-alpine
+  #   restart: on-failure
+  #   healthcheck:
+  #     test: ['CMD', 'redis-cli', 'ping']
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
 
 volumes:
   user-avatars:

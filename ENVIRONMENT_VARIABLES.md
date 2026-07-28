@@ -63,6 +63,16 @@ Only needed to store attachments/avatars/backgrounds on an S3-compatible bucket 
 | `S3_BUCKET`            | Bucket name.                                                               |
 | `S3_FORCE_PATH_STYLE`  | Set to `true` for endpoints that require path-style requests (e.g. MinIO). |
 
+### Horizontal scaling (multiple instances), optional
+
+Only needed when running **more than one** instance/process behind a load balancer. By default the app keeps sessions in memory and broadcasts realtime socket events per-process, so a second instance would not receive the live updates emitted by the first. Setting `REDIS_URL` shares both sessions and socket.io broadcasts through Redis (via `@sailshq/connect-redis` and `@sailshq/socket.io-redis`), which is required for the realtime collaboration to work across instances. Only applied in production (`NODE_ENV=production`).
+
+To scale out you must **also** move file storage off local disk to [S3](#object-storage-s3-optional) — otherwise attachments/avatars/backgrounds uploaded on one instance are not visible from the others.
+
+| Variable    | Default | Description                                                                                            |
+| ----------- | ------- | ----------------------------------------------------------------------------------------------------- |
+| `REDIS_URL` | unset   | Redis connection string (e.g. `redis://user:password@host:6379/0`). Enables shared sessions + sockets. |
+
 ### OpenID Connect (OIDC)
 
 | Variable                            | Default                 | Description                                                                                      |
