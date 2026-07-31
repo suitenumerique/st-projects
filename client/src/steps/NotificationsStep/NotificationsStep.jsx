@@ -1,4 +1,3 @@
-import truncate from 'lodash/truncate';
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation, Trans } from 'react-i18next';

@@ -55,12 +55,16 @@ services:
       # - ORGANIZATION_ID_CLAIM=
 
       ### Horizontal scaling (multiple instances)
-      # This file defines a SINGLE instance (bound to host port 3000). To scale
-      # out, run several `projects` instances behind an external load balancer
-      # pointed at the container port 1337 — do not rely on `docker compose
-      # --scale`, which cannot republish the fixed host port per replica. Every
-      # replica must share this Redis, the same DATABASE_URL, and the same
-      # SECRET_KEY (used to sign session cookies), plus S3 so uploads are shared.
+      # This file defines a SINGLE instance: the app listens on container port
+      # 1337, published here as host port 3000. To scale out, run several
+      # `projects` instances behind a load balancer. On this Compose network the
+      # balancer forwards to `projects:1337`; from outside Docker it targets each
+      # instance's published host port instead. `docker compose --scale` won't
+      # work as-is because replicas would all reuse the fixed 3000:1337 mapping —
+      # give each its own host port, or drop the mapping and route via the
+      # Compose network. Every replica must share this Redis, the same
+      # DATABASE_URL, and the same SECRET_KEY (used to sign session cookies),
+      # plus S3 so uploads are shared.
       # Uncomment the `redis` service (and its depends_on) below as well.
       # - REDIS_URL=redis://redis:6379/0
 

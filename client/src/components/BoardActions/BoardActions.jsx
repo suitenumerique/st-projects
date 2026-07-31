@@ -52,7 +52,6 @@ const BoardActions = React.memo(
     const [t] = useTranslation();
 
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-    const [isBoardActionsPopoverOpen, setIsBoardActionsPopoverOpen] = useState(false);
 
     const BoardActionsPopover = usePopup(BoardActionsStep);
 
@@ -235,7 +234,6 @@ const BoardActions = React.memo(
               onDelete={() => {}}
               onLeave={() => {}}
               onExportCsv={handleExportCsv}
-              onOpenChange={setIsBoardActionsPopoverOpen}
             >
               <Button
                 color="brand"

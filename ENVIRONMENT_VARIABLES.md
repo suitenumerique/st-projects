@@ -67,7 +67,7 @@ Only needed to store attachments/avatars/backgrounds on an S3-compatible bucket 
 
 Only needed when running **more than one** instance/process behind a load balancer. By default the app keeps sessions in memory and broadcasts realtime socket events per-process, so a second instance would not receive the live updates emitted by the first. Setting `REDIS_URL` shares both sessions and socket.io broadcasts through Redis (via `@sailshq/connect-redis` and `@sailshq/socket.io-redis`), which is required for the realtime collaboration to work across instances. Only applied in production (`NODE_ENV=production`).
 
-All replicas must sit behind an external load balancer pointed at the app's port (`1337` in the container) and share the **same `SECRET_KEY`**: session ID cookies are signed with it, so a cookie issued by one instance is only accepted by the others when the secret matches. They must likewise share the same `DATABASE_URL` and `REDIS_URL`.
+All replicas must sit behind a load balancer that forwards to each instance's app port (`1337`) and share the **same `SECRET_KEY`**: session ID cookies are signed with it, so a cookie issued by one instance is only accepted by the others when the secret matches. They must likewise share the same `DATABASE_URL` and `REDIS_URL`. (How the balancer reaches that port — a published host port vs. the container directly — depends on your deployment; see [`docker-compose.yml`](./docker-compose.yml) for the Docker topology.)
 
 To scale out you must **also** move file storage off local disk to [S3](#object-storage-s3-optional) — otherwise attachments/avatars/backgrounds uploaded on one instance are not visible from the others.
 
