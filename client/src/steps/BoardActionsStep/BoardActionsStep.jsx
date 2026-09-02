@@ -15,17 +15,7 @@ const StepTypes = {
 };
 
 const BoardActionsStep = React.memo(
-  ({
-    defaultData,
-    canEdit,
-    canDelete,
-    canLeave,
-    onUpdate,
-    onDelete,
-    onLeave,
-    onExportCsv,
-    onClose,
-  }) => {
+  ({ defaultData, canDelete, canLeave, onUpdate, onDelete, onLeave, onExportCsv, onClose }) => {
     const { t } = useTranslation();
 
     const [step, openStep, handleBack] = useSteps();
@@ -114,7 +104,6 @@ const BoardActionsStep = React.memo(
 
 BoardActionsStep.propTypes = {
   defaultData: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  canEdit: PropTypes.bool.isRequired,
   canDelete: PropTypes.bool.isRequired,
   canLeave: PropTypes.bool.isRequired,
   onUpdate: PropTypes.func.isRequired,

@@ -54,6 +54,20 @@ services:
       # matching the value of this OIDC claim. Leave unset for free mode.
       # - ORGANIZATION_ID_CLAIM=
 
+      ### Horizontal scaling (multiple instances)
+      # This file defines a SINGLE instance: the app listens on container port
+      # 1337, published here as host port 3000. To scale out, run several
+      # `projects` instances behind a load balancer. On this Compose network the
+      # balancer forwards to `projects:1337`; from outside Docker it targets each
+      # instance's published host port instead. `docker compose --scale` won't
+      # work as-is because replicas would all reuse the fixed 3000:1337 mapping —
+      # give each its own host port, or drop the mapping and route via the
+      # Compose network. Every replica must share this Redis, the same
+      # DATABASE_URL, and the same SECRET_KEY (used to sign session cookies),
+      # plus S3 so uploads are shared.
+      # Uncomment the `redis` service (and its depends_on) below as well.
+      # - REDIS_URL=redis://redis:6379/0
+
       ### Object storage (S3)
       # - S3_ENDPOINT=
       # - S3_REGION=
@@ -105,6 +119,10 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      # Uncomment together with the `redis` service below when scaling horizontally,
+      # so startup waits for Redis to be ready.
+      # redis:
+      #   condition: service_healthy
 
   postgres:
     image: postgres:16-alpine
@@ -119,6 +137,17 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  # Only needed for horizontal scaling (see REDIS_URL above). Uncomment to run
+  # several `projects` instances that share sessions and realtime broadcasts.
+  # redis:
+  #   image: redis:7-alpine
+  #   restart: on-failure
+  #   healthcheck:
+  #     test: ['CMD', 'redis-cli', 'ping']
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
 
 volumes:
   user-avatars:
